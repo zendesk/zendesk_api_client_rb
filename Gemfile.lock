@@ -1,0 +1,35 @@
+PATH
+  remote: .
+  specs:
+    zendesk_api_client_rb (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    columnize (0.3.4)
+    faraday (0.8.0.rc2)
+      multipart-post (~> 1.1)
+    faraday_middleware (0.8.4)
+      faraday (>= 0.7.4, < 0.9)
+    json (1.6.6)
+    linecache (0.46)
+      rbx-require-relative (> 0.0.4)
+    multi_xml (0.4.4)
+    multipart-post (1.1.5)
+    rbx-require-relative (0.0.5)
+    ruby-debug (0.10.4)
+      columnize (>= 0.1)
+      ruby-debug-base (~> 0.10.4.0)
+    ruby-debug-base (0.10.4)
+      linecache (>= 0.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  faraday (~> 0.8.0.rc2)
+  faraday_middleware
+  json
+  multi_xml
+  ruby-debug
+  zendesk_api_client_rb!
