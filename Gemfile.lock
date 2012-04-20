@@ -7,11 +7,15 @@ GEM
   remote: https://rubygems.org/
   specs:
     columnize (0.3.4)
+    english (0.6.3)
+      language
+    facets (2.9.3)
     faraday (0.8.0.rc2)
       multipart-post (~> 1.1)
     faraday_middleware (0.8.4)
       faraday (>= 0.7.4, < 0.9)
     json (1.6.6)
+    language (0.6.0)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
     multi_xml (0.4.4)
@@ -27,6 +31,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  english
+  facets
   faraday (~> 0.8.0.rc2)
   faraday_middleware
   json
