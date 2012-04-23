@@ -2,8 +2,12 @@ require 'facets/string/camelcase'
 require 'facets/string/snakecase'
 require 'english/inflect'
 
-require 'zendesk_api_client_rb/resource'
-require 'zendesk_api_client_rb/resources'
+require 'zendesk/resource'
+require 'zendesk/resources/ticket'
+require 'zendesk/resources/forum'
+require 'zendesk/resources/user'
+require 'zendesk/resources/misc'
+require 'zendesk/resources/playlist'
 
 module Zendesk
   class Collection

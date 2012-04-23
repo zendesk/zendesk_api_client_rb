@@ -2,10 +2,10 @@
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
-require 'zendesk_api_client_rb/version'
+require 'zendesk/version'
 
 Gem::Specification.new do |s|
-  s.name        = "zendesk_api_client_rb"
+  s.name        = "zendesk"
   s.version     = ZendeskApiClientRb::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = [""]

@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem "rspec"
+gem "vcr"
+gem "webmock"
+
 gem "hashie"
 gem "json"
 gem "faraday", "~> 0.8.0.rc2"

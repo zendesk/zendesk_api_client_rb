@@ -1,43 +1,12 @@
 require 'faraday'
 require 'faraday_middleware'
 
-require 'zendesk_api_client_rb/collection'
-require 'zendesk_api_client_rb/retry_middleware'
-require 'zendesk_api_client_rb/error_middleware'
+require 'zendesk/configuration'
+require 'zendesk/collection'
+require 'zendesk/retry_middleware'
+require 'zendesk/error_middleware'
 
 module Zendesk
-  class ConfigurationException < Exception; end
-
-  class << self
-    def configure
-      client = Zendesk::Client.new
-      yield client.config
-
-      if client.config.url !~ /https/ && client.config.url !~ /(127.0.0.1)|(localhost)/
-        raise ConfigurationException.new('zendesk api is ssl only; url must begin with https://')
-      end
-
-      # Turns nil -> false, does nothing to true
-      client.config.retry = !!client.config.retry
-
-      client
-    end
-  end
-
-  class Configuration
-    attr_accessor :username, :password, :url, :retry
-
-    def options
-      { 
-        :headers => { 
-          :accept => 'application/json',
-          :user_agent => "Zendesk API #{ZendeskApiClientRb::VERSION}"
-        },
-        :url => @url
-      }
-    end
-  end
-
   class Client
     class << self
       def collection(resource, opts = {})
