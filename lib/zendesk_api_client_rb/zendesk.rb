@@ -41,25 +41,14 @@ module Zendesk
   class Client
     class << self
       def collection(resource, opts = {})
-        method = opts[:method] || resource
-        path = opts[:path] || resource
+        resource = resource.to_s
+        method = opts.delete(:method) || resource
 
-        class_eval <<-END
-        def #{method}(opts = {})
-          return @#{method} if @#{method} && !opts[:reload]
-
-          response = connection.#{opts[:verb] || "get"}("#{path}.json") do |req|
-            req.params = opts
-          end
-
-          if response.status == 200
-            @#{method} = Zendesk::Collection.new(self, "#{resource}", response.body, ["#{resource}"])
-          else
-            response.body
-          end
+        define_method method do |*args|
+          return instance_variable_get("@#{method}") if !opts.delete(:reload) && instance_variable_defined?("@#{method}")
+          options = args.last.is_a?(Hash) ? args.pop : {}
+          instance_variable_set("@#{method}", Zendesk::Collection.new(self, resource, [resource], opts.merge(options)))
         end
-
-        END
       end
     end
 
