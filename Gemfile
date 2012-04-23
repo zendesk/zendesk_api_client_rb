@@ -2,10 +2,10 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem "hashie"
 gem "json"
-gem "multi_xml"
 gem "faraday", "~> 0.8.0.rc2"
-gem "faraday_middleware"
+gem "faraday_middleware", :git => "https://github.com/pengwynn/faraday_middleware.git"
 gem "ruby-debug"
 gem "english"
 gem "facets"

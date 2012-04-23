@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/pengwynn/faraday_middleware.git
+  revision: 3d406fb1d91ca762f4dd3de121226ce3fd2d99ca
+  specs:
+    faraday_middleware (0.8.7)
+      faraday (>= 0.7.4, < 0.9)
+
 PATH
   remote: .
   specs:
@@ -12,13 +19,11 @@ GEM
     facets (2.9.3)
     faraday (0.8.0.rc2)
       multipart-post (~> 1.1)
-    faraday_middleware (0.8.4)
-      faraday (>= 0.7.4, < 0.9)
+    hashie (1.2.0)
     json (1.6.6)
     language (0.6.0)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
-    multi_xml (0.4.4)
     multipart-post (1.1.5)
     rbx-require-relative (0.0.5)
     ruby-debug (0.10.4)
@@ -34,8 +39,8 @@ DEPENDENCIES
   english
   facets
   faraday (~> 0.8.0.rc2)
-  faraday_middleware
+  faraday_middleware!
+  hashie
   json
-  multi_xml
   ruby-debug
   zendesk_api_client_rb!

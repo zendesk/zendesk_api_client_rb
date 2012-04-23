@@ -17,18 +17,15 @@ module Zendesk
         raise ConfigurationException.new('zendesk api is ssl only; url must begin with https://')
       end
 
-      client.config.format ||= :json
-
-      unless [:json].include?(client.config.format.to_sym)
-        raise ConfigurationException.new('zendesk api only supports json format') 
-      end
+      # Turns nil -> false, does nothing to true
+      client.config.retry = !!client.config.retry
 
       client
     end
   end
 
   class Configuration
-    attr_accessor :username, :password, :url, :format
+    attr_accessor :username, :password, :url, :retry
 
     def options
       { 
@@ -44,18 +41,24 @@ module Zendesk
   class Client
     class << self
       def collection(resource, opts = {})
+        method = opts[:method] || resource
+        path = opts[:path] || resource
+
         class_eval <<-END
-        def #{opts[:method] || resource}(opts = {})
-          response = connection.get("#{opts[:path] || resource}.\#{config.format}") do |req|
+        def #{method}(opts = {})
+          return @#{method} if @#{method} && !opts[:reload]
+
+          response = connection.#{opts[:verb] || "get"}("#{path}.json") do |req|
             req.params = opts
           end
 
           if response.status == 200
-            Zendesk::Collection.new(self, "#{resource}", response.body)
+            @#{method} = Zendesk::Collection.new(self, "#{resource}", response.body, ["#{resource}"])
           else
             response.body
           end
         end
+
         END
       end
     end
@@ -65,6 +68,7 @@ module Zendesk
     collection :tickets, :path => 'tickets/recent', :method => :recent_tickets
     collection :ticket_fields
     collection :users
+    collection :users, :path => 'users/search', :method => :search_users
     collection :macros, :path => 'macros/active'
     collection :views
     collection :views, :path => 'views/active', :method => :active_views
@@ -80,13 +84,19 @@ module Zendesk
     collection :satisfaction_ratings
     collection :satisfaction_ratings, :path => 'satisfaction_ratings/received', :method => :received_satisfaction_ratings
     collection :organizations
-    #collection :uploads
     collection :categories
     collection :forums
     collection :topics
+    collection :topics, :path => 'topics/show_many', :method => :show_many, :verb => :post 
     collection :topic_comments
     collection :topic_subscriptions
     collection :forum_subscriptions
+
+    # Play the playlist
+    # id can be a view id or 'incoming'
+    def play(id)
+      Zendesk::Playlist.new(self, id)
+    end
 
     def initialize
       @config = Zendesk::Configuration.new
@@ -99,12 +109,13 @@ module Zendesk
           builder.use Faraday::Adapter::NetHttp
           builder.use Faraday::Response::Logger
 
-          if config.format == :json
-            builder.use FaradayMiddleware::ParseJson
-          end
+          builder.use FaradayMiddleware::ParseJson
           
           # Should always be first in the stack
-          builder.use Zendesk::Request::RetryMiddleware
+          if config.retry
+            builder.use Zendesk::Request::RetryMiddleware
+          end
+
           builder.use Zendesk::Request::ErrorMiddleware
         end
         @connection.basic_auth config.username, config.password
