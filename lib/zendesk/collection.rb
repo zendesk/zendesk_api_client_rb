@@ -1,8 +1,3 @@
-require 'facets/string/camelcase'
-require 'facets/string/snakecase'
-
-
-require 'zendesk/inflection'
 require 'zendesk/parameter_whitelist'
 require 'zendesk/resource'
 require 'zendesk/resources/misc'
@@ -22,7 +17,7 @@ module Zendesk
       @verb = @options.delete(:verb)
       @query_path = @options.delete(:path)
 
-      @resource_class = Zendesk.const_get(resource.singular.upper_camelcase)
+      @resource_class = Zendesk.get_class(resource.singular)
     end
 
     def path

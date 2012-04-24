@@ -109,7 +109,7 @@ module Zendesk
   # reopened under a different superclass, an error will be thrown
   def self.get_class(resource)
     return false if resource.nil?
-    res = resource.to_s.upper_camelcase
+    res = resource.to_s.modulize
 
     begin
       const_get(res)
