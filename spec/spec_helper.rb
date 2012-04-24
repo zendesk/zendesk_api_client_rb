@@ -2,7 +2,9 @@ $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 
 if RUBY_VERSION =~ /1.9/ && ENV["COVERAGE"]
   require 'simplecov'
-  SimpleCov.start
+  SimpleCov.start do
+    add_filter "spec/"
+  end
 end
 
 require 'zendesk'

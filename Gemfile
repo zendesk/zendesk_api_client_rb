@@ -7,8 +7,6 @@ gem "vcr"
 gem "webmock"
 gem "simplecov", :platforms => :ruby_19
 
-gem "ruby-debug", :platforms => :ruby_18
-
 gem "hashie"
 gem "json"
 gem "faraday", "~> 0.8.0.rc2"
