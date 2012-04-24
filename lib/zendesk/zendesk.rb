@@ -4,7 +4,6 @@ require 'faraday_middleware'
 require 'zendesk/configuration'
 require 'zendesk/collection'
 require 'zendesk/retry_middleware'
-require 'zendesk/error_middleware'
 
 module Zendesk
   class Client
@@ -62,24 +61,23 @@ module Zendesk
     end
 
     def connection
-      unless @connection
-        @connection = Faraday.new(config.options) do |builder|
-          builder.use Faraday::Adapter::NetHttp
-          builder.use Faraday::Response::Logger
+      return @connection if @connection
 
-          builder.use FaradayMiddleware::ParseJson
-          
-          # Should always be first in the stack
-          if config.retry
-            builder.use Zendesk::Request::RetryMiddleware
-          end
+      @connection = Faraday.new(config.options) do |builder|
+        builder.response :logger if config.log
 
-          builder.use Zendesk::Request::ErrorMiddleware
+        builder.request :json
+        builder.response :json
+
+        # Should always be first in the stack
+        if config.retry
+          builder.use Zendesk::Request::RetryMiddleware
         end
-        @connection.basic_auth config.username, config.password
-      end
 
-      @connection
+        builder.use Faraday::Response::RaiseError
+        builder.adapter Faraday.default_adapter
+      end
+      @connection.tap {|c| c.basic_auth(config.username, config.password)}
     end
   end
 end

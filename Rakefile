@@ -1,10 +1,17 @@
 require 'rake/testtask'
 require 'bundler/gem_tasks'
 
-task :default => :test
+Bundler::GemHelper.install_tasks
 
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/*_test.rb'
-  test.verbose = true
+require 'rspec/core/rake_task'
+
+desc "Run specs"
+RSpec::Core::RakeTask.new
+
+desc "Run irb with zendesk client lib loaded"
+task :console do
+  sh "bundle exec irb -I lib -r ./lib/zendesk.rb"
 end
+
+desc 'Default: run specs.'
+task :default => :spec

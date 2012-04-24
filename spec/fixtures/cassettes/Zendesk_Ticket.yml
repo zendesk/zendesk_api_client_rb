@@ -1,0 +1,112 @@
+--- 
+http_interactions: 
+- request: 
+    method: get
+    uri: http://agent%40zendesk.com:123456@dev.localhost:3000/api/v2/users.json
+    body: 
+      string: ""
+    headers: 
+      User-Agent: 
+      - Zendesk API 0.0.1
+      Accept: 
+      - application/json
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Content-Length: 
+      - "3928"
+      Content-Type: 
+      - application/json; charset=utf-8
+      X-Runtime: 
+      - "1252"
+      Etag: 
+      - "\"603ac01bcaa531460e3e43d7192351dc\""
+      Connection: 
+      - keep-alive
+      X-Zendesk-Api-Version: 
+      - v2
+      Server: 
+      - thin 1.2.7 codename No Hup
+      Cache-Control: 
+      - private, max-age=0, must-revalidate
+    body: 
+      string: "{\"count\":7,\"previous_page\":null,\"next_page\":null,\"users\":[{\"updated_at\":\"2012-04-11T00:15:29Z\",\"notes\":null,\"time_zone\":\"Pacific Time (US & Canada)\",\"organization_id\":null,\"custom_role_id\":null,\"email\":null,\"alias\":null,\"active\":true,\"shared\":false,\"last_login_at\":null,\"url\":\"http://dev.localhost:3000/api/v2/users/6.json\",\"tags\":[],\"only_private_comments\":false,\"moderator\":false,\"external_id\":null,\"details\":null,\"role\":\"end-user\",\"ticket_restriction\":\"requested\",\"name\":\"SD\",\"locale_id\":null,\"signature\":null,\"photo\":null,\"id\":6,\"created_at\":\"2012-04-11T00:15:29Z\",\"phone\":null,\"verified\":false},{\"updated_at\":\"2012-04-09T23:08:36Z\",\"notes\":null,\"time_zone\":\"Pacific Time (US & Canada)\",\"organization_id\":7,\"custom_role_id\":null,\"email\":\"agent@zendesk.com\",\"alias\":null,\"active\":true,\"shared\":false,\"last_login_at\":\"2012-04-24T01:02:51Z\",\"url\":\"http://dev.localhost:3000/api/v2/users/7.json\",\"tags\":[],\"only_private_comments\":false,\"moderator\":true,\"external_id\":null,\"details\":null,\"role\":\"admin\",\"ticket_restriction\":null,\"name\":\"Agent Extraordinaire\",\"locale_id\":null,\"signature\":null,\"photo\":null,\"id\":7,\"created_at\":\"2012-04-09T23:08:36Z\",\"phone\":null,\"verified\":true},{\"updated_at\":\"2012-04-09T23:08:52Z\",\"notes\":null,\"time_zone\":\"Copenhagen\",\"organization_id\":null,\"custom_role_id\":null,\"email\":\"sally.agent.1@example.org\",\"alias\":null,\"active\":true,\"shared\":false,\"last_login_at\":null,\"url\":\"http://dev.localhost:3000/api/v2/users/22.json\",\"tags\":[],\"only_private_comments\":false,\"moderator\":false,\"external_id\":null,\"details\":null,\"role\":\"agent\",\"ticket_restriction\":null,\"name\":\"Sally Agent 1\",\"locale_id\":null,\"signature\":null,\"photo\":null,\"id\":22,\"created_at\":\"2012-04-09T23:08:52Z\",\"phone\":null,\"verified\":true},{\"updated_at\":\"2012-04-09T23:08:52Z\",\"notes\":null,\"time_zone\":\"Copenhagen\",\"organization_id\":null,\"custom_role_id\":null,\"email\":\"sally.agent.2@example.org\",\"alias\":null,\"active\":true,\"shared\":false,\"last_login_at\":null,\"url\":\"http://dev.localhost:3000/api/v2/users/27.json\",\"tags\":[],\"only_private_comments\":false,\"moderator\":false,\"external_id\":null,\"details\":null,\"role\":\"agent\",\"ticket_restriction\":null,\"name\":\"Sally Agent 2\",\"locale_id\":null,\"signature\":null,\"photo\":null,\"id\":27,\"created_at\":\"2012-04-09T23:08:52Z\",\"phone\":null,\"verified\":true},{\"updated_at\":\"2012-04-09T23:08:53Z\",\"notes\":null,\"time_zone\":\"Copenhagen\",\"organization_id\":null,\"custom_role_id\":null,\"email\":\"sally.agent.3@example.org\",\"alias\":null,\"active\":true,\"shared\":false,\"last_login_at\":null,\"url\":\"http://dev.localhost:3000/api/v2/users/32.json\",\"tags\":[],\"only_private_comments\":false,\"moderator\":false,\"external_id\":null,\"details\":null,\"role\":\"agent\",\"ticket_restriction\":null,\"name\":\"Sally Agent 3\",\"locale_id\":null,\"signature\":null,\"photo\":null,\"id\":32,\"created_at\":\"2012-04-09T23:08:53Z\",\"phone\":null,\"verified\":true},{\"updated_at\":\"2012-04-09T23:08:53Z\",\"notes\":null,\"time_zone\":\"Copenhagen\",\"organization_id\":null,\"custom_role_id\":null,\"email\":\"enduser@zendesk.com\",\"alias\":null,\"active\":true,\"shared\":false,\"last_login_at\":null,\"url\":\"http://dev.localhost:3000/api/v2/users/37.json\",\"tags\":[],\"only_private_comments\":false,\"moderator\":false,\"external_id\":null,\"details\":null,\"role\":\"end-user\",\"ticket_restriction\":\"requested\",\"name\":\"End User\",\"locale_id\":null,\"signature\":null,\"photo\":null,\"id\":37,\"created_at\":\"2012-04-09T23:08:53Z\",\"phone\":null,\"verified\":true},{\"updated_at\":\"2012-04-11T00:21:28Z\",\"notes\":null,\"time_zone\":\"Pacific Time (US & Canada)\",\"organization_id\":null,\"custom_role_id\":null,\"email\":null,\"alias\":null,\"active\":true,\"shared\":false,\"last_login_at\":null,\"url\":\"http://dev.localhost:3000/api/v2/users/52.json\",\"tags\":[],\"only_private_comments\":false,\"moderator\":false,\"external_id\":null,\"details\":null,\"role\":\"end-user\",\"ticket_restriction\":\"requested\",\"name\":\"SDD1\",\"locale_id\":null,\"signature\":null,\"photo\":null,\"id\":52,\"created_at\":\"2012-04-11T00:19:27Z\",\"phone\":null,\"verified\":false}]}"
+    http_version: 
+  recorded_at: Tue, 24 Apr 2012 01:04:49 GMT
+- request: 
+    method: post
+    uri: http://agent%40zendesk.com:123456@dev.localhost:3000/api/v2/tickets.json
+    body: 
+      string: "{\"ticket\":{\"priority\":\"normal\",\"description\":\"Indeed it is!\",\"subject\":\"This is a question?\",\"submitter_id\":6,\"requester_id\":6,\"type\":\"question\"}}"
+    headers: 
+      Content-Type: 
+      - application/json
+      User-Agent: 
+      - Zendesk API 0.0.1
+      Accept: 
+      - application/json
+  response: 
+    status: 
+      code: 201
+      message: Created
+    headers: 
+      Content-Length: 
+      - "503"
+      Content-Type: 
+      - application/json; charset=utf-8
+      X-Runtime: 
+      - "2279"
+      Location: 
+      - http://dev.localhost:3000/api/v2/tickets/26.json
+      Connection: 
+      - keep-alive
+      X-Zendesk-Api-Version: 
+      - v2
+      Server: 
+      - thin 1.2.7 codename No Hup
+      Cache-Control: 
+      - no-cache
+    body: 
+      string: "{\"ticket\":{\"updated_at\":\"2012-04-24T01:04:50Z\",\"type\":\"question\",\"has_incidents\":false,\"priority\":\"normal\",\"organization_id\":null,\"status\":\"new\",\"forum_topic_id\":null,\"url\":\"http://dev.localhost:3000/api/v2/tickets/26.json\",\"due_at\":null,\"tags\":[],\"group_id\":7,\"via\":{\"channel\":\"api\"},\"external_id\":null,\"recipient\":null,\"collaborator_ids\":[],\"assignee_id\":null,\"id\":26,\"created_at\":\"2012-04-24T01:04:50Z\",\"subject\":\"This is a question?\",\"submitter_id\":7,\"problem_id\":null,\"requester_id\":6,\"fields\":[]}}"
+    http_version: 
+  recorded_at: Tue, 24 Apr 2012 01:04:52 GMT
+- request: 
+    method: put
+    uri: http://agent%40zendesk.com:123456@dev.localhost:3000/api/v2/tickets/26.json
+    body: 
+      string: "{\"ticket\":{\"priority\":\"urgent\",\"assignee_id\":null,\"external_id\":null,\"status\":\"new\",\"subject\":\"This is a question?\",\"requester_id\":6,\"type\":\"question\",\"collaborator_ids\":[],\"forum_topic_id\":null,\"problem_id\":null,\"tags\":[],\"fields\":[],\"group_id\":7,\"due_at\":null}}"
+    headers: 
+      Content-Type: 
+      - application/json
+      User-Agent: 
+      - Zendesk API 0.0.1
+      Accept: 
+      - application/json
+  response: 
+    status: 
+      code: 200
+      message: OK
+    headers: 
+      Content-Length: 
+      - "503"
+      Content-Type: 
+      - application/json; charset=utf-8
+      X-Runtime: 
+      - "618"
+      Etag: 
+      - "\"23848945736413e36a5ece51a4c88ecf\""
+      Connection: 
+      - keep-alive
+      X-Zendesk-Api-Version: 
+      - v2
+      Server: 
+      - thin 1.2.7 codename No Hup
+      Cache-Control: 
+      - private, max-age=0, must-revalidate
+    body: 
+      string: "{\"ticket\":{\"updated_at\":\"2012-04-24T01:04:52Z\",\"type\":\"question\",\"has_incidents\":false,\"priority\":\"urgent\",\"organization_id\":null,\"status\":\"new\",\"forum_topic_id\":null,\"url\":\"http://dev.localhost:3000/api/v2/tickets/26.json\",\"due_at\":null,\"tags\":[],\"group_id\":7,\"via\":{\"channel\":\"api\"},\"external_id\":null,\"recipient\":null,\"collaborator_ids\":[],\"assignee_id\":null,\"id\":26,\"created_at\":\"2012-04-24T01:04:50Z\",\"subject\":\"This is a question?\",\"submitter_id\":7,\"problem_id\":null,\"requester_id\":6,\"fields\":[]}}"
+    http_version: 
+  recorded_at: Tue, 24 Apr 2012 01:04:53 GMT
+recorded_with: VCR 2.1.0

@@ -21,7 +21,7 @@ module Zendesk
       response = @client.connection.get("play/next.json")
 
       if response.status == 200
-        @ticket = Ticket.new(@client, response.body["ticket"], ["tickets"])
+        @ticket = Ticket.new(@client, response.body["ticket"])
         @ticket
       else
         # Depends, but definitely if 204
