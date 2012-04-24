@@ -39,6 +39,7 @@ GEM
     webmock (1.8.6)
       addressable (>= 2.2.7)
       crack (>= 0.1.7)
+    yard (0.7.5)
 
 PLATFORMS
   ruby
@@ -48,4 +49,5 @@ DEPENDENCIES
   simplecov
   vcr
   webmock
+  yard
   zendesk!

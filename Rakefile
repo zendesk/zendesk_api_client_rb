@@ -1,14 +1,6 @@
 require 'rake/testtask'
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
-require 'rdoc/task'
-
-desc "Generate documentation"
-Rake::RDocTask.new do |rd|
-  rd.main = "README.rdoc"
-  rd.rdoc_dir = 'doc'
-  rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
-end
 
 desc "Run specs"
 RSpec::Core::RakeTask.new

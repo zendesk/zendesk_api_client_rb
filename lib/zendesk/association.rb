@@ -1,5 +1,13 @@
 module Zendesk
+  # This model holds association method for resources.
+  # Associations can be loaded in three ways:
+  # * Commonly used resources are automatically side-loaded server side and sent along with their parent object.
+  # * Associated resource ids are sent and are then loaded one-by-one into the parent collection.
+  # * The association is represented with Rails' nested association urls (such as tickets/:id/groups) and are loaded that way.
   module Association
+    # Represents a parent-to-child association between resources. Options to pass in are: class, path.
+    # @param [Symbol] resource The underlying resource name
+    # @param [Hash] opts The options to pass to the method definition. 
     def has(resource, opts = {})
       klass = Zendesk.get_class(opts.delete(:class)) || Zendesk.get_class(resource)
 
@@ -23,6 +31,9 @@ module Zendesk
       end
     end
 
+    # Represents a parent-to-children association between resources. Options to pass in are: class, path, set_path.
+    # @param [Symbol] resource The underlying resource name
+    # @param [Hash] opts The options to pass to the method definition. 
     def has_many(resource, opts = {})
       klass = Zendesk.get_class(opts.delete(:class)) || Zendesk.get_class(resource.to_s.singular)
 
