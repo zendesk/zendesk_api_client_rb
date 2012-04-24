@@ -10,6 +10,6 @@ client = Zendesk.configure do |config|
 end
 
 users = client.users
-puts users.inspect
+puts users
 users.fetch
-puts users.first.inspect
+puts users

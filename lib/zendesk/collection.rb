@@ -110,5 +110,15 @@ module Zendesk
     def method_missing(*args, &blk)
       to_a.send(*args, &blk)
     end
+
+    def to_s
+      if @resources
+        @resources.inspect
+      else
+        orig_inspect
+      end
+    end
+    alias :orig_inspect :inspect
+    alias :inspect :to_s
   end
 end

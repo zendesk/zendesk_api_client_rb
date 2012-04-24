@@ -39,6 +39,11 @@ module Zendesk
     def path
       @path.join("/")
     end
+
+    def to_s
+      "#{self.class.singular_resource_name}: #{attributes.inspect}"
+    end
+    alias :inspect :to_s
   end
 
   class ReadResource < DataResource
