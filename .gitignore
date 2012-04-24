@@ -1,4 +1,5 @@
-pkg/
+pkg
+doc
 *swp
-spec/fixtures/cassettes/**/*.yml
+spec/fixtures/cassettes
 coverage
