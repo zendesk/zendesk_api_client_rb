@@ -25,15 +25,15 @@ module Zendesk
     end
 
     def method_missing(*args, &blk)
-      if attributes.key?(self.class.singular_resource_name)
-        attributes[self.class.singular_resource_name].send(*args, &blk)
+      if @attributes.key?(self.class.singular_resource_name)
+        @attributes[self.class.singular_resource_name].send(*args, &blk)
       else
-        attributes.send(*args, &blk)
+        @attributes.send(*args, &blk)
       end
     end
 
     def id
-      method_missing("id")
+      key?(:id) ? method_missing(:id) : nil
     end
 
     def path
@@ -60,11 +60,27 @@ module Zendesk
       @destroyed = false
     end
 
-    def save
-      return false if @destroyed
+    def destroyed?
+      @destroyed
+    end
 
-      response = @client.connection.put("#{path}/#{id}.json") do |req|
-        req.body = self.class.whitelist_attributes(attributes, :put)
+    def new_record?
+      id.nil? 
+    end
+
+    def save
+      return false if destroyed?
+
+      req_path = path
+      if new_record?
+        method = :post
+      else
+        method = :put
+        req_path += "/#{id}.json"
+      end
+
+      response = @client.connection.send(method, req_path) do |req|
+        req.body = self.class.whitelist_attributes(attributes, method)
       end
 
       @attributes.replace(@attributes.deep_merge(response.body))
@@ -76,7 +92,7 @@ module Zendesk
     def destroy
       response = @client.connection.delete("#{path}/#{id}.json")
       @destroyed = true
-    rescue Faraday::Error::Client => e
+    rescue Faraday::Error::ClientError => e
       false
     end
   end
