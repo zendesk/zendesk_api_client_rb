@@ -1,7 +1,8 @@
 require 'facets/string/camelcase'
 require 'facets/string/snakecase'
-require 'english/inflect'
 
+
+require 'zendesk/inflection'
 require 'zendesk/parameter_whitelist'
 require 'zendesk/resource'
 require 'zendesk/resources/misc'

@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Zendesk::Ticket do
   use_vcr_cassette :record => :new_episodes
@@ -14,18 +14,6 @@ describe Zendesk::Ticket do
       :requester_id => requester.id,
       :submitter_id => requester.id
     })
-  end
-
-  it "should be able to access underlying attributes" do
-    expect { subject.priority = "urgen" }.to_not raise_error
-  end
-
-  it "should be able to iterate over underlying attributes" do
-    expect {
-      subject.map do |k, v|
-        [k.to_sym, v]
-      end
-    }.to_not raise_error
   end
 
   context "updating attributes" do

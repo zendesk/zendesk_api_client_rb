@@ -19,7 +19,7 @@ module Zendesk
     end
 
     attr_reader :attributes
-    def initialize(client, attributes, path = [])
+    def initialize(client, attributes = {}, path = [])
       @client, @attributes, @path = client, Hashie::Mash.new(attributes), path
       @path.push(self.class.resource_name) if @path.empty?
     end
@@ -60,8 +60,8 @@ module Zendesk
     extend Destroy
     extend Verbs
 
-    def initialize(client, attributes, path = [])
-      super(client, attributes, path)
+    def initialize(*args)
+      super
       @destroyed = false
     end
 

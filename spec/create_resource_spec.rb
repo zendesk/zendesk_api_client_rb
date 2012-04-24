@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Zendesk::CreateResource do
   let(:client) { valid_client }

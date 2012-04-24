@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Zendesk::DataResource do
   let(:client) { valid_client }
@@ -29,13 +29,57 @@ describe Zendesk::DataResource do
     Zendesk::Category.resource_name.should == "categories"
   end
 
+  context "user" do 
+    context "with first order attributes" do
+      subject { Zendesk::TestResource.new(client) }
+      before(:each) { subject.attributes[:priority] = "normal" }
+
+      it "should be able to access underlying attributes" do
+        subject.priority.should == "normal"
+      end
+
+      it "should be able to change underlying attributes" do
+        expect { subject.priority = "urgent" }.to_not raise_error
+      end
+
+      it "should be able to iterate over underlying attributes" do
+        expect do
+          subject.map do |k, v|
+            [k.to_sym, v]
+          end
+        end.to_not raise_error
+      end
+    end
+
+    context "with second order attributes" do
+      subject { Zendesk::TestResource.new(client) }
+      before(:each) { subject.attributes[:test_resource] = { :priority => "normal" } }
+
+      it "should be able to change underlying attributes" do
+        subject.priority.should == "normal"
+      end
+
+      it "should be able to change underlying attributes" do
+        expect { subject.priority = "urgent" }.to_not raise_error
+      end
+
+      it "should be able to iterate over underlying attributes" do
+        expect do
+          subject.map do |k, v|
+            [k.to_sym, v]
+          end
+        end.to_not raise_error
+      end
+    end
+  end
+
   context "has" do
     before(:each) { Zendesk::TestResource.has :foo }
 
     context "class methods" do
       subject { Zendesk::TestResource }
       it "should define a method with the same name" do
-        subject.instance_methods.should include("foo")
+        subject.instance_methods.map(&:to_s).should include("foo")
       end
 
       it "should create a class if none exists" do
@@ -117,7 +161,7 @@ describe Zendesk::DataResource do
     context "class methods" do
       subject { Zendesk::TestResource }
       it "should define a method with the same name" do
-        subject.instance_methods.should include("bars")
+        subject.instance_methods.map(&:to_s).should include("bars")
       end
 
       it "should create a class if none exists" do

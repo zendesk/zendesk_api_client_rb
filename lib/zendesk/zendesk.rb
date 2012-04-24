@@ -69,12 +69,10 @@ module Zendesk
         builder.request :json
         builder.response :json
 
-        # Should always be first in the stack
-        if config.retry
-          builder.use Zendesk::Request::RetryMiddleware
-        end
 
         builder.use Faraday::Response::RaiseError
+        # Should always be first in the stack
+        builder.use Zendesk::Request::RetryMiddleware if config.retry
         builder.adapter Faraday.default_adapter
       end
       @connection.tap {|c| c.basic_auth(config.username, config.password)}

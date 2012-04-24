@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Zendesk::Client do
   subject { valid_client }
@@ -55,7 +55,7 @@ describe Zendesk::Client do
     end
 
     it "should define method of the same name" do
-      subject.methods.should include("test_resources")
+      subject.methods.map(&:to_s).should include("test_resources")
     end
 
     it "should set instance variable of same name upon call" do
@@ -74,7 +74,7 @@ describe Zendesk::Client do
     end
 
     it "should define method of given name" do
-      subject.methods.should include("active_test_resources")
+      subject.methods.map(&:to_s).should include("active_test_resources")
     end
   end 
 

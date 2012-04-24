@@ -1,5 +1,10 @@
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 
+if RUBY_VERSION =~ /1.9/ && ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start
+end
+
 require 'zendesk'
 require 'vcr'
 
@@ -32,6 +37,7 @@ def valid_client
     config.password = "123456"
     config.url = "http://dev.localhost:3000/api/v2"
     config.log = false
+    config.retry = true
   end
 end
 

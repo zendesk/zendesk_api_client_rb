@@ -1,4 +1,4 @@
-require 'spec/spec_helper.rb'
+require 'spec_helper.rb'
 
 describe Zendesk::Collection do
   let(:client) { valid_client }

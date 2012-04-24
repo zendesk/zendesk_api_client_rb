@@ -1,4 +1,4 @@
-require 'spec/spec_helper.rb'
+require 'spec_helper.rb'
 
 describe Zendesk::Configuration do
   subject { Zendesk::Configuration.new }

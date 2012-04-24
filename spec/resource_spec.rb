@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Zendesk::Resource do
   let(:client) { valid_client }
@@ -115,7 +115,7 @@ describe Zendesk::Resource do
         subject { Zendesk::TestResource }
 
         it "should create a method of the same name" do
-          subject.instance_methods.should include(method)
+          subject.instance_methods.map(&:to_s).should include(method)
         end
       end
 
