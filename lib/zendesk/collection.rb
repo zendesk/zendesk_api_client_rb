@@ -58,18 +58,16 @@ module Zendesk
         req.params.merge!(@options.delete_if {|k, v| v.nil?})
       end
 
-      if response.status == 200
-        @resources = response.body[@resource].map do |res|
-          @resource_class.new(@client, { @resource_class.singular_resource_name => res }, @path.dup)
-        end
-
-        @count = (response.body["count"] || @resources.size).to_i
-        @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]
-
-        @resources
-      else
-        []
+      @resources = response.body[@resource].map do |res|
+        @resource_class.new(@client, { @resource_class.singular_resource_name => res }, @path.dup)
       end
+
+      @count = (response.body["count"] || @resources.size).to_i
+      @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]
+
+      @resources
+    rescue Faraday::Error::ClientError => e
+      []
     end
 
     # Depends on what users want

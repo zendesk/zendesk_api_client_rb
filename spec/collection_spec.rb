@@ -66,7 +66,19 @@ describe Zendesk::Collection do
     end
   end
 
-  context "with real data", :vcr do
+  context "fetch", :vcr_off do
+    context "with client error" do
+      before(:each) do
+        stub_request(:get, %r{test_resources}).to_return(:status => 500)
+      end
+
+      it "should properly be handled" do
+        subject.fetch(true).should be_empty
+      end
+    end
+  end
+
+  context "with real data" do
     subject do
       Zendesk::Collection.new(client, "users", ["users"], {})
     end
