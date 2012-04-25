@@ -29,7 +29,7 @@ Note: This Zendesk API client only supports basic authentication at the moment.
 
 ## Usage
 
-The result of configuration is an instance of {Zendesk::Client} which can then be used in two different methods.
+The result of configuration is an instance of Zendesk::Client which can then be used in two different methods.
 
 One way to use the client is to pass it in as an argument to individual classes.
 
@@ -49,13 +49,13 @@ client.tickets.create(:subject => "Test Ticket", :description => "This is a test
 client.tickets.delete(1)
 ```
 
-The methods under {Zendesk::Client} (such as tickets) return an instance of {Zendesk::Collection} a lazy-loaded list of that resource. 
-Actual requests may not be sent until an explicit {Zendesk::Collection#fetch}, {Zendesk::Collection#to_a}, or an applicable methods such
+The methods under Zendesk::Client (such as .tickets) return an instance of Zendesk::Collection a lazy-loaded list of that resource. 
+Actual requests may not be sent until an explicit Zendesk::Collection#fetch, Zendesk::Collection#to_a, or an applicable methods such
 as #each.
 
 ### Pagination
 
-{Zendesk::Collection}s can be paginated:
+Zendesk::Collections can be paginated:
 
 ```
 tickets = client.tickets.page(2).per_page(3)
@@ -65,7 +65,7 @@ previous_page = tickets.prev
 
 ### Callbacks
 
-Callbacks can be added to the {Zendesk::Client} instance and will be called (with the response env) after all response middleware.
+Callbacks can be added to the Zendesk::Client instance and will be called (with the response env) after all response middleware.
 
 ```
 client.insert_callback do |env|
@@ -74,6 +74,11 @@ client.insert_callback do |env|
   end
 end
 ```
+
+### TODO
+
+* Take a look at dynamic resources under Zendesk::Client
+* Testing
 
 ## Note on Patches/Pull Requests
 1. Fork the project.
