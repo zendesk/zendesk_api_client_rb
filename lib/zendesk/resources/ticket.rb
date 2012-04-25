@@ -1,9 +1,12 @@
 module Zendesk
+  class Audit < DataResource; end
+
   class Ticket < Resource
     has :submitter, :class => :user
     has :assignee, :class => :user
     has :recipient, :class => :user
     has_many :collaborators, :class => :user
+    has_many :audits
     has :group
     has :forum_topic, :class => :topic
     has :organization
