@@ -33,6 +33,24 @@ Note: This Zendesk API client only supports basic authentication at the moment.
 
 The result of configuration is an instance of {Zendesk::Client} which can then be used in two different methods.
 
+One way to use the client is to pass it in as an argument to individual classes.
+
+```
+Zendesk::Ticket.new(client, :id => 1, :priority => "urgent")
+Zendesk::Ticket.create(client, :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent")
+Zendesk::Ticket.find(client, 1)
+Zendesk::Ticket.delete(client, 1)
+```
+
+Another way is to use the instance methods under client.
+
+```
+client.tickets.first
+client.tickets.find(1)
+client.tickets.create(:subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent")
+client.tickets.delete(1)
+```
+
 ## Note on Patches/Pull Requests
 1. Fork the project.
 2. Make your feature addition or bug fix.
