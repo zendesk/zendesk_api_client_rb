@@ -36,7 +36,7 @@ module Zendesk
     end
 
     # Passes arguments and the proper path to the resource class method.
-    # @params [Hash] attributes Attributes to pass to Create#create
+    # @param [Hash] attributes Attributes to pass to Create#create
     def create(attributes = {})
       @resource_class.create(@client, attributes, path)
     end
@@ -86,7 +86,10 @@ module Zendesk
       []
     end
 
-    alias :to_a :fetch
+    # Alias for fetch(false)
+    def to_a
+      fetch
+    end
 
     # Find the next page. Does one of three things: 
     # * If there is already a page number in the options hash, it increases it and invalidates the cache, returning the new page number.

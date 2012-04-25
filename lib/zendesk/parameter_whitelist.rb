@@ -1,29 +1,29 @@
-# When included into a controller, this module forces the developer
-# to explicitly whitelist which parameters are passed to any (or specificed) methods.
-#
-# Examples:
-#
-# class TestController < ApplicationController
-#   include Zendesk::ParameterWhitelist
-#   allow_parameters :forum_id # Only allows params = { :forum_id => VALUE }
-#   allow_parameters :topic => :name # Only allows the structure params = { :topic => { :name => VALUE } }
-#   allow_parameters :topic => { :forum => :id } # params => { :topic => { :forum => { :id => VALUE } }
-#   allow_parameters :topic => %w{title body} # params => { :topic => { :title => VALUE, :body => VALUE } }
-#   # The above can also be written as :topic => [:title, :body], but Rails uses indifferent access
-#   allow_parameters :forum_id, :only => [:create]
-#   allow_parameters :forum_id, :only => :update
-# end
-
-
 require 'hashie'
 
 module Zendesk
+  # See {ClassMethods}
   module ParameterWhitelist
     def self.included(klass)
       klass.extend ClassMethods
     end
 
     module ClassMethods
+      # Sets class-wide allowed parameters. Can be sent an :only option so that these
+      # parameters can be allowed only on certain actions.
+      #
+      # Examples:
+      #
+      # allow_parameters :forum_id # Only allows { :forum_id => VALUE }
+      #
+      # allow_parameters :topic => :name # Only allows the structure { :topic => { :name => VALUE } }
+      #
+      # allow_parameters :topic => { :forum => :id } # { :topic => { :forum => { :id => VALUE } }
+      #
+      # allow_parameters :topic => [:title, :body] # { :topic => { :title => VALUE, :body => VALUE } }
+      #
+      # allow_parameters :forum_id, :only => [:create]
+      #
+      # allow_parameters :forum_id, :only => :update
       def allow_parameters(*args)
         if args.last.is_a?(Hash) && args.last.has_key?(:only)
           methods = [args.last.delete(:only)].flatten.compact.map(&:to_sym)
@@ -36,11 +36,20 @@ module Zendesk
         end
       end
 
+      # Returns allowed parameters. The keys for the hash are either a verb (:put, :post) or :all for those
+      # that apply to every action.
+      # @return [Hash] Allowed parameters
       def allowed_parameters
         @allowed_parameters ||= Hash.new {[]}
         @allowed_parameters
       end
 
+      # Collects allowed_parameters according to specified action and whitelists passed in
+      # attributes.
+      #
+      # @param [Hash] attributes Attributes to whitelist
+      # @param [String/Symbol] action The action being taken (:put/:post generally)
+      # @return [Hash] Whitelisted attributes
       def whitelist_attributes(attributes, action)
         allowed = allowed_parameters[:all] +
           allowed_parameters[action.to_sym]
@@ -52,6 +61,8 @@ module Zendesk
     end
 
     class Sanitizer
+      # Recursively populates a new hash with the values from the old hash according to the
+      # keys allowed.
       def self.populate_parameters(hash, allowed)
         h = Hashie::Mash.new 
 

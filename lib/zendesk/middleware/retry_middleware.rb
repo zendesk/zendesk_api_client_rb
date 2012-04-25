@@ -1,5 +1,6 @@
 module Zendesk
   module Request
+    # Faraday middleware to handle HTTP Status 429 (rate limiting).
     class RetryMiddleware < Faraday::Middleware
       def call(env)
         response = @app.call(env)

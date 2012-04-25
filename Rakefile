@@ -15,7 +15,7 @@ end
 
 desc "Run irb with zendesk client lib loaded"
 task :console do
-  sh "bundle exec irb -I lib -r ./lib/zendesk.rb"
+  sh "bundle exec irb -I lib -r ./lib/zendesk_console.rb"
 end
 
 desc 'Default: run specs.'

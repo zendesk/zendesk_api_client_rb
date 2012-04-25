@@ -37,6 +37,7 @@ describe Zendesk::Resource do
       it "should return true and set destroyed" do
         subject.destroy.should be_true
         subject.destroyed?.should be_true
+        subject.destroy.should be_false
       end
 
       context "with client error" do
