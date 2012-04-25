@@ -1,8 +1,8 @@
 # Zendesk API Client
 ## Configuration
 
-Configuration is done through a block returning an instance of {Zendesk::Client}.
-The block is mandatory and if not passed, a {Zendesk::ConfigurationException} will be thrown.
+Configuration is done through a block returning an instance of Zendesk::Client.
+The block is mandatory and if not passed, a Zendesk::ConfigurationException will be thrown.
 
 ```
 Zendesk.configure do |config|
@@ -73,6 +73,22 @@ client.insert_callback do |env|
     puts "Invalid request"
   end
 end
+```
+
+### Resource management
+
+Individual resources can be created, modified, saved, and destroyed.
+
+```
+ticket = client.tickets[0] # Zendesk::Ticket.find(client, 1)
+ticket.priority = "urgent"
+ticket.attributes # => { "priority" => "urgent" }
+ticket.save # => true
+ticket.destroy # => true
+
+Zendesk::Ticket.new(client, { :priority => "urgent" })
+ticket.new_record? # => true
+ticket.save # Will POST
 ```
 
 ### TODO
