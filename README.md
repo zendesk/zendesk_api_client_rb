@@ -107,9 +107,9 @@ OR
 Zendesk::Playlist.new(client, id)
 ```
 
-Playlists are automatically initialized and can the be played using the 
+Playlists are automatically started server-side when created and can then be played using the
 Zendesk::Playlist#next method. Also available is the Zendesk::Playlist#each method which
-takes a block will successively get and yield each ticket until the end.
+takes a block and will successively get and yield each ticket until the end of the playlist.
 
 ```
 playlist.each do |ticket|
