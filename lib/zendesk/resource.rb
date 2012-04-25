@@ -57,6 +57,12 @@ module Zendesk
       "#{self.class.singular_resource_name}: #{attributes.inspect}"
     end
     alias :inspect :to_s
+
+    def ==(other)
+      other.id == id
+    end
+    alias :eql :==
+    alias :hash :id
   end
 
   # Represents a resource that can only GET

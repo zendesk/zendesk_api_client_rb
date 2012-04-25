@@ -91,7 +91,7 @@ describe Zendesk::Collection do
     end
 
     context "pagination with no options" do
-      use_vcr_cassette :record => :new_episodes
+      use_vcr_cassette
 
       before(:each) { subject.per_page(nil).page(nil) }
 
