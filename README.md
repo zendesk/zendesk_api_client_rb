@@ -112,4 +112,4 @@ Tested with Ruby 1.8.7 and 1.9.3
 
 ## Copyright
 
-See [LICENSE](LICENSE)
+See [LICENSE](https://github.com/zendesk/zendesk_api_client_rb/blob/master/LICENSE)
