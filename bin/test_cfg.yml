@@ -1,0 +1,5 @@
+username: agent@zendesk.com
+password: 123456
+url: http://dev.localhost:3000/api/v2/
+log: true
+retry: false
