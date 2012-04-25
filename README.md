@@ -11,12 +11,10 @@ Zendesk.configure do |config|
   # Must be https URL unless it is localhost or 127.0.0.1
   config.url = "https://mydesk.zendesk.com"
 
-  # Optional, but recommended:
-
   config.username = "test.user"
   config.password = "test.password"
 
-  # Truly optional:
+  # Optional:
 
   # Retry uses middleware to notify the user
   # when hitting the rate limit, sleep automatically,
@@ -52,6 +50,11 @@ client.tickets.delete(1)
 ```
 
 The methods under {Zendesk::Client} (such as tickets) return an instance of {Zendesk::Collection} a lazy-loaded list of that resource. 
+Actual requests may not be sent until an explicit {Zendesk::Collection#fetch}, {Zendesk::Collection#to_a}, or an applicable methods such
+as #each.
+
+### Pagination
+
 {Zendesk::Collection}s can be paginated:
 
 ```
@@ -60,8 +63,17 @@ next_page = tickets.next
 previous_page = tickets.prev
 ```
 
-Actual requests may not be sent until an explicit {Zendesk::Collection#fetch}, {Zendesk::Collection#to_a}, or an applicable methods such
-as #each.
+### Callbacks
+
+Callbacks can be added to the {Zendesk::Client} instance and will be called (with the response env) after all response middleware.
+
+```
+client.insert_callback do |env|
+  if env[:status] == 404
+    puts "Invalid request"
+  end
+end
+```
 
 ## Note on Patches/Pull Requests
 1. Fork the project.
