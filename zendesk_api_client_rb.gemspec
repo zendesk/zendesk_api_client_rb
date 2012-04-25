@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://developer.zendesk.com"
   s.summary     = %q{Zendesk REST API Client}
   s.description = %q{Ruby wrapper for the REST API at http://www.zendesk.com. Documentation at http://developer.zendesk.com.}
+  s.license = 'MIT'
 
   s.required_ruby_version     = ">= 1.8.7"
   s.required_rubygems_version = ">= 1.3.6"

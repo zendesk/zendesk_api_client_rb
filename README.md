@@ -91,7 +91,7 @@ ticket.new_record? # => true
 ticket.save # Will POST
 ```
 
-### TODO
+## TODO
 
 * Take a look at dynamic resources under Zendesk::Client
 * Testing
@@ -111,3 +111,5 @@ ticket.save # Will POST
 Tested with Ruby 1.8.7 and 1.9.3
 
 ## Copyright
+
+See [LICENSE][]
