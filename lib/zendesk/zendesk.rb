@@ -4,6 +4,7 @@ require 'faraday_middleware'
 require 'zendesk/configuration'
 require 'zendesk/collection'
 require 'zendesk/middleware/retry_middleware'
+require 'zendesk/middleware/callback_middleware'
 
 module Zendesk
   class Client
@@ -27,6 +28,7 @@ module Zendesk
 
     # @return [Configuration] Config instance
     attr_reader :config
+    attr_reader :callbacks
 
     # @group Resources
 
@@ -97,6 +99,7 @@ module Zendesk
     def initialize
       @config = Zendesk::Configuration.new
       @connection = false
+      @callbacks = []
     end
 
     # Creates a connection if there is none, otherwise returns the existing connection.
@@ -110,11 +113,11 @@ module Zendesk
       return @connection if @connection
 
       @connection = Faraday.new(config.options) do |builder|
+        builder.use Zendesk::Response::CallbackMiddleware, self
         builder.response :logger if config.log
 
         builder.request :json
         builder.response :json
-
 
         builder.use Faraday::Response::RaiseError
         # Should always be first in the stack
@@ -122,6 +125,12 @@ module Zendesk
         builder.adapter Faraday.default_adapter
       end
       @connection.tap {|c| c.basic_auth(config.username, config.password)}
+    end
+
+    # Pushes a callback onto the stack. Callbacks are executed on responses, last in the Faraday middleware stack.
+    # @param [Proc] blk The block to execute. Takes one parameter, env.
+    def insert_callback(&blk)
+      @callbacks << blk
     end
   end
 end

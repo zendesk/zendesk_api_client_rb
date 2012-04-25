@@ -9,6 +9,10 @@ client = Zendesk.configure do |config|
   config.retry = true
 end
 
+client.insert_callback do |env|
+  puts env[:body]
+end
+
 users = client.users
 puts users
 users.fetch

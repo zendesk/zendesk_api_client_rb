@@ -81,7 +81,7 @@ module Zendesk
       @count = (response.body["count"] || @resources.size).to_i
       @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]
 
-      @resources
+      self
     rescue Faraday::Error::ClientError => e
       []
     end
