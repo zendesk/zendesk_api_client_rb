@@ -91,6 +91,33 @@ ticket.new_record? # => true
 ticket.save # Will POST
 ```
 
+### Special case: playlists
+
+Views can be played using different syntax than normal resources.
+Playlists are started with:
+
+```
+client.play(id)
+client.play('incoming')
+```
+
+OR
+
+```
+Zendesk::Playlist.new(client, id)
+```
+
+Playlists are automatically initialized and can the be played using the 
+Zendesk::Playlist#next method. Also available is the Zendesk::Playlist#each method which
+takes a block will successively get and yield each ticket until the end.
+
+```
+playlist.each do |ticket|
+  ticket.status = "solved"
+  ticket.save
+end
+```
+
 ## TODO
 
 * Take a look at dynamic resources under Zendesk::Client
