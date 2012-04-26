@@ -147,6 +147,14 @@ describe Zendesk::Collection do
     it "should take a block" do
       subject.map {|i| i.to_i + 1}.should == [2, 3, 1, 4]
     end
+
+    it "should create a new collection if it isn't an array method" do
+      subject.recent.should be_instance_of(Zendesk::Collection)
+    end
+
+    it "should pass the correct query_path to the new collection" do
+      subject.recent.instance_variable_get(:@query_path).should =~ /recent$/
+    end
   end
 
   context "with different path" do

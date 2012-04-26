@@ -17,9 +17,9 @@ module Zendesk
     has :crm_data
     has :crm_data_status, :path => 'crm_data/status'
 
-    allow_parameters :user => [:name, :alias, :is_verified, :locale_id, :time_zone, :email, :phone,
-      :signature, :details, :notes, :organization_id, :role, :custom_role_id, :is_moderator,
-      :ticket_restriction, :is_only_private_comments, :tags, :photo]
+    allow_parameters :user => [:name, :alias, :verified, :locale_id, :time_zone, :email, :phone,
+      :signature, :details, :notes, :organization_id, :role, :custom_role_id, :moderator,
+      :ticket_restriction, :only_private_comments, :tags, :photo]
   end
 
   class Organization < Resource
@@ -27,7 +27,7 @@ module Zendesk
     has_many :tickets
     has_many :users
 
-    allow_parameters :organization => [:name, :domain_names, :details, :notes, :group_id, :is_shared_tickets, :is_shared_comments, :tags]
+    allow_parameters :organization => [:name, :domain_names, :details, :notes, :group_id, :shared_tickets, :shared_comments, :tags]
   end
 
   class GroupMembership < Resource
@@ -41,7 +41,7 @@ module Zendesk
     put :verify
     put :request_verification
 
-    allow_parameters :user_id, :identity => [:twitter, :facebook, :email, :google, :type, :value, :is_verified, :primary]
+    allow_parameters :user_id, :identity => [:twitter, :facebook, :email, :google, :is_verified, :primary]
   end
 
   class Group < Resource

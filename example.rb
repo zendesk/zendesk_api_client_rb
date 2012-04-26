@@ -9,11 +9,7 @@ client = Zendesk.configure do |config|
   config.retry = true
 end
 
-client.insert_callback do |env|
-  puts env[:body]
-end
-
-users = client.users
-puts users
-users.fetch
-puts users
+tickets = client.tickets.recent
+show_many = client.topics.show_many(:verb => :post, :ids => [22,2])
+puts client.topics
+puts show_many.to_a

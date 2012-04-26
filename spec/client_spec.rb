@@ -49,34 +49,12 @@ describe Zendesk::Client do
     end
   end
 
-  context "self.collection with no options" do
-    before(:all) do
-      Zendesk::Client.collection :test_resources 
-    end
-
-    it "should define method of the same name" do
-      subject.methods.map(&:to_s).should include("test_resources")
-    end
-
-    it "should set instance variable of same name upon call" do
-      subject.test_resources
-      subject.instance_variable_defined?(:@test_resources).should be_true
-    end
-
-    it "should return an instance of Zendesk::Collection" do
-      subject.test_resources.should be_instance_of(Zendesk::Collection)
+  context "resources" do
+    it "should return an instance of Zendesk::Collection if there is no method" do
+      subject.tickets.should be_instance_of(Zendesk::Collection)
+      subject.instance_variable_defined?(:@tickets).should be_true
     end
   end
-
-  context "self.collection with options" do
-    before(:all) do
-      Zendesk::Client.collection :test_resources, :method => :active_test_resources
-    end
-
-    it "should define method of given name" do
-      subject.methods.map(&:to_s).should include("active_test_resources")
-    end
-  end 
 
   context "#play", :vcr_off do
     # TODO may be able to be replaced by VCR

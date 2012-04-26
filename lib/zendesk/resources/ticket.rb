@@ -18,9 +18,9 @@ module Zendesk
   end
 
   class TicketField < Resource
-    allow_parameters :ticket_field => [:type, :title, :description, :position, :is_active,
+    allow_parameters :ticket_field => [:type, :title, :description, :position, :active,
       :required, :collapsed_for_agents, :regexp_for_validation, :title_in_portal,
-      :is_visible_in_portal, :is_editable_in_portal, :is_required_in_portal, :tag]
+      :visible_in_portal, :editable_in_portal, :required_in_portal, :tag]
   end
 
   class View < DataResource

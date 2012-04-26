@@ -25,7 +25,12 @@ module Zendesk
       @path = path
 
       @verb = @options.delete(:verb)
-      @query_path = @options.delete(:path)
+      @query_path = @options.delete(:path) || @resource
+
+      # Special case POST topics/show_many
+      @options.each do |k, v|
+        @options[k] = v.join(',') if v.is_a?(Array) 
+      end
 
       @resource_class = Zendesk.get_class(resource.singular)
     end
@@ -70,7 +75,7 @@ module Zendesk
     def fetch(reload = false)
       return @resources if @resources && !reload
 
-      response = @client.connection.send(@verb || "get", @query ? @query : "#{@query_path || @resource}.json") do |req|
+      response = @client.connection.send(@verb || "get", @query ? @query : "#{@query_path}.json") do |req|
         req.params.merge!(@options.delete_if {|k, v| v.nil?})
       end
 
@@ -132,8 +137,12 @@ module Zendesk
     end
 
     # Sends methods to underlying array of resources.
-    def method_missing(*args, &blk)
-      to_a.send(*args, &blk)
+    def method_missing(name, *args, &blk)
+      to_a.send(name, *args, &blk)
+    rescue NameError
+      query_path = @query_path + "/#{name}"
+      opts = args.last.is_a?(Hash) ? args.last : {}
+      self.class.new(@client, @resource, @path.dup, @options.merge(:path => query_path).merge(opts)) 
     end
 
     def to_s
