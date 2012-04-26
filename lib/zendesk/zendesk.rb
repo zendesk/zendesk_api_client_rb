@@ -63,7 +63,7 @@ module Zendesk
 
         # Should always be first in the stack
         builder.use Zendesk::Request::RetryMiddleware if config.retry
-        builder.adapter Faraday.default_adapter
+        builder.adapter (config.adapter || Faraday.default_adapter)
       end
       @connection.tap {|c| c.basic_auth(config.username, config.password)}
     end
