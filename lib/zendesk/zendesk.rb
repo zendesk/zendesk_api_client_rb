@@ -39,9 +39,7 @@ module Zendesk
       @callbacks = []
 
       insert_callback do |env|
-        if env[:response_headers]["X-Zendesk-API-Warn"]
-          warn "WARNING: the parameters you sent were whitelisted"
-        end
+        puts "WARNING: #{env[:response_headers]["X-Zendesk-API-Warn"]}" if env[:response_headers]["X-Zendesk-API-Warn"]
       end
     end
 
