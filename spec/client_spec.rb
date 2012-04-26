@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Zendesk::Client do
-  subject { valid_client }
+  subject { client }
 
   context "#configure" do
     it "should require a block" do

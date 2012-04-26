@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Zendesk::Response::CallbackMiddleware, :vcr_off do
-  let(:client) { valid_client }
   let(:response) { "TEST" }
 
   before(:all) do

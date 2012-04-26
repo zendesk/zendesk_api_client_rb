@@ -1,4 +1,5 @@
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
+$:.unshift(File.join(File.dirname(__FILE__), "macros"))
 
 if RUBY_VERSION =~ /1.9/ && ENV["COVERAGE"]
   require 'simplecov'
@@ -9,6 +10,8 @@ end
 
 require 'zendesk'
 require 'vcr'
+
+require 'resource_macros'
 
 RSpec.configure do |c|
   # so we can use `:vcr` rather than `:vcr => true`;
@@ -24,6 +27,7 @@ RSpec.configure do |c|
   end
 
   c.extend VCR::RSpec::Macros
+  c.extend ResourceMacros
 end
 
 VCR.configure do |c|
@@ -34,13 +38,19 @@ end
 
 include WebMock::API
 
-def valid_client
-  Zendesk.configure do |config|
+def client
+  @client ||= Zendesk.configure do |config|
     config.username = "agent@zendesk.com"
     config.password = "123456"
     config.url = "http://dev.localhost:3000/api/v2"
     config.log = false
     config.retry = true
+  end
+end
+
+def user
+  VCR.use_cassette('valid_user') do
+    @user ||= client.users.first
   end
 end
 

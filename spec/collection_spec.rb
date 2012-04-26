@@ -1,8 +1,6 @@
 require 'spec_helper.rb'
 
 describe Zendesk::Collection do
-  let(:client) { valid_client }
-
   subject do
     Zendesk::Collection.new(client, "test_resources", ["test_resources"], {})
   end

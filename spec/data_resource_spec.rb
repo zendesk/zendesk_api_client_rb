@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Zendesk::DataResource do
-  let(:client) { valid_client }
-
   context "Zendesk.get_class" do
     it "should create a new class if there is none" do
       Zendesk.const_defined?("Blergh").should be_false
