@@ -53,7 +53,7 @@ module ResourceMacros
           @object.attributes[attribute].should == value 
         end
 
-        it "should be findable", :if => metadata[:not_findable] do
+        it "should be findable", :unless => metadata[:not_findable] do
           described_class.find(client, @object.id).should == @object
         end 
       end
@@ -66,7 +66,7 @@ module ResourceMacros
     end
   end
 
-  def it_should_be_deletable
+  def it_should_be_deletable(options = {})
     context "deletion" do
       use_vcr_cassette
 
@@ -80,12 +80,12 @@ module ResourceMacros
         @object.destroy.should be_true
         @object.destroyed?.should be_true
 
-        unless example.metadata[:not_findable]
+        if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
           obj = described_class.find(client, @object.id)
 
           begin
-            obj.deleted?.should be_true
-          rescue
+            obj.send(options[:find].first).should == options[:find].last
+          rescue NameError
             obj.should be_nil
           end
         end
@@ -117,12 +117,12 @@ module ResourceMacros
         args.each {|a| result = result.send(a, options)}
         result.fetch(true).should_not be_empty
 
-        unless !described_class.respond_to?(:find) || example.metadata[:not_findable]
+        if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           described_class.find(client, result.first.id).should_not be_nil 
         end
       end
 
-      it "should be readable", :if => create do
+      it "should be readable", :if => create && !metadata[:not_findable] do
         described_class.find(client, @object.id).should == @object
       end
     end
