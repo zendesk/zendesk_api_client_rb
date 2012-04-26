@@ -130,7 +130,6 @@ client.topics.show_many(:verb => :post, :ids => [1, 2, 3])
 
 ## TODO
 
-* Take a look at dynamic resources under Zendesk::Client
 * Testing
 
 ## Note on Patches/Pull Requests
