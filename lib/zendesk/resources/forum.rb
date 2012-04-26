@@ -29,7 +29,7 @@ module Zendesk
   end
 
   class Topic < Resource
-    has_many :comments, :class => :topic_comment 
+    has_many :comments, :class => :topic_comment, :set_path => true 
     has_many :subscriptions, :class => :topic_subscription
     has_many :votes, :set_path => true
   end

@@ -60,4 +60,10 @@ def agent
   end
 end
 
+def topic
+  VCR.use_cassette('valid_topic') do
+    @topic ||= client.topics.first
+  end
+end
+
 class Zendesk::TestResource < Zendesk::Resource; end

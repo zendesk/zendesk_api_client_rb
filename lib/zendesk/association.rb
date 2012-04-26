@@ -58,11 +58,12 @@ module Zendesk
         else
           if opts[:set_path] || opts[:path]
             new_path = @path.dup.push(id).push(opts[:path] || resource.to_s) 
+            options[:path] = opts[:path] || new_path.join("/")
           else
             new_path = [resource.to_s]
           end
 
-          instance_variable_set("@#{resource}", Zendesk::Collection.new(@client, klass.resource_name, new_path))
+          instance_variable_set("@#{resource}", Zendesk::Collection.new(@client, klass.resource_name, new_path, options))
         end
       end
     end

@@ -95,7 +95,7 @@ module ResourceMacros
 
   def it_should_be_readable(*args)
     options = args.last.is_a?(Hash) ? args.pop : {}
-    create = options.delete(:create)
+    create = !!options.delete(:create)
 
     context "read" do
       use_vcr_cassette
@@ -112,8 +112,8 @@ module ResourceMacros
         end
       end if create 
 
-      it "'#{args.join("/")}' should be findable" do
-        result = client
+      it "should be findable" do
+        result = args.first.is_a?(Zendesk::DataResource) ? args.shift : client
         args.each {|a| result = result.send(a, options)}
         result.fetch(true).should_not be_empty
 
