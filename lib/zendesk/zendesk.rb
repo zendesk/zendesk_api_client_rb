@@ -37,6 +37,12 @@ module Zendesk
       @config = Zendesk::Configuration.new
       @connection = false
       @callbacks = []
+
+      insert_callback do |env|
+        if env[:response_headers]["X-Zendesk-API-Warn"]
+          warn "WARNING: the parameters you sent were whitelisted"
+        end
+      end
     end
 
     # Creates a connection if there is none, otherwise returns the existing connection.
@@ -50,13 +56,13 @@ module Zendesk
       return @connection if @connection
 
       @connection = Faraday.new(config.options) do |builder|
+        builder.use Faraday::Response::RaiseError
         builder.use Zendesk::Response::CallbackMiddleware, self
         builder.response :logger if config.log
 
         builder.request :json
         builder.response :json
 
-        builder.use Faraday::Response::RaiseError
         # Should always be first in the stack
         builder.use Zendesk::Request::RetryMiddleware if config.retry
         builder.adapter Faraday.default_adapter
