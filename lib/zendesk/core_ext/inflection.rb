@@ -1,5 +1,7 @@
 require 'inflection'
 
+Inflection.plural_rule 'forum', 'forums'
+
 class String
   def singular
     Inflection.singular(self)

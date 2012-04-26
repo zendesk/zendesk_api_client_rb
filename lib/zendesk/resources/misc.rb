@@ -7,9 +7,9 @@ module Zendesk
   class Setting < DataResource
     attr_reader :on
 
-    def initialize(client, attributes)
+    def initialize(client, attributes = {}, path = [])
       @on = attributes.first
-      super(client, attributes[1])
+      super(client, attributes[1], path)
     end
   end
 
