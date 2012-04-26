@@ -9,4 +9,5 @@ client = Zendesk.configure do |config|
   config.retry = true
 end
 
-client.tickets.create(:abcd => "ABASDA")
+tickets = client.tickets
+recent_tickets = tickets.recent
