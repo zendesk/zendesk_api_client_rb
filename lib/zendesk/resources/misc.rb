@@ -2,8 +2,6 @@ module Zendesk
   class Activity < Resource
     has :user
     has :actor, :class => :user
-
-    allow_parameters :since
   end
 
   class Setting < DataResource
@@ -17,8 +15,6 @@ module Zendesk
 
   class MobileDevice < Resource
     put :clear_badge
-
-    allow_parameters :mobile_device => [:device_type, :token, :c2dm_registration_id]
   end
 
   class SatisfactionRating < ReadResource
@@ -28,17 +24,9 @@ module Zendesk
     has :group
   end
 
-  class Upload < CreateResource
-    allow_parameters :uploaded_data, :token
-  end
-
+  class Upload < CreateResource; end
   class Attachment < DataResource; end
   class Locale < ReadResource; end
-
-  class Bookmark < Resource
-    allow_parameters :ticket_id
-  end
-
-  class Macro < DataResource
-  end
+  class Bookmark < Resource; end
+  class Macro < DataResource; end
 end

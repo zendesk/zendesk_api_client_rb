@@ -18,7 +18,7 @@ module Zendesk
 
             begin
               response = @client.connection.send(verb, "#{path}/#{id}/#{method}.json") do |req|
-                req.body = self.class.whitelist_attributes(opts, verb)
+                req.body = opts
               end
 
               if (resources = response.body[self.class.resource_name]) &&

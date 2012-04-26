@@ -1,4 +1,3 @@
-require 'zendesk/parameter_whitelist'
 require 'zendesk/resource'
 require 'zendesk/resources/misc'
 require 'zendesk/resources/ticket'

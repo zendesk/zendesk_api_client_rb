@@ -7,7 +7,6 @@ module Zendesk
   # Represents a resource that only holds data.
   class DataResource
     extend Association
-    include Zendesk::ParameterWhitelist
 
     class << self
       # The singular resource name taken from the class name (e.g. Zendesk::Tickets -> ticket)
@@ -113,7 +112,7 @@ module Zendesk
       end
 
       response = @client.connection.send(method, req_path) do |req|
-        req.body = self.class.whitelist_attributes(attributes, method)
+        req.body = attributes
       end
 
       @attributes.replace(@attributes.deep_merge(response.body))

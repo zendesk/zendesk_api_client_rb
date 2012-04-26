@@ -236,45 +236,5 @@ describe Zendesk::DataResource do
       end
     end
   end
-
-  context "whitelisting attributes" do
-    subject { Zendesk::TestResource }
-    context "on all actions" do
-      before(:each) do
-        subject.allow_parameters :test_param
-      end
-
-      it "should allow whitelisted parameter through" do
-        attributes = subject.whitelist_attributes({ :test_param => 123 }, :put)
-        attributes.keys.should include("test_param")
-      end
-
-      it "should not allow non-whitelisted parameters through" do
-        attributes = subject.whitelist_attributes({ :param => 123 }, :put)
-        attributes.keys.should be_empty
-      end
-    end
-
-    context "on specific actions" do
-      before(:each) do
-        subject.allow_parameters :put_param, :only => :put
-      end
-
-      it "should allow whitelisted parameter through on put" do
-        attributes = subject.whitelist_attributes({ :put_param => 123 }, :put)
-        attributes.keys.should include("put_param")
-      end
-
-      it "should not allow non-whitelisted parameters through on put" do
-        attributes = subject.whitelist_attributes({ :param => 123 }, :put)
-        attributes.keys.should be_empty
-      end
-
-      it "should not allow whitelisted parameters through on any other action" do
-        attributes = subject.whitelist_attributes({ :put_param => 123 }, :any)
-        attributes.keys.should be_empty
-      end
-    end
-  end
 end
 

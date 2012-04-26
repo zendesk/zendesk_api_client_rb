@@ -21,7 +21,6 @@ module Zendesk
 
   module Create
     # Create a resource given the attributes passed in.
-    # Note: attributes are whitelisted prior to being sent.
     # @param [Client] client The {Client} object to be used
     # @param [Hash] attributes The attributes to create.
     # @param [String] path The optional path to use. Defaults to {DataResource.resource_name}. 
@@ -29,7 +28,7 @@ module Zendesk
       path = resource_name if path.empty?
 
       response = client.connection.post("#{path}.json") do |req|
-        req.body = whitelist_attributes(attributes, :post)
+        req.body = attributes
       end
 
       new(client, response.body, [resource_name])
