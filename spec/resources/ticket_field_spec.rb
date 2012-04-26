@@ -1,0 +1,12 @@
+require 'spec_helper'
+
+describe Zendesk::TicketField do
+  def valid_attributes
+    { :ticket_field => { :type => "text", :title => "Age" } }
+  end
+
+  it_should_be_creatable
+  it_should_be_updatable :title
+  it_should_be_deletable
+  it_should_be_readable :ticket_fields
+end

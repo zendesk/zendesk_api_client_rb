@@ -54,4 +54,10 @@ def user
   end
 end
 
+def agent
+  VCR.use_cassette('valid_agent') do
+    @agent ||= client.users.detect {|u| u.role == "agent"}
+  end
+end
+
 class Zendesk::TestResource < Zendesk::Resource; end
