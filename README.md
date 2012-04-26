@@ -118,6 +118,16 @@ playlist.each do |ticket|
 end
 ```
 
+### Special case: Custom resources paths
+
+API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
+They will too return an instance of Zendesk::Collection.
+
+```
+client.tickets.recent
+client.topics.show_many(:verb => :post, :ids => [1, 2, 3])
+```
+
 ## TODO
 
 * Take a look at dynamic resources under Zendesk::Client
