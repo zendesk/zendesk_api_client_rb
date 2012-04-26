@@ -22,6 +22,8 @@ Zendesk.configure do |config|
   config.retry = true
   # Log prints out requests to STDOUT
   config.log = true
+  # Changes Faraday adapter
+  config.adapter = :patron
 end
 ```
 
