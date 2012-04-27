@@ -1,5 +1,7 @@
 #!/usr/bin/env bundle exec ruby
 require 'zendesk'
+require 'ruby-debug'
+Debugger.settings[:autoeval] = true
 
 client = Zendesk.configure do |config|
   config.username = "agent@zendesk.com"
@@ -9,5 +11,16 @@ client = Zendesk.configure do |config|
   config.retry = true
 end
 
-tickets = client.tickets
-recent_tickets = tickets.recent
+
+user = client.users.first
+ticket = Zendesk::Ticket.new(client, :ticket => { :type => "question",
+                             :subject => "New ticket",
+                             :description => "Blergh",
+                             :priority => "normal",
+                             :requester_id => user.id,
+                             :submitter_id => user.id })
+#ticket = client.tickets.first
+ticket.uploads << "img.jpg"
+ticket.save
+debugger
+true

@@ -5,6 +5,7 @@ require 'zendesk/configuration'
 require 'zendesk/collection'
 require 'zendesk/middleware/retry_middleware'
 require 'zendesk/middleware/callback_middleware'
+require 'zendesk/middleware/upload_middleware'
 
 module Zendesk
   class Client
@@ -54,10 +55,12 @@ module Zendesk
       return @connection if @connection
 
       @connection = Faraday.new(config.options) do |builder|
+        builder.use Zendesk::Request::UploadMiddleware
         builder.use Faraday::Response::RaiseError
         builder.use Zendesk::Response::CallbackMiddleware, self
         builder.response :logger if config.log
 
+        builder.request :multipart
         builder.request :json
         builder.response :json
 

@@ -33,25 +33,31 @@ module Zendesk
       end
 
       @resource_class = resource
+      @fetchable = true
+
+      unless @resource_class.respond_to?(:find)
+        @resources = []
+        @fetchable = false
+      end
     end
 
     # Passes arguments and the proper path to the resource class method.
     # @param [Hash] attributes Attributes to pass to Create#create
     def create(attributes = {})
       attributes.merge!(parent_id => parent.id) if parent
-      @resource_class.create(@client, attributes)
+      @resource_class.create(@client, @options.merge(attributes))
     end
 
     # (see #create)
     def find(id, opts = {})
       opts.merge!(parent_id => parent.id) if parent
-      @resource_class.find(@client, id, opts)
+      @resource_class.find(@client, id, @options.merge(opts))
     end
 
     # (see #create)
     def destroy(id, opts = {})
       opts.merge!(parent_id => parent.id) if parent
-      @resource_class.destroy(@client, id, opts)
+      @resource_class.destroy(@client, id, @options.merge(opts))
     end
 
     # Changes the per_page option. Returns self, so it can be chained. No execution.
@@ -68,10 +74,23 @@ module Zendesk
       self
     end
 
+    def save
+      @resources.map! do |new|
+        if new.is_a?(Resource) && new.new_record?
+          new.save
+          new
+        elsif !new.is_a?(DataResource)
+          create(:file => new)
+        end
+      end if @resources
+    end
+
     # Executes actual GET from API and loads resources into proper class.
     # @param [Boolean] reload Whether to disregard cache
     def fetch(reload = false)
-      return @resources if @resources && !reload
+      return @resources if @resources && (!@fetchable || !reload)
+
+      save
 
       if @query
         path = @query
@@ -79,7 +98,7 @@ module Zendesk
       else
         if parent
           path = [parent.class.resource_name,
-            parent.id, @path || parent.class.associations[@resource_class]]
+            parent.id, @path || parent.class.associations[@resource_class][:name]]
         else
           path = @path ? [@path] : @collection_path 
         end

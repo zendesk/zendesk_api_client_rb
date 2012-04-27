@@ -12,6 +12,8 @@ module Zendesk
     has :group
     has :forum_topic, :class => :topic
     has :organization
+
+    has_many :uploads, :class => :attachment, :save => true
   end
 
   class View < DataResource

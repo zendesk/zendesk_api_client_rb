@@ -9,20 +9,12 @@ module Zendesk
       @assocations ||= {}
     end
 
-    def has_parent(resource, opts = {})
-      has(resource, opts)
-
-      define_method :parent do
-        send(resource)
-      end
-    end
-
     # Represents a parent-to-child association between resources. Options to pass in are: class, path.
     # @param [Symbol] resource The underlying resource name
     # @param [Hash] opts The options to pass to the method definition. 
     def has(resource, opts = {})
       klass = get_class(opts.delete(:class)) || get_class(resource)
-      associations[klass] = resource
+      associations[klass] = { :name => resource, :save => !!opts.delete(:save) }
 
       define_method resource do |*args|
         options = args.last.is_a?(Hash) ? args.pop : {}
@@ -49,7 +41,7 @@ module Zendesk
     # @param [Hash] opts The options to pass to the method definition. 
     def has_many(resource, opts = {})
       klass = get_class(opts.delete(:class)) || get_class(resource.to_s.singular)
-      associations[klass] = resource
+      associations[klass] = { :name => resource, :save => !!opts.delete(:save) }
 
       define_method resource do |*args|
         options = args.last.is_a?(Hash) ? args.pop : {}

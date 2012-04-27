@@ -24,8 +24,26 @@ module Zendesk
     has :group
   end
 
-  class Upload < CreateResource; end
-  class Attachment < DataResource; end
+  
+  class Attachment < DataResource
+    def self.create(client, attributes)
+      upload = Upload.create(client, attributes)
+
+      if upload
+        self.new(client, { :token => upload.token })
+      end
+    end
+
+    def to_param
+      @attributes[:token]
+    end
+  end
+
+  class Upload < CreateResource
+    has_many :attachments
+  end
+
+
   class Locale < ReadResource; end
   class Bookmark < Resource; end
   class Macro < DataResource; end

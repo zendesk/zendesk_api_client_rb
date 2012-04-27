@@ -34,9 +34,9 @@ module Zendesk
         ary[0] = Zendesk.get_class(ary[0])
 
         if ary.size > 1
-          ary[1] = ary[0].associations[ary[0].get_class(ary[1])].to_s
-          ary.insert(1, "%{parent_id}")
-          @parent_name = ary[0].singular_resource_name
+          ary[1] = ary[0].associations[ary[0].get_class(ary[1])][:name].to_s
+          ary.insert(1, "%s")
+          @parent_name = "#{ary[0].singular_resource_name}_id"
         end
 
         ary[0] = ary[0].resource_name
@@ -72,7 +72,10 @@ module Zendesk
 
     # Returns the path to the resource
     def path
-      self.class.path % { :parent_id => self.class.parent_name ? send(self.class.parent_name).id : nil }
+      return @path if @path
+      @path = self.class.path
+      @path %= send(self.class.parent_name) if self.class.parent_name
+      @path
     end
 
     def to_s
@@ -134,8 +137,28 @@ module Zendesk
         req_path = url || "#{path}/#{id}.json"
       end
 
+      attrs = attributes
+
+      assoc_attrs = attrs[self.class.singular_resource_name] || attrs
+      self.class.associations.each do |klass, assoc|
+        if assoc[:save]
+          assoc_id = "#{assoc[:name]}_id"
+          assoc_obj = send(assoc[:name])
+          next unless assoc_obj
+
+          if has_key?(assoc_id)
+            assoc_attrs[assoc_id] = assoc_obj.id
+          elsif has_key?(assoc_id + "s")
+            assoc_attrs[assoc_id + "s"] = assoc_obj.map(&:id)
+          else
+            assoc_obj.save
+            assoc_attrs[assoc[:name]] = assoc_obj.map(&:to_param)
+          end
+        end
+      end
+
       response = @client.connection.send(method, req_path) do |req|
-        req.body = attributes
+        req.body = attrs
       end
 
       @attributes.replace(@attributes.deep_merge(response.body))
@@ -155,5 +178,7 @@ module Zendesk
     rescue Faraday::Error::ClientError => e
       false
     end
+
+    alias :to_param :attributes
   end
 end
