@@ -41,8 +41,6 @@ module Zendesk
     attr_accessor :retry
     # @return [Boolean] Whether to log requests to STDOUT.
     attr_accessor :log
-    # @return [Symbol] Faraday adapter
-    attr_accessor :adapter
 
     # Sets accept and user_agent headers, and url.
     #

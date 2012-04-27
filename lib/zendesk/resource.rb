@@ -18,6 +18,30 @@ module Zendesk
       def resource_name
         @resource_name ||= singular_resource_name.plural
       end
+
+      def parent_name
+        return @parent_name if @parent_name
+
+        path
+        @parent_name
+      end
+
+      def path
+        return @path if @path
+
+        ary = to_s.split("::")
+        ary.delete("Zendesk")
+        ary[0] = Zendesk.get_class(ary[0])
+
+        if ary.size > 1
+          ary[1] = ary[0].associations[ary[0].get_class(ary[1])][:name].to_s
+          ary.insert(1, "%s")
+          @parent_name = "#{ary[0].singular_resource_name}_id"
+        end
+
+        ary[0] = ary[0].resource_name
+        @path = ary.join("/")
+      end
     end
 
     # @return [Hash] The resource's attributes
@@ -27,9 +51,8 @@ module Zendesk
     # @param [Client] client The client to use
     # @param [Hash] attributes The optional attributes that describe the resource
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
-    def initialize(client, attributes = {}, path = [])
-      @client, @attributes, @path = client, Hashie::Mash.new(attributes), path
-      @path.push(self.class.resource_name) if @path.empty?
+    def initialize(client, attributes = {})
+      @client, @attributes = client, Hashie::Mash.new(attributes) 
     end
 
     # Passes the method onto the attributes hash.
@@ -47,9 +70,12 @@ module Zendesk
       key?(:id) ? method_missing(:id) : nil
     end
 
-    # Returns the path joined by /
+    # Returns the path to the resource
     def path
-      @path.join("/")
+      return @path if @path
+      @path = self.class.path
+      @path %= send(self.class.parent_name) if self.class.parent_name
+      @path
     end
 
     def to_s
@@ -103,16 +129,36 @@ module Zendesk
     def save
       return false if destroyed?
 
-      req_path = path
       if new_record?
         method = :post
+        req_path = path
       else
         method = :put
-        req_path += "/#{id}.json"
+        req_path = url || "#{path}/#{id}.json"
+      end
+
+      attrs = attributes
+
+      assoc_attrs = attrs[self.class.singular_resource_name] || attrs
+      self.class.associations.each do |klass, assoc|
+        if assoc[:save]
+          assoc_id = "#{assoc[:name]}_id"
+          assoc_obj = send(assoc[:name])
+          next unless assoc_obj
+
+          if has_key?(assoc_id)
+            assoc_attrs[assoc_id] = assoc_obj.id
+          elsif has_key?(assoc_id + "s")
+            assoc_attrs[assoc_id + "s"] = assoc_obj.map(&:id)
+          else
+            assoc_obj.save
+            assoc_attrs[assoc[:name]] = assoc_obj.map(&:to_param)
+          end
+        end
       end
 
       response = @client.connection.send(method, req_path) do |req|
-        req.body = attributes
+        req.body = attrs
       end
 
       @attributes.replace(@attributes.deep_merge(response.body))
@@ -124,28 +170,15 @@ module Zendesk
     # If this resource hasn't already been deleted, then do so.
     # @return [Boolean] Successful?
     def destroy
-      return false if destroyed?
+      return false if destroyed? || new_record?
 
-      response = @client.connection.delete("#{path}/#{id}.json")
+      response = @client.connection.delete(url || "#{path}/#{id}.json")
+
       @destroyed = true
     rescue Faraday::Error::ClientError => e
       false
     end
-  end
 
-  private
-
-  # Allows using has and has_many without having class defined yet
-  # Guesses at Resource, if it's anything else and the class is later
-  # reopened under a different superclass, an error will be thrown
-  def self.get_class(resource)
-    return false if resource.nil?
-    res = resource.to_s.modulize
-
-    begin
-      const_get(res)
-    rescue NameError
-      const_set(res, Class.new(Resource))
-    end
+    alias :to_param :attributes
   end
 end

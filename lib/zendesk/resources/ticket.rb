@@ -1,8 +1,9 @@
 module Zendesk
-  class Audit < DataResource; end
   class TicketField < Resource; end
 
   class Ticket < Resource
+    class Audit < DataResource; end
+
     has :submitter, :class => :user
     has :assignee, :class => :user
     has :recipient, :class => :user
@@ -11,6 +12,8 @@ module Zendesk
     has :group
     has :forum_topic, :class => :topic
     has :organization
+
+    has_many :uploads, :class => :attachment, :save => true
   end
 
   class View < DataResource

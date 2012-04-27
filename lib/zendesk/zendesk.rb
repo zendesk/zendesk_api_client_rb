@@ -5,6 +5,7 @@ require 'zendesk/configuration'
 require 'zendesk/collection'
 require 'zendesk/middleware/retry_middleware'
 require 'zendesk/middleware/callback_middleware'
+require 'zendesk/middleware/upload_middleware'
 
 module Zendesk
   class Client
@@ -21,7 +22,7 @@ module Zendesk
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
       return instance_variable_get("@#{method}") if !options.delete(:reload) && instance_variable_defined?("@#{method}")
-      instance_variable_set("@#{method}", Zendesk::Collection.new(self, method, [method], options))
+      instance_variable_set("@#{method}", Zendesk::Collection.new(self, Zendesk.get_class(method.singular), options))
     end
 
     # @endgroup
@@ -54,16 +55,18 @@ module Zendesk
       return @connection if @connection
 
       @connection = Faraday.new(config.options) do |builder|
+        builder.use Zendesk::Request::UploadMiddleware
         builder.use Faraday::Response::RaiseError
         builder.use Zendesk::Response::CallbackMiddleware, self
         builder.response :logger if config.log
 
+        builder.request :multipart
         builder.request :json
         builder.response :json
 
         # Should always be first in the stack
         builder.use Zendesk::Request::RetryMiddleware if config.retry
-        builder.adapter(config.adapter || Faraday.default_adapter)
+        builder.adapter Faraday.default_adapter
       end
       @connection.tap {|c| c.basic_auth(config.username, config.password)}
     end
