@@ -130,6 +130,19 @@ client.tickets.recent
 client.topics.show_many(:verb => :post, :ids => [1, 2, 3])
 ```
 
+
+### Attaching files
+
+Files can be attached to tickets using either a path or the File class and will
+be automatically uploaded and attached.
+
+```
+ticket = Ticket.new(...)
+ticket.uploads << "img.jpg"
+ticket.uploads << File.new("img.jpg")
+ticket.save
+```
+
 ## TODO
 
 * Testing
