@@ -21,7 +21,7 @@ module Zendesk
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
       return instance_variable_get("@#{method}") if !options.delete(:reload) && instance_variable_defined?("@#{method}")
-      instance_variable_set("@#{method}", Zendesk::Collection.new(self, method, [method], options))
+      instance_variable_set("@#{method}", Zendesk::Collection.new(self, Zendesk.get_class(method.singular), options))
     end
 
     # @endgroup

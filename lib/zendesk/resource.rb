@@ -18,6 +18,30 @@ module Zendesk
       def resource_name
         @resource_name ||= singular_resource_name.plural
       end
+
+      def parent_name
+        return @parent_name if @parent_name
+
+        path
+        @parent_name
+      end
+
+      def path
+        return @path if @path
+
+        ary = to_s.split("::")
+        ary.delete("Zendesk")
+        ary[0] = Zendesk.get_class(ary[0])
+
+        if ary.size > 1
+          ary[1] = ary[0].associations[ary[0].get_class(ary[1])].to_s
+          ary.insert(1, "%{parent_id}")
+          @parent_name = ary[0].singular_resource_name
+        end
+
+        ary[0] = ary[0].resource_name
+        @path = ary.join("/")
+      end
     end
 
     # @return [Hash] The resource's attributes
@@ -28,17 +52,7 @@ module Zendesk
     # @param [Hash] attributes The optional attributes that describe the resource
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
     def initialize(client, attributes = {})
-      @client, @attributes, @path = client, Hashie::Mash.new(attributes), [] 
-
-      if parent && parent.class.associations[self.class][:only]
-        @send_parent_id = false
-        @path.push(parent.class.resource_name)
-        @path.push(parent.id)
-        @path.push(parent.class.associations[self.class][:name]) 
-      else
-        @send_parent_id = true
-        @path.push(self.class.resource_name) 
-      end
+      @client, @attributes = client, Hashie::Mash.new(attributes) 
     end
 
     # Passes the method onto the attributes hash.
@@ -56,9 +70,9 @@ module Zendesk
       key?(:id) ? method_missing(:id) : nil
     end
 
-    # Returns the path joined by /
+    # Returns the path to the resource
     def path
-      @path.join("/")
+      self.class.path % { :parent_id => self.class.parent_name ? send(self.class.parent_name).id : nil }
     end
 
     def to_s
@@ -71,16 +85,6 @@ module Zendesk
     end
     alias :eql :==
     alias :hash :id
-
-    def parent
-      false
-    end
-
-    private
-
-    def parent_id_hash
-      { "#{parent.class.singular_resource_name}_id" => parent.id }
-    end
   end
 
   # Represents a resource that can only GET
@@ -122,16 +126,15 @@ module Zendesk
     def save
       return false if destroyed?
 
-      req_path = path
       if new_record?
         method = :post
+        req_path = path
       else
         method = :put
-        req_path += "/#{id}.json"
+        req_path = url || "#{path}/#{id}.json"
       end
 
       response = @client.connection.send(method, req_path) do |req|
-        req.params = parent_id_hash if @send_parent_id 
         req.body = attributes
       end
 
@@ -144,31 +147,13 @@ module Zendesk
     # If this resource hasn't already been deleted, then do so.
     # @return [Boolean] Successful?
     def destroy
-      return false if destroyed?
+      return false if destroyed? || new_record?
 
-      response = @client.connection.delete("#{path}/#{id}.json") do |req|
-        req.params = parent_id_hash if @send_parent_id 
-      end
+      response = @client.connection.delete(url || "#{path}/#{id}.json")
 
       @destroyed = true
     rescue Faraday::Error::ClientError => e
       false
-    end
-  end
-
-  private
-
-  # Allows using has and has_many without having class defined yet
-  # Guesses at Resource, if it's anything else and the class is later
-  # reopened under a different superclass, an error will be thrown
-  def self.get_class(resource)
-    return false if resource.nil?
-    res = resource.to_s.modulize
-
-    begin
-      const_get(res)
-    rescue NameError
-      const_set(res, Class.new(Resource))
     end
   end
 end

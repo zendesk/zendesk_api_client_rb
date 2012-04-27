@@ -13,8 +13,7 @@ module Zendesk
       has(resource, opts)
 
       define_method :parent do
-        return instance_variable_get(:@parent) if instance_variable_defined?(:@parent)
-        instance_variable_set(:@parent, send(resource))
+        send(resource)
       end
     end
 
@@ -22,9 +21,8 @@ module Zendesk
     # @param [Symbol] resource The underlying resource name
     # @param [Hash] opts The options to pass to the method definition. 
     def has(resource, opts = {})
-      klass = Zendesk.get_class(opts.delete(:class)) || Zendesk.get_class(resource)
-      singular = resource.to_s.singular
-      associations[klass] = { :name => !!opts.delete(:singular) ? singular : resource, :only => !!opts.delete(:only) }
+      klass = get_class(opts.delete(:class)) || get_class(resource)
+      associations[klass] = resource
 
       define_method resource do |*args|
         options = args.last.is_a?(Hash) ? args.pop : {}
@@ -46,13 +44,12 @@ module Zendesk
       end
     end
 
-    # Represents a parent-to-children association between resources. Options to pass in are: class, path, set_path.
+    # Represents a parent-to-children association between resources. Options to pass in are: class, path.
     # @param [Symbol] resource The underlying resource name
     # @param [Hash] opts The options to pass to the method definition. 
     def has_many(resource, opts = {})
-      klass = Zendesk.get_class(opts.delete(:class)) || Zendesk.get_class(resource.to_s.singular)
-      singular = resource.to_s.singular
-      associations[klass] = { :name => !!opts.delete(:singular) ? singular : resource, :only => !!opts.delete(:only) }
+      klass = get_class(opts.delete(:class)) || get_class(resource.to_s.singular)
+      associations[klass] = resource
 
       define_method resource do |*args|
         options = args.last.is_a?(Hash) ? args.pop : {}
@@ -73,13 +70,46 @@ module Zendesk
 
           instance_variable_set("@#{resource}", loaded_resources)
         else
-          new_path = @path.dup.push(id)
-          options[:path] = new_path.dup.push(opts[:path]).join("/") if opts[:path]
-          new_path.push(resource.to_s)
+          collection = Zendesk::Collection.new(@client, klass, opts)
+          collection.parent = self
 
-          instance_variable_set("@#{resource}", Zendesk::Collection.new(@client, klass.resource_name, new_path, options))
+          instance_variable_set("@#{resource}", collection)
         end
       end
+    end
+
+    # Allows using has and has_many without having class defined yet
+    # Guesses at Resource, if it's anything else and the class is later
+    # reopened under a different superclass, an error will be thrown
+    def get_class(resource)
+      return false if resource.nil?
+      res = resource.to_s.modulize
+
+      begin
+        const_get(res)
+      rescue NameError
+        Zendesk.get_class(resource)
+      end
+    end
+  end
+
+  # Allows using has and has_many without having class defined yet
+  # Guesses at Resource, if it's anything else and the class is later
+  # reopened under a different superclass, an error will be thrown
+  def self.get_class(resource)
+    return false if resource.nil?
+    res = resource.to_s.modulize.split("::")
+
+    begin
+      res[1..-1].inject(Zendesk.const_get(res[0])) do |iter, k| 
+        begin
+          iter.const_get(k)
+        rescue
+          iter.const_set(k, Class.new(Resource))
+        end
+      end
+    rescue NameError
+      Zendesk.const_set(res[0], Class.new(Resource))
     end
   end
 end

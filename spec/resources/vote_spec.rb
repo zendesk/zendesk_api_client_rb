@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Vote do
+describe Zendesk::Topic::Vote do
   def valid_attributes
     { :topic_id => topic.id, :user_id => user.id }
   end

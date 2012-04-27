@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::TopicSubscription, :delete_after do
+describe Zendesk::Topic::TopicSubscription, :delete_after do
   def valid_attributes
     { :topic_id => topic.id, :user_id => user.id }
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::GroupMembership, :delete_after do
+describe Zendesk::User::GroupMembership, :delete_after do
   def valid_attributes
     VCR.use_cassette('valid_group') do
       @group = client.groups.first

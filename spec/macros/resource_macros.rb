@@ -120,7 +120,7 @@ module ResourceMacros
         result = klass
         args.each {|a| result = result.send(a, options)}
         result.fetch(true).should_not be_empty
-        result.fetch.should include(@object)
+        result.fetch.should include(@object) if create
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           described_class.find(client, result.first.id).should_not be_nil 

@@ -1,7 +1,6 @@
 require 'zendesk/resource'
 require 'zendesk/resources/misc'
 require 'zendesk/resources/ticket'
-require 'zendesk/resources/forum'
 require 'zendesk/resources/user'
 require 'zendesk/resources/playlist'
 
@@ -12,47 +11,47 @@ module Zendesk
     # @return [Number] The total number of resources server-side (disregarding pagination).
     attr_reader :count
 
+    attr_accessor :parent
+
     # Creates a new Collection instance. Does not fetch resources.
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
     # @param [Client] client The {Client} to use.
     # @param [String] resource The resource being collected.
     # @param [Array] path The path in array form that is sent to resources. (Note: not the query path)
     # @param [Hash] options Any additional options to be passed in.
-    def initialize(client, resource, path = [], options = {})
-      @client, @resource = client, resource
+    def initialize(client, resource, options = {})
+      @client, @resource = client, resource.resource_name
       @options = options
-      @path = path
 
       @verb = @options.delete(:verb)
-      @query_path = @options.delete(:path) || self.path
+      @path = @options.delete(:path)
+      @collection_path = @options.delete(:collection_path) || [@resource]
 
       # Special case POST topics/show_many
       @options.each do |k, v|
         @options[k] = v.join(',') if v.is_a?(Array) 
       end
 
-      @resource_class = Zendesk.get_class(resource.singular)
-    end
-
-    # @return [String] The path to fetch resources.
-    def path
-      @path.join("/")
+      @resource_class = resource
     end
 
     # Passes arguments and the proper path to the resource class method.
     # @param [Hash] attributes Attributes to pass to Create#create
     def create(attributes = {})
-      @resource_class.create(@client, attributes, path)
+      attributes.merge!(parent_id => parent.id) if parent
+      @resource_class.create(@client, attributes)
     end
 
     # (see #create)
     def find(id, opts = {})
-      @resource_class.find(@client, id, opts.merge(:path => path))
+      opts.merge!(parent_id => parent.id) if parent
+      @resource_class.find(@client, id, opts)
     end
 
     # (see #create)
-    def destroy(id)
-      @resource_class.destroy(@client, id, path)
+    def destroy(id, opts = {})
+      opts.merge!(parent_id => parent.id) if parent
+      @resource_class.destroy(@client, id, opts)
     end
 
     # Changes the per_page option. Returns self, so it can be chained. No execution.
@@ -74,7 +73,21 @@ module Zendesk
     def fetch(reload = false)
       return @resources if @resources && !reload
 
-      response = @client.connection.send(@verb || "get", @query ? @query : "#{@query_path}.json") do |req|
+      if @query
+        path = @query
+        @query = nil
+      else
+        if parent
+          path = [parent.class.resource_name,
+            parent.id, @path || parent.class.associations[@resource_class]]
+        else
+          path = @path ? [@path] : @collection_path 
+        end
+
+        path = path.join("/") + ".json"
+      end
+
+      response = @client.connection.send(@verb || "get", path) do |req|
         req.params.merge!(@options.delete_if {|k, v| v.nil?})
       end
 
@@ -105,7 +118,7 @@ module Zendesk
         @options["page"] += 1
       elsif @next_page
         @query = @next_page
-        fetch(true).tap { @query = nil }
+        fetch(true)
       else
         []
       end
@@ -121,7 +134,7 @@ module Zendesk
         @options["page"] -= 1
       elsif @prev_page
         @query = @prev_page
-        fetch(true).tap { @query = nil }
+        fetch(true)
       else
         []
       end
@@ -135,23 +148,24 @@ module Zendesk
       @prev_page = nil
     end
 
+    def to_ary; nil; end
+
     # Sends methods to underlying array of resources.
     def method_missing(name, *args, &blk)
       to_a.send(name, *args, &blk)
     rescue NameError
-      query_path = @query_path + "/#{name}"
       opts = args.last.is_a?(Hash) ? args.last : {}
-      self.class.new(@client, @resource, @path.dup, @options.merge(:path => query_path).merge(opts)) 
+      opts.merge!(:collection_path => @collection_path.dup.push(name))
+      self.class.new(@client, @resource_class, @options.merge(opts)) 
     end
 
+    alias :orig_to_s :to_s
     def to_s
       if @resources
         @resources.inspect
       else
-        orig_inspect
+        orig_to_s
       end
     end
-    alias :orig_inspect :inspect
-    alias :inspect :to_s
   end
 end
