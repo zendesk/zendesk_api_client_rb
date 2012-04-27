@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Zendesk::CreateResource do
-  let(:client) { valid_client }
-
   context "create", :vcr_off do
     let(:attr) { { :test_field => "blah" } }
     subject { Zendesk::TestResource }

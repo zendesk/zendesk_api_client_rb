@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Zendesk::Resource do
-  let(:client) { valid_client }
-
   context "destroy", :vcr_off do
     context "class method" do
       let(:id) { 1 }

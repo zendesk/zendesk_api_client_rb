@@ -1,10 +1,8 @@
 require 'spec_helper.rb'
 
 describe Zendesk::Collection do
-  let(:client) { valid_client }
-
   subject do
-    Zendesk::Collection.new(client, "test_resources", ["test_resources"], {})
+    Zendesk::Collection.new(client, Zendesk::TestResource)
   end
 
   context "initialization" do
@@ -19,17 +17,17 @@ describe Zendesk::Collection do
 
   context "deferral" do
     it "should defer #create to the resource class" do
-      Zendesk::TestResource.should_receive(:create).with(client, {}, "test_resources")
+      Zendesk::TestResource.should_receive(:create).with(client, {})
       subject.create
     end
 
     it "should defer #find to the resource class" do
-      Zendesk::TestResource.should_receive(:find).with(client, 1, :path => "test_resources")
+      Zendesk::TestResource.should_receive(:find).with(client, 1, {})
       subject.find(1)
     end
 
     it "should defer #destroy to the resource class" do
-      Zendesk::TestResource.should_receive(:destroy).with(client, 1, "test_resources")
+      Zendesk::TestResource.should_receive(:destroy).with(client, 1, {})
       subject.destroy(1)
     end
   end
@@ -80,7 +78,7 @@ describe Zendesk::Collection do
 
   context "with real data" do
     subject do
-      Zendesk::Collection.new(client, "users", ["users"], {})
+      Zendesk::Collection.new(client, Zendesk::User)
     end
 
     before(:all) do
@@ -153,18 +151,18 @@ describe Zendesk::Collection do
     end
 
     it "should pass the correct query_path to the new collection" do
-      subject.recent.instance_variable_get(:@query_path).should =~ /recent$/
+      subject.recent.instance_variable_get(:@collection_path).last.should == :recent
     end
   end
 
   context "with different path" do
     subject do
-      Zendesk::Collection.new(client, "test_resources", ["test_resources", "active"], {})
+      Zendesk::Collection.new(client, Zendesk::TestResource, :collection_path => ["test_resources", "active"])
     end
 
     context "deferral" do
       it "should defer #create to the resource class with proper path" do
-        Zendesk::TestResource.should_receive(:create).with(client, {}, "test_resources/active")
+        Zendesk::TestResource.should_receive(:create).with(client, {})
         subject.create
       end
     end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Zendesk::Playlist, :vcr_off do
-  let(:client) { valid_client }
   subject { Zendesk::Playlist }
 
   before(:each) do

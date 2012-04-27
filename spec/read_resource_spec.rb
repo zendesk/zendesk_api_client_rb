@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Zendesk::ReadResource do
-  let(:client) { valid_client }
-
   context "find", :vcr_off do
     let(:id) { 1 }
     subject { Zendesk::TestResource }
