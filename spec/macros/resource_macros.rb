@@ -1,4 +1,7 @@
 module ResourceMacros
+  def under(object, &blk)
+  end
+
   def it_should_be_creatable(attributes = {})
     context "creation" do
       use_vcr_cassette
@@ -96,6 +99,7 @@ module ResourceMacros
   def it_should_be_readable(*args)
     options = args.last.is_a?(Hash) ? args.pop : {}
     create = !!options.delete(:create)
+    klass = args.first.is_a?(Zendesk::DataResource) ? args.shift : client
 
     context "read" do
       use_vcr_cassette
@@ -104,7 +108,7 @@ module ResourceMacros
         VCR.use_cassette("#{described_class.to_s}_read_create") do
           @object = described_class.create(client, valid_attributes)
         end
-      end if create 
+      end if create
 
       after(:all) do
         VCR.use_cassette("#{described_class.to_s}_read_delete") do
@@ -113,17 +117,14 @@ module ResourceMacros
       end if create 
 
       it "should be findable" do
-        result = args.first.is_a?(Zendesk::DataResource) ? args.shift : client
+        result = klass
         args.each {|a| result = result.send(a, options)}
         result.fetch(true).should_not be_empty
+        result.fetch.should include(@object)
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           described_class.find(client, result.first.id).should_not be_nil 
         end
-      end
-
-      it "should be readable", :if => create && !metadata[:not_findable] do
-        described_class.find(client, @object.id).should == @object
       end
     end
   end

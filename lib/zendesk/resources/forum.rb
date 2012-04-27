@@ -13,26 +13,29 @@ module Zendesk
   end
 
   class TopicSubscription < Resource
-    has :topic
+    has_parent :topic
     has :user
   end
 
   class ForumSubscription < Resource
-    has :forum
+    has_parent :forum
     has :user
   end
 
   class TopicComment < Resource
-    has :topic
+    has_parent :topic
     has :user
     has_many :attachments
   end
 
   class Topic < Resource
-    has_many :comments, :class => :topic_comment, :set_path => true 
+    has_many :comments, :class => :topic_comment
     has_many :subscriptions, :class => :topic_subscription
-    has_many :votes, :set_path => true
+    has_many :votes, :only => true, :singular => true
   end
 
-  class Vote < Resource; end
+  class Vote < Resource
+    has_parent :topic
+    has :user
+  end
 end

@@ -27,9 +27,18 @@ module Zendesk
     # @param [Client] client The client to use
     # @param [Hash] attributes The optional attributes that describe the resource
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
-    def initialize(client, attributes = {}, path = [])
-      @client, @attributes, @path = client, Hashie::Mash.new(attributes), path
-      @path.push(self.class.resource_name) if @path.empty?
+    def initialize(client, attributes = {})
+      @client, @attributes, @path = client, Hashie::Mash.new(attributes), [] 
+
+      if parent && parent.class.associations[self.class][:only]
+        @send_parent_id = false
+        @path.push(parent.class.resource_name)
+        @path.push(parent.id)
+        @path.push(parent.class.associations[self.class][:name]) 
+      else
+        @send_parent_id = true
+        @path.push(self.class.resource_name) 
+      end
     end
 
     # Passes the method onto the attributes hash.
@@ -62,6 +71,16 @@ module Zendesk
     end
     alias :eql :==
     alias :hash :id
+
+    def parent
+      false
+    end
+
+    private
+
+    def parent_id_hash
+      { "#{parent.class.singular_resource_name}_id" => parent.id }
+    end
   end
 
   # Represents a resource that can only GET
@@ -112,6 +131,7 @@ module Zendesk
       end
 
       response = @client.connection.send(method, req_path) do |req|
+        req.params = parent_id_hash if @send_parent_id 
         req.body = attributes
       end
 
@@ -126,7 +146,10 @@ module Zendesk
     def destroy
       return false if destroyed?
 
-      response = @client.connection.delete("#{path}/#{id}.json")
+      response = @client.connection.delete("#{path}/#{id}.json") do |req|
+        req.params = parent_id_hash if @send_parent_id 
+      end
+
       @destroyed = true
     rescue Faraday::Error::ClientError => e
       false

@@ -43,7 +43,7 @@ def client
     config.username = "agent@zendesk.com"
     config.password = "123456"
     config.url = "http://dev.localhost:3000/api/v2"
-    config.log = false
+    config.log = false 
     config.retry = true
   end
 end
@@ -63,6 +63,12 @@ end
 def topic
   VCR.use_cassette('valid_topic') do
     @topic ||= client.topics.first
+  end
+end
+
+def forum
+  VCR.use_cassette('valid_forum') do
+    @forum = client.forums.first
   end
 end
 

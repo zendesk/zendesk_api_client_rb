@@ -13,7 +13,7 @@ module Zendesk
         req.params = opts
       end
 
-      new(client, response.body, [resource_name])
+      new(client, response.body)
     rescue Faraday::Error::ClientError => e
       nil
     end
@@ -31,7 +31,7 @@ module Zendesk
         req.body = attributes
       end
 
-      new(client, response.body, [resource_name])
+      new(client, response.body)
     rescue Faraday::Error::ClientError => e
       nil
     end

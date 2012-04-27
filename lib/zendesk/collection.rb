@@ -24,7 +24,7 @@ module Zendesk
       @path = path
 
       @verb = @options.delete(:verb)
-      @query_path = @options.delete(:path) || @resource
+      @query_path = @options.delete(:path) || self.path
 
       # Special case POST topics/show_many
       @options.each do |k, v|
@@ -79,7 +79,7 @@ module Zendesk
       end
 
       @resources = response.body[@resource].map do |res|
-        @resource_class.new(@client, { @resource_class.singular_resource_name => res }, @path.dup)
+        @resource_class.new(@client, { @resource_class.singular_resource_name => res })
       end
 
       @count = (response.body["count"] || @resources.size).to_i
