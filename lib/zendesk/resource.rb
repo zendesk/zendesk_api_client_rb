@@ -52,7 +52,8 @@ module Zendesk
     # @param [Hash] attributes The optional attributes that describe the resource
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
     def initialize(client, attributes = {})
-      @client, @attributes = client, Hashie::Mash.new(attributes) 
+      @client, @attributes = client, Hashie::Mash.new(attributes)
+      merge!(default_attributes)
     end
 
     # Passes the method onto the attributes hash.
@@ -88,6 +89,12 @@ module Zendesk
     end
     alias :eql :==
     alias :hash :id
+
+    alias :to_param :attributes
+
+    def default_attributes
+      {}
+    end
   end
 
   # Represents a resource that can only GET
@@ -151,8 +158,8 @@ module Zendesk
           elsif has_key?(assoc_id + "s")
             assoc_attrs[assoc_id + "s"] = assoc_obj.map(&:id)
           else
-            assoc_obj.save
-            assoc_attrs[assoc[:name]] = assoc_obj.map(&:to_param)
+            assoc_obj.save if assoc_obj.respond_to?(:save)
+            assoc_attrs[assoc[:name]] = assoc_obj.is_a?(Collection) ? assoc_obj.map(&:to_param) : assoc_obj.to_param
           end
         end
       end
@@ -164,6 +171,7 @@ module Zendesk
       @attributes.replace(@attributes.deep_merge(response.body))
       true
     rescue Faraday::Error::ClientError => e
+      puts e.message
       false
     end
 
@@ -176,9 +184,8 @@ module Zendesk
 
       @destroyed = true
     rescue Faraday::Error::ClientError => e
+      puts e.message
       false
     end
-
-    alias :to_param :attributes
   end
 end

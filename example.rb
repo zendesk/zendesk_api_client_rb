@@ -10,4 +10,7 @@ client = Zendesk.configure do |config|
 end
 
 tickets = client.tickets
-recent_tickets = tickets.recent
+ticket = tickets.first
+ticket.uploads << "img.jpg"
+ticket.comment = Zendesk::TicketComment.new(client, { :body => "omg123" })
+ticket.save
