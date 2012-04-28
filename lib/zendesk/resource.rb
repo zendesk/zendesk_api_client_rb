@@ -1,4 +1,4 @@
-require 'hashie'
+require 'zendesk/core_ext/trackie'
 require 'zendesk/actions'
 require 'zendesk/association'
 require 'zendesk/verbs'
@@ -52,8 +52,11 @@ module Zendesk
     # @param [Hash] attributes The optional attributes that describe the resource
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
     def initialize(client, attributes = {})
-      @client, @attributes = client, Hashie::Mash.new(attributes)
-      merge!(default_attributes)
+      @client, @attributes = client, Zendesk::Trackie.new(attributes)
+
+      unless new_record?
+        @attributes.clear_changes
+      end
     end
 
     # Passes the method onto the attributes hash.
@@ -91,10 +94,6 @@ module Zendesk
     alias :hash :id
 
     alias :to_param :attributes
-
-    def default_attributes
-      {}
-    end
   end
 
   # Represents a resource that can only GET
@@ -144,7 +143,7 @@ module Zendesk
         req_path = url || "#{path}/#{id}.json"
       end
 
-      attrs = attributes
+      attrs = attributes.changes
 
       assoc_attrs = attrs[self.class.singular_resource_name] || attrs
       self.class.associations.each do |klass, assoc|
@@ -169,6 +168,7 @@ module Zendesk
       end
 
       @attributes.replace(@attributes.deep_merge(response.body))
+      @attributes.clear_changes
       true
     rescue Faraday::Error::ClientError => e
       puts e.message

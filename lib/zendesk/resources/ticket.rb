@@ -16,10 +16,6 @@ module Zendesk
 
     has_many :uploads, :class => :attachment, :save => true
     has :comment, :class => :ticket_comment, :save => true
-
-    def default_attributes
-      { :priority => "-", :type => "-" }
-    end
   end
 
   class View < DataResource

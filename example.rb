@@ -11,7 +11,6 @@ end
 
 tickets = client.tickets
 ticket = tickets.first
-ticket.uploads << "img.jpg"
-ticket.uploads << "Argentina.gif"
 ticket.comment = Zendesk::TicketComment.new(client, { :body => "omg123" })
+ticket.status = "pending"
 ticket.save
