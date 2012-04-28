@@ -1,5 +1,6 @@
 module Zendesk
   class TicketField < Resource; end
+  class TicketComment < DataResource; end
 
   class Ticket < Resource
     class Audit < DataResource; end
@@ -14,6 +15,7 @@ module Zendesk
     has :organization
 
     has_many :uploads, :class => :attachment, :save => true
+    has :comment, :class => :ticket_comment, :save => true
   end
 
   class View < DataResource

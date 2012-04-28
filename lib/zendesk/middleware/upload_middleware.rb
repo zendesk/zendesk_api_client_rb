@@ -7,12 +7,12 @@ module Zendesk
         if env[:body] && env[:body][:file]
           file = env[:body].delete(:file)
           case file 
-          when File
+          when File 
             path = file.path
           when String
             path = file 
           else
-            puts "WARNING: Passed invalid filename #{env[:body][:file]} to upload"
+            puts "WARNING: Passed invalid filename #{file} of type #{file.class} to upload"
           end
 
           if path

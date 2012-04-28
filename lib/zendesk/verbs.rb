@@ -23,7 +23,8 @@ module Zendesk
 
               if (resources = response.body[self.class.resource_name]) &&
                 (res = resources.find {|res| res["id"] == id})
-                @attributes = Hashie::Mash.new(res)
+                @attributes = Zendesk::Trackie.new(res)
+                @attributes.clear_changes
               end
 
               true

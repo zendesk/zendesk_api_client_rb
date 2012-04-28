@@ -23,8 +23,8 @@ module Zendesk
         if res_id = method_missing("#{resource}_id")
           obj = klass.find(@client, res_id)
           obj.tap { instance_variable_set("@#{resource}", obj) if obj }
-        elsif (res = method_missing(resource.to_sym)) && res.is_a?(Hash)
-          instance_variable_set("@#{resource}", klass.new(@client, res))
+        elsif (res = method_missing(resource.to_sym)) 
+          instance_variable_set("@#{resource}", res.is_a?(Hash) ? klass.new(@client, res) : res)
         else
           begin
             response = @client.connection.get("#{path}/#{id}/#{opts[:path] || resource}.json")

@@ -1,4 +1,4 @@
-require 'hashie'
+require 'zendesk/core_ext/trackie'
 require 'zendesk/actions'
 require 'zendesk/association'
 require 'zendesk/verbs'
@@ -52,7 +52,11 @@ module Zendesk
     # @param [Hash] attributes The optional attributes that describe the resource
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
     def initialize(client, attributes = {})
-      @client, @attributes = client, Hashie::Mash.new(attributes) 
+      @client, @attributes = client, Zendesk::Trackie.new(attributes)
+
+      unless new_record?
+        @attributes.clear_changes
+      end
     end
 
     # Passes the method onto the attributes hash.
@@ -88,6 +92,8 @@ module Zendesk
     end
     alias :eql :==
     alias :hash :id
+
+    alias :to_param :attributes
   end
 
   # Represents a resource that can only GET
@@ -137,7 +143,7 @@ module Zendesk
         req_path = url || "#{path}/#{id}.json"
       end
 
-      attrs = attributes
+      attrs = attributes.changes
 
       assoc_attrs = attrs[self.class.singular_resource_name] || attrs
       self.class.associations.each do |klass, assoc|
@@ -151,8 +157,8 @@ module Zendesk
           elsif has_key?(assoc_id + "s")
             assoc_attrs[assoc_id + "s"] = assoc_obj.map(&:id)
           else
-            assoc_obj.save
-            assoc_attrs[assoc[:name]] = assoc_obj.map(&:to_param)
+            assoc_obj.save if assoc_obj.respond_to?(:save)
+            assoc_attrs[assoc[:name]] = assoc_obj.is_a?(Collection) ? assoc_obj.map(&:to_param) : assoc_obj.to_param
           end
         end
       end
@@ -162,8 +168,10 @@ module Zendesk
       end
 
       @attributes.replace(@attributes.deep_merge(response.body))
+      @attributes.clear_changes
       true
     rescue Faraday::Error::ClientError => e
+      puts e.message
       false
     end
 
@@ -176,9 +184,8 @@ module Zendesk
 
       @destroyed = true
     rescue Faraday::Error::ClientError => e
+      puts e.message
       false
     end
-
-    alias :to_param :attributes
   end
 end
