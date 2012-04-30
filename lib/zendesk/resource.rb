@@ -151,28 +151,27 @@ module Zendesk
         req_path = url || "#{path}/#{id}.json"
       end
 
-      attrs = attributes.changes
-
-      assoc_attrs = attrs[self.class.singular_resource_name] || attrs
+      assoc_attrs = attributes[self.class.singular_resource_name] || attributes
       self.class.associations.each do |klass, assoc|
         if assoc[:save]
-          assoc_id = "#{assoc[:name]}_id"
+          assoc_id = "#{assoc[:name]}_id" 
+          singular_assoc_ids = "#{assoc[:name].to_s.singular}_ids" 
           assoc_obj = send(assoc[:name])
           next unless assoc_obj
+          assoc_obj.save if assoc_obj.respond_to?(:save)
 
           if has_key?(assoc_id)
             assoc_attrs[assoc_id] = assoc_obj.id
-          elsif has_key?(assoc_id + "s")
-            assoc_attrs[assoc_id + "s"] = assoc_obj.map(&:id)
+          elsif has_key?(singular_assoc_ids)
+            assoc_attrs[singular_assoc_ids] = assoc_obj.map(&:id)
           else
-            assoc_obj.save if assoc_obj.respond_to?(:save)
             assoc_attrs[assoc[:name]] = assoc_obj.is_a?(Collection) ? assoc_obj.map(&:to_param) : assoc_obj.to_param
           end
         end
       end
 
       response = @client.connection.send(method, req_path) do |req|
-        req.body = attrs
+        req.body = attributes.changes
       end
 
       @attributes.replace(@attributes.deep_merge(response.body))

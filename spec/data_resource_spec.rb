@@ -183,29 +183,19 @@ describe Zendesk::DataResource do
           subject.bars.should be_instance_of(Zendesk::Collection)
         end
 
-        #it "should pass the path on to the resource" do
-        #  subject.bars.path.should == "bars"
-        #end
+        it "should pass the path on to the resource" do
+          subject.bars.path.should == "test_resources/1/bars.json"
+        end
 
-        #context "with an explicit path set" do
-        #  before(:each) do
-        #    Zendesk::TestResource.has_many :bars, :path => "blargh"
-        #  end
+        context "with an explicit path set" do
+          before(:each) do
+            Zendesk::TestResource.has_many :bars, :path => "blargh"
+          end
 
-        #  it "should call the right path" do
-        #    subject.bars.path.should == "test_resources/1/blargh"
-        #  end
-        #end
-
-        #context "with set_path option set to true" do
-        #  before(:each) do
-        #    Zendesk::TestResource.has_many :bars, :set_path => true 
-        #  end
-
-        #  it "should call the right path" do
-        #    subject.bars.path.should == "test_resources/1/bars"
-        #  end
-        #end
+          it "should call the right path" do
+            subject.bars.path.should == "test_resources/1/blargh.json"
+          end
+        end
       end
 
       context "with side-loading of resource" do

@@ -15,6 +15,14 @@ describe Zendesk::Collection do
     end
   end
 
+  context "with array option passed in" do
+    subject { Zendesk::Collection.new(client, Zendesk::TestResource, :ids => [1, 2, 3, 4]) }
+
+    it "should join array with commas" do
+      subject.instance_variable_get(:@options)[:ids].should == "1,2,3,4"
+    end
+  end
+
   context "deferral" do
     it "should defer #create to the resource class" do
       Zendesk::TestResource.should_receive(:create).with(client, {})
@@ -29,6 +37,26 @@ describe Zendesk::Collection do
     it "should defer #destroy to the resource class" do
       Zendesk::TestResource.should_receive(:destroy).with(client, 1, {})
       subject.destroy(1)
+    end
+
+    context "with a class with a parent" do
+      subject { Zendesk::Collection.new(client, Zendesk::TestResource::TestChild) }
+      before(:each) { subject.parent = Zendesk::TestResource.new(client, :id => 1) }
+
+      it "should defer #create to the resource class with the parent id" do
+        Zendesk::TestResource::TestChild.should_receive(:create).with(client, Hashie::Mash.new(:test_resource_id => 1))
+        subject.create
+      end
+
+      it "should defer #destroy the resource class with the parent id" do
+        Zendesk::TestResource::TestChild.should_receive(:destroy).with(client, 1, Hashie::Mash.new(:test_resource_id => 1))
+        subject.destroy(1)
+      end
+
+      it "should defer #find to the resource class with the parent id" do
+        Zendesk::TestResource::TestChild.should_receive(:find).with(client, 1, Hashie::Mash.new(:test_resource_id => 1))
+        subject.find(1)
+      end
     end
   end
 
@@ -72,6 +100,63 @@ describe Zendesk::Collection do
 
       it "should properly be handled" do
         subject.fetch(true).should be_empty
+      end
+    end
+
+    context "with unfetchable resource" do
+      subject { Zendesk::Collection.new(client, Zendesk::NilResource) }
+
+      it "should not call connection" do
+        client.connection.should_not_receive(:get)
+        subject.fetch(true).should be_empty
+      end
+    end
+  end
+
+  context "save", :vcr_off do
+    let(:options) { { :abc => 1 } }
+    before(:each) do
+      stub_request(:get, %r{test_resources}).to_return(:body => {"test_resources" => []})
+      subject.clear_cache
+    end
+
+    context "with a hash" do
+      let(:object) { mock('Zendesk::TestResource') }
+      before(:each) do
+        subject << options
+
+        object.should_receive(:save)
+        Zendesk::TestResource.should_receive(:new).with(client, options).and_return(object)
+      end
+
+      it "should call create with those options" do
+        subject.save
+        subject.should include(object)
+      end
+    end
+
+    context "with a new object" do
+      let(:object) { Zendesk::TestResource.new(client, options) }
+      before(:each) do
+        subject << object
+      end
+
+      it "should save object" do
+        object.should_receive(:save)
+        subject.save
+      end
+
+      it "should have object in collection" do
+        subject.should include(object)
+      end
+    end
+
+    context "with attachments" do
+      before(:each) { subject << "img.jpg" }
+
+      it "should call create with the argument in file" do
+        subject.should_receive(:create).with(:file => "img.jpg")
+        subject.save
       end
     end
   end
@@ -124,7 +209,7 @@ describe Zendesk::Collection do
       context "with page == 1" do
         before do 
           subject.page(1)
-          subject.clear
+          subject.clear_cache
           subject.should_not_receive(:fetch)
         end
 
@@ -154,6 +239,7 @@ describe Zendesk::Collection do
       subject.recent.instance_variable_get(:@collection_path).last.should == :recent
     end
   end
+
 
   context "with different path" do
     subject do

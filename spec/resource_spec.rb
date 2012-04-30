@@ -101,6 +101,101 @@ describe Zendesk::Resource do
         subject.id.should == id
       end
     end
+
+    context "with nested associations to save" do
+      context "has" do
+        before(:each) do
+          Zendesk::TestResource.has :child, :class => :test_child, :save => true
+          stub_request(:put, %r{test_resources}).to_return(:body => {})
+          subject.child_id = 1
+        end
+
+        context "with side-loaded resource" do
+          context "with a hash" do
+            before(:each) do
+              subject.child = { :id => 2 }
+              subject.child.should_receive(:save)
+              subject.save
+            end
+
+            it "should save the new object" do
+              subject.child.should be_instance_of(Zendesk::TestResource::TestChild)
+            end
+
+            specify "child's id" do
+              subject.child.id.should == 2
+              subject.child_id.should == 2
+            end
+          end
+        end
+
+        context "with an object" do
+          context "with a hash" do
+            before(:each) do
+              subject.child = Zendesk::TestResource::TestChild.new(client, :abc => 1, :id => 2)
+              subject.child.should_receive(:save)
+              subject.save
+            end
+
+            it "should save the new object" do
+              subject.child.should be_instance_of(Zendesk::TestResource::TestChild)
+            end
+
+            specify "child's id" do
+              subject.child.id.should == 2
+              subject.child_id.should == 2
+            end
+          end
+        end
+      end
+
+      context "has_many" do
+        before(:each) do
+          Zendesk::TestResource.has_many :children, :class => :test_child, :save => true
+          stub_request(:put, %r{test_resources}).to_return(:body => {})
+          stub_request(:get, %r{children}).to_return(:body => {"test_children" => []})
+        end
+
+        context "with side-loaded resource" do
+          context "with a hash" do
+            before(:each) do
+              subject.child_ids = [1]
+              subject.children = [2, 3]
+              subject.save
+            end
+
+            it "should save the new object" do
+              subject.children.should be_instance_of(Array)
+            end
+
+            specify "child's id" do
+              [2,3].each {|id| subject.children.detect {|c| c.id == id}.should_not be_nil}
+              subject.child_ids.should == [2, 3]
+            end
+          end
+        end
+
+        context "with an object" do
+          context "with a hash" do
+            before(:each) do
+              collection = Zendesk::Collection.new(client, Zendesk::TestResource::TestChild)
+              collection << { :id => 2, :def => :abc }
+              collection << { :id => 3, :def => :gre }
+              subject.children = collection
+              subject.save
+            end
+
+            it "should save the new object" do
+              subject.children.should be_instance_of(Zendesk::Collection)
+            end
+
+            specify "child's id" do
+              subject.children.collect(&:id).should == [2, 3]
+            end
+          end
+        end
+      end
+    end
   end
 
   %w{put post delete}.each do |verb|
