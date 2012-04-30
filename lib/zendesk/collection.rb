@@ -11,6 +11,7 @@ module Zendesk
     # @return [Number] The total number of resources server-side (disregarding pagination).
     attr_reader :count
 
+    # @return [Object] The parent object of this collection, must be set explicitly
     attr_accessor :parent
 
     # Creates a new Collection instance. Does not fetch resources.
@@ -35,6 +36,7 @@ module Zendesk
       @resource_class = resource
       @fetchable = true
 
+      # Used for Attachments, TicketComment
       if @resource_class.superclass == Zendesk::Data
         @resources = []
         @fetchable = false
@@ -74,15 +76,34 @@ module Zendesk
       self
     end
 
+    # Saves all newly created resources stored in this collection.
+    # @return [Collection] self
     def save
       @resources.map! do |new|
-        if new.is_a?(Resource) && new.new_record?
+        if new.is_a?(Hash)
+          new_obj = @resource_class.new(@client, new)
+          new_obj.save
+          new_obj
+        elsif new.is_a?(Resource) && new.new_record?
           new.save
           new
-        elsif !new.is_a?(DataResource)
+        elsif !new.is_a?(DataResource) # For attachments / uploads 
           create(:file => new)
         end
       end if @resources
+
+      self
+    end
+
+    def path
+      if parent
+        path = [parent.class.resource_name,
+          parent.id, @path || parent.class.associations[@resource_class][:name]]
+      else
+        path = @path ? [@path] : @collection_path 
+      end
+
+      path.join("/") + ".json"
     end
 
     # Executes actual GET from API and loads resources into proper class.
@@ -96,14 +117,7 @@ module Zendesk
         path = @query
         @query = nil
       else
-        if parent
-          path = [parent.class.resource_name,
-            parent.id, @path || parent.class.associations[@resource_class][:name]]
-        else
-          path = @path ? [@path] : @collection_path 
-        end
-
-        path = path.join("/") + ".json"
+        path = self.path
       end
 
       response = @client.connection.send(@verb || "get", path) do |req|
@@ -117,7 +131,7 @@ module Zendesk
       @count = (response.body["count"] || @resources.size).to_i
       @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]
 
-      self
+      @resources
     rescue Faraday::Error::ClientError => e
       []
     end
@@ -133,7 +147,7 @@ module Zendesk
     # * Otherwise, returns an empty array.
     def next
       if @options["page"]
-        clear
+        clear_cache
         @options["page"] += 1
       elsif @next_page
         @query = @next_page
@@ -149,7 +163,7 @@ module Zendesk
     # * Otherwise, returns an empty array.
     def prev
       if @options["page"] && @options["page"] > 1 
-        clear
+        clear_cache
         @options["page"] -= 1
       elsif @prev_page
         @query = @prev_page
@@ -160,7 +174,7 @@ module Zendesk
     end
 
     # Clears all cached resources and associated values.
-    def clear
+    def clear_cache
       @resources = nil
       @count = nil
       @next_page = nil

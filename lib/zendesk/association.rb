@@ -34,6 +34,10 @@ module Zendesk
           end
         end
       end
+
+      define_method "#{resource}=" do |arg|
+        instance_variable_set("@#{resource}", arg.is_a?(Hash) ? klass.new(@client, arg) : arg)
+      end
     end
 
     # Represents a parent-to-children association between resources. Options to pass in are: class, path.
@@ -66,6 +70,16 @@ module Zendesk
           collection.parent = self
 
           instance_variable_set("@#{resource}", collection)
+        end
+      end
+
+      define_method "#{resource}=" do |arg|
+        if arg.is_a?(Array)
+          res = send(resource)
+          arg.map! {|attr| klass.new(@client, attr.is_a?(Hash) ? attr : { :id => attr })} if res.is_a?(Array)
+          res.clear.push(*arg)
+        else
+          instance_variable_set("@#{resource}", arg)
         end
       end
     end
