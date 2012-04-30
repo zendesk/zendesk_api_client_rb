@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Topic::Vote do
+describe Zendesk::Topic::TopicVote, :delete_after do
   def valid_attributes
     { :topic_id => topic.id, :user_id => user.id }
   end

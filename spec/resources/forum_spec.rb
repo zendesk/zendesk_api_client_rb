@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::Forum, :delete_after do
   def valid_attributes
-    { :forum => { :name => "My Forum", :forum_type => "articles", :access => "logged-in users" } }
+    { :forum => { :name => "My Forum", :forum_type => "articles", :access => "logged-in users", :category_id => category.id } }
   end
 
   it_should_be_creatable
@@ -10,4 +10,5 @@ describe Zendesk::Forum, :delete_after do
   # Forum delete jobs are queued, so don't look for it
   it_should_be_deletable :find => false
   it_should_be_readable :forums, :create => true
+  it_should_be_readable category, :forums, :create => true
 end

@@ -9,4 +9,5 @@ describe Zendesk::Topic::TopicComment, :not_findable do
   it_should_be_updatable :body
   it_should_be_deletable
   it_should_be_readable topic, :comments
+  it_should_be_readable current_user, :topic_comments
 end

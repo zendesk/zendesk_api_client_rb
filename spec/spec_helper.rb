@@ -31,7 +31,7 @@ RSpec.configure do |c|
 end
 
 VCR.configure do |c|
-  c.cassette_library_dir = 'spec/fixtures/cassettes'
+  c.cassette_library_dir = File.join(File.dirname(__FILE__), 'fixtures/cassettes')
   c.default_cassette_options = { :record => :new_episodes }
   c.hook_into :webmock
 end
@@ -54,6 +54,12 @@ def user
   end
 end
 
+def current_user
+  VCR.use_cassette('current_user') do
+    @current_user ||= client.users.find('me') 
+  end
+end
+
 def agent
   VCR.use_cassette('valid_agent') do
     @agent ||= client.users.detect {|u| u.role == "agent"}
@@ -68,7 +74,19 @@ end
 
 def forum
   VCR.use_cassette('valid_forum') do
-    @forum = client.forums.first
+    @forum ||= client.forums.first
+  end
+end
+
+def category
+  VCR.use_cassette('valid_category') do
+    @category ||= client.categories.first
+  end
+end
+
+def organization
+  VCR.use_cassette('valid_organization') do
+    @organization ||= current_user.organization 
   end
 end
 

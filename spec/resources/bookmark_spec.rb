@@ -13,5 +13,5 @@ describe Zendesk::Bookmark, :not_findable, :delete_after do
 
   it_should_be_creatable
   it_should_be_deletable
-  it_should_be_readable :bookmarks
+  it_should_be_readable :bookmarks, :create => true
 end

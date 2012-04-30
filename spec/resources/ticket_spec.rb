@@ -19,6 +19,9 @@ describe Zendesk::Ticket do
   it_should_be_deletable
   it_should_be_readable :tickets
   it_should_be_readable :tickets, :recent
+  it_should_be_readable user, :requested_tickets
+  it_should_be_readable user, :ccd_tickets
+  it_should_be_readable organization, :tickets
 end
 
 =begin

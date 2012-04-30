@@ -40,7 +40,7 @@ module ResourceMacros
       end
 
       before(:each) do
-        @object.attributes[attribute] = value 
+        @object.send("#{attribute}=", value) 
       end
 
       it "should be savable" do
@@ -53,7 +53,7 @@ module ResourceMacros
         end
 
         it "should keep attributes" do
-          @object.attributes[attribute].should == value 
+          @object.send(attribute).should == value 
         end
 
         it "should be findable", :unless => metadata[:not_findable] do
@@ -100,18 +100,19 @@ module ResourceMacros
     options = args.last.is_a?(Hash) ? args.pop : {}
     create = !!options.delete(:create)
     klass = args.first.is_a?(Zendesk::DataResource) ? args.shift : client
+    context_name = "read_#{klass.class}_#{args.join("_")}"
 
-    context "read" do
+    context context_name do
       use_vcr_cassette
 
       before(:all) do
-        VCR.use_cassette("#{described_class.to_s}_read_create") do
+        VCR.use_cassette("#{described_class.to_s}_#{context_name}_create") do
           @object = described_class.create(client, valid_attributes)
         end
       end if create
 
       after(:all) do
-        VCR.use_cassette("#{described_class.to_s}_read_delete") do
+        VCR.use_cassette("#{described_class.to_s}_#{context_name}_delete") do
           @object.destroy
         end
       end if create 
