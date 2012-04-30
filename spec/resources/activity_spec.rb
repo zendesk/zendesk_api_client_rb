@@ -1,3 +1,5 @@
+# Must have activities already in place.
+
 require 'spec_helper'
 
 describe Zendesk::Activity do

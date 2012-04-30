@@ -84,10 +84,21 @@ def category
   end
 end
 
+def ticket
+  VCR.use_cassette('valid_ticket') do
+    @ticket ||= client.tickets.first
+  end
+end
+
 def organization
   VCR.use_cassette('valid_organization') do
     @organization ||= current_user.organization 
   end
+end
+
+# Global default options, overwritten if using under
+def default_options
+  {}
 end
 
 class Zendesk::TestResource < Zendesk::Resource

@@ -1,15 +1,19 @@
 module ResourceMacros
   def under(object, &blk)
+    context "under a #{object.class.singular_resource_name}" do
+      let(:default_options) { { "#{object.class.singular_resource_name}_id" => object.id } }
+      instance_eval(&blk)
+    end
   end
 
-  def it_should_be_creatable(attributes = {})
+  def it_should_be_creatable
     context "creation" do
       use_vcr_cassette
       subject { described_class }
 
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_create") do
-          @object = described_class.create(client, valid_attributes)
+          @object = described_class.create(client, valid_attributes.merge(default_options))
         end
       end
 
@@ -18,7 +22,7 @@ module ResourceMacros
       end
 
       it "should be findable", :unless => metadata[:not_findable] do
-        described_class.find(client, @object.id).should == @object
+        described_class.find(client, @object.id, default_options).should == @object
       end 
 
       after(:all) do
@@ -35,7 +39,7 @@ module ResourceMacros
 
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_update_create") do
-          @object = described_class.create(client, valid_attributes)
+          @object = described_class.create(client, valid_attributes.merge(default_options))
         end
       end
 
@@ -57,7 +61,7 @@ module ResourceMacros
         end
 
         it "should be findable", :unless => metadata[:not_findable] do
-          described_class.find(client, @object.id).should == @object
+          described_class.find(client, @object.id, default_options).should == @object
         end 
       end
 
@@ -75,7 +79,7 @@ module ResourceMacros
 
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_delete_create") do
-          @object = described_class.create(client, valid_attributes)
+          @object = described_class.create(client, valid_attributes.merge(default_options))
         end
       end
 
@@ -84,7 +88,7 @@ module ResourceMacros
         @object.destroyed?.should be_true
 
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
-          obj = described_class.find(client, @object.id)
+          obj = described_class.find(client, @object.id, default_options)
 
           begin
             obj.send(options[:find].first).should == options[:find].last
@@ -107,7 +111,7 @@ module ResourceMacros
 
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_#{context_name}_create") do
-          @object = described_class.create(client, valid_attributes)
+          @object = described_class.create(client, valid_attributes.merge(default_options))
         end
       end if create
 
@@ -124,7 +128,7 @@ module ResourceMacros
         result.fetch.should include(@object) if create
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
-          described_class.find(client, result.first.id).should_not be_nil 
+          described_class.find(client, result.first.id, default_options).should_not be_nil 
         end
       end
     end
