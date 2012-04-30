@@ -5,6 +5,11 @@ module Zendesk
   class CRMDataStatus < DataResource; end
   class CustomRole < DataResource; end
 
+  class GroupMembership < Resource
+    has :user
+    has :group
+  end
+
   class User < Resource
     class Identity < Resource
       put :make_primary
@@ -12,16 +17,11 @@ module Zendesk
       put :request_verification
     end
 
-    class GroupMembership < Resource
-      has :user
-      has :group
-    end
-
     has :organization
     has :custom_role
     has_many :identities
     has_many :requested_tickets, :class => :ticket, :path => 'tickets/requested'
-    has_many :cced_tickets, :class => :ticket, :path => 'tickets/ccd'
+    has_many :ccd_tickets, :class => :ticket, :path => 'tickets/ccd'
 
     has_many :groups
     has_many :group_memberships

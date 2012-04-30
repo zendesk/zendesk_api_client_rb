@@ -5,7 +5,7 @@ require 'zendesk/verbs'
 
 module Zendesk
   # Represents a resource that only holds data.
-  class DataResource
+  class Data
     extend Association
 
     class << self
@@ -24,6 +24,10 @@ module Zendesk
 
         path
         @parent_name
+      end
+
+      def singular_resource
+        @singular_resource ||= true
       end
 
       def path
@@ -94,6 +98,10 @@ module Zendesk
     alias :hash :id
 
     alias :to_param :attributes
+  end
+
+  # Indexable resource
+  class DataResource < Data
   end
 
   # Represents a resource that can only GET
