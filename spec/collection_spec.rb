@@ -124,10 +124,12 @@ describe Zendesk::Collection do
       let(:object) { mock('Zendesk::TestResource') }
       before(:each) do
         subject << options
+
+        object.should_receive(:save)
+        Zendesk::TestResource.should_receive(:new).with(client, options).and_return(object)
       end
 
       it "should call create with those options" do
-        subject.should_receive(:create).with(options).and_return(object)
         subject.save
         subject.should include(object)
       end
