@@ -12,6 +12,8 @@ require 'zendesk'
 require 'vcr'
 
 require 'resource_macros'
+require 'fixtures/zendesk'
+require 'fixtures/test_resources'
 
 RSpec.configure do |c|
   # so we can use `:vcr` rather than `:vcr => true`;
@@ -37,75 +39,3 @@ VCR.configure do |c|
 end
 
 include WebMock::API
-
-def client
-  @client ||= Zendesk.configure do |config|
-    config.username = "agent@zendesk.com"
-    config.password = "123456"
-    config.url = "http://dev.localhost:3000/api/v2"
-    config.log = false 
-    config.retry = true
-  end
-end
-
-def user
-  VCR.use_cassette('valid_user') do
-    @user ||= client.users.first
-  end
-end
-
-def current_user
-  VCR.use_cassette('current_user') do
-    @current_user ||= client.users.find('me') 
-  end
-end
-
-def agent
-  VCR.use_cassette('valid_agent') do
-    @agent ||= client.users.detect {|u| u.role == "agent"}
-  end
-end
-
-def topic
-  VCR.use_cassette('valid_topic') do
-    @topic ||= client.topics.first
-  end
-end
-
-def forum
-  VCR.use_cassette('valid_forum') do
-    @forum ||= client.forums.first
-  end
-end
-
-def category
-  VCR.use_cassette('valid_category') do
-    @category ||= client.categories.first
-  end
-end
-
-def ticket
-  VCR.use_cassette('valid_ticket') do
-    @ticket ||= client.tickets.first
-  end
-end
-
-def organization
-  VCR.use_cassette('valid_organization') do
-    @organization ||= current_user.organization 
-  end
-end
-
-# Global default options, overwritten if using under
-def default_options
-  {}
-end
-
-class Zendesk::TestResource < Zendesk::Resource
-  class TestChild < Zendesk::Resource
-  end
-
-  has_many :children, :class => :test_child
-end
-
-class Zendesk::NilResource < Zendesk::Data; end

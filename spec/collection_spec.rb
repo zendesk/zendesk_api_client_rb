@@ -179,7 +179,7 @@ describe Zendesk::Collection do
       before(:each) { subject.per_page(nil).page(nil) }
 
       it "should find the next page by calling fetch" do
-        current = subject.to_a
+        current = subject.to_a.dup
         nxt = subject.next
 
         nxt.size.should == 1
@@ -187,7 +187,7 @@ describe Zendesk::Collection do
       end
 
       it "should find the prev page by calling fetch" do
-        current = subject.to_a
+        current = subject.to_a.dup
         prev = subject.prev
 
         prev.size.should == 1

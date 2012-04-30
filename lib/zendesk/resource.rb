@@ -92,6 +92,7 @@ module Zendesk
     alias :inspect :to_s
 
     def ==(other)
+      warn "Trying to compare #{other.class} to a Resource" unless other.is_a?(Data)
       other.id == id
     end
     alias :eql :==
