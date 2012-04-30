@@ -20,7 +20,7 @@ ticket = Zendesk::Ticket.new(client, :ticket => { :type => "question",
                              :requester_id => user.id,
                              :submitter_id => user.id })
 #ticket = client.tickets.first
-ticket.uploads << "img.jpg"
+ticket.uploads << "spec/fixtures/img.jpg"
 ticket.save
 debugger
 true
