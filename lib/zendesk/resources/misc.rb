@@ -23,9 +23,8 @@ module Zendesk
     has :ticket
     has :group
   end
-
   
-  class Attachment < DataResource
+  class Attachment < Data
     def self.create(client, attributes)
       upload = Upload.create(client, attributes)
 
@@ -39,10 +38,10 @@ module Zendesk
     end
   end
 
-  class Upload < CreateResource
+  class Upload < Data
+    extend Create
     has_many :attachments
   end
-
 
   class Locale < ReadResource; end
   class Bookmark < Resource; end

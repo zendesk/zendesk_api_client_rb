@@ -1,10 +1,10 @@
 module Zendesk
-  class Forum < Resource
-    class ForumSubscription < Resource
-      has :forum
-      has :user
-    end
+  class ForumSubscription < Resource
+    has :forum
+    has :user
+  end
 
+  class Forum < Resource
     has :category
     has :organization
     has :locale
@@ -17,6 +17,11 @@ module Zendesk
     has_many :forums
   end
 
+  class TopicSubscription < Resource
+    has :topic
+    has :user
+  end
+
   class Topic < Resource
     class TopicComment < Resource
       has :topic
@@ -24,18 +29,13 @@ module Zendesk
       has_many :attachments
     end
 
-    class Vote < Resource
-      has :topic
-      has :user
-    end
-
-    class TopicSubscription < Resource
+    class TopicVote < Resource
       has :topic
       has :user
     end
 
     has_many :comments, :class => :topic_comment
     has_many :subscriptions, :class => :topic_subscription
-    has_many :votes
+    has :vote, :class => :topic_vote 
   end
 end

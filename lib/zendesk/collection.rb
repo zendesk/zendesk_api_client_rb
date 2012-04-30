@@ -21,7 +21,7 @@ module Zendesk
     # @param [Hash] options Any additional options to be passed in.
     def initialize(client, resource, options = {})
       @client, @resource = client, resource.resource_name
-      @options = options
+      @options = Hashie::Mash.new(options)
 
       @verb = @options.delete(:verb)
       @path = @options.delete(:path)
@@ -35,7 +35,7 @@ module Zendesk
       @resource_class = resource
       @fetchable = true
 
-      unless @resource_class.respond_to?(:find)
+      if @resource_class.superclass == Zendesk::Data
         @resources = []
         @fetchable = false
       end
@@ -44,19 +44,19 @@ module Zendesk
     # Passes arguments and the proper path to the resource class method.
     # @param [Hash] attributes Attributes to pass to Create#create
     def create(attributes = {})
-      attributes.merge!(parent_id => parent.id) if parent
+      attributes.merge!(@resource_class.parent_name => parent.id) if parent
       @resource_class.create(@client, @options.merge(attributes))
     end
 
     # (see #create)
     def find(id, opts = {})
-      opts.merge!(parent_id => parent.id) if parent
+      opts.merge!(@resource_class.parent_name => parent.id) if parent
       @resource_class.find(@client, id, @options.merge(opts))
     end
 
     # (see #create)
     def destroy(id, opts = {})
-      opts.merge!(parent_id => parent.id) if parent
+      opts.merge!(@resource_class.parent_name => parent.id) if parent
       @resource_class.destroy(@client, id, @options.merge(opts))
     end
 
