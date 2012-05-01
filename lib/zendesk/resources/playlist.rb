@@ -34,14 +34,16 @@ module Zendesk
         @destroyed = response.status == 204
         nil
       end
-    rescue Faraday::Error::ClientError
+    rescue Faraday::Error::ClientError => e
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
       nil
     end
 
     def destroy
       response = @client.connection.delete("play.json")
       @destroyed = response.status == 204 
-    rescue Faraday::Error::ClientError
+    rescue Faraday::Error::ClientError => e
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
       false
     end
 
@@ -58,7 +60,8 @@ module Zendesk
     def init_playlist
       response = @client.connection.get("views/#{id}/play.json")
       @initialized = response.status == 302
-    rescue Faraday::Error::ClientError
+    rescue Faraday::Error::ClientError => e
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
     end
   end
 end

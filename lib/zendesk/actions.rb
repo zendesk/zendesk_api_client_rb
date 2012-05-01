@@ -15,6 +15,7 @@ module Zendesk
 
       new(client, response.body)
     rescue Faraday::Error::ClientError => e
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
       nil
     end
   end
@@ -34,6 +35,7 @@ module Zendesk
 
       new(client, response.body)
     rescue Faraday::Error::ClientError => e
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
       nil
     end
   end
@@ -53,6 +55,7 @@ module Zendesk
 
       true
     rescue Faraday::Error::ClientError => e
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
       false
     end
   end
