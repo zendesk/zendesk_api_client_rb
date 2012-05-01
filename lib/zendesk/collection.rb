@@ -133,6 +133,7 @@ module Zendesk
 
       @resources
     rescue Faraday::Error::ClientError => e
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
       []
     end
 

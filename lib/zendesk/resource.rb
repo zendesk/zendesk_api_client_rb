@@ -179,7 +179,7 @@ module Zendesk
       @attributes.clear_changes
       true
     rescue Faraday::Error::ClientError => e
-      puts e.message
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
       false
     end
 
@@ -192,7 +192,7 @@ module Zendesk
 
       @destroyed = true
     rescue Faraday::Error::ClientError => e
-      puts e.message
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
       false
     end
   end
