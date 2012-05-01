@@ -147,6 +147,12 @@ ticket.save
 
 * Testing
 
+## Live Testing
+
+The following fixtures need to be in place on the server to be properly tested:
+
+Satisfaction ratings
+
 ## Note on Patches/Pull Requests
 1. Fork the project.
 2. Make your feature addition or bug fix.

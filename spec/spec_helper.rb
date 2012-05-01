@@ -38,4 +38,14 @@ VCR.configure do |c|
   c.hook_into :webmock
 end
 
+def client
+  @client ||= Zendesk.configure do |config|
+    config.username = "agent@zendesk.com"
+    config.password = "123456"
+    config.url = "http://dev.localhost:3000/api/v2"
+    config.log = false 
+    config.retry = true
+  end
+end
+
 include WebMock::API

@@ -1,13 +1,3 @@
-def client
-  @client ||= Zendesk.configure do |config|
-    config.username = "agent@zendesk.com"
-    config.password = "123456"
-    config.url = "http://dev.localhost:3000/api/v2"
-    config.log = false 
-    config.retry = true
-  end
-end
-
 def user
   VCR.use_cassette('valid_user') do
     @user ||= client.users.create(
@@ -17,7 +7,7 @@ def user
         :email => "test.valid.user@zendesk.com",
         :role => "end-user"
       } 
-    ) || client.users.detect {|u| u.role == "end-user"}
+    ) || client.users.detect {|u| u.email == "test.valid.user@zendesk.com"}
   end
 end
 
@@ -36,7 +26,7 @@ def agent
         :email => "test.valid.agent@zendesk.com",
         :role => "agent"
       } 
-    ) || client.users.detect {|u| u.role == "agent"}
+    ) || client.users.detect {|u| u.email == "test.valid.agent@zendesk.com"}
   end
 end
 
@@ -80,6 +70,16 @@ def ticket
         :requester_id => user.id
       }
     ) || client.tickets.first
+  end
+end
+
+def group
+  VCR.use_cassette('valid_group') do
+    @ticket ||= client.groups.create(
+      :group => {
+        :name => "Test Group"
+      }
+    ) || client.groups.detect {|g| !g.default}
   end
 end
 
