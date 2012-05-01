@@ -145,6 +145,7 @@ ticket.save
 
 ## TODO
 
+* Nested association saving
 * Testing
 
 ## Note on Patches/Pull Requests
