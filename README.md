@@ -145,7 +145,6 @@ ticket.save
 
 ## TODO
 
-* Topic votes
 * Nested association saving
 * Testing
 
