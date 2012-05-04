@@ -24,7 +24,6 @@ module Zendesk
     # Create a resource given the attributes passed in.
     # @param [Client] client The {Client} object to be used
     # @param [Hash] attributes The attributes to create.
-    # @param [String] path The optional path to use. Defaults to {DataResource.resource_name}. 
     def create(client, attributes = {})
       attributes = Hashie::Mash.new(attributes)
       path = self.path % attributes.delete(self.parent_name)
@@ -44,13 +43,33 @@ module Zendesk
     # Deletes a resource given the id passed in.
     # @param [Client] client The {Client} object to be used
     # @param [Number] id The id to DELETE.
-    # @param [String] path The optional path to use. Defaults to {DataResource.resource_name}. 
+    # @param [Hash] opts The optional parameters to pass. Defaults to {}
     def destroy(client, id, opts = {})
       opts = Hashie::Mash.new(opts)
       path = self.path % opts.delete(self.parent_name)
 
       client.connection.delete("#{path}/#{id}.json") do |req|
         req.params = opts
+      end
+
+      true
+    rescue Faraday::Error::ClientError => e
+      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      false
+    end
+  end
+
+  module Update
+    # Updates  a resource given the id passed in.
+    # @param [Client] client The {Client} object to be used
+    # @param [Number] id The id to DELETE.
+    # @param [String] path The optional path to use. Defaults to {DataResource.resource_name}. 
+    def update(client, id, attributes = {})
+      attributes = Hashie::Mash.new(attributes)
+      path = self.path % attributes.delete(self.parent_name)
+
+      client.connection.put("#{path}/#{id}.json") do |req|
+        req.body = attributes
       end
 
       true

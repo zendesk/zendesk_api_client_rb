@@ -85,7 +85,7 @@ Individual resources can be created, modified, saved, and destroyed.
 ticket = client.tickets[0] # Zendesk::Ticket.find(client, 1)
 ticket.priority = "urgent"
 ticket.attributes # => { "priority" => "urgent" }
-ticket.save # => true
+ticket.save # Will PUT => true
 ticket.destroy # => true
 
 Zendesk::Ticket.new(client, { :priority => "urgent" })
@@ -145,6 +145,7 @@ ticket.save
 
 ## TODO
 
+* Nested association saving
 * Testing
 
 ## Live Testing
