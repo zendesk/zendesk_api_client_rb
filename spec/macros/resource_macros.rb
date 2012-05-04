@@ -22,7 +22,9 @@ module ResourceMacros
       end
 
       it "should be findable", :unless => metadata[:not_findable] do
-        described_class.find(client, @object.id, default_options).should == @object
+        options = default_options
+        options.merge!(:id => @object.id) unless described_class.is_a?(Zendesk::SingularResource)
+        described_class.find(client, options).should == @object
       end 
 
       after(:all) do
@@ -61,7 +63,9 @@ module ResourceMacros
         end
 
         it "should be findable", :unless => metadata[:not_findable] do
-          described_class.find(client, @object.id, default_options).should == @object
+          options = default_options
+          options.merge!(:id => @object.id) unless described_class.is_a?(Zendesk::SingularResource)
+          described_class.find(client, options).should == @object
         end 
       end
 
@@ -88,7 +92,9 @@ module ResourceMacros
         @object.destroyed?.should be_true
 
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
-          obj = described_class.find(client, @object.id, default_options)
+          options = default_options
+          options.merge!(:id => @object.id) unless described_class.is_a?(Zendesk::SingularResource)
+          obj = described_class.find(client, options)
 
           begin
             obj.send(options[:find].first).should == options[:find].last
@@ -128,7 +134,9 @@ module ResourceMacros
         result.fetch.should include(@object) if create
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
-          described_class.find(client, result.first.id, default_options).should_not be_nil 
+          options = default_options
+          options.merge!(:id => result.first.id) unless described_class.is_a?(Zendesk::SingularResource)
+          described_class.find(client, options).should_not be_nil 
         end
       end
     end

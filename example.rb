@@ -11,16 +11,4 @@ client = Zendesk.configure do |config|
   config.retry = true
 end
 
-
-user = client.users.first
-ticket = Zendesk::Ticket.new(client, :ticket => { :type => "question",
-                             :subject => "New ticket",
-                             :description => "Blergh",
-                             :priority => "normal",
-                             :requester_id => user.id,
-                             :submitter_id => user.id })
-#ticket = client.tickets.first
-ticket.uploads << "spec/fixtures/img.jpg"
-ticket.save
-debugger
-true
+client.users.find(:id => 'me')

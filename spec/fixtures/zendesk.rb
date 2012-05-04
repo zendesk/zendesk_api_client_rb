@@ -13,7 +13,7 @@ end
 
 def current_user
   VCR.use_cassette('current_user') do
-    @current_user ||= client.users.find('me') 
+    @current_user ||= client.users.find(:id => 'me') 
   end
 end
 

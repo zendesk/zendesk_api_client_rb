@@ -21,7 +21,7 @@ module Zendesk
         return instance_variable_get("@#{resource}") if instance_variable_defined?("@#{resource}") && !options[:reload]
 
         if res_id = method_missing("#{resource}_id")
-          obj = klass.find(@client, res_id)
+          obj = klass.find(@client, :id => res_id)
           obj.tap { instance_variable_set("@#{resource}", obj) if obj }
         elsif (res = method_missing(resource.to_sym)) 
           instance_variable_set("@#{resource}", res.is_a?(Hash) ? klass.new(@client, res) : res)
@@ -55,7 +55,7 @@ module Zendesk
 
         if (ids = method_missing("#{singular}_ids")) && ids.any?
           collection = ids.map do |id| 
-            klass.find(@client, id)
+            klass.find(@client, :id => id)
           end.compact
 
           instance_variable_set("@#{resource}", collection)

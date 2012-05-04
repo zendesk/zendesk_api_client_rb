@@ -19,7 +19,7 @@ describe Zendesk::ReadResource do
       end
 
       it "should handle it properly" do
-        expect { subject.find(client, id).should be_nil }.to_not raise_error
+        expect { subject.find(client, :id => id).should be_nil }.to_not raise_error
       end
     end
   end

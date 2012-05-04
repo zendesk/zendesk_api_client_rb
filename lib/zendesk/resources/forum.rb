@@ -29,7 +29,7 @@ module Zendesk
       has_many :attachments
     end
 
-    class TopicVote < Resource
+    class TopicVote < SingularResource
       has :topic
       has :user
     end

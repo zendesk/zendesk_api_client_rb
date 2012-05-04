@@ -43,7 +43,7 @@ def client
     config.username = "agent@zendesk.com"
     config.password = "123456"
     config.url = "http://dev.localhost:3000/api/v2"
-    config.log = false 
+    config.log = !!ENV["LOG"]
     config.retry = true
   end
 end

@@ -53,13 +53,14 @@ module Zendesk
     # (see #create)
     def find(id, opts = {})
       opts.merge!(@resource_class.parent_name => parent.id) if parent
-      @resource_class.find(@client, id, @options.merge(opts))
+      puts opts.inspect
+      @resource_class.find(@client, @options.merge(opts))
     end
 
     # (see #create)
-    def destroy(id, opts = {})
+    def destroy(opts = {})
       opts.merge!(@resource_class.parent_name => parent.id) if parent
-      @resource_class.destroy(@client, id, @options.merge(opts))
+      @resource_class.destroy(@client, @options.merge(opts))
     end
 
     # Changes the per_page option. Returns self, so it can be chained. No execution.
