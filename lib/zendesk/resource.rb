@@ -119,6 +119,7 @@ module Zendesk
   class Resource < DataResource 
     extend Read
     extend Create
+    extend Update
     extend Destroy
     extend Verbs
 

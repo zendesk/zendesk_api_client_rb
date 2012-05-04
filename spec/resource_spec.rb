@@ -1,6 +1,32 @@
 require 'spec_helper'
 
 describe Zendesk::Resource do
+  context "update", :vcr_off do
+    context "class method" do
+      let(:id) { 1 }
+      subject { Zendesk::TestResource }
+
+      before(:each) do
+        stub_request(:put, %r{test_resources/#{id}}).to_return({})
+      end
+
+      it "should return instance of resource" do
+        subject.update(client, id).should be_true
+      end
+
+      context "with client error" do
+        before(:each) do
+          stub_request(:put, %r{test_resources/#{id}}).to_return(:status => 500)
+        end
+
+        it "should handle it properly" do
+          expect { subject.update(client, id).should be_false }.to_not raise_error
+        end
+      end
+    end
+  end
+
+
   context "destroy", :vcr_off do
     context "class method" do
       let(:id) { 1 }
