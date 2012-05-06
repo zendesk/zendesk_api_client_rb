@@ -1,4 +1,9 @@
 # Zendesk API Client
+
+## API version support
+
+This client supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
+
 ## Configuration
 
 Configuration is done through a block returning an instance of Zendesk::Client.
