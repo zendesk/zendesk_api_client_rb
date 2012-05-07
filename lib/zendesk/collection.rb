@@ -187,11 +187,13 @@ module Zendesk
 
     # Sends methods to underlying array of resources.
     def method_missing(name, *args, &blk)
-      to_a.send(name, *args, &blk)
-    rescue NameError
-      opts = args.last.is_a?(Hash) ? args.last : {}
-      opts.merge!(:collection_path => @collection_path.dup.push(name))
-      self.class.new(@client, @resource_class, @options.merge(opts)) 
+      if Array.new.respond_to?(name)
+        to_a.send(name, *args, &blk)
+      else
+        opts = args.last.is_a?(Hash) ? args.last : {}
+        opts.merge!(:collection_path => @collection_path.dup.push(name))
+        self.class.new(@client, @resource_class, @options.merge(opts))
+      end
     end
 
     alias :orig_to_s :to_s

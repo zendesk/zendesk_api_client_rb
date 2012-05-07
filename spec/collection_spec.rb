@@ -221,7 +221,7 @@ describe Zendesk::Collection do
   end
 
   context "method missing" do
-    before(:each) { subject.should_receive(:fetch).and_return([1, 2, nil, 3]) }
+    before(:each) { subject.stub(:fetch).and_return([1, 2, nil, 3]) }
 
     it "should pass all methods not defined to resources" do
       subject.compact.should == [1, 2, 3]
