@@ -1,3 +1,5 @@
+class Zendesk::Foo < Zendesk::SingularResource; end
+
 class Zendesk::TestResource < Zendesk::Resource
   class TestChild < Zendesk::Resource
   end

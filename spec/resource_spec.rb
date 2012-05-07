@@ -11,7 +11,7 @@ describe Zendesk::Resource do
       end
 
       it "should return instance of resource" do
-        subject.update(client, id).should be_true
+        subject.update(client, :id => id).should be_true
       end
 
       context "with client error" do
@@ -20,7 +20,7 @@ describe Zendesk::Resource do
         end
 
         it "should handle it properly" do
-          expect { subject.update(client, id).should be_false }.to_not raise_error
+          expect { subject.update(client, :id => id).should be_false }.to_not raise_error
         end
       end
     end
@@ -37,7 +37,7 @@ describe Zendesk::Resource do
       end
 
       it "should return instance of resource" do
-        subject.destroy(client, id).should be_true
+        subject.destroy(client, :id => id).should be_true
       end
 
       context "with client error" do
@@ -46,7 +46,7 @@ describe Zendesk::Resource do
         end
 
         it "should handle it properly" do
-          expect { subject.destroy(client, id).should be_false }.to_not raise_error
+          expect { subject.destroy(client, :id => id).should be_false }.to_not raise_error
         end
       end
     end
@@ -205,8 +205,8 @@ describe Zendesk::Resource do
           context "with a hash" do
             before(:each) do
               collection = Zendesk::Collection.new(client, Zendesk::TestResource::TestChild)
-              collection << { :id => 2, :def => :abc }
-              collection << { :id => 3, :def => :gre }
+              collection << { :id => 2, :def => :abc, :test_resource_id => 1 }
+              collection << { :id => 3, :def => :gre, :test_resource_id => 1 }
               subject.children = collection
               subject.save
             end

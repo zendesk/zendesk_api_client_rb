@@ -31,8 +31,6 @@ module Zendesk
       end
 
       def path(with_id_if_applicable = true)
-        return @path if @path
-
         ary = to_s.split("::")
         ary.delete("Zendesk")
         ary[0] = Zendesk.get_class(ary[0])
@@ -45,13 +43,11 @@ module Zendesk
 
         ary[0] = ary[0].resource_name
         
-        if with_id_if_applicable && !self.is_a?(SingularResource)
+        if with_id_if_applicable && !self.ancestors.include?(SingularResource)
           ary << "%s"
         end
 
-        @path = ary.join("/")
-        puts @path
-        @path
+        ary.join("/")
       end
     end
 
@@ -86,12 +82,11 @@ module Zendesk
     end
 
     # Returns the path to the resource
-    def path
-      return @path if @path
-      @path = self.class.path
-      @path %= send(self.class.parent_name) if self.class.parent_name
-      @path %= id
-      @path
+    def path(*args)
+      path = self.class.path(*args)
+      parent = send(self.class.parent_name) if self.class.parent_name
+      path %= [parent, id].compact
+      path
     end
 
     def to_s
@@ -155,7 +150,7 @@ module Zendesk
 
       if new_record?
         method = :post
-        req_path = path
+        req_path = path(false)
       else
         method = :put
         req_path = url || "#{path}.json"
@@ -188,7 +183,8 @@ module Zendesk
       @attributes.clear_changes
       true
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
       false
     end
 
@@ -207,9 +203,5 @@ module Zendesk
     end
   end
 
-  class SingularResource < Resource
-    class << self
-      #alias :resource_name :singular_resource_name
-    end
-  end
+  class SingularResource < Resource; end
 end

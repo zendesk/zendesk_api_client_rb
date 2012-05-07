@@ -23,7 +23,7 @@ module ResourceMacros
 
       it "should be findable", :unless => metadata[:not_findable] do
         options = default_options
-        options.merge!(:id => @object.id) unless described_class.is_a?(Zendesk::SingularResource)
+        options.merge!(:id => @object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
         described_class.find(client, options).should == @object
       end 
 
@@ -64,7 +64,7 @@ module ResourceMacros
 
         it "should be findable", :unless => metadata[:not_findable] do
           options = default_options
-          options.merge!(:id => @object.id) unless described_class.is_a?(Zendesk::SingularResource)
+          options.merge!(:id => @object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
           described_class.find(client, options).should == @object
         end 
       end
@@ -92,13 +92,13 @@ module ResourceMacros
         @object.destroyed?.should be_true
 
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
-          options = default_options
-          options.merge!(:id => @object.id) unless described_class.is_a?(Zendesk::SingularResource)
-          obj = described_class.find(client, options)
+          opts = default_options
+          opts.merge!(:id => @object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
+          obj = described_class.find(client, opts)
 
           begin
             obj.send(options[:find].first).should == options[:find].last
-          rescue NameError
+          rescue NameError => e
             obj.should be_nil
           end
         end
@@ -135,7 +135,7 @@ module ResourceMacros
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           options = default_options
-          options.merge!(:id => result.first.id) unless described_class.is_a?(Zendesk::SingularResource)
+          options.merge!(:id => result.first.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
           described_class.find(client, options).should_not be_nil 
         end
       end

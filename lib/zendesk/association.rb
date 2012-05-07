@@ -27,7 +27,7 @@ module Zendesk
           instance_variable_set("@#{resource}", res.is_a?(Hash) ? klass.new(@client, res) : res)
         else
           begin
-            response = @client.connection.get("#{path}/#{id}/#{opts[:path] || resource}.json")
+            response = @client.connection.get("#{path}/#{opts[:path] || resource}.json")
             instance_variable_set("@#{resource}", klass.new(@client, response.body))
           rescue Faraday::Error::ClientError => e
             nil
@@ -54,8 +54,9 @@ module Zendesk
         singular = resource.to_s.singular
 
         if (ids = method_missing("#{singular}_ids")) && ids.any?
+          args = klass.parent_name ? { klass.parent_name => id } : {}
           collection = ids.map do |id| 
-            klass.find(@client, :id => id)
+            klass.find(@client, args.merge(:id => id))
           end.compact
 
           instance_variable_set("@#{resource}", collection)

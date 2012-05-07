@@ -35,7 +35,8 @@ module Zendesk
         nil
       end
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
       nil
     end
 
@@ -43,7 +44,8 @@ module Zendesk
       response = @client.connection.delete("play.json")
       @destroyed = response.status == 204 
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
       false
     end
 
@@ -61,7 +63,8 @@ module Zendesk
       response = @client.connection.get("views/#{id}/play.json")
       @initialized = response.status == 302
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
     end
   end
 end

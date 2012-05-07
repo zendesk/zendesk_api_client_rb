@@ -6,7 +6,7 @@ module Zendesk
     # @param [Hash] opts Any additional GET parameters to be added
     def find(client, opts = {})
       opts = Hashie::Mash.new(opts)
-      path = self.path % [opts.delete(self.parent_name), opts.delete(:id)]
+      path = self.path % [opts.delete(self.parent_name), opts.delete(:id)].compact
 
       response = client.connection.get("#{path}.json") do |req|
         req.params = opts
@@ -14,7 +14,8 @@ module Zendesk
 
       new(client, response.body)
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
       nil
     end
   end
@@ -33,7 +34,8 @@ module Zendesk
 
       new(client, response.body)
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
       nil
     end
   end
@@ -43,9 +45,9 @@ module Zendesk
     # @param [Client] client The {Client} object to be used
     # @param [Number] id The id to DELETE.
     # @param [Hash] opts The optional parameters to pass. Defaults to {}
-    def destroy(client, id, opts = {})
+    def destroy(client, opts = {})
       opts = Hashie::Mash.new(opts)
-      path = self.path % [opts.delete(self.parent_name), opts.delete(:id)]
+      path = self.path % [opts.delete(self.parent_name), opts.delete(:id)].compact
 
       client.connection.delete("#{path}.json") do |req|
         req.params = opts
@@ -53,7 +55,8 @@ module Zendesk
 
       true
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
       false
     end
   end
@@ -65,7 +68,7 @@ module Zendesk
     # @param [String] path The optional path to use. Defaults to {DataResource.resource_name}. 
     def update(client, attributes = {})
       attributes = Hashie::Mash.new(attributes)
-      path = self.path % [attributes.delete(self.parent_name), attributes.delete(:id)]
+      path = self.path % [attributes.delete(self.parent_name), attributes.delete(:id)].compact
 
       client.connection.put("#{path}.json") do |req|
         req.body = attributes
@@ -73,7 +76,8 @@ module Zendesk
 
       true
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
       false
     end
   end

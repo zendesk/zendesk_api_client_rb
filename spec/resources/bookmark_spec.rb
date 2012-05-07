@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::Bookmark, :not_findable, :delete_after do
   def valid_attributes
-    { :ticket_id => ticket.id }
+    { :bookmark => { :ticket_id => ticket.id } }
   end
 
   it_should_be_creatable

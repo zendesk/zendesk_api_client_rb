@@ -30,12 +30,12 @@ describe Zendesk::Collection do
     end
 
     it "should defer #find to the resource class" do
-      Zendesk::TestResource.should_receive(:find).with(client, {:id => 1})
+      Zendesk::TestResource.should_receive(:find).with(client, Hashie::Mash.new(:id => 1))
       subject.find(:id => 1)
     end
 
     it "should defer #destroy to the resource class" do
-      Zendesk::TestResource.should_receive(:destroy).with(client, {:id => 1})
+      Zendesk::TestResource.should_receive(:destroy).with(client, Hashie::Mash.new(:id => 1))
       subject.destroy(:id => 1)
     end
 
@@ -54,7 +54,7 @@ describe Zendesk::Collection do
       end
 
       it "should defer #find to the resource class with the parent id" do
-        Zendesk::TestResource::TestChild.should_receive(:find).with(client, 1, Hashie::Mash.new(:test_resource_id => 1, :id => 1))
+        Zendesk::TestResource::TestChild.should_receive(:find).with(client, Hashie::Mash.new(:test_resource_id => 1, :id => 1))
         subject.find(:id => 1)
       end
     end

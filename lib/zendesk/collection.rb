@@ -51,9 +51,8 @@ module Zendesk
     end
 
     # (see #create)
-    def find(id, opts = {})
+    def find(opts = {})
       opts.merge!(@resource_class.parent_name => parent.id) if parent
-      puts opts.inspect
       @resource_class.find(@client, @options.merge(opts))
     end
 
@@ -134,7 +133,8 @@ module Zendesk
 
       @resources
     rescue Faraday::Error::ClientError => e
-      puts "#{e.message}\n\t#{e.response[:body].inspect}"
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
       []
     end
 
