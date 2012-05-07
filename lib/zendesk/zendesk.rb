@@ -35,7 +35,15 @@ module Zendesk
     # @return [Zendesk::User] Current user or nil
     def me(reload = false)
       return @me if @me && !reload
-      @me = client.users.find(:id => 'me')
+      @me = users.find(:id => 'me')
+    end
+
+    def resolve_account
+      Hashie::Mash.new(connection.get('resolve_account').body)
+    rescue Faraday::Error::ClientError => e
+      puts e.message
+      puts "\t#{e.response[:body].inspect}" if e.response
+      nil
     end
 
     # Creates a new Client instance with no configuration options and no connection.
