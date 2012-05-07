@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "mime-types"
   s.add_runtime_dependency "multipart-post"
 
-  s.files              = `git ls-files`.split("\n") rescue ''
+  s.files              = `git ls-files -x Gemfile.lock`.split("\n") rescue ''
   s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths      = ["lib"]
 end
