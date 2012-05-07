@@ -31,8 +31,8 @@ module Zendesk
     # @param [Hash] attributes The optional attributes that describe the resource
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
     def initialize(client, attributes = {})
+      @association = attributes.delete(:association) || Association.new(:class => self.class)
       @client, @attributes = client, Zendesk::Trackie.new(attributes)
-      @association = @attributes.delete(:association) || Association.new(:class => self.class)
 
       unless new_record?
         @attributes.clear_changes
