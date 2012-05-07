@@ -35,7 +35,7 @@ module Zendesk
     # @return [Zendesk::User] Current user or nil
     def me(reload = false)
       return @me if @me && !reload
-      @me = client.users.find('me')
+      @me = client.users.find(:id => 'me')
     end
 
     # Creates a new Client instance with no configuration options and no connection.
