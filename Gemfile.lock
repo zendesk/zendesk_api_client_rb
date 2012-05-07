@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zendesk (0.0.1)
+    zendesk (0.0.2)
       faraday (>= 0.8.0)
       faraday_middleware (>= 0.8.7)
       hashie
@@ -22,7 +22,7 @@ GEM
       faraday (>= 0.7.4, < 0.9)
     hashie (1.2.0)
     inflection (1.0.0)
-    json (1.6.6)
+    json (1.7.1)
     mime-types (1.18)
     multi_json (1.3.2)
     multipart-post (1.1.5)
