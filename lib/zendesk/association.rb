@@ -1,11 +1,23 @@
 module Zendesk
+  # Represents an association between two resources 
   class Association
+    # @return [Hash] Options passed into the association
     attr_reader :options
 
+    # Options to pass in
+    # * class - Required
+    # * parent - Parent instance
+    # * path - Optional path instead of resource name 
     def initialize(options = {})
       @options = Hashie::Mash.new(options)
     end
 
+    # Generate a path to the resource
+    # Arguments that can be passed in:
+    # An instance, any resource instance
+    # Hash Options:
+    # * with_parent - Include the parent path (false by default)
+    # * with_id - Include the instance id, if possible (true)
     def generate_path(*args)
       options = Hashie::Mash.new(:with_id => true)
       if args.last.is_a?(Hash)
@@ -55,7 +67,7 @@ module Zendesk
     end
   end
 
-  # This model holds association method for resources.
+  # This module holds association method for resources.
   # Associations can be loaded in three ways:
   # * Commonly used resources are automatically side-loaded server side and sent along with their parent object.
   # * Associated resource ids are sent and are then loaded one-by-one into the parent collection.
