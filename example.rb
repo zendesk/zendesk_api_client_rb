@@ -1,7 +1,5 @@
 #!/usr/bin/env bundle exec ruby
 require 'zendesk'
-require 'ruby-debug'
-Debugger.settings[:autoeval] = true
 
 client = Zendesk.configure do |config|
   config.username = "agent@zendesk.com"
