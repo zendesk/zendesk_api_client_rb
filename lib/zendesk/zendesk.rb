@@ -25,12 +25,17 @@ module Zendesk
       instance_variable_set("@#{method}", Zendesk::Collection.new(self, Zendesk.get_class(method.singular), options))
     end
 
-    # @endgroup
-
     # Plays a view playlist.
     # @param [String/Number] id View id or 'incoming'
     def play(id)
       Zendesk::Playlist.new(self, id)
+    end
+
+    # Returns the current user (aka me)
+    # @return [Zendesk::User] Current user or nil
+    def me(reload = false)
+      return @me if @me && !reload
+      @me = client.users.find('me')
     end
 
     # Creates a new Client instance with no configuration options and no connection.
