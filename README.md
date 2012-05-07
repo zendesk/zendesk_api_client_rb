@@ -29,6 +29,9 @@ Zendesk.configure do |config|
   config.log = true
   # Changes Faraday adapter
   config.adapter = :patron
+
+  # Merged with the default client options hash
+  config.client_options = { :ssl => false }
 end
 ```
 
@@ -43,17 +46,17 @@ One way to use the client is to pass it in as an argument to individual classes.
 ```
 Zendesk::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save 
 Zendesk::Ticket.create(client, :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent")
-Zendesk::Ticket.find(client, 1)
-Zendesk::Ticket.delete(client, 1)
+Zendesk::Ticket.find(client, :id => 1)
+Zendesk::Ticket.delete(client, :id => 1)
 ```
 
 Another way is to use the instance methods under client.
 
 ```
 client.tickets.first
-client.tickets.find(1)
+client.tickets.find(:id => 1)
 client.tickets.create(:subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent")
-client.tickets.delete(1)
+client.tickets.delete(:id => 1)
 ```
 
 The methods under Zendesk::Client (such as .tickets) return an instance of Zendesk::Collection a lazy-loaded list of that resource. 
@@ -87,7 +90,7 @@ end
 Individual resources can be created, modified, saved, and destroyed.
 
 ```
-ticket = client.tickets[0] # Zendesk::Ticket.find(client, 1)
+ticket = client.tickets[0] # Zendesk::Ticket.find(client, :id => 1)
 ticket.priority = "urgent"
 ticket.attributes # => { "priority" => "urgent" }
 ticket.save # Will PUT => true
@@ -135,6 +138,14 @@ client.tickets.recent
 client.topics.show_many(:verb => :post, :ids => [1, 2, 3])
 ```
 
+### Special Case: Current user
+
+Use either of the following to obtain the current user instance:
+
+```
+client.users.find(:id => 'me')
+client.me
+```
 
 ### Attaching files
 
