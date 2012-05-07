@@ -76,6 +76,7 @@ module Zendesk
 
   # Indexable resource
   class DataResource < Data
+    extend Verbs
   end
 
   # Represents a resource that can only GET
@@ -94,7 +95,6 @@ module Zendesk
     extend Create
     extend Update
     extend Destroy
-    extend Verbs
 
     def initialize(*args)
       super
