@@ -162,6 +162,8 @@ ticket.save
 ## TODO
 
 * Nested association saving
+* DateTime parsing
+* Automatic parameter wrapping
 * Testing
 
 ## Live Testing
