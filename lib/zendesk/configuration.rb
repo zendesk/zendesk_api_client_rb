@@ -41,6 +41,12 @@ module Zendesk
     attr_accessor :retry
     # @return [Boolean] Whether to log requests to STDOUT.
     attr_accessor :log
+    # @return [Hash] Client configurations (eg ssh config) to pass to Faraday
+    attr_accessor :client_options
+
+    def initialize
+      @client_options = {}
+    end
 
     # Sets accept and user_agent headers, and url.
     #
@@ -52,7 +58,7 @@ module Zendesk
           :user_agent => "Zendesk API #{Zendesk::VERSION}"
         },
         :url => @url
-      }
+      }.merge(client_options)
     end
   end
 end

@@ -16,4 +16,9 @@ describe Zendesk::Configuration do
   it "should set user agent header properly" do
     subject.options[:headers][:user_agent].should =~ /Zendesk API/
   end
+
+  it "should merge options with client_options" do
+    subject.client_options = {:ssl => false}
+    subject.options[:ssl].should == false
+  end
 end
