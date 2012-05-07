@@ -18,10 +18,6 @@ module Zendesk
       def resource_name
         @resource_name ||= singular_resource_name.plural
       end
-
-      def singular_resource
-        @singular_resource ||= true
-      end
     end
 
     # @return [Hash] The resource's attributes
