@@ -1,6 +1,7 @@
 require 'faraday'
 require 'faraday_middleware'
 
+require 'zendesk/rescue'
 require 'zendesk/configuration'
 require 'zendesk/collection'
 require 'zendesk/middleware/retry_middleware'
@@ -9,6 +10,8 @@ require 'zendesk/middleware/upload_middleware'
 
 module Zendesk
   class Client
+    extend Rescue
+
     # @return [Configuration] Config instance
     attr_reader :config
     # @return [Array] Custom response callbacks
@@ -40,11 +43,9 @@ module Zendesk
 
     def resolve_account
       Hashie::Mash.new(connection.get('resolve_account').body)
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      nil
     end
+
+    rescue_client_error :resolve_account
 
     # Creates a new Client instance with no configuration options and no connection.
     def initialize

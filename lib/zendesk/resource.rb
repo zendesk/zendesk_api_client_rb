@@ -7,6 +7,7 @@ module Zendesk
   # Represents a resource that only holds data.
   class Data
     extend Associations
+    extend Rescue
 
     class << self
       # The singular resource name taken from the class name (e.g. Zendesk::Tickets -> ticket)
@@ -151,10 +152,6 @@ module Zendesk
       @attributes.replace(@attributes.deep_merge(response.body))
       @attributes.clear_changes
       true
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      false
     end
 
     # If this resource hasn't already been deleted, then do so.
@@ -165,11 +162,9 @@ module Zendesk
       response = @client.connection.delete(url || path)
 
       @destroyed = true
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      false
     end
+
+    rescue_client_error :save, :destroy, :with => false
   end
 
   class SingularResource < Resource; end

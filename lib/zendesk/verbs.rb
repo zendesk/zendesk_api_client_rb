@@ -1,6 +1,8 @@
 module Zendesk
   # Creates put, post, delete class methods for custom resource methods.
   module Verbs
+    extend Rescue
+
     class << self
       private
 
@@ -16,24 +18,20 @@ module Zendesk
             opts = method_args.last.is_a?(Hash) ? method_args.pop : {}
             return instance_variable_get("@#{method}") if instance_variable_defined?("@#{verb}") && !opts[:reload]
 
-            begin
-              response = @client.connection.send(verb, "#{path}/#{method}") do |req|
-                req.body = opts
-              end
-
-              if (resources = response.body[self.class.resource_name]) &&
-                (res = resources.find {|res| res["id"] == id})
-                @attributes = Zendesk::Trackie.new(res)
-                @attributes.clear_changes
-              end
-
-              true
-            rescue Faraday::Error::ClientError => e
-              puts e.message
-              puts "\t#{e.response[:body].inspect}" if e.response
-              false
+            response = @client.connection.send(verb, "#{path}/#{method}") do |req|
+              req.body = opts
             end
+
+            if (resources = response.body[self.class.resource_name]) &&
+              (res = resources.find {|res| res["id"] == id})
+              @attributes = Zendesk::Trackie.new(res)
+              @attributes.clear_changes
+            end
+
+            true
           end
+
+          rescue_client_error method, :with => false
         end
       end
     end

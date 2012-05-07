@@ -1,5 +1,7 @@
 module Zendesk
   class Playlist
+    extend Rescue
+
     attr_reader :ticket
     attr_accessor :id
 
@@ -66,5 +68,8 @@ module Zendesk
       puts e.message
       puts "\t#{e.response[:body].inspect}" if e.response
     end
+
+    rescue_client_error :next, :init_playlist
+    rescue_client_error :destroy, :with => false
   end
 end

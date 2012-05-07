@@ -8,6 +8,8 @@ module Zendesk
   # Represents a collection of resources. Lazily loaded, resources aren't
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
+    extend Rescue
+
     # @return [Number] The total number of resources server-side (disregarding pagination).
     attr_reader :count
     # @return [Zendesk::Association] The class association
@@ -128,11 +130,9 @@ module Zendesk
       @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]
 
       @resources
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      []
     end
+
+    rescue_client_error :fetch, :with => lambda { Array.new }
 
     # Alias for fetch(false)
     def to_a

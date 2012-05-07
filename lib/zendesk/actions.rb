@@ -1,5 +1,7 @@
-module Zendesk  
+module Zendesk
   module Read
+    extend Rescue
+
     # Finds a resource by an id and any options passed in.
     # A custom path to search at can be passed into opts. It defaults to the {DataResource.resource_name} of the class. 
     # @param [Client] client The {Client} object to be used
@@ -12,14 +14,14 @@ module Zendesk
       end
 
       new(client, response.body)
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      nil
     end
+
+    rescue_client_error :find
   end
 
   module Create
+    extend Rescue
+
     # Create a resource given the attributes passed in.
     # @param [Client] client The {Client} object to be used
     # @param [Hash] attributes The attributes to create.
@@ -31,14 +33,14 @@ module Zendesk
       end
 
       new(client, response.body)
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      nil
     end
+
+    rescue_client_error :create
   end
 
   module Destroy
+    extend Rescue
+
     # Deletes a resource given the id passed in.
     # @param [Client] client The {Client} object to be used
     # @param [Number] id The id to DELETE.
@@ -51,14 +53,14 @@ module Zendesk
       end
 
       true
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      false
     end
+
+    rescue_client_error :destroy, :with => false
   end
 
   module Update
+    extend Rescue
+
     # Updates  a resource given the id passed in.
     # @param [Client] client The {Client} object to be used
     # @param [Number] id The id to DELETE.
@@ -71,10 +73,8 @@ module Zendesk
       end
 
       true
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      false
     end
+
+    rescue_client_error :update, :with => false
   end
 end
