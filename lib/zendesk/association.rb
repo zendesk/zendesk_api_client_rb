@@ -25,7 +25,7 @@ module Zendesk
           obj.tap { instance_variable_set("@#{resource}", obj) if obj }
         elsif (res = method_missing(resource.to_sym)) 
           instance_variable_set("@#{resource}", res.is_a?(Hash) ? klass.new(@client, res) : res)
-        else
+        elsif klass.ancestors.include?(DataResource)
           begin
             response = @client.connection.get("#{path}/#{opts[:path] || resource}.json")
             instance_variable_set("@#{resource}", klass.new(@client, response.body))
@@ -66,7 +66,7 @@ module Zendesk
           end
 
           instance_variable_set("@#{resource}", loaded_resources)
-        else
+        elsif klass.ancestors.include?(DataResource)
           collection = Zendesk::Collection.new(@client, klass, opts)
           collection.parent = self
 
