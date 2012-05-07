@@ -17,7 +17,7 @@ module Zendesk
             return instance_variable_get("@#{method}") if instance_variable_defined?("@#{verb}") && !opts[:reload]
 
             begin
-              response = @client.connection.send(verb, "#{path}/#{method}.json") do |req|
+              response = @client.connection.send(verb, "#{path}/#{method}") do |req|
                 req.body = opts
               end
 

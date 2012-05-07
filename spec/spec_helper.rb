@@ -28,6 +28,10 @@ RSpec.configure do |c|
     VCR.turn_on!
   end
 
+  c.before(:each) do
+    WebMock.reset!
+  end
+
   c.extend VCR::RSpec::Macros
   c.extend ResourceMacros
 end

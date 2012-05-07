@@ -41,7 +41,7 @@ describe Zendesk::Client do
 
   context "#me", :vcr_off do
     before(:each) do
-      stub_request(:get, %r{users/me.json}).to_return({})
+      stub_request(:get, %r{users/me}).to_return({})
     end
 
     it "should be a user instance" do
@@ -69,7 +69,7 @@ describe Zendesk::Client do
   context "#play", :vcr_off do
     # TODO may be able to be replaced by VCR
     before(:each) do 
-      stub_request(:get, %r{play.json}).to_return do
+      stub_request(:get, %r{play}).to_return do
         { :status => 302 }
       end
     end

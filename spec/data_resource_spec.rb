@@ -96,7 +96,7 @@ describe Zendesk::DataResource do
     context "instance method" do
       context "with no side-loading", :vcr_off do
         subject { Zendesk::TestResource.new(client, :id => 1) }
-        before(:each) { stub_request(:get, %r{test_resources/[0-9]+/foo}).to_return({}) }
+        before(:each) { stub_request(:get, %r{test_resources/[0-9]+/foo}).to_return(:body => {}) }
 
         it "should attempt to grab the resource from the host" do
           subject.foo.should be_instance_of(Zendesk::Foo)
@@ -117,7 +117,7 @@ describe Zendesk::DataResource do
         context "with an explicit path set" do
           before(:each) do
             Zendesk::TestResource.has :foo, :path => "blergh"
-            stub_request(:get, %r{test_resources/[0-9]+/blergh}).to_return({})
+            stub_request(:get, %r{test_resources/[0-9]+/blergh}).to_return(:body => {})
           end
 
           it "should call the right path" do
@@ -135,17 +135,19 @@ describe Zendesk::DataResource do
         end
       end
 
-      context "with side-loading of id" do
+      context "with side-loading of id", :vcr_off do
         let(:foo) { 1 }
         subject { Zendesk::TestResource.new(client, :foo_id => foo) }
+        before(:each) do
+          stub_request(:get, %r{foos/1}).to_return({})
+        end
 
         it "should find foo_id and load it from the api" do
-          Zendesk::Foo.should_receive(:find).with(client, :id => foo)
           subject.foo
         end
 
         it "should handle nil response from find api" do
-          Zendesk::Foo.should_receive(:find).with(client, :id => foo).twice.and_return(nil)
+          Zendesk::Foo.should_receive(:find).twice.and_return(nil)
           subject.foo.should be_nil
           subject.foo
         end
@@ -184,7 +186,7 @@ describe Zendesk::DataResource do
         end
 
         it "should pass the path on to the resource" do
-          subject.bars.path.should == "test_resources/1/bars.json"
+          subject.bars.path.should == "test_resources/1/bars"
         end
 
         context "with an explicit path set" do
@@ -193,7 +195,7 @@ describe Zendesk::DataResource do
           end
 
           it "should call the right path" do
-            subject.bars.path.should == "test_resources/1/blargh.json"
+            subject.bars.path.should == "test_resources/1/blargh"
           end
         end
       end

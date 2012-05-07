@@ -6,7 +6,7 @@ require 'zendesk/verbs'
 module Zendesk
   # Represents a resource that only holds data.
   class Data
-    extend Association
+    extend Associations
 
     class << self
       # The singular resource name taken from the class name (e.g. Zendesk::Tickets -> ticket)
@@ -19,40 +19,15 @@ module Zendesk
         @resource_name ||= singular_resource_name.plural
       end
 
-      def parent_name
-        return @parent_name if @parent_name
-
-        path
-        @parent_name
-      end
-
       def singular_resource
         @singular_resource ||= true
-      end
-
-      def path(with_id_if_applicable = true)
-        ary = to_s.split("::")
-        ary.delete("Zendesk")
-        ary[0] = Zendesk.get_class(ary[0])
-
-        if ary.size > 1
-          ary[1] = ary[0].associations[ary[0].get_class(ary[1])][:name].to_s
-          ary.insert(1, "%s")
-          @parent_name = "#{ary[0].singular_resource_name}_id"
-        end
-
-        ary[0] = ary[0].resource_name
-        
-        if with_id_if_applicable && !self.ancestors.include?(SingularResource)
-          ary << "%s"
-        end
-
-        ary.join("/")
       end
     end
 
     # @return [Hash] The resource's attributes
     attr_reader :attributes
+    # @return [Zendesk::Association] The association
+    attr_accessor :association
 
     # Create a new resource instance.
     # @param [Client] client The client to use
@@ -60,6 +35,7 @@ module Zendesk
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
     def initialize(client, attributes = {})
       @client, @attributes = client, Zendesk::Trackie.new(attributes)
+      @association = @attributes.delete(:association) || Association.new(:class => self.class)
 
       unless new_record?
         @attributes.clear_changes
@@ -83,10 +59,7 @@ module Zendesk
 
     # Returns the path to the resource
     def path(*args)
-      path = self.class.path(*args)
-      parent = send(self.class.parent_name) if self.class.parent_name
-      path %= [parent, id].compact
-      path
+      @association.generate_path(self, *args)
     end
 
     def to_s
@@ -150,14 +123,14 @@ module Zendesk
 
       if new_record?
         method = :post
-        req_path = path(false)
+        req_path = path(:with_id => false)
       else
         method = :put
-        req_path = url || "#{path}.json"
+        req_path = url || path
       end
 
       assoc_attrs = attributes[self.class.singular_resource_name] || attributes
-      self.class.associations.each do |klass, assoc|
+      self.class.associations.each do |assoc|
         if assoc[:save]
           assoc_id = "#{assoc[:name]}_id" 
           singular_assoc_ids = "#{assoc[:name].to_s.singular}_ids" 
@@ -193,7 +166,7 @@ module Zendesk
     def destroy
       return false if destroyed? || new_record?
 
-      response = @client.connection.delete(url || "#{path}.json")
+      response = @client.connection.delete(url || path)
 
       @destroyed = true
     rescue Faraday::Error::ClientError => e

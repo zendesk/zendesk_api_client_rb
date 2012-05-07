@@ -5,10 +5,9 @@ module Zendesk
     # @param [Client] client The {Client} object to be used
     # @param [Hash] opts Any additional GET parameters to be added
     def find(client, opts = {})
-      opts = Hashie::Mash.new(opts)
-      path = self.path % [opts.delete(self.parent_name), opts.delete(:id)].compact
+      association = opts.delete(:association) || Association.new(:class => self)
 
-      response = client.connection.get("#{path}.json") do |req|
+      response = client.connection.get(association.generate_path(opts)) do |req|
         req.params = opts
       end
 
@@ -25,10 +24,9 @@ module Zendesk
     # @param [Client] client The {Client} object to be used
     # @param [Hash] attributes The attributes to create.
     def create(client, attributes = {})
-      attributes = Hashie::Mash.new(attributes)
-      path = self.path(false) % attributes.delete(self.parent_name)
+      association = attributes.delete(:association) || Association.new(:class => self)
 
-      response = client.connection.post("#{path}.json") do |req|
+      response = client.connection.post(association.generate_path(attributes.merge(:with_id => false))) do |req|
         req.body = attributes
       end
 
@@ -46,10 +44,9 @@ module Zendesk
     # @param [Number] id The id to DELETE.
     # @param [Hash] opts The optional parameters to pass. Defaults to {}
     def destroy(client, opts = {})
-      opts = Hashie::Mash.new(opts)
-      path = self.path % [opts.delete(self.parent_name), opts.delete(:id)].compact
+      association = opts.delete(:association) || Association.new(:class => self)
 
-      client.connection.delete("#{path}.json") do |req|
+      client.connection.delete(association.generate_path(opts)) do |req|
         req.params = opts
       end
 
@@ -67,10 +64,9 @@ module Zendesk
     # @param [Number] id The id to DELETE.
     # @param [String] path The optional path to use. Defaults to {DataResource.resource_name}. 
     def update(client, attributes = {})
-      attributes = Hashie::Mash.new(attributes)
-      path = self.path % [attributes.delete(self.parent_name), attributes.delete(:id)].compact
+      association = attributes.delete(:association) || Association.new(:class => self)
 
-      client.connection.put("#{path}.json") do |req|
+      client.connection.put(association.generate_path(attributes)) do |req|
         req.body = attributes
       end
 

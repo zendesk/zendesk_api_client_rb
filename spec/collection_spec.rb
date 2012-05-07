@@ -23,38 +23,47 @@ describe Zendesk::Collection do
     end
   end
 
-  context "deferral" do
+  context "deferral", :vcr_off do
+    before(:each) do
+      stub_request(:any, %r{test_resources}).to_return({})
+    end
+
     it "should defer #create to the resource class" do
-      Zendesk::TestResource.should_receive(:create).with(client, {})
       subject.create
     end
 
     it "should defer #find to the resource class" do
-      Zendesk::TestResource.should_receive(:find).with(client, Hashie::Mash.new(:id => 1))
       subject.find(:id => 1)
     end
 
     it "should defer #destroy to the resource class" do
-      Zendesk::TestResource.should_receive(:destroy).with(client, Hashie::Mash.new(:id => 1))
       subject.destroy(:id => 1)
     end
 
     context "with a class with a parent" do
-      subject { Zendesk::Collection.new(client, Zendesk::TestResource::TestChild) }
-      before(:each) { subject.parent = Zendesk::TestResource.new(client, :id => 1) }
+      let(:association) do
+        Zendesk::Association.new(:class => Zendesk::TestResource::TestChild,
+          :parent => Zendesk::TestResource.new(client, :id => 1))
+      end
+
+      subject do
+        Zendesk::Collection.new(client, Zendesk::TestResource::TestChild,
+          :association => association)
+      end
+
+      before(:each) do
+        stub_request(:any, %r{test_resources/[0-9]+/test_child}).to_return({})
+      end
 
       it "should defer #create to the resource class with the parent id" do
-        Zendesk::TestResource::TestChild.should_receive(:create).with(client, Hashie::Mash.new(:test_resource_id => 1))
         subject.create
       end
 
       it "should defer #destroy the resource class with the parent id" do
-        Zendesk::TestResource::TestChild.should_receive(:destroy).with(client, Hashie::Mash.new(:test_resource_id => 1, :id => 1))
         subject.destroy(:id => 1)
       end
 
       it "should defer #find to the resource class with the parent id" do
-        Zendesk::TestResource::TestChild.should_receive(:find).with(client, Hashie::Mash.new(:test_resource_id => 1, :id => 1))
         subject.find(:id => 1)
       end
     end
@@ -241,14 +250,17 @@ describe Zendesk::Collection do
   end
 
 
-  context "with different path" do
+  context "with different path", :vcr_off do
     subject do
       Zendesk::Collection.new(client, Zendesk::TestResource, :collection_path => ["test_resources", "active"])
     end
 
+    before(:each) do
+      @request = stub_request(:post, %r{test_resources/active}).to_return({})
+    end
+
     context "deferral" do
       it "should defer #create to the resource class with proper path" do
-        Zendesk::TestResource.should_receive(:create).with(client, {})
         subject.create
       end
     end

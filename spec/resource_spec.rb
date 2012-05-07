@@ -130,8 +130,12 @@ describe Zendesk::Resource do
 
     context "with nested associations to save" do
       context "has" do
-        before(:each) do
+        before(:all) do
+          Zendesk::TestResource.associations.clear
           Zendesk::TestResource.has :child, :class => :test_child, :save => true
+        end
+
+        before(:each) do
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           subject.child_id = 1
         end
@@ -176,8 +180,12 @@ describe Zendesk::Resource do
       end
 
       context "has_many" do
-        before(:each) do
+        before(:all) do
+          Zendesk::TestResource.associations.clear
           Zendesk::TestResource.has_many :children, :class => :test_child, :save => true
+        end
+
+        before(:each) do
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           stub_request(:get, %r{children}).to_return(:body => {"test_children" => []})
         end
@@ -203,8 +211,12 @@ describe Zendesk::Resource do
 
         context "with an object" do
           context "with a hash" do
+            let(:association) do
+              Zendesk::Association.new(:class => Zendesk::TestResource::TestChild, :parent => Zendesk::TestResource.new(client, :id => 1))
+            end
             before(:each) do
-              collection = Zendesk::Collection.new(client, Zendesk::TestResource::TestChild)
+              collection = Zendesk::Collection.new(client, Zendesk::TestResource::TestChild,
+                :association => association)
               collection << { :id => 2, :def => :abc, :test_resource_id => 1 }
               collection << { :id => 3, :def => :gre, :test_resource_id => 1 }
               subject.children = collection

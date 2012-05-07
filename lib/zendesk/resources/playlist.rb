@@ -25,7 +25,7 @@ module Zendesk
       init_playlist unless initialized?
       return false if !initialized? || destroyed? 
 
-      response = @client.connection.get("play/next.json")
+      response = @client.connection.get("play/next")
 
       if response.status == 200
         @ticket = Ticket.new(@client, response.body["ticket"])
@@ -41,7 +41,7 @@ module Zendesk
     end
 
     def destroy
-      response = @client.connection.delete("play.json")
+      response = @client.connection.delete("play")
       @destroyed = response.status == 204 
     rescue Faraday::Error::ClientError => e
       puts e.message
@@ -60,7 +60,7 @@ module Zendesk
     private
 
     def init_playlist
-      response = @client.connection.get("views/#{id}/play.json")
+      response = @client.connection.get("views/#{id}/play")
       @initialized = response.status == 302
     rescue Faraday::Error::ClientError => e
       puts e.message

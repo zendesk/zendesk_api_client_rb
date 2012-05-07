@@ -41,9 +41,8 @@ module Zendesk
     def votes(opts = {})
       return @votes if @votes && !opts[:reload]
 
-      @votes = Zendesk::Collection.new(@client, Topic::TopicVote, opts.merge(:path => 'votes')).tap do |coll|
-        coll.parent = self
-      end
+      association = Zendesk::Association.new(:class => Topic::TopicVote, :parent => self, :path => 'votes')
+      @votes = Zendesk::Collection.new(@client, Topic::TopicVote, opts.merge(:association => association))
     end
   end
 end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Zendesk::Response::CallbackMiddleware, :vcr_off do
   let(:response) { "TEST" }
 
-  before(:all) do
+  before(:each) do
     client.insert_callback do |env|
       env[:body] = response
     end

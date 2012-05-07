@@ -10,9 +10,8 @@ module Zendesk
   class Collection
     # @return [Number] The total number of resources server-side (disregarding pagination).
     attr_reader :count
-
-    # @return [Object] The parent object of this collection, must be set explicitly
-    attr_accessor :parent
+    # @return [Zendesk::Association] The class association
+    attr_reader :association
 
     # Creates a new Collection instance. Does not fetch resources.
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
@@ -25,14 +24,18 @@ module Zendesk
       @options = Hashie::Mash.new(options)
 
       @verb = @options.delete(:verb)
-      @path = @options.delete(:path)
-      @collection_path = @options.delete(:collection_path) || [@resource]
+      @collection_path = @options.delete(:collection_path)
+
+      association_options = { :path => @options.delete(:path) }
+      association_options[:path] ||= @collection_path.join("/") if @collection_path
+      @association = @options.delete(:association) || Association.new(association_options.merge(:class => resource))
 
       # Special case POST topics/show_many
       @options.each do |k, v|
         @options[k] = v.join(',') if v.is_a?(Array) 
       end
 
+      @collection_path ||= [@resource]
       @resource_class = resource
       @fetchable = true
 
@@ -46,19 +49,19 @@ module Zendesk
     # Passes arguments and the proper path to the resource class method.
     # @param [Hash] attributes Attributes to pass to Create#create
     def create(attributes = {})
-      attributes.merge!(@resource_class.parent_name => parent.id) if parent
+      attributes.merge!(:association => @association)
       @resource_class.create(@client, @options.merge(attributes))
     end
 
     # (see #create)
     def find(opts = {})
-      opts.merge!(@resource_class.parent_name => parent.id) if parent
+      opts.merge!(:association => @association)
       @resource_class.find(@client, @options.merge(opts))
     end
 
     # (see #create)
     def destroy(opts = {})
-      opts.merge!(@resource_class.parent_name => parent.id) if parent
+      opts.merge!(:association => association)
       @resource_class.destroy(@client, @options.merge(opts))
     end
 
@@ -96,14 +99,7 @@ module Zendesk
     end
 
     def path
-      if parent
-        path = [parent.class.resource_name,
-          parent.id, @path || parent.class.associations[@resource_class][:name]]
-      else
-        path = @path ? [@path] : @collection_path 
-      end
-
-      path.join("/") + ".json"
+      @association.generate_path(:with_parent => true)
     end
 
     # Executes actual GET from API and loads resources into proper class.
