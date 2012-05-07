@@ -45,6 +45,12 @@ module Zendesk
       Hashie::Mash.new(connection.get('resolve_account').body)
     end
 
+    # Returns the current locale
+    def locale(reload = false)
+      return @locale if @locale && !reload
+      @locale = locales.find(:id => 'current')
+    end
+
     rescue_client_error :resolve_account
 
     # Creates a new Client instance with no configuration options and no connection.
