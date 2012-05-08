@@ -13,7 +13,7 @@ module Zendesk
     has :recipient, :class => :user
     has_many :collaborators, :class => :user
     has_many :audits
-    has_many :metrics, :class => :ticket_metric
+    has :metrics, :class => :ticket_metric
     has :group
     has :forum_topic, :class => :topic
     has :organization
@@ -23,7 +23,7 @@ module Zendesk
   end
 
   class SuspendedTicket < ReadResource
-    extend Destroy
+    include Destroy
     put :recover
   end
 

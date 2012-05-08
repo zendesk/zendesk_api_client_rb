@@ -54,6 +54,11 @@ module Zendesk
       key?(:id) ? method_missing(:id) : nil
     end
 
+    # Has this been object been created server-side? Does this by checking for an id.
+    def new_record?
+      id.nil? 
+    end
+
     # Returns the path to the resource
     def path(*args)
       @association.generate_path(self, *args)
@@ -89,82 +94,23 @@ module Zendesk
     extend Create
   end
 
+  # Represents a resource that can only PUT
+  class UpdateResource < DataResource
+    include Update
+  end
+
+  # Represents a resource that can only DELETE
+  class DeleteResource < DataResource
+    include Destroy
+  end
+
   # Represents a resource that can CRUD (create, read, update, delete).
   class Resource < DataResource 
     extend Read
     extend Create
-    extend Update
-    extend Destroy
 
-    def initialize(*args)
-      super
-      @destroyed = false
-    end
-
-    # Has this object been deleted?
-    def destroyed?
-      @destroyed
-    end
-
-    # Has this been object been created server-side? Does this by checking for an id.
-    def new_record?
-      id.nil? 
-    end
-
-    # If this resource hasn't been deleted, then create or save it.
-    # Executes a POST if it is a {#new_record?}, otherwise a PUT.
-    # Merges returned attributes on success.
-    # @return [Boolean] Success?
-    def save
-      return false if destroyed?
-
-      if new_record?
-        method = :post
-        req_path = path
-      else
-        method = :put
-        req_path = url || path
-      end
-
-      assoc_attrs = attributes[self.class.singular_resource_name] || attributes
-      self.class.associations.each do |assoc|
-        if assoc[:save]
-          assoc_id = "#{assoc[:name]}_id" 
-          singular_assoc_ids = "#{assoc[:name].to_s.singular}_ids" 
-          assoc_obj = send(assoc[:name])
-          next unless assoc_obj
-          assoc_obj.save if assoc_obj.respond_to?(:save)
-
-          if has_key?(assoc_id)
-            assoc_attrs[assoc_id] = assoc_obj.id
-          elsif has_key?(singular_assoc_ids)
-            assoc_attrs[singular_assoc_ids] = assoc_obj.map(&:id)
-          else
-            assoc_attrs[assoc[:name]] = assoc_obj.is_a?(Collection) ? assoc_obj.map(&:to_param) : assoc_obj.to_param
-          end
-        end
-      end
-
-      response = @client.connection.send(method, req_path) do |req|
-        req.body = attributes.changes
-      end
-
-      @attributes.replace(@attributes.deep_merge(response.body))
-      @attributes.clear_changes
-      true
-    end
-
-    # If this resource hasn't already been deleted, then do so.
-    # @return [Boolean] Successful?
-    def destroy
-      return false if destroyed? || new_record?
-
-      response = @client.connection.delete(url || path)
-
-      @destroyed = true
-    end
-
-    rescue_client_error :save, :destroy, :with => false
+    include Update 
+    include Destroy
   end
 
   class SingularResource < Resource; end

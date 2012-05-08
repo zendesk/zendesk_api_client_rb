@@ -73,6 +73,12 @@ def ticket
   end
 end
 
+def suspended_ticket
+  VCR.use_cassette('valid_suspended_ticket') do
+    @suspended_ticket ||= client.suspended_tickets.first
+  end
+end
+
 def group
   VCR.use_cassette('valid_group') do
     @ticket ||= client.groups.create(

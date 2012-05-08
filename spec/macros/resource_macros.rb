@@ -82,8 +82,12 @@ module ResourceMacros
       use_vcr_cassette
 
       before(:all) do
-        VCR.use_cassette("#{described_class.to_s}_delete_create") do
-          @object = described_class.create(client, valid_attributes.merge(default_options))
+        if options[:object]
+          @object = options.delete(:object)
+        else
+          VCR.use_cassette("#{described_class.to_s}_delete_create") do
+            @object = described_class.create(client, valid_attributes.merge(default_options))
+          end
         end
       end
 
@@ -130,12 +134,20 @@ module ResourceMacros
       it "should be findable" do
         result = klass
         args.each {|a| result = result.send(a, options)}
-        result.fetch(true).should_not be_empty
-        result.fetch.should include(@object) if create
+
+        if result.is_a?(Zendesk::Collection)
+          result.fetch(true).should_not be_empty
+          result.fetch.should include(@object) if create
+          object = result.first
+        else
+          result.should_not be_nil
+          result.should == @object if create
+          object = result
+        end
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           options = default_options
-          options.merge!(:id => result.first.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
+          options.merge!(:id => object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
           described_class.find(client, options).should_not be_nil 
         end
       end
