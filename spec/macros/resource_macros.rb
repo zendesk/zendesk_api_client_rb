@@ -18,6 +18,7 @@ module ResourceMacros
       end
 
       it "should have an id" do
+        @object.should_not be_nil
         @object.id.should_not be_nil
       end
 
