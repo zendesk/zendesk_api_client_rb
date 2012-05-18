@@ -10,11 +10,11 @@ Currently
 
     gem install zendesk
 
-will not install this version of the API client. To use it, you must either clone this repository and run
+will not install this version of the API client. To install this client, either clone this repository and run
 
     rake install
 
-or add it to your Gemfile as such:
+or add it to a Gemfile like so:
 
     gem "zendesk", :git => "git://github.com/zendesk/zendesk_api_client_rb.git"
 
