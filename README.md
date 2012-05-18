@@ -46,6 +46,8 @@ Zendesk.configure do |config|
 
   # Merged with the default client options hash
   config.client_options = { :ssl => false }
+  # When getting the error 'hostname does not match the server certificate' use
+  config.client_options = { :ssl => { :verify => false } }
 end
 ```
 
