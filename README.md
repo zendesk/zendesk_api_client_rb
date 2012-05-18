@@ -39,12 +39,14 @@ Note: This Zendesk API client only supports basic authentication at the moment.
 
 ## Usage
 
+    gem install zendesk
+
 The result of configuration is an instance of Zendesk::Client which can then be used in two different methods.
 
 One way to use the client is to pass it in as an argument to individual classes.
 
 ```
-Zendesk::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save 
+Zendesk::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save
 Zendesk::Ticket.create(client, :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent")
 Zendesk::Ticket.find(client, :id => 1)
 Zendesk::Ticket.delete(client, :id => 1)
@@ -59,7 +61,7 @@ client.tickets.create(:subject => "Test Ticket", :description => "This is a test
 client.tickets.delete(:id => 1)
 ```
 
-The methods under Zendesk::Client (such as .tickets) return an instance of Zendesk::Collection a lazy-loaded list of that resource. 
+The methods under Zendesk::Client (such as .tickets) return an instance of Zendesk::Collection a lazy-loaded list of that resource.
 Actual requests may not be sent until an explicit Zendesk::Collection#fetch, Zendesk::Collection#to_a, or an applicable methods such
 as #each.
 
