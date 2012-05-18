@@ -39,7 +39,17 @@ Note: This Zendesk API client only supports basic authentication at the moment.
 
 ## Usage
 
+Currently
+
     gem install zendesk
+
+will not install this version of the API client. To use it, you must either clone this repository and run
+
+    rake install
+
+or add it to your Gemfile as such:
+
+    gem "zendesk", :git => "git://github.com/zendesk/zendesk_api_client_rb.git"
 
 The result of configuration is an instance of Zendesk::Client which can then be used in two different methods.
 
