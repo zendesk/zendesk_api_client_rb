@@ -36,22 +36,23 @@ module Zendesk
 
     # Returns the current user (aka me)
     # @return [Zendesk::User] Current user or nil
-    def me(reload = false)
-      return @me if @me && !reload
-      @me = users.find(:id => 'me')
+    def current_user(reload = false)
+      return @current_user if @current_user && !reload
+      @current_user = users.find(:id => 'me')
     end
 
-    def resolve_account
-      Hashie::Mash.new(connection.get('resolve_account').body)
+    def current_account(reload = false)
+      return @current_account if @current_account && !reload
+      @current_account = Hashie::Mash.new(connection.get('account/resolve').body)
     end
+
+    rescue_client_error :current_account
 
     # Returns the current locale
-    def locale(reload = false)
+    def current_locale(reload = false)
       return @locale if @locale && !reload
       @locale = locales.find(:id => 'current')
     end
-
-    rescue_client_error :resolve_account
 
     # Creates a new Client instance with no configuration options and no connection.
     def initialize

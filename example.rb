@@ -9,5 +9,4 @@ client = Zendesk.configure do |config|
   config.retry = true
 end
 
-puts client.resolve_account.inspect
-#client.users.find(:id => 'me')
+puts client.current_account.inspect
