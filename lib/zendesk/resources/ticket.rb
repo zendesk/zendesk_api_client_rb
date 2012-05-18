@@ -1,6 +1,5 @@
 module Zendesk
   class TicketField < Resource; end
-  class Audit < DataResource; end
   class TicketComment < Data; end
   class TicketMetric < ReadResource; end
 

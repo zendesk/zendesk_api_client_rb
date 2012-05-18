@@ -19,6 +19,11 @@ module Zendesk
       def resource_name
         @resource_name ||= singular_resource_name.plural
       end
+
+      # Rails tries to load dependencies, which messes up automatic resource our own loading
+      if method_defined?(:const_missing_without_dependencies)
+        alias :const_missing :const_missing_without_dependencies
+      end
     end
 
     # @return [Hash] The resource's attributes
