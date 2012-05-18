@@ -1,6 +1,7 @@
 require 'faraday'
 require 'faraday_middleware'
 
+require 'zendesk/version'
 require 'zendesk/rescue'
 require 'zendesk/configuration'
 require 'zendesk/collection'
