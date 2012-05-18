@@ -170,22 +170,30 @@ describe Zendesk::Collection do
     end
   end
 
-  context "with real data" do
+  context "without real data", :vcr_off do
     subject do
       Zendesk::Collection.new(client, Zendesk::User)
     end
 
-    before(:all) do
-      VCR.use_cassette('collection_fetch_users') do
-        subject.per_page(1).page(2)
-        subject.fetch(true)
-      end
+    before(:each) do
+      stub_request(:get, %r{users\?page=2}).to_return(:body => {
+        "users" => [{"id" => 2}],
+        "next_page" => "/users?page=3&per_page=1",
+        "previous_page" => "/users?page=1&per_page=1"
+      })
+
+      subject.per_page(1).page(2)
+      subject.fetch(true)
     end
 
     context "pagination with no options" do
-      use_vcr_cassette
+      before(:each) do
+        stub_request(:get, %r{users\?page=(1|3)}).to_return(:body => {
+          "users" => [{"id" => 3}]
+        })
 
-      before(:each) { subject.per_page(nil).page(nil) }
+        subject.per_page(nil).page(nil)
+      end
 
       it "should find the next page by calling fetch" do
         current = subject.to_a.dup

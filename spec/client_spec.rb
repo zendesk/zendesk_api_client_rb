@@ -39,13 +39,13 @@ describe Zendesk::Client do
     end
   end
 
-  context "#me", :vcr_off do
+  context "#current_user", :vcr_off do
     before(:each) do
       stub_request(:get, %r{users/me}).to_return({})
     end
 
     it "should be a user instance" do
-      client.me.should be_instance_of(Zendesk::User)
+      client.current_user.should be_instance_of(Zendesk::User)
     end
   end
 
