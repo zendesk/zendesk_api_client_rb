@@ -198,23 +198,30 @@ module Zendesk
     end
   end
 
-  # Allows using has and has_many without having class defined yet
-  # Guesses at Resource, if it's anything else and the class is later
-  # reopened under a different superclass, an error will be thrown
-  def self.get_class(resource)
-    return false if resource.nil?
-    res = resource.to_s.modulize.split("::")
+  class << self
+    # Revert Rails' overwrite of const_missing
+    if method_defined?(:const_missing_without_dependencies)
+      alias :const_missing :const_missing_without_dependencies
+    end
 
-    begin
-      res[1..-1].inject(Zendesk.const_get(res[0])) do |iter, k| 
-        begin
-          iter.const_get(k)
-        rescue
-          iter.const_set(k, Class.new(Resource))
+    # Allows using has and has_many without having class defined yet
+    # Guesses at Resource, if it's anything else and the class is later
+    # reopened under a different superclass, an error will be thrown
+    def get_class(resource)
+      return false if resource.nil?
+      res = resource.to_s.modulize.split("::")
+
+      begin
+        res[1..-1].inject(Zendesk.const_get(res[0])) do |iter, k|
+          begin
+            iter.const_get(k)
+          rescue
+            iter.const_set(k, Class.new(Resource))
+          end
         end
+      rescue NameError
+        Zendesk.const_set(res[0], Class.new(Resource))
       end
-    rescue NameError
-      Zendesk.const_set(res[0], Class.new(Resource))
     end
   end
 end
