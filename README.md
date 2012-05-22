@@ -178,7 +178,7 @@ ticket.save
 
 ## TODO
 
-* /search.json functionality
+* Search class detection
 * Nested association saving
 * DateTime parsing
 * Automatic parameter wrapping

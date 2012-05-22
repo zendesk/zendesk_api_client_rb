@@ -20,6 +20,8 @@ module Zendesk
         @resource_name ||= singular_resource_name.plural
       end
 
+      alias :model_key :resource_name
+
       # Rails tries to load dependencies, which messes up automatic resource our own loading
       if method_defined?(:const_missing_without_dependencies)
         alias :const_missing :const_missing_without_dependencies

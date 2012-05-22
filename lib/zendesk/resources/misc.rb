@@ -46,4 +46,14 @@ module Zendesk
   class Locale < ReadResource; end
   class Bookmark < Resource; end
   class Macro < DataResource; end
+
+  class Search < DataResource
+    def self.resource_name
+      "search"
+    end
+
+    def self.model_key
+      "results"
+    end
+  end
 end

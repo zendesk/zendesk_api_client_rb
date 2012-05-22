@@ -55,10 +55,6 @@ module Zendesk
       @locale = locales.find(:id => 'current')
     end
 
-    def search(parameters = {})
-      Zendesk::Collection.new()
-    end
-
     # Creates a new Client instance with no configuration options and no connection.
     def initialize
       @config = Zendesk::Configuration.new

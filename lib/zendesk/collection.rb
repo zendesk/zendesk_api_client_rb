@@ -122,7 +122,7 @@ module Zendesk
         req.params.merge!(@options.delete_if {|k, v| v.nil?})
       end
 
-      @resources = response.body[@resource].map do |res|
+      @resources = response.body[@resource_class.model_key].map do |res|
         @resource_class.new(@client, { @resource_class.singular_resource_name => res })
       end
 
