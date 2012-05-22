@@ -9,7 +9,7 @@ module Zendesk
     #
     #
     # Does basic configuration constraints:
-    # * Configuration#url must be https unless it is localhost of 127.0.0.1 
+    # * Configuration#url must be https unless it is localhost of 127.0.0.1
     #
     # @return [Client] {Client} instance with given configuration options
     def configure
@@ -52,10 +52,11 @@ module Zendesk
     #
     # @return [Hash] Faraday-formatted hash of options.
     def options
-      { 
-        :headers => { 
+      {
+        :headers => {
           :accept => 'application/json',
-          :user_agent => "Zendesk API #{Zendesk::VERSION}"
+          :user_agent => "Zendesk API #{Zendesk::VERSION}",
+          :x_on_behalf_of => client_options.delete(:x_on_behalf_of) || ''
         },
         :url => @url
       }.merge(client_options)

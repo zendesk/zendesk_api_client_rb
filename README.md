@@ -45,9 +45,14 @@ Zendesk.configure do |config|
   config.adapter = :patron
 
   # Merged with the default client options hash
-  config.client_options = { :ssl => false }
+  config.client_options = {
+    # disable ssl
+    :ssl => false,
+    # when you want to behalf of the end user:
+    :x_on_behalf_of => 'end.user@mail.com'
+  }
 
-  # When getting the error 'hostname does not match the server certificate' 
+  # When getting the error 'hostname does not match the server certificate'
   # use the API at https://yoursubdomain.zendesk.com/api/v2
 end
 ```
