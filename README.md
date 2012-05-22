@@ -62,7 +62,7 @@ One way to use the client is to pass it in as an argument to individual classes.
 
 ```
 Zendesk::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save
-Zendesk::Ticket.create(client, :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent")
+Zendesk::Ticket.create(client, :ticket => { :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent")
 Zendesk::Ticket.find(client, :id => 1)
 Zendesk::Ticket.delete(client, :id => 1)
 ```
@@ -72,7 +72,7 @@ Another way is to use the instance methods under client.
 ```
 client.tickets.first
 client.tickets.find(:id => 1)
-client.tickets.create(:subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent")
+client.tickets.create(:ticket => { :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.me.id, :priority => "urgent" })
 client.tickets.delete(:id => 1)
 ```
 
