@@ -21,4 +21,13 @@ describe Zendesk::Configuration do
     subject.client_options = {:ssl => false}
     subject.options[:ssl].should == false
   end
+
+  context "when  work on behalf of other user" do
+    #after(:all) { subject.options[:headers].delete(:x_on_behalf_of) }
+
+    it "should merge options with client_options" do
+      subject.client_options = { :x_on_behalf_of => 'sample@example.com' }
+      subject.options[:headers][:x_on_behalf_of].should == 'sample@example.com'
+    end
+  end
 end
