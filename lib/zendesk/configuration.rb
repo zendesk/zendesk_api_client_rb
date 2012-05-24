@@ -43,6 +43,8 @@ module Zendesk
     attr_accessor :log
     # @return [Hash] Client configurations (eg ssh config) to pass to Faraday
     attr_accessor :client_options
+    # @return [Symbol] Faraday adapter
+    attr_accessor :adapter
 
     def initialize
       @client_options = {}
@@ -55,6 +57,7 @@ module Zendesk
       { 
         :headers => { 
           :accept => 'application/json',
+          :accept_encoding => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           :user_agent => "Zendesk API #{Zendesk::VERSION}"
         },
         :url => @url
