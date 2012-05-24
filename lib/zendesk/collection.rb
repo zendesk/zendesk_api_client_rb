@@ -10,8 +10,6 @@ module Zendesk
   class Collection
     extend Rescue
 
-    # @return [Number] The total number of resources server-side (disregarding pagination).
-    attr_reader :count
     # @return [Zendesk::Association] The class association
     attr_reader :association
 
@@ -65,6 +63,12 @@ module Zendesk
     def destroy(opts = {})
       opts.merge!(:association => association)
       @resource_class.destroy(@client, @options.merge(opts))
+    end
+
+    # @return [Number] The total number of resources server-side (disregarding pagination).
+    def count
+      fetch
+      @count
     end
 
     # Changes the per_page option. Returns self, so it can be chained. No execution.
