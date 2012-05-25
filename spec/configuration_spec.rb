@@ -21,4 +21,10 @@ describe Zendesk::Configuration do
     subject.client_options = {:ssl => false}
     subject.options[:ssl].should == false
   end
+
+  it "should set header properly" do
+    email = 'sample@example.com'
+    subject.on_behalf_of = email
+    subject.options[:headers][:x_on_behalf_of].should == email
+  end
 end

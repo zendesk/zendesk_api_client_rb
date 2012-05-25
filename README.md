@@ -43,11 +43,16 @@ Zendesk.configure do |config|
   config.log = true
   # Changes Faraday adapter
   config.adapter = :patron
+  # On behalf of the end user
+  config.on_behalf_of = 'mail.from.the.end.user@example.com'
 
   # Merged with the default client options hash
-  config.client_options = { :ssl => false }
+  config.client_options = {
+    # Disable ssl
+    :ssl => false
+  }
 
-  # When getting the error 'hostname does not match the server certificate' 
+  # When getting the error 'hostname does not match the server certificate'
   # use the API at https://yoursubdomain.zendesk.com/api/v2
 end
 ```

@@ -9,7 +9,7 @@ module Zendesk
     #
     #
     # Does basic configuration constraints:
-    # * Configuration#url must be https unless it is localhost of 127.0.0.1 
+    # * Configuration#url must be https unless it is localhost of 127.0.0.1
     #
     # @return [Client] {Client} instance with given configuration options
     def configure
@@ -37,6 +37,8 @@ module Zendesk
     attr_accessor :password
     # @return [String] The API url. Must be https if not localhost or 127.0.0.1
     attr_accessor :url
+    # @return [String] For behalf of the end user.
+    attr_accessor :on_behalf_of
     # @return [Boolean] Whether to attempt to retry when rate-limited (http status: 429).
     attr_accessor :retry
     # @return [Boolean] Whether to log requests to STDOUT.
@@ -54,14 +56,15 @@ module Zendesk
     #
     # @return [Hash] Faraday-formatted hash of options.
     def options
-      { 
-        :headers => { 
+      { :headers => {
           :accept => 'application/json',
           :accept_encoding => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           :user_agent => "Zendesk API #{Zendesk::VERSION}"
         },
         :url => @url
-      }.merge(client_options)
+      }.merge(client_options).tap do |hsh|
+        hsh[:headers][:x_on_behalf_of] = on_behalf_of if on_behalf_of
+      end
     end
   end
 end
