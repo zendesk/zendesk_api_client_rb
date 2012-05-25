@@ -2,7 +2,7 @@
 
 ## API version support
 
-This client _only_ supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
+This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
 ## Installation
 
