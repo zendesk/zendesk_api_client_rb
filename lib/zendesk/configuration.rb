@@ -24,7 +24,6 @@ module Zendesk
 
       # Turns nil -> false, does nothing to true
       client.config.retry = !!client.config.retry
-      client.config.log = !!client.config.log
 
       client
     end
@@ -39,8 +38,8 @@ module Zendesk
     attr_accessor :url
     # @return [Boolean] Whether to attempt to retry when rate-limited (http status: 429).
     attr_accessor :retry
-    # @return [Boolean] Whether to log requests to STDOUT.
-    attr_accessor :log
+    # @return [Logger] Logger to use when logging requests.
+    attr_accessor :logger
     # @return [Hash] Client configurations (eg ssh config) to pass to Faraday
     attr_accessor :client_options
     # @return [Symbol] Faraday adapter

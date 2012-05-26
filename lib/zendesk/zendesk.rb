@@ -72,7 +72,7 @@ module Zendesk
     #
     # Uses middleware according to configuration options.
     #
-    # Request logger if log is true
+    # Request logger if logger is not nil
     # 
     # Retry middleware if retry is true
     def connection
@@ -82,7 +82,7 @@ module Zendesk
         builder.use Zendesk::Request::UploadMiddleware
         builder.use Faraday::Response::RaiseError
         builder.use Zendesk::Response::CallbackMiddleware, self
-        builder.response :logger if config.log
+        builder.use Faraday::Response::Logger, config.logger if config.logger
 
         builder.request :multipart
         builder.request :json
