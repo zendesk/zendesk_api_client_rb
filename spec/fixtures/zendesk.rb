@@ -1,14 +1,5 @@
 def user
-  VCR.use_cassette('valid_user') do
-    @user ||= client.users.create(
-      :user => {
-        :name => "Test Valid User",
-        :verified => true,
-        :email => "test.valid.user@zendesk.com",
-        :role => "end-user"
-      } 
-    ) || client.users.detect {|u| u.email == "test.valid.user@zendesk.com"}
-  end
+  @user ||= find_or_create_user "end-user"
 end
 
 def current_user
@@ -18,58 +9,69 @@ def current_user
 end
 
 def agent
-  VCR.use_cassette('valid_agent') do
-    @agent ||= client.users.create(
+  @agent ||= find_or_create_user "agent"
+end
+
+def find_or_create_user(role)
+  VCR.use_cassette("valid_user_#{role}") do
+    email = "zendesk-api-client-ruby-#{role}-#{client.config.username}"
+
+    client.users.detect {|u| u.email == email } ||
+    client.users.create(
       :user => {
-        :name => "Test Valid Agent",
+        :name => "Test Valid with role #{role}",
         :verified => true,
-        :email => "test.valid.agent@zendesk.com",
-        :role => "agent"
-      } 
-    ) || client.users.detect {|u| u.email == "test.valid.agent@zendesk.com"}
+        :email => email,
+        :role => role
+      }
+    )
   end
 end
 
 def topic
   VCR.use_cassette('valid_topic') do
+    @topic ||= forum.topics.first
     @topic ||= client.topics.create(
       :topic => {
         :title => "Test Topic",
         :body => "This is the body of a topic.",
         :forum_id => forum.id
       }
-    ) || forum.topics.first 
+    )
   end
 end
 
 def forum
   VCR.use_cassette('valid_forum') do
+    @forum ||= client.forums.detect {|f| f.topics.any? }
     @forum ||= client.forums.create(
       :forum => {
         :name => "Test Forum",
         :access => "everybody"
       }
-    ) || client.forums.detect {|f| f.topics.any?}
+    )
   end
 end
 
 def category
   VCR.use_cassette('valid_category') do
+    @category ||= client.categories.first
     @category ||= client.categories.create(
       :category => { :name => "Test Category" }
-    ) || client.categories.first
+    )
   end
 end
 
 def ticket
   VCR.use_cassette('valid_ticket') do
+    @ticket ||= client.tickets.first
     @ticket ||= client.tickets.create(
       :ticket => {
         :subject => "Test Ticket",
         :description => "This is a test of the emergency alert system.",
         :requester_id => user.id
       }
-    ) || client.tickets.first
+    )
   end
 end
 
@@ -81,11 +83,12 @@ end
 
 def group
   VCR.use_cassette('valid_group') do
+    @ticket ||= client.groups.detect {|g| !g.default}
     @ticket ||= client.groups.create(
       :group => {
         :name => "Test Group"
       }
-    ) || client.groups.detect {|g| !g.default}
+    )
   end
 end
 

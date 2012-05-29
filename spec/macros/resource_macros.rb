@@ -101,9 +101,9 @@ module ResourceMacros
           opts.merge!(:id => @object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
           obj = described_class.find(client, opts)
 
-          begin
+          if options[:find]
             obj.send(options[:find].first).should == options[:find].last
-          rescue NameError => e
+          else
             obj.should be_nil
           end
         end

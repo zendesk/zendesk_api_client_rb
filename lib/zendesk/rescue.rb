@@ -10,6 +10,7 @@ module Zendesk
             send("orig_#{method}", *args)
           rescue Faraday::Error::ClientError => e
             puts e.message
+            puts e.backtrace
             puts "\t#{e.response[:body].inspect}" if e.response
             opts[:with].respond_to?(:call) ? opts[:with].call : opts[:with]
           end
