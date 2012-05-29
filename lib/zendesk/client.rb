@@ -5,12 +5,12 @@ require 'zendesk/version'
 require 'zendesk/rescue'
 require 'zendesk/configuration'
 require 'zendesk/collection'
-require 'zendesk/middleware/callback_middleware'
-require 'zendesk/middleware/deflate_middleware'
-require 'zendesk/middleware/gzip_middleware'
-require 'zendesk/middleware/retry_middleware'
-require 'zendesk/middleware/upload_middleware'
-require 'zendesk/middleware/parse_iso_dates_middleware'
+require 'zendesk/middleware/request/retry'
+require 'zendesk/middleware/request/upload'
+require 'zendesk/middleware/response/callback'
+require 'zendesk/middleware/response/deflate'
+require 'zendesk/middleware/response/gzip'
+require 'zendesk/middleware/response/parse_iso_dates'
 
 module Zendesk
   class Client
@@ -80,20 +80,20 @@ module Zendesk
       return @connection if @connection
 
       @connection = Faraday.new(config.options) do |builder|
-        builder.use Zendesk::Request::UploadMiddleware
+        builder.use Zendesk::Middleware::Request::Upload
         builder.use Faraday::Response::RaiseError
-        builder.use Zendesk::Response::CallbackMiddleware, self
-        builder.use Faraday::Response::Logger, config.logger if config.logger
+        builder.use Zendesk::Middleware::Response::Callback, self
+        builder.use Faraday::Middleware::Response::Logger, config.logger if config.logger
 
         builder.request :multipart
         builder.request :json
-        builder.use Zendesk::Response::ParseIsoDatesMiddleware
+        builder.use Zendesk::Middleware::Response::ParseIsoDates
         builder.response :json
 
-        builder.use Zendesk::Response::GzipMiddleware
-        builder.use Zendesk::Response::DeflateMiddleware
+        builder.use Zendesk::Middleware::Response::Gzip
+        builder.use Zendesk::Middleware::Response::Deflate
 
-        builder.use Zendesk::Request::RetryMiddleware if config.retry # Should always be first in the stack
+        builder.use Zendesk::Middleware::Request::Retry if config.retry # Should always be first in the stack
         builder.adapter *config.adapter || Faraday.default_adapter
       end
       @connection.tap {|c| c.basic_auth(config.username, config.password)}

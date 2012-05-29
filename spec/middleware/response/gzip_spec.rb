@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Response::GzipMiddleware, :vcr_off do
+describe Zendesk::Middleware::Response::Gzip, :vcr_off do
   context "with content-encoding = 'gzip'" do
     subject { '{ "TESTDATA": true }' }
     before(:each) do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Response::ParseIsoDatesMiddleware, :vcr_off do
+describe Zendesk::Middleware::Response::ParseIsoDates, :vcr_off do
   def fake_response(data)
     stub_request(:get, %r{blergh}).to_return(:status => 200, :body => data)
     response = client.connection.get("blergh")
