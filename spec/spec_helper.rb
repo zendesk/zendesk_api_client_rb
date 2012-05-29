@@ -63,4 +63,11 @@ def client
   end
 end
 
+def silence_stdout
+  $stdout = File.new( '/dev/null', 'w' )
+  yield
+ensure
+  $stdout = STDOUT
+end
+
 include WebMock::API
