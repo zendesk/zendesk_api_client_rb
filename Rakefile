@@ -15,6 +15,10 @@ if defined?(RSpec)
     t.pattern = "live/*_spec.rb"
   end
 
+  task :clean_live do
+    sh "rm -rf spec/fixtures/cassettes"
+  end
+
   if RUBY_VERSION =~ /1.9/
     desc "Find coverage"
     task "spec:coverage" do
