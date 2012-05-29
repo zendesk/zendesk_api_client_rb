@@ -45,10 +45,19 @@ VCR.configure do |c|
 end
 
 def client
+  credentials = File.expand_path("../credentials.yml", __FILE__)
   @client ||= Zendesk.configure do |config|
-    config.username = "please.change"
-    config.password = "me"
-    config.url = "https://my.zendesk.com/api/v2"
+    if File.exist?(credentials)
+      data = YAML.load(File.read(credentials))
+      config.username = data["username"]
+      config.password = data["password"]
+      config.url = data["url"]
+    else
+      puts "using default credentials: ./live specs will fail."
+      config.username = "please.change"
+      config.password = "me"
+      config.url = "https://my.zendesk.com/api/v2"
+    end
     config.logger = Logger.new(STDOUT) if !!ENV["LOG"]
     config.retry = true
   end
