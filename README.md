@@ -180,7 +180,6 @@ ticket.save
 
 * Search class detection
 * Nested association saving
-* DateTime parsing
 * Automatic parameter wrapping
 * Testing
 
