@@ -4,4 +4,4 @@ require "bundler/setup"
 require 'zendesk/core_ext/modulize'
 require 'zendesk/core_ext/snakecase'
 require 'zendesk/core_ext/inflection'
-require 'zendesk/zendesk'
+require 'zendesk/client'
