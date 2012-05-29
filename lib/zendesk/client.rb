@@ -80,20 +80,21 @@ module Zendesk
       return @connection if @connection
 
       @connection = Faraday.new(config.options) do |builder|
-        builder.use Zendesk::Middleware::Request::Upload
+        # response
         builder.use Faraday::Response::RaiseError
         builder.use Zendesk::Middleware::Response::Callback, self
         builder.use Faraday::Middleware::Response::Logger, config.logger if config.logger
-
-        builder.request :multipart
-        builder.request :json
         builder.use Zendesk::Middleware::Response::ParseIsoDates
         builder.response :json
-
         builder.use Zendesk::Middleware::Response::Gzip
         builder.use Zendesk::Middleware::Response::Deflate
 
+        # request
+        builder.use Zendesk::Middleware::Request::Upload
+        builder.request :multipart
+        builder.request :json
         builder.use Zendesk::Middleware::Request::Retry if config.retry # Should always be first in the stack
+
         builder.adapter *config.adapter || Faraday.default_adapter
       end
       @connection.tap {|c| c.basic_auth(config.username, config.password)}
