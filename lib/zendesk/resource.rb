@@ -1,4 +1,4 @@
-require 'zendesk/core_ext/trackie'
+require 'zendesk/trackie'
 require 'zendesk/actions'
 require 'zendesk/association'
 require 'zendesk/verbs'
