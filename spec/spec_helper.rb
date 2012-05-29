@@ -1,6 +1,8 @@
 $:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 $:.unshift(File.join(File.dirname(__FILE__), "macros"))
 
+ENV['TZ'] = 'CET' # something that is not local and not utc so we find all the bugs
+
 if RUBY_VERSION =~ /1.9/ && ENV["COVERAGE"]
   require 'simplecov'
   SimpleCov.start do

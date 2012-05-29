@@ -5,11 +5,12 @@ require 'zendesk/version'
 require 'zendesk/rescue'
 require 'zendesk/configuration'
 require 'zendesk/collection'
-require 'zendesk/middleware/retry_middleware'
 require 'zendesk/middleware/callback_middleware'
-require 'zendesk/middleware/upload_middleware'
-require 'zendesk/middleware/gzip_middleware'
 require 'zendesk/middleware/deflate_middleware'
+require 'zendesk/middleware/gzip_middleware'
+require 'zendesk/middleware/retry_middleware'
+require 'zendesk/middleware/upload_middleware'
+require 'zendesk/middleware/parse_iso_dates_middleware'
 
 module Zendesk
   class Client
@@ -86,13 +87,13 @@ module Zendesk
 
         builder.request :multipart
         builder.request :json
+        builder.use Zendesk::Response::ParseIsoDatesMiddleware
         builder.response :json
 
         builder.use Zendesk::Response::GzipMiddleware
         builder.use Zendesk::Response::DeflateMiddleware
 
-        # Should always be first in the stack
-        builder.use Zendesk::Request::RetryMiddleware if config.retry
+        builder.use Zendesk::Request::RetryMiddleware if config.retry # Should always be first in the stack
         builder.adapter *config.adapter || Faraday.default_adapter
       end
       @connection.tap {|c| c.basic_auth(config.username, config.password)}
