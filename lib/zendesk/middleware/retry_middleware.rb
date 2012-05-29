@@ -2,13 +2,14 @@ module Zendesk
   module Request
     # Faraday middleware to handle HTTP Status 429 (rate limiting) / 503 (maintenance)
     class RetryMiddleware < Faraday::Middleware
-      DEFAULT_TIMEOUT = 10
+      DEFAULT_RETRY_AFTER = 10
+      ERROR_CODES = [429, 503]
 
       def call(env)
         response = @app.call(env)
 
-        if [429, 503].include?(response.env[:status])
-          seconds_left = (response.env[:response_headers][:retry_after] || DEFAULT_TIMEOUT).to_i
+        if ERROR_CODES.include?(response.env[:status])
+          seconds_left = (response.env[:response_headers][:retry_after] || DEFAULT_RETRY_AFTER).to_i
           print "You have been rate limited. Retrying in #{seconds_left} seconds..."
 
           seconds_left.times do |i|
