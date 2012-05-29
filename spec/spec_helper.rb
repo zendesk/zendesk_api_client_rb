@@ -47,7 +47,7 @@ def client
     config.username = "please.change"
     config.password = "me"
     config.url = "https://my.zendesk.com/api/v2"
-    config.log = !!ENV["LOG"]
+    config.logger = Logger.new(STDOUT) if !!ENV["LOG"]
     config.retry = true
   end
 end
