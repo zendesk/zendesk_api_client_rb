@@ -5,7 +5,7 @@ module Zendesk
     # Faraday middleware to handle content-encoding = gzip
     class DeflateMiddleware < FaradayMiddleware::ResponseMiddleware
       define_parser do |body|
-        Zlib.inflate(body)
+        Zlib::Inflate.inflate(body)
       end
 
       def parse_response?(env)
