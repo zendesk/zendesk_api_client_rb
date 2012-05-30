@@ -126,9 +126,8 @@ module Zendesk
         req.params.merge!(@options.delete_if {|k, v| v.nil?})
       end
 
-      @resources = response.body[@resource_class.model_key].map do |res|
-        @resource_class.new(@client, res)
-      end
+      results = response.body[@resource_class.model_key] || response.body["results"]
+      @resources = results.map { |res| @resource_class.new(@client, res) }
 
       @count = (response.body["count"] || @resources.size).to_i
       @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]

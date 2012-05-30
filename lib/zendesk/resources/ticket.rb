@@ -19,6 +19,10 @@ module Zendesk
 
     has_many :uploads, :class => :attachment, :save => true
     has :comment, :class => :ticket_comment, :save => true
+
+    def self.incremental_export(client, start_time)
+      Zendesk::Collection.new(client, self, :path => "exports/tickets.json?start_time=#{start_time.to_i}")
+    end
   end
 
   class SuspendedTicket < ReadResource
