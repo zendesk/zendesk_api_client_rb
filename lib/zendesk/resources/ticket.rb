@@ -23,6 +23,12 @@ module Zendesk
     def self.incremental_export(client, start_time)
       Zendesk::Collection.new(client, self, :path => "exports/tickets.json?start_time=#{start_time.to_i}")
     end
+
+    def self.import(client, attributes)
+      ticket = new(client, attributes)
+      return unless ticket.save(:path => "imports/tickets.json")
+      ticket
+    end
   end
 
   class SuspendedTicket < ReadResource

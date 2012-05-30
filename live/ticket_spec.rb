@@ -47,4 +47,20 @@ describe Zendesk::Ticket do
       results.first.should_not == first
     end
   end
+
+  describe ".import" do
+    it "can import" do
+      VCR.use_cassette("ticket_import_can_import") do
+        old = Time.now - 5*365*24*60*60
+        ticket = Zendesk::Ticket.import(client, valid_attributes.merge(:created_at => old))
+        Zendesk::Ticket.find(client, ticket).created_at.year.should == old.year
+      end
+    end
+
+    it "returns nothing if import fails" do
+      VCR.use_cassette("ticket_import_cannot_import") do
+        silence_stdout { Zendesk::Ticket.import(client, {}).should == nil }
+      end
+    end
+  end
 end

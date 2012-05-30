@@ -4,7 +4,7 @@ module Zendesk
     # Executes a POST if it is a {#new_record?}, otherwise a PUT.
     # Merges returned attributes on success.
     # @return [Boolean] Success?
-    def save
+    def save(options={})
       return false if respond_to?(:destroyed?) && destroyed?
 
       if new_record?
@@ -14,6 +14,8 @@ module Zendesk
         method = :put
         req_path = url || path
       end
+
+      req_path = options[:path] if options[:path]
 
       self.class.associations.each do |assoc|
         if assoc[:save]
