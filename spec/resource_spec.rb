@@ -20,7 +20,7 @@ describe Zendesk::Resource do
         end
 
         it "should handle it properly" do
-          expect { subject.update(client, :id => id).should be_false }.to_not raise_error
+          expect { silence_stdout{ subject.update(client, :id => id).should be_false } }.to_not raise_error
         end
       end
     end
@@ -46,7 +46,7 @@ describe Zendesk::Resource do
         end
 
         it "should handle it properly" do
-          expect { subject.destroy(client, :id => id).should be_false }.to_not raise_error
+          expect { silence_stdout{ subject.destroy(client, :id => id).should be_false } }.to_not raise_error
         end
       end
     end
@@ -70,7 +70,7 @@ describe Zendesk::Resource do
         end
 
         it "should return false and not set destroyed" do
-          subject.destroy.should be_false
+          silence_stdout{ subject.destroy.should be_false }
           subject.destroyed?.should be_false
         end
       end
@@ -83,7 +83,7 @@ describe Zendesk::Resource do
     subject { Zendesk::TestResource.new(client, attr.merge(:id => id)) }
 
     before :each do
-      stub_request(:put, %r{test_resources/#{id}}).to_return(:body => { :param => "abc" })
+      stub_request(:put, %r{test_resources/#{id}}).to_return(:body => {"test_resource" => { :param => "abc" } })
     end
 
     it "should not save if already destroyed" do
@@ -106,7 +106,7 @@ describe Zendesk::Resource do
       end
 
       it "should be properly handled" do
-        expect { subject.save.should be_false }.to_not raise_error
+        expect { silence_stdout { subject.save.should be_false } }.to_not raise_error
       end
     end
 
@@ -114,7 +114,7 @@ describe Zendesk::Resource do
       subject { Zendesk::TestResource.new(client, attr) }
 
       before :each do
-        stub_request(:post, %r{test_resources}).to_return(:status => 201, :body => attr.merge(:id => id))
+        stub_request(:post, %r{test_resources}).to_return(:status => 201, :body => {"test_resource" => attr.merge(:id => id)})
       end
 
       it "should be true without an id" do
@@ -274,7 +274,7 @@ describe Zendesk::Resource do
           end
 
           it "should return false" do
-            expect { subject.send(method).should be_false }.to_not raise_error
+            expect { silence_stdout{ subject.send(method).should be_false } }.to_not raise_error
           end
         end
       end

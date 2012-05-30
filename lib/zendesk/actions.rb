@@ -41,7 +41,7 @@ module Zendesk
         end
       end
 
-      @attributes.replace(@attributes.deep_merge(response.body[self.class.singular_resource_name]))
+      @attributes.replace @attributes.deep_merge(response.body[self.class.singular_resource_name] || {})
       @attributes.clear_changes
       true
     end
