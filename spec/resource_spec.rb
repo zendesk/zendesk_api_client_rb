@@ -214,6 +214,7 @@ describe Zendesk::Resource do
             let(:association) do
               Zendesk::Association.new(:class => Zendesk::TestResource::TestChild, :parent => Zendesk::TestResource.new(client, :id => 1))
             end
+
             before(:each) do
               collection = Zendesk::Collection.new(client, Zendesk::TestResource::TestChild,
                 :association => association)
