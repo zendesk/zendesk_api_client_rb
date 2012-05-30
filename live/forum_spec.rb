@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::Forum, :delete_after do
   def valid_attributes
-    { :forum => { :name => "My Forum", :forum_type => "articles", :access => "logged-in users", :category_id => category.id } }
+    { :name => "My Forum", :forum_type => "articles", :access => "logged-in users", :category_id => category.id }
   end
 
   it_should_be_creatable

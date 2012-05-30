@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::Category, :delete_after do
   def valid_attributes
-    { :category => { :name => "My Category" } }
+    { :name => "My Category" }
   end
 
   it_should_be_creatable

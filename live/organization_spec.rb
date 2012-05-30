@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::Organization, :delete_after do
   def valid_attributes
-    { :organization => { :name => "Awesome-O" } }
+    { :name => "Awesome-O" }
   end
 
   it_should_be_creatable

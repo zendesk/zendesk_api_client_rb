@@ -3,11 +3,9 @@ require 'spec_helper'
 describe Zendesk::Topic do
   def valid_attributes
     { 
-      :topic => { 
-        :forum_id => forum.id, :title => "My Topic", 
-        :body => "The mayan calendar ends December 31st. Coincidence? I think not." 
-      } 
-    } 
+      :forum_id => forum.id, :title => "My Topic",
+      :body => "The mayan calendar ends December 31st. Coincidence? I think not."
+    }
   end
 
   it_should_be_creatable

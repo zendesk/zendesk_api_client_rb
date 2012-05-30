@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::Topic::TopicComment, :not_findable do
   def valid_attributes
-    { :topic_id => topic.id, :topic_comment => { :body => "Texty-text, text." } }
+    { :body => "Texty-text, text.", :topic_id => topic.id }
   end
 
   it_should_be_creatable

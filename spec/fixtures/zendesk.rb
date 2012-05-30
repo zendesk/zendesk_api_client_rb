@@ -18,12 +18,10 @@ def find_or_create_user(role)
 
     client.users.detect {|u| u.email == email } ||
     client.users.create(
-      :user => {
-        :name => "Test Valid with role #{role}",
-        :verified => true,
-        :email => email,
-        :role => role
-      }
+      :name => "Test Valid with role #{role}",
+      :verified => true,
+      :email => email,
+      :role => role
     )
   end
 end
@@ -32,11 +30,9 @@ def topic
   VCR.use_cassette('valid_topic') do
     @topic ||= forum.topics.first
     @topic ||= client.topics.create(
-      :topic => {
-        :title => "Test Topic",
-        :body => "This is the body of a topic.",
-        :forum_id => forum.id
-      }
+      :title => "Test Topic",
+      :body => "This is the body of a topic.",
+      :forum_id => forum.id
     )
   end
 end
@@ -44,21 +40,14 @@ end
 def forum
   VCR.use_cassette('valid_forum') do
     @forum ||= client.forums.detect {|f| f.topics.any? }
-    @forum ||= client.forums.create(
-      :forum => {
-        :name => "Test Forum",
-        :access => "everybody"
-      }
-    )
+    @forum ||= client.forums.create(:name => "Test Forum", :access => "everybody")
   end
 end
 
 def category
   VCR.use_cassette('valid_category') do
     @category ||= client.categories.first
-    @category ||= client.categories.create(
-      :category => { :name => "Test Category" }
-    )
+    @category ||= client.categories.create(:name => "Test Category")
   end
 end
 
@@ -66,11 +55,9 @@ def ticket
   VCR.use_cassette('valid_ticket') do
     @ticket ||= client.tickets.first
     @ticket ||= client.tickets.create(
-      :ticket => {
-        :subject => "Test Ticket",
-        :description => "This is a test of the emergency alert system.",
-        :requester_id => user.id
-      }
+      :subject => "Test Ticket",
+      :description => "This is a test of the emergency alert system.",
+      :requester_id => user.id
     )
   end
 end
@@ -84,11 +71,7 @@ end
 def group
   VCR.use_cassette('valid_group') do
     @ticket ||= client.groups.detect {|g| !g.default}
-    @ticket ||= client.groups.create(
-      :group => {
-        :name => "Test Group"
-      }
-    )
+    @ticket ||= client.groups.create(:name => "Test Group")
   end
 end
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::User::Identity, :delete_after do
   def valid_attributes
-    { :identity => { :type => "email", :value => "abcdef@example.com" } }
+    { :type => "email", :value => "abcdef@example.com" }
   end
 
   under current_user do

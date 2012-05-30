@@ -47,7 +47,7 @@ module ResourceMacros
       end
 
       before(:each) do
-        @object.send("#{attribute}=", value) 
+        @object.send("#{attribute}=", value)
       end
 
       it "should be savable" do
@@ -134,7 +134,7 @@ module ResourceMacros
 
       it "should be findable" do
         result = klass
-        args.each {|a| result = result.send(a, options)}
+        args.each {|a| result = result.send(a, options) }
 
         if result.is_a?(Zendesk::Collection)
           result.fetch(true).should_not be_empty

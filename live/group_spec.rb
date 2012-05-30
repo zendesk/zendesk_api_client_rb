@@ -2,11 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::Group do
   def valid_attributes
-    { 
-      :group => {
-        :name => "My Group"
-      }
-    }
+    { :name => "My Group" }
   end
 
   it_should_be_creatable

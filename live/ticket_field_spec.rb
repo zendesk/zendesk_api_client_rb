@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::TicketField do
   def valid_attributes
-    { :ticket_field => { :type => "text", :title => "Age" } }
+    { :type => "text", :title => "Age" }
   end
 
   it_should_be_creatable

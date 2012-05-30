@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Zendesk::User, :delete_after do
   def valid_attributes
-    { :user => { :name => "Test U.", :email => "test@example.org" } }
+    { :name => "Test U.", :email => "test@example.org" }
   end
 
   it_should_be_creatable

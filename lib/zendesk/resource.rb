@@ -39,21 +39,17 @@ module Zendesk
     # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
     def initialize(client, attributes = {})
       @association = (attributes || {}).delete(:association) || Association.new(:class => self.class)
-      @client, @attributes = client, Zendesk::Trackie.new(attributes)
+      @client = client
+      @attributes = Zendesk::Trackie.new(attributes)
+      Zendesk::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
 
-      unless new_record?
-        @attributes.clear_changes
-      end
+      @attributes.clear_changes unless new_record?
     end
 
     # Passes the method onto the attributes hash.
     # If the attributes are nested (e.g. { :tickets => { :id => 1 } }), passes the method onto the nested hash.
     def method_missing(*args, &blk)
-      if @attributes.key?(self.class.singular_resource_name)
-        @attributes[self.class.singular_resource_name].send(*args, &blk)
-      else
-        @attributes.send(*args, &blk)
-      end
+      @attributes.send(*args, &blk)
     end
 
     # Returns the resource id of the object or nil
@@ -112,7 +108,15 @@ module Zendesk
   end
 
   # Represents a resource that can CRUD (create, read, update, delete).
-  class Resource < DataResource 
+  class Resource < DataResource
+    def self.only_send_unnested_params(*params)
+      @unnested_params = params
+    end
+
+    def self.unnested_params
+      @unnested_params
+    end
+
     extend Read
     extend Create
 

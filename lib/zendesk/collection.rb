@@ -127,7 +127,7 @@ module Zendesk
       end
 
       @resources = response.body[@resource_class.model_key].map do |res|
-        @resource_class.new(@client, { @resource_class.singular_resource_name => res })
+        @resource_class.new(@client, res)
       end
 
       @count = (response.body["count"] || @resources.size).to_i

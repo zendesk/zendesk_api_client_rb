@@ -105,5 +105,10 @@ module Zendesk
     def insert_callback(&blk)
       @callbacks << blk
     end
+
+    # show a nice warning for people using the old style api
+    def self.check_deprecated_namespace_usage(attributes, name)
+      raise "un-nest '#{name}' from the attributes" if attributes[name].is_a?(Hash)
+    end
   end
 end

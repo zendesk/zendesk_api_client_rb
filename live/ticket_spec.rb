@@ -3,14 +3,12 @@ require 'spec_helper'
 describe Zendesk::Ticket do
   def valid_attributes
     { 
-      :ticket => {
-        :type => "question",
-        :subject => "This is a question?",
-        :description => "Indeed it is!",
-        :priority => "normal",
-        :requester_id => user.id,
-        :submitter_id => user.id
-      }
+      :type => "question",
+      :subject => "This is a question?",
+      :description => "Indeed it is!",
+      :priority => "normal",
+      :requester_id => user.id,
+      :submitter_id => user.id
     }
   end
 

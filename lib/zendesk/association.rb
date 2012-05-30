@@ -36,14 +36,14 @@ module Zendesk
 
         if association
           ary[1] = @options.path || association[:name].to_s
-          parent_name = "#{parent_class.singular_resource_name}_id"
+          parent_id_column = "#{parent_class.singular_resource_name}_id"
           
           if @options.parent
             ary.insert(1, @options.parent.id)
           elsif instance
-            ary.insert(1, instance.send(parent_name))
-          elsif options[parent_name]
-            ary.insert(1, hash_argument.delete(parent_name) || hash_argument.delete(parent_name.to_sym))
+            ary.insert(1, instance.send(parent_id_column))
+          elsif options[parent_id_column]
+            ary.insert(1, hash_argument.delete(parent_id_column) || hash_argument.delete(parent_id_column.to_sym))
           else
             raise ArgumentError.new("#{@options[:class].resource_name} require parent id")
           end
@@ -105,7 +105,7 @@ module Zendesk
         elsif klass.ancestors.include?(DataResource)
           begin
             response = @client.connection.get(instance_association.generate_path(:with_parent => true))
-            res = klass.new(@client, response.body.merge(:association => instance_association)) 
+            res = klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
             instance_variable_set("@#{resource}", res)
           rescue Faraday::Error::ClientError => e
             nil

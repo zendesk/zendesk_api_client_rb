@@ -1,5 +1,6 @@
 module Zendesk
   class ForumSubscription < Resource
+    only_send_unnested_params :forum_id, :user_id
     has :forum
     has :user
   end
@@ -18,6 +19,7 @@ module Zendesk
   end
 
   class TopicSubscription < Resource
+    only_send_unnested_params :topic_id, :user_id
     has :topic
     has :user
   end
@@ -30,6 +32,7 @@ module Zendesk
     end
 
     class TopicVote < SingularResource
+      only_send_unnested_params
       has :topic
       has :user
     end

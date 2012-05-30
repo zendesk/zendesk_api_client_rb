@@ -13,7 +13,7 @@ module Zendesk
         req.params = opts
       end
 
-      new(client, response.body)
+      new(client, response.body[singular_resource_name])
     end
 
     rescue_client_error :find
@@ -26,13 +26,19 @@ module Zendesk
     # @param [Client] client The {Client} object to be used
     # @param [Hash] attributes The attributes to create.
     def create(client, attributes = {})
+      Zendesk::Client.check_deprecated_namespace_usage attributes, singular_resource_name
       association = attributes.delete(:association) || Association.new(:class => self)
 
-      response = client.connection.post(association.generate_path(attributes.merge(:with_id => false))) do |req|
-        req.body = attributes
+      path = association.generate_path(attributes.merge(:with_id => false))
+      response = client.connection.post(path) do |req|
+        req.body = if unnested_params
+          Hash[attributes.select{|k,v| unnested_params.include?(k.to_sym) }]
+        else
+          {singular_resource_name.to_sym => attributes}
+        end
       end
 
-      new(client, response.body)
+      new(client, response.body[singular_resource_name])
     end
 
     rescue_client_error :create
@@ -57,7 +63,7 @@ module Zendesk
 
       response = @client.connection.delete(url || path)
 
-      @destroyed = true
+      @destroyed = true # FIXME always returns true
     end
 
     rescue_client_error :destroy, :with => false
@@ -105,7 +111,6 @@ module Zendesk
         req_path = url || path
       end
 
-      assoc_attrs = attributes[self.class.singular_resource_name] || attributes
       self.class.associations.each do |assoc|
         if assoc[:save]
           assoc_id = "#{assoc[:name]}_id" 
@@ -115,20 +120,20 @@ module Zendesk
           assoc_obj.save if assoc_obj.respond_to?(:save)
 
           if has_key?(assoc_id)
-            assoc_attrs[assoc_id] = assoc_obj.id
+            attributes[assoc_id] = assoc_obj.id
           elsif has_key?(singular_assoc_ids)
-            assoc_attrs[singular_assoc_ids] = assoc_obj.map(&:id)
+            attributes[singular_assoc_ids] = assoc_obj.map(&:id)
           else
-            assoc_attrs[assoc[:name]] = assoc_obj.is_a?(Collection) ? assoc_obj.map(&:to_param) : assoc_obj.to_param
+            attributes[assoc[:name]] = assoc_obj.is_a?(Collection) ? assoc_obj.map(&:to_param) : assoc_obj.to_param
           end
         end
       end
 
       response = @client.connection.send(method, req_path) do |req|
-        req.body = attributes.changes
+        req.body = {self.class.singular_resource_name => attributes.changes}
       end
 
-      @attributes.replace(@attributes.deep_merge(response.body))
+      @attributes.replace(@attributes.deep_merge(response.body[self.class.singular_resource_name]))
       @attributes.clear_changes
       true
     end
