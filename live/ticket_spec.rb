@@ -14,7 +14,7 @@ describe Zendesk::Ticket do
     }
   end
 
-  it_should_be_creatable 
+  it_should_be_creatable
   it_should_be_updatable :subject
   it_should_be_deletable
   it_should_be_readable :tickets
