@@ -16,7 +16,7 @@ will not install this version of the API client. To install this client, either 
 
 or add it to a Gemfile like so:
 
-    gem "zendesk", :git => "git://github.com/zendesk/zendesk_api_client_rb.git", :tag => "v0.0.1"
+    gem "zendesk", :git => "git://github.com/zendesk/zendesk_api_client_rb.git" #, :tag => "vX.X.X"
 
 ## Configuration
 
