@@ -180,7 +180,6 @@ ticket.save
 
 * Search class detection
 * Nested association saving
-* Automatic parameter wrapping
 * Testing
 
 ## Note on Patches/Pull Requests
