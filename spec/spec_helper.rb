@@ -39,13 +39,13 @@ RSpec.configure do |c|
 end
 
 VCR.configure do |c|
-  c.cassette_library_dir = File.join(File.dirname(__FILE__), 'fixtures/cassettes')
+  c.cassette_library_dir = File.join(File.dirname(__FILE__), "fixtures", "cassettes")
   c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true }
   c.hook_into :webmock
 end
 
 def client
-  credentials = File.expand_path("../credentials.yml", __FILE__)
+  credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
   @client ||= Zendesk.configure do |config|
     if File.exist?(credentials)
       data = YAML.load(File.read(credentials))
@@ -53,12 +53,18 @@ def client
       config.password = data["password"]
       config.url = data["url"]
     else
-      puts "using default credentials: ./live specs will fail."
+      puts "using default credentials: live specs will fail."
+      puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
       config.username = "please.change"
       config.password = "me"
       config.url = "https://my.zendesk.com/api/v2"
     end
-    config.logger = Logger.new(STDOUT) if !!ENV["LOG"]
+
+    if !!ENV["LOG"]
+      require 'logger'
+      config.logger = Logger.new(STDOUT)
+    end
+
     config.retry = true
   end
 end

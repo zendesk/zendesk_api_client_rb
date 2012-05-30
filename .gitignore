@@ -2,6 +2,6 @@ pkg
 doc
 *swp
 spec/fixtures/cassettes
-spec/credentials.yml
+spec/fixtures/credentials.yml
 coverage
 .yardoc
