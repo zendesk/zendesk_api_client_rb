@@ -6,7 +6,7 @@ describe Zendesk::ReadResource do
     subject { Zendesk::TestResource }
 
     before(:each) do
-      stub_request(:get, %r{test_resources/#{id}}).to_return({})
+      stub_request(:get, %r{test_resources/#{id}}).to_return(:body => {})
     end
 
     it "should return instance of resource" do
@@ -19,7 +19,7 @@ describe Zendesk::ReadResource do
       end
 
       it "should handle it properly" do
-        expect { subject.find(client, :id => id).should be_nil }.to_not raise_error
+        expect { silence_stdout { subject.find(client, :id => id).should be_nil } }.to_not raise_error
       end
     end
   end

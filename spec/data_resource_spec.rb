@@ -51,7 +51,7 @@ describe Zendesk::DataResource do
 
     context "with second order attributes" do
       subject { Zendesk::TestResource.new(client) }
-      before(:each) { subject.attributes[:test_resource] = { :priority => "normal" } }
+      before(:each) { subject.priority = "normal" }
 
       it "should be able to change underlying attributes" do
         subject.priority.should == "normal"
@@ -96,7 +96,7 @@ describe Zendesk::DataResource do
     context "instance method" do
       context "with no side-loading", :vcr_off do
         subject { Zendesk::TestResource.new(client, :id => 1) }
-        before(:each) { stub_request(:get, %r{test_resources/[0-9]+/foo}).to_return(:body => {}) }
+        before(:each) { stub_request(:get, %r{test_resources/\d+/foo}).to_return(:body => {"foo" => {}}) }
 
         it "should attempt to grab the resource from the host" do
           subject.foo.should be_instance_of(Zendesk::Foo)
@@ -107,7 +107,7 @@ describe Zendesk::DataResource do
         end
 
         context "with a client error" do
-          before(:each) { stub_request(:get, %r{test_resources/[0-9]+/foo}).to_return(:status => 500) }
+          before(:each) { stub_request(:get, %r{test_resources/\d+/foo}).to_return(:status => 500) }
 
           it "should handle it properly" do
             expect { subject.foo.should be_nil }.to_not raise_error
@@ -117,7 +117,7 @@ describe Zendesk::DataResource do
         context "with an explicit path set" do
           before(:each) do
             Zendesk::TestResource.has :foo, :path => "blergh"
-            stub_request(:get, %r{test_resources/[0-9]+/blergh}).to_return(:body => {})
+            stub_request(:get, %r{test_resources/\d+/blergh}).to_return(:body => {"foo" => {}})
           end
 
           it "should call the right path" do
@@ -139,7 +139,7 @@ describe Zendesk::DataResource do
         let(:foo) { 1 }
         subject { Zendesk::TestResource.new(client, :foo_id => foo) }
         before(:each) do
-          stub_request(:get, %r{foos/1}).to_return({})
+          stub_request(:get, %r{foos/1}).to_return(:body => {})
         end
 
         it "should find foo_id and load it from the api" do

@@ -7,7 +7,7 @@ describe Zendesk::Resource do
       subject { Zendesk::TestResource }
 
       before(:each) do
-        stub_request(:put, %r{test_resources/#{id}}).to_return({})
+        stub_request(:put, %r{test_resources/#{id}}).to_return(:body => {})
       end
 
       it "should return instance of resource" do
@@ -33,7 +33,7 @@ describe Zendesk::Resource do
       subject { Zendesk::TestResource }
 
       before(:each) do
-        stub_request(:delete, %r{test_resources/#{id}}).to_return({})
+        stub_request(:delete, %r{test_resources/#{id}}).to_return(:body => {})
       end
 
       it "should return instance of resource" do

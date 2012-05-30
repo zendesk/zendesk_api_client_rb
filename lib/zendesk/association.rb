@@ -94,7 +94,7 @@ module Zendesk
         if res_id = method_missing("#{resource}_id")
           obj = klass.find(@client, :id => res_id, :association => instance_association)
           obj.tap { instance_variable_set("@#{resource}", obj) if obj }
-        elsif (res = method_missing(resource.to_sym)) 
+        elsif (res = method_missing(resource.to_sym))
           if res.is_a?(Hash)
             res = klass.new(@client, res.merge(:association => instance_association))
           else

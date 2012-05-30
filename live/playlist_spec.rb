@@ -4,7 +4,7 @@ describe Zendesk::Playlist, :vcr_off do
   subject { Zendesk::Playlist }
 
   before(:each) do
-    stub_request(:get, %r{views/[0-9]+/play}).to_return(:status => 302)
+    stub_request(:get, %r{views/\d+/play}).to_return(:status => 302)
   end
 
   it "should begin playing the playlist on initialization" do
@@ -70,7 +70,7 @@ describe Zendesk::Playlist, :vcr_off do
   context "initialization" do
     context "with client error" do
       before(:each) do
-        stub_request(:get, %r{views/[0-9]+/play}).to_return(:status => 500).to_return(:status => 302)
+        stub_request(:get, %r{views/\d+/play}).to_return(:status => 500).to_return(:status => 302)
         stub_request(:get, %r{play/next}).to_return(:body => {})
       end
 

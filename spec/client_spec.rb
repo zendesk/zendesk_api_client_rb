@@ -41,7 +41,7 @@ describe Zendesk::Client do
 
   context "#current_user", :vcr_off do
     before(:each) do
-      stub_request(:get, %r{users/me}).to_return({})
+      stub_request(:get, %r{users/me}).to_return(:body => {})
     end
 
     it "should be a user instance" do

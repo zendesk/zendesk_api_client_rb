@@ -6,7 +6,7 @@ describe Zendesk::CreateResource do
     subject { Zendesk::TestResource }
 
     before(:each) do
-      stub_request(:post, %r{test_resources}).to_return({})
+      stub_request(:post, %r{test_resources}).to_return(:body => {})
     end
 
     it "should return instance of resource" do
@@ -19,7 +19,7 @@ describe Zendesk::CreateResource do
       end
 
       it "should handle it properly" do
-        expect { subject.create(client, attr).should be_nil }.to_not raise_error
+        expect { silence_stdout { subject.create(client, attr).should be_nil } }.to_not raise_error
       end
     end
   end

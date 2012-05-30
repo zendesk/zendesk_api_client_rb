@@ -25,7 +25,7 @@ describe Zendesk::Collection do
 
   context "deferral", :vcr_off do
     before(:each) do
-      stub_request(:any, %r{test_resources}).to_return({})
+      stub_request(:any, %r{test_resources}).to_return(:body => {})
     end
 
     it "should defer #create to the resource class" do
@@ -52,7 +52,7 @@ describe Zendesk::Collection do
       end
 
       before(:each) do
-        stub_request(:any, %r{test_resources/[0-9]+/test_child}).to_return({})
+        stub_request(:any, %r{test_resources/\d+/test_child}).to_return(:body => {})
       end
 
       it "should defer #create to the resource class with the parent id" do
@@ -108,7 +108,7 @@ describe Zendesk::Collection do
       end
 
       it "should properly be handled" do
-        subject.fetch(true).should be_empty
+        silence_stdout { subject.fetch(true).should be_empty }
       end
     end
 
@@ -264,7 +264,7 @@ describe Zendesk::Collection do
     end
 
     before(:each) do
-      @request = stub_request(:post, %r{test_resources/active}).to_return({})
+      @request = stub_request(:post, %r{test_resources/active}).to_return(:body => {})
     end
 
     context "deferral" do
