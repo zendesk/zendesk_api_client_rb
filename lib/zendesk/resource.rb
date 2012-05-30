@@ -109,12 +109,12 @@ module Zendesk
 
   # Represents a resource that can CRUD (create, read, update, delete).
   class Resource < DataResource
-    def self.only_send_unnested_params(*params)
-      @unnested_params = params
+    def self.only_send_unnested_params
+      @unnested_params = true
     end
 
     def self.unnested_params
-      @unnested_params
+      @unnested_params ||= false
     end
 
     extend Read

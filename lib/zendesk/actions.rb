@@ -32,7 +32,7 @@ module Zendesk
       path = association.generate_path(attributes.merge(:with_id => false))
       response = client.connection.post(path) do |req|
         req.body = if unnested_params
-          Hash[attributes.select{|k,v| unnested_params.include?(k.to_sym) }]
+          attributes
         else
           {singular_resource_name.to_sym => attributes}
         end
