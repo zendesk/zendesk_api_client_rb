@@ -94,51 +94,51 @@ module Zendesk
     end
 
     # Represents a parent-to-child association between resources. Options to pass in are: class, path.
-    # @param [Symbol] resource The underlying resource name
+    # @param [Symbol] resource_name The underlying resource name
     # @param [Hash] opts The options to pass to the method definition. 
-    def has(resource, class_level_opts = {})
-      klass = get_class(class_level_opts.delete(:class)) || get_class(resource)
-      class_level_association = { :class => klass, :name => resource, :save => !!class_level_opts.delete(:save), :path => class_level_opts.delete(:path) }
+    def has(resource_name, class_level_options = {})
+      klass = get_class(class_level_options.delete(:class)) || get_class(resource_name)
+      class_level_association = { :class => klass, :name => resource_name, :save => !!class_level_options.delete(:save), :path => class_level_options.delete(:path) }
       associations << class_level_association
 
-      define_method resource do |*args|
-        instance_opts = args.last.is_a?(Hash) ? args.pop : {}
-        return instance_variable_get("@#{resource}") if instance_variable_defined?("@#{resource}") && !instance_opts[:reload]
+      define_method resource_name do |*args|
+        instance_options = args.last.is_a?(Hash) ? args.pop : {}
 
+        # return if cached
+        cached = instance_variable_get("@#{resource_name}")
+        return cached if cached && !instance_options[:reload]
+
+        # find and cache association
         instance_association = Association.new(class_level_association.merge(:parent => self))
-
-        if res_id = method_missing("#{resource}_id")
-          obj = klass.find(@client, :id => res_id, :association => instance_association)
-          obj.tap { instance_variable_set("@#{resource}", obj) if obj }
-        elsif (res = method_missing(resource.to_sym))
-          if res.is_a?(Hash)
-            res = klass.new(@client, res.merge(:association => instance_association))
-          else
-            res.association = instance_association
-          end
-
-          instance_variable_set("@#{resource}", res)
+        fetched_resource = if resource_id = method_missing("#{resource_name}_id")
+          klass.find(@client, :id => resource_id, :association => instance_association)
+        elsif resource = method_missing(resource_name.to_sym)
+          wrap_resource(resource, klass, class_level_association)
         elsif klass.ancestors.include?(DataResource)
           begin
             response = @client.connection.get(instance_association.generate_path(:with_parent => true))
-            res = klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
-            instance_variable_set("@#{resource}", res)
-          rescue Faraday::Error::ClientError => e
+            klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
+          rescue Faraday::Error::ClientError
             nil
           end
         end
+
+        instance_variable_set("@#{resource_name}", fetched_resource)
       end
 
-      define_method "#{resource}=" do |res|
+      define_method "wrap_resource" do |resource, klass, class_level_association|
         instance_association = Association.new(class_level_association.merge(:parent => self))
-
-        if res.is_a?(Hash)
-          res = klass.new(@client, res.merge(:association => instance_association))
+        if resource.is_a?(Hash)
+          resource = klass.new(@client, resource.merge(:association => instance_association))
         else
-          res.association = instance_association
+          resource.association = instance_association
         end
+        resource
+      end
 
-        instance_variable_set("@#{resource}", res)
+      define_method "#{resource_name}=" do |resource|
+        resource = wrap_resource(resource, klass, class_level_association)
+        instance_variable_set("@#{resource_name}", resource)
       end
     end
 
