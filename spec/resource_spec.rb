@@ -130,7 +130,7 @@ describe Zendesk::Resource do
 
     context "with nested associations to save" do
       context "has" do
-        before(:all) do
+        before(:each) do
           Zendesk::TestResource.associations.clear
           Zendesk::TestResource.has :child, :class => :test_child, :save => true
         end
@@ -180,7 +180,7 @@ describe Zendesk::Resource do
       end
 
       context "has_many" do
-        before(:all) do
+        before(:each) do
           Zendesk::TestResource.associations.clear
           Zendesk::TestResource.has_many :children, :class => :test_child, :save => true
         end

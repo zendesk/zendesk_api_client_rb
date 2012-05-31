@@ -4,6 +4,44 @@ describe Zendesk::Association do
   let(:instance) { Zendesk::TestResource.new(client, :id => 1) }
   let(:child) { Zendesk::TestResource::TestChild.new(client, :id => 1, :test_resource_id => 2) }
 
+  describe "setting/getting", :vcr_off do
+    context "one" do
+      before do
+        Zendesk::TestResource.associations.clear
+        Zendesk::TestResource.has :child, :class => :test_child
+      end
+
+      it "should cache an set object" do
+        instance.child = child
+        instance.child.should == child
+      end
+
+      it "should build a object set via hash" do
+        instance.child = {:id => 2}
+        instance.child.id.should == 2
+        instance.child_id.should == 2
+      end
+
+      it "should build a object set via id" do
+        instance.child = 2
+        instance.child.id.should == 2
+        instance.child_id.should == 2
+      end
+
+      it "should fetch a unknown object" do
+        stub_request(:get, %r{test_resources/1/child}).to_return(:body => {"test_child" => {"id" => 2}})
+        instance.child.id.should == 2
+        instance.child_id.should == 2
+      end
+
+      it "should fetch an object known by id" do
+        stub_request(:get, %r{test_resources/1/child/5}).to_return(:body => {"test_child" => {"id" => 5}})
+        instance.child_id = 5
+        instance.child.id.should == 5
+      end
+    end
+  end
+
   context "class only" do
     subject { described_class.new(:class => Zendesk::TestResource) }
 

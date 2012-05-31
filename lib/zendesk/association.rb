@@ -128,10 +128,10 @@ module Zendesk
 
           # find and cache association
           instance_association = Association.new(class_level_association.merge(:parent => self))
-          fetched_resource = if resource_id = method_missing("#{resource_name}_id")
+          resource = if resource_id = method_missing("#{resource_name}_id")
             klass.find(@client, :id => resource_id, :association => instance_association)
-          elsif resource = method_missing(resource_name.to_sym)
-            wrap_resource(resource, klass, class_level_association)
+          elsif found = method_missing(resource_name.to_sym)
+            wrap_resource(found, klass, class_level_association)
           elsif klass.ancestors.include?(DataResource)
             begin
               response = @client.connection.get(instance_association.generate_path(:with_parent => true))
@@ -141,11 +141,13 @@ module Zendesk
             end
           end
 
-          instance_variable_set("@#{resource_name}", fetched_resource)
+          send("#{resource_name}_id=", resource.id) if resource
+          instance_variable_set("@#{resource_name}", resource)
         end
 
         define_method "#{resource_name}=" do |resource|
           resource = wrap_resource(resource, klass, class_level_association)
+          send("#{resource_name}_id=", resource.id)
           instance_variable_set("@#{resource_name}", resource)
         end
       end
