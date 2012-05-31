@@ -22,6 +22,11 @@ RSpec.configure do |c|
   # in RSpec 3 this will no longer be necessary.
   c.treat_symbols_as_metadata_keys_with_true_values = true
 
+  c.before :all do
+    Zendesk::TestResource.associations.clear
+    Zendesk::TestResource.has_many :children, :class => :test_child
+  end
+
   c.before(:all, :vcr_off) do
     VCR.turn_off!
   end
