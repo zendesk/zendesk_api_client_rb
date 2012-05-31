@@ -20,13 +20,21 @@ module Zendesk
     has_many :uploads, :class => :attachment, :save => true
     has :comment, :class => :ticket_comment, :save => true
 
+    # Gets a incremental export of tickets from the start_time until now.
+    # @param [Client] client The {Client} object to be used
+    # @param [Integer] start_time The start_time parameter
+    # @return [Collection] Collection of {Ticket}
     def self.incremental_export(client, start_time)
-      Zendesk::Collection.new(client, self, :path => "exports/tickets.json?start_time=#{start_time.to_i}")
+      Zendesk::Collection.new(client, self, :path => "exports/tickets?start_time=#{start_time.to_i}")
     end
 
+    # Imports a ticket through the imports/tickets endpoint
+    # @param [Client] client The {Client} object to be used
+    # @param [Hash] attributes The attributes to create.
+    # @return [Ticket] Created object or nil
     def self.import(client, attributes)
       ticket = new(client, attributes)
-      return unless ticket.save(:path => "imports/tickets.json")
+      return unless ticket.save(:path => "imports/tickets")
       ticket
     end
   end

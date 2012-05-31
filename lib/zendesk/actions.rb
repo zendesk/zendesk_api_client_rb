@@ -115,7 +115,6 @@ module Zendesk
 
       # Deletes a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
-      # @param [Number] id The id to DELETE.
       # @param [Hash] opts The optional parameters to pass. Defaults to {}
       def destroy(client, opts = {})
         association = opts.delete(:association) || Association.new(:class => self)
@@ -146,8 +145,7 @@ module Zendesk
 
       # Updates  a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
-      # @param [Number] id The id to DELETE.
-      # @param [String] path The optional path to use. Defaults to {DataResource.resource_name}. 
+      # @param [Hash] attributes The attributes to update. Default to {} 
       def update(client, attributes = {})
         association = attributes.delete(:association) || Association.new(:class => self)
 

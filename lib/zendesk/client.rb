@@ -23,7 +23,6 @@ module Zendesk
 
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
-    # @param [Hash] opts Custom options passed to underlying collection
     # @return [Collection] Collection instance for resource
     def method_missing(method, *args, &blk)
       method = method.to_s

@@ -36,7 +36,6 @@ module Zendesk
     # Create a new resource instance.
     # @param [Client] client The client to use
     # @param [Hash] attributes The optional attributes that describe the resource
-    # @param [Array] path Optional path array that represents nested association (defaults to [resource_name]).
     def initialize(client, attributes = {})
       @association = (attributes || {}).delete(:association) || Association.new(:class => self.class)
       @client = client

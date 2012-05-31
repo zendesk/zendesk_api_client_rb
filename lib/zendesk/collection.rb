@@ -17,7 +17,6 @@ module Zendesk
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
     # @param [Client] client The {Client} to use.
     # @param [String] resource The resource being collected.
-    # @param [Array] path The path in array form that is sent to resources. (Note: not the query path)
     # @param [Hash] options Any additional options to be passed in.
     def initialize(client, resource, options = {})
       @client, @resource = client, resource.resource_name
