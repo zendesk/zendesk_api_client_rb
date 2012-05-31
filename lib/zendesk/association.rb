@@ -12,7 +12,8 @@ module Zendesk
       @options = Hashie::Mash.new(options)
     end
 
-    # Generate a path to the resource
+    # Generate a path to the resource.
+    # id and <parent>_id attributes will be deleted from passed in options hash if they are used in the built path.
     # Arguments that can be passed in:
     # An instance, any resource instance
     # Hash Options:
@@ -21,49 +22,64 @@ module Zendesk
     def generate_path(*args)
       options = Hashie::Mash.new(:with_id => true)
       if args.last.is_a?(Hash)
-        hash_argument = args.pop 
-        options.merge!(hash_argument)
+        original_options = args.pop
+        options.merge!(original_options)
       end
 
       instance = args.first
 
-      ary = @options[:class].to_s.split("::")
-      ary.delete("Zendesk")
+      namespace = @options[:class].to_s.split("::")
+      namespace.delete("Zendesk")
+      has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
 
-      if ary.size > 1 || (options[:with_parent] && @options.parent)
-        parent_class = @options.parent ? @options.parent.class : Zendesk.get_class(ary[0])
-        association = parent_class.associations.detect {|a| a[:class] == @options[:class]}
-
-        if association
-          ary[1] = @options.path || association[:name].to_s
-          parent_id_column = "#{parent_class.singular_resource_name}_id"
-          
-          if @options.parent
-            ary.insert(1, @options.parent.id)
-          elsif instance
-            ary.insert(1, instance.send(parent_id_column))
-          elsif options[parent_id_column]
-            ary.insert(1, hash_argument.delete(parent_id_column) || hash_argument.delete(parent_id_column.to_sym))
-          else
-            raise ArgumentError.new("#{@options[:class].resource_name} require parent id")
-          end
-        end
-
-        ary[0] = parent_class.resource_name
+      if has_parent
+        parent_class = @options.parent ? @options.parent.class : Zendesk.get_class(namespace[0])
+        parent_namespace = build_parent_namespace(parent_class, instance, options, original_options)
+        namespace[1..1] = parent_namespace if parent_namespace
+        namespace[0] = parent_class.resource_name
       else
-        ary[0] = @options.path || @options[:class].resource_name
+        namespace[0] = @options.path || @options[:class].resource_name
       end
 
-      options[:with_id] &&= !@options[:class].ancestors.include?(SingularResource)
-      if options[:with_id]
+      if id = extract_id(instance, options, original_options)
+        namespace << id
+      end
+
+      namespace.join("/")
+    end
+
+    private
+
+    def build_parent_namespace(parent_class, instance, options, original_options)
+      return unless association_on_parent = parent_class.associations.detect {|a| a[:class] == @options[:class] }
+      [
+        extract_parent_id(parent_class, instance, options, original_options),
+        @options.path || association_on_parent[:name].to_s
+      ]
+    end
+
+    def extract_parent_id(parent_class, instance, options, original_options)
+      parent_id_column = "#{parent_class.singular_resource_name}_id"
+
+      if @options.parent
+        @options.parent.id
+      elsif instance
+        instance.send(parent_id_column)
+      elsif options[parent_id_column]
+        original_options.delete(parent_id_column) || original_options.delete(parent_id_column.to_sym)
+      else
+        raise ArgumentError.new("#{@options[:class].resource_name} require parent id")
+      end
+    end
+
+    def extract_id(instance, options, original_options)
+      if options[:with_id] && !@options[:class].ancestors.include?(SingularResource)
         if instance && instance.id
-          ary << instance.id
+          instance.id
         elsif options[:id]
-          ary << (hash_argument.delete(:id) || hash_argument.delete("id"))
+          original_options.delete(:id) || original_options.delete("id")
         end
       end
-
-      ary.join("/")
     end
   end
 
