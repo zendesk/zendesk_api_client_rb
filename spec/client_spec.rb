@@ -37,6 +37,64 @@ describe Zendesk::Client do
         end.to_not raise_error
       end
     end
+
+    context "#logger" do
+      before(:each) do
+        @client = Zendesk.configure do |config| 
+          config.url = "https://example.zendesk.com/"
+          config.logger = subject
+        end
+
+        stub_request(:get, %r{/bs$}).to_return(:status => 200)
+      end
+
+      context "with true value" do
+        subject { true }
+
+        it "should use faraday default" do
+          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
+        end
+
+        context "with a request", :vcr_off do
+          it "should log to the stdout" do
+            STDOUT.should_receive(:write).at_least(:once)
+            @client.connection.get('/bs')
+          end
+        end
+      end
+
+      context "with false value" do
+        subject { false }
+
+        it "should not log" do
+          @client.connection.builder.handlers.should_not include(Faraday::Response::Logger)
+        end
+      end
+
+      context "with a nil value" do
+        subject { nil }
+
+        it "should not log" do
+          @client.connection.builder.handlers.should_not include(Faraday::Response::Logger)
+        end
+      end
+
+      context "with a logger" do
+        require 'logger'
+        subject { Logger.new(STDERR) }
+        
+        it "should log" do
+          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
+        end
+
+        context "with a request", :vcr_off do
+          it "should log to the subject" do
+            STDERR.should_receive(:write).at_least(:once)
+            @client.connection.get('/bs')
+          end
+        end
+      end
+    end
   end
 
   context "#current_user", :vcr_off do

@@ -83,7 +83,7 @@ module Zendesk
         # response
         builder.use Faraday::Response::RaiseError
         builder.use Zendesk::Middleware::Response::Callback, self
-        builder.use Faraday::Response::Logger, config.logger if config.logger
+        builder.use Faraday::Response::Logger, config.logger unless config.logger == false
         builder.use Zendesk::Middleware::Response::ParseIsoDates
         builder.response :json
         builder.use Zendesk::Middleware::Response::Gzip

@@ -9,7 +9,7 @@ module Zendesk
     #
     #
     # Does basic configuration constraints:
-    # * Configuration#url must be https unless it is localhost of 127.0.0.1 
+    # * Configuration#url must be https unless it is localhost of 127.0.0.1
     #
     # @return [Client] {Client} instance with given configuration options
     def configure
@@ -24,6 +24,15 @@ module Zendesk
 
       # Turns nil -> false, does nothing to true
       client.config.retry = !!client.config.retry
+
+      # Faraday::Response::Logger defaults to STDOUT
+      # so if true is sent in, use the the Faraday default.
+      # Otherwise if nil/false, don't use the logger period
+      if client.config.logger.nil?
+        client.config.logger = false
+      elsif client.config.logger == true
+        client.config.logger = nil
+      end
 
       client
     end
@@ -53,8 +62,8 @@ module Zendesk
     #
     # @return [Hash] Faraday-formatted hash of options.
     def options
-      { 
-        :headers => { 
+      {
+        :headers => {
           :accept => 'application/json',
           :accept_encoding => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           :user_agent => "Zendesk API #{Zendesk::VERSION}"

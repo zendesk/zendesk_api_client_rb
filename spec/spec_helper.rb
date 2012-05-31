@@ -60,11 +60,7 @@ def client
       config.url = "https://my.zendesk.com/api/v2"
     end
 
-    if !!ENV["LOG"]
-      require 'logger'
-      config.logger = Logger.new(STDOUT)
-    end
-
+    config.logger = !!ENV["LOG"]
     config.retry = true
   end
 end
