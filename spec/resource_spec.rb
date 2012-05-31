@@ -130,52 +130,14 @@ describe Zendesk::Resource do
 
     context "with nested associations to save" do
       context "has" do
-        before(:each) do
+        it "should call save on the association" do
           Zendesk::TestResource.associations.clear
           Zendesk::TestResource.has :child, :class => :test_child, :save => true
-        end
-
-        before(:each) do
           stub_request(:put, %r{test_resources}).to_return(:body => {})
-          subject.child_id = 1
-        end
+          subject.child = { :id => 2 }
 
-        context "with side-loaded resource" do
-          context "with a hash" do
-            before(:each) do
-              subject.child = { :id => 2 }
-              subject.child.should_receive(:save)
-              subject.save
-            end
-
-            it "should save the new object" do
-              subject.child.should be_instance_of(Zendesk::TestResource::TestChild)
-            end
-
-            specify "child's id" do
-              subject.child.id.should == 2
-              subject.child_id.should == 2
-            end
-          end
-        end
-
-        context "with an object" do
-          context "with a hash" do
-            before(:each) do
-              subject.child = Zendesk::TestResource::TestChild.new(client, :abc => 1, :id => 2)
-              subject.child.should_receive(:save)
-              subject.save
-            end
-
-            it "should save the new object" do
-              subject.child.should be_instance_of(Zendesk::TestResource::TestChild)
-            end
-
-            specify "child's id" do
-              subject.child.id.should == 2
-              subject.child_id.should == 2
-            end
-          end
+          subject.child.should_receive(:save)
+          subject.save
         end
       end
 
@@ -183,9 +145,7 @@ describe Zendesk::Resource do
         before(:each) do
           Zendesk::TestResource.associations.clear
           Zendesk::TestResource.has_many :children, :class => :test_child, :save => true
-        end
 
-        before(:each) do
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           stub_request(:get, %r{children}).to_return(:body => {"test_children" => []})
         end
