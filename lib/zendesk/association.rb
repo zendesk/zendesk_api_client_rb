@@ -189,7 +189,7 @@ module Zendesk
         define_method "#{resource_name}=" do |collection|
           if collection.is_a?(Array)
             collection.map! { |attr| wrap_resource(attr, klass, class_level_association) }
-            send(resource_name).clear.push(*collection)
+            send(resource_name).replace(collection)
           else
             collection.association = instance_association
             instance_variable_set("@#{resource_name}", collection)

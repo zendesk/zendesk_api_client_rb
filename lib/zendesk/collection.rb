@@ -141,6 +141,10 @@ module Zendesk
       fetch
     end
 
+    def replace(collection)
+      @resources = collection
+    end
+
     # Find the next page. Does one of three things: 
     # * If there is already a page number in the options hash, it increases it and invalidates the cache, returning the new page number.
     # * If there is a next_page url cached, it executes a fetch on that url and returns the results.
