@@ -6,7 +6,7 @@ require 'zendesk/verbs'
 module Zendesk
   # Represents a resource that only holds data.
   class Data
-    extend Associations
+    include Associations
     extend Rescue
 
     class << self

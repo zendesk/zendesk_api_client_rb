@@ -89,127 +89,128 @@ module Zendesk
   # * Associated resource ids are sent and are then loaded one-by-one into the parent collection.
   # * The association is represented with Rails' nested association urls (such as tickets/:id/groups) and are loaded that way.
   module Associations
-    def associations
-      @assocations ||= []
+    def self.included(base)
+      base.send(:extend, ClassMethods)
     end
 
-    # Represents a parent-to-child association between resources. Options to pass in are: class, path.
-    # @param [Symbol] resource_name The underlying resource name
-    # @param [Hash] opts The options to pass to the method definition. 
-    def has(resource_name, class_level_options = {})
-      klass = get_class(class_level_options.delete(:class)) || get_class(resource_name)
-      class_level_association = { :class => klass, :name => resource_name, :save => !!class_level_options.delete(:save), :path => class_level_options.delete(:path) }
-      associations << class_level_association
-
-      define_method resource_name do |*args|
-        instance_options = args.last.is_a?(Hash) ? args.pop : {}
-
-        # return if cached
-        cached = instance_variable_get("@#{resource_name}")
-        return cached if cached && !instance_options[:reload]
-
-        # find and cache association
-        instance_association = Association.new(class_level_association.merge(:parent => self))
-        fetched_resource = if resource_id = method_missing("#{resource_name}_id")
-          klass.find(@client, :id => resource_id, :association => instance_association)
-        elsif resource = method_missing(resource_name.to_sym)
-          wrap_resource(resource, klass, class_level_association)
-        elsif klass.ancestors.include?(DataResource)
-          begin
-            response = @client.connection.get(instance_association.generate_path(:with_parent => true))
-            klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
-          rescue Faraday::Error::ClientError
-            nil
-          end
-        end
-
-        instance_variable_set("@#{resource_name}", fetched_resource)
-      end
-
-      define_method "wrap_resource" do |resource, klass, class_level_association|
-        instance_association = Association.new(class_level_association.merge(:parent => self))
-        if resource.is_a?(Hash)
-          resource = klass.new(@client, resource.merge(:association => instance_association))
-        else
-          resource.association = instance_association
-        end
+    def wrap_resource(resource, klass, class_level_association)
+      instance_association = Association.new(class_level_association.merge(:parent => self))
+      case resource
+      when Hash
+        klass.new(@client, resource.merge(:association => instance_association))
+      when String, Fixnum
+        klass.new(@client, :id => resource, :association => instance_association)
+      else
+        resource.association = instance_association
         resource
       end
-
-      define_method "#{resource_name}=" do |resource|
-        resource = wrap_resource(resource, klass, class_level_association)
-        instance_variable_set("@#{resource_name}", resource)
-      end
     end
 
-    # Represents a parent-to-children association between resources. Options to pass in are: class, path.
-    # @param [Symbol] resource The underlying resource name
-    # @param [Hash] opts The options to pass to the method definition. 
-    def has_many(resource, class_level_opts = {})
-      klass = get_class(class_level_opts.delete(:class)) || get_class(resource.to_s.singular)
-      class_level_association = { :class => klass, :name => resource, :save => !!class_level_opts.delete(:save), :path => class_level_opts.delete(:path) }
-      associations << class_level_association
+    module ClassMethods
+      def associations
+        @assocations ||= []
+      end
 
-      define_method resource do |*args|
-        instance_opts = args.last.is_a?(Hash) ? args.pop : {}
-        return instance_variable_get("@#{resource}") if instance_variable_defined?("@#{resource}") && !instance_opts[:reload]
+      # Represents a parent-to-child association between resources. Options to pass in are: class, path.
+      # @param [Symbol] resource_name The underlying resource name
+      # @param [Hash] opts The options to pass to the method definition.
+      def has(resource_name, class_level_options = {})
+        klass = get_class(class_level_options.delete(:class)) || get_class(resource_name)
+        class_level_association = { :class => klass, :name => resource_name, :save => !!class_level_options.delete(:save), :path => class_level_options.delete(:path) }
+        associations << class_level_association
 
-        instance_association = Association.new(class_level_association.merge(:parent => self))
-        singular_resource_name = resource.to_s.singular
+        define_method resource_name do |*args|
+          instance_options = args.last.is_a?(Hash) ? args.pop : {}
 
-        if (ids = method_missing("#{singular_resource_name}_ids")) && ids.any?
-          collection = ids.map do |id| 
-            klass.find(@client, :id => id, :association => instance_association)
-          end.compact
+          # return if cached
+          cached = instance_variable_get("@#{resource_name}")
+          return cached if cached && !instance_options[:reload]
 
-          instance_variable_set("@#{resource}", collection)
-        elsif (resources = method_missing(resource.to_sym)) && resources.any?
-          loaded_resources = resources.map do |res|
-            klass.new(@client, klass.resource_name => res, :association => instance_association)
+          # find and cache association
+          instance_association = Association.new(class_level_association.merge(:parent => self))
+          fetched_resource = if resource_id = method_missing("#{resource_name}_id")
+            klass.find(@client, :id => resource_id, :association => instance_association)
+          elsif resource = method_missing(resource_name.to_sym)
+            wrap_resource(resource, klass, class_level_association)
+          elsif klass.ancestors.include?(DataResource)
+            begin
+              response = @client.connection.get(instance_association.generate_path(:with_parent => true))
+              klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
+            rescue Faraday::Error::ClientError
+              nil
+            end
           end
 
-          instance_variable_set("@#{resource}", loaded_resources)
-        elsif klass.ancestors.include?(DataResource)
-          collection = Zendesk::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
-          instance_variable_set("@#{resource}", collection)
+          instance_variable_set("@#{resource_name}", fetched_resource)
+        end
+
+        define_method "#{resource_name}=" do |resource|
+          resource = wrap_resource(resource, klass, class_level_association)
+          instance_variable_set("@#{resource_name}", resource)
         end
       end
 
-      define_method "#{resource}=" do |arg|
-        instance_association = Association.new(class_level_association.merge(:parent => self))
+      # Represents a parent-to-children association between resources. Options to pass in are: class, path.
+      # @param [Symbol] resource The underlying resource name
+      # @param [Hash] opts The options to pass to the method definition.
+      def has_many(resource, class_level_opts = {})
+        klass = get_class(class_level_opts.delete(:class)) || get_class(resource.to_s.singular)
+        class_level_association = { :class => klass, :name => resource, :save => !!class_level_opts.delete(:save), :path => class_level_opts.delete(:path) }
+        associations << class_level_association
 
-        if arg.is_a?(Array)
-          res = send(resource)
+        define_method resource do |*args|
+          instance_opts = args.last.is_a?(Hash) ? args.pop : {}
+          return instance_variable_get("@#{resource}") if instance_variable_defined?("@#{resource}") && !instance_opts[:reload]
 
-          arg.map! do |attr| 
-            if attr.is_a?(Hash)
-              attr.merge!(:association => instance_association)
-            else
-              attr = { :id => attr, :association => instance_association }
+          instance_association = Association.new(class_level_association.merge(:parent => self))
+          singular_resource_name = resource.to_s.singular
+
+          if (ids = method_missing("#{singular_resource_name}_ids")) && ids.any?
+            collection = ids.map do |id|
+              klass.find(@client, :id => id, :association => instance_association)
+            end.compact
+
+            instance_variable_set("@#{resource}", collection)
+          elsif (resources = method_missing(resource.to_sym)) && resources.any?
+            loaded_resources = resources.map do |res|
+              klass.new(@client, klass.resource_name => res, :association => instance_association)
             end
 
-            klass.new(@client, attr)
+            instance_variable_set("@#{resource}", loaded_resources)
+          elsif klass.ancestors.include?(DataResource)
+            collection = Zendesk::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
+            instance_variable_set("@#{resource}", collection)
           end
+        end
 
-          res.clear.push(*arg)
-        else
-          arg.association = instance_association
-          instance_variable_set("@#{resource}", arg)
+        define_method "#{resource}=" do |arg|
+          if arg.is_a?(Array)
+            res = send(resource)
+
+            arg.map! do |attr|
+              wrap_resource(attr, klass, class_level_association)
+            end
+
+            res.clear.push(*arg)
+          else
+            arg.association = instance_association
+            instance_variable_set("@#{resource}", arg)
+          end
         end
       end
-    end
 
-    # Allows using has and has_many without having class defined yet
-    # Guesses at Resource, if it's anything else and the class is later
-    # reopened under a different superclass, an error will be thrown
-    def get_class(resource)
-      return false if resource.nil?
-      res = resource.to_s.modulize
+      # Allows using has and has_many without having class defined yet
+      # Guesses at Resource, if it's anything else and the class is later
+      # reopened under a different superclass, an error will be thrown
+      def get_class(resource)
+        return false if resource.nil?
+        res = resource.to_s.modulize
 
-      begin
-        const_get(res)
-      rescue NameError
-        Zendesk.get_class(resource)
+        begin
+          const_get(res)
+        rescue NameError
+          Zendesk.get_class(resource)
+        end
       end
     end
   end
