@@ -147,13 +147,9 @@ module Zendesk
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to update. Default to {} 
       def update(client, attributes = {})
-        association = attributes.delete(:association) || Association.new(:class => self)
-
-        client.connection.put(association.generate_path(attributes)) do |req|
-          req.body = attributes
-        end
-
-        true
+        Zendesk::Client.check_deprecated_namespace_usage attributes, singular_resource_name
+        resource = new(client, attributes)
+        resource.save
       end
 
       rescue_client_error :update, :with => false

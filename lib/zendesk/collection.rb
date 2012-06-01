@@ -59,6 +59,12 @@ module Zendesk
     end
 
     # (see #create)
+    def update(opts = {})
+      opts.merge!(:association => @association)
+      @resource_class.update(@client, @options.merge(opts))
+    end
+
+    # (see #create)
     def destroy(opts = {})
       opts.merge!(:association => association)
       @resource_class.destroy(@client, @options.merge(opts))

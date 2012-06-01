@@ -40,6 +40,10 @@ describe Zendesk::Collection do
       subject.destroy(:id => 1)
     end
 
+    it "should defer #update to the resource class" do
+      subject.update(:id => 1)
+    end
+
     context "with a class with a parent" do
       let(:association) do
         Zendesk::Association.new(:class => Zendesk::TestResource::TestChild,
@@ -65,6 +69,10 @@ describe Zendesk::Collection do
 
       it "should defer #find to the resource class with the parent id" do
         subject.find(:id => 1)
+      end
+
+      it "should defer #update to the resource class with the parent id" do
+        subject.update(:id => 1)
       end
     end
   end
