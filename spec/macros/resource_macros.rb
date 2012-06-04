@@ -6,7 +6,7 @@ module ResourceMacros
     end
   end
 
-  def it_should_be_creatable
+  def it_should_be_creatable(options={})
     context "creation" do
       use_vcr_cassette
       subject { described_class }
@@ -19,7 +19,7 @@ module ResourceMacros
 
       it "should have an id" do
         @object.should_not be_nil
-        @object.id.should_not be_nil
+        @object.send(options[:id] || :id).should_not be_nil
       end
 
       it "should be findable", :unless => metadata[:not_findable] do

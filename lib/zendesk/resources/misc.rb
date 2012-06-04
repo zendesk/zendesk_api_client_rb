@@ -40,6 +40,8 @@ module Zendesk
 
   class Upload < Data
     include Create
+
+    only_send_unnested_params
     has_many :attachments
   end
 

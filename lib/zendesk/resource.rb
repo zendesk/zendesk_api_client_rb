@@ -26,6 +26,14 @@ module Zendesk
       if method_defined?(:const_missing_without_dependencies)
         alias :const_missing :const_missing_without_dependencies
       end
+
+      def only_send_unnested_params
+        @unnested_params = true
+      end
+
+      def unnested_params
+        @unnested_params ||= false
+      end
     end
 
     # @return [Hash] The resource's attributes
@@ -48,6 +56,7 @@ module Zendesk
     # Passes the method onto the attributes hash.
     # If the attributes are nested (e.g. { :tickets => { :id => 1 } }), passes the method onto the nested hash.
     def method_missing(*args, &blk)
+      raise NoMethodError, ":save is not defined" if args.first.to_sym == :save
       @attributes.send(*args, &blk)
     end
 
@@ -108,14 +117,6 @@ module Zendesk
 
   # Represents a resource that can CRUD (create, read, update, delete).
   class Resource < DataResource
-    def self.only_send_unnested_params
-      @unnested_params = true
-    end
-
-    def self.unnested_params
-      @unnested_params ||= false
-    end
-
     extend Read
     include Create
 
