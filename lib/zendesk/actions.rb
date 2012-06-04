@@ -17,23 +17,7 @@ module Zendesk
 
       req_path = options[:path] if options[:path]
 
-      self.class.associations.each do |assoc|
-        if assoc[:save]
-          assoc_id = "#{assoc[:name]}_id"
-          singular_assoc_ids = "#{assoc[:name].to_s.singular}_ids"
-          assoc_obj = send(assoc[:name])
-          next unless assoc_obj
-          assoc_obj.save if assoc_obj.respond_to?(:save)
-
-          if has_key?(assoc_id)
-            attributes[assoc_id] = assoc_obj.id
-          elsif has_key?(singular_assoc_ids)
-            attributes[singular_assoc_ids] = assoc_obj.map(&:id)
-          else
-            attributes[assoc[:name]] = assoc_obj.is_a?(Collection) ? assoc_obj.map(&:to_param) : assoc_obj.to_param
-          end
-        end
-      end
+      save_associations :before
 
       response = @client.connection.send(method, req_path) do |req|
         req.body = if self.class.unnested_params
@@ -46,6 +30,27 @@ module Zendesk
       @attributes.replace @attributes.deep_merge(response.body[self.class.singular_resource_name] || {})
       @attributes.clear_changes
       true
+    end
+
+    def save_associations(time)
+      associations = self.class.associations.select{|a| a[:save] == time }
+
+      associations.each do |association_data|
+        association_id_column = "#{association_data[:name]}_id"
+        association_ids_column = "#{association_data[:name].to_s.singular}_ids"
+        association = send(association_data[:name])
+        next unless association
+
+        association.save if association.respond_to?(:save)
+
+        if has_key? association_id_column
+          attributes[association_id_column] = association.id
+        elsif has_key? association_ids_column
+          attributes[association_ids_column] = association.map(&:id)
+        else
+          attributes[association_data[:name]] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
+        end
+      end
     end
   end
 

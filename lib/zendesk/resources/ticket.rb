@@ -17,8 +17,8 @@ module Zendesk
     has :forum_topic, :class => :topic
     has :organization
 
-    has_many :uploads, :class => :attachment, :save => true
-    has :comment, :class => :ticket_comment, :save => true
+    has_many :uploads, :class => :attachment, :save => :before
+    has :comment, :class => :ticket_comment, :save => :before
 
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used

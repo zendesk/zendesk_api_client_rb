@@ -116,7 +116,7 @@ module Zendesk
       # @param [Hash] opts The options to pass to the method definition.
       def has(resource_name, class_level_options = {})
         klass = get_class(class_level_options.delete(:class)) || get_class(resource_name)
-        class_level_association = { :class => klass, :name => resource_name, :save => !!class_level_options.delete(:save), :path => class_level_options.delete(:path) }
+        class_level_association = { :class => klass, :name => resource_name, :save => class_level_options.delete(:save), :path => class_level_options.delete(:path) }
         associations << class_level_association
 
         define_method resource_name do |*args|
@@ -157,7 +157,7 @@ module Zendesk
       # @param [Hash] opts The options to pass to the method definition.
       def has_many(resource_name, class_level_opts = {})
         klass = get_class(class_level_opts.delete(:class)) || get_class(resource_name.to_s.singular)
-        class_level_association = { :class => klass, :name => resource_name, :save => !!class_level_opts.delete(:save), :path => class_level_opts.delete(:path) }
+        class_level_association = { :class => klass, :name => resource_name, :save => class_level_opts.delete(:save), :path => class_level_opts.delete(:path) }
         associations << class_level_association
 
         define_method resource_name do |*args|
