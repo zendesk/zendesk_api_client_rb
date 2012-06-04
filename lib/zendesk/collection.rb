@@ -112,8 +112,7 @@ module Zendesk
     def fetch(reload = false)
       return @resources if @resources && (!@fetchable || !reload)
       if association && association.options.parent && association.options.parent.new_record?
-        @resources = []
-        return
+        return @resources = []
       end
 
       save

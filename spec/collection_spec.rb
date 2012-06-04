@@ -103,7 +103,8 @@ describe Zendesk::Collection do
 
   context "fetch", :vcr_off do
     it "does not fetch if associated is a new record" do
-      Zendesk::Category.new(client).forums.to_a == []
+      Zendesk::Category.new(client).forums.fetch.should == []
+      Zendesk::Category.new(client).forums.to_a.should == []
     end
 
     context "with client error" do
