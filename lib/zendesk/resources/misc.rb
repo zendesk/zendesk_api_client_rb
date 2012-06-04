@@ -39,7 +39,7 @@ module Zendesk
   end
 
   class Upload < Data
-    extend Create
+    include Create
     has_many :attachments
   end
 

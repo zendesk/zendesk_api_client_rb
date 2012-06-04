@@ -93,7 +93,7 @@ module Zendesk
 
   # Represents a resource that can only POST
   class CreateResource < DataResource
-    extend Create
+    include Create
   end
 
   # Represents a resource that can only PUT
@@ -117,7 +117,7 @@ module Zendesk
     end
 
     extend Read
-    extend Create
+    include Create
 
     include Update 
     include Destroy

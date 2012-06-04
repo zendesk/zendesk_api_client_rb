@@ -75,20 +75,27 @@ module Zendesk
   end
 
   module Create
-    extend Rescue
     include Save
 
-    # Create a resource given the attributes passed in.
-    # @param [Client] client The {Client} object to be used
-    # @param [Hash] attributes The attributes to create.
-    def create(client, attributes = {})
-      Zendesk::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-      resource = new(client, attributes)
-      return unless resource.save
-      resource
+    def self.included(base)
+      base.send(:extend, ClassMethods)
     end
 
-    rescue_client_error :create
+    module ClassMethods
+      extend Rescue
+
+      # Create a resource given the attributes passed in.
+      # @param [Client] client The {Client} object to be used
+      # @param [Hash] attributes The attributes to create.
+      def create(client, attributes = {})
+        Zendesk::Client.check_deprecated_namespace_usage attributes, singular_resource_name
+        resource = new(client, attributes)
+        return unless resource.save
+        resource
+      end
+
+      rescue_client_error :create
+    end
   end
 
   module Destroy
