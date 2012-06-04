@@ -111,6 +111,10 @@ module Zendesk
     # @param [Boolean] reload Whether to disregard cache
     def fetch(reload = false)
       return @resources if @resources && (!@fetchable || !reload)
+      if association && association.options.parent && association.options.parent.new_record?
+        @resources = []
+        return
+      end
 
       save
 

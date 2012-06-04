@@ -102,6 +102,10 @@ describe Zendesk::Collection do
   end
 
   context "fetch", :vcr_off do
+    it "does not fetch if associated is a new record" do
+      Zendesk::Category.new(client).forums.to_a == []
+    end
+
     context "with client error" do
       before(:each) do
         stub_request(:get, %r{test_resources}).to_return(:status => 500)
