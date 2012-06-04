@@ -101,7 +101,7 @@ module Zendesk
         elsif new.is_a?(Resource) && new.new_record?
           new.save
           new
-        elsif !new.is_a?(DataResource) # For attachments / uploads 
+        else # For attachments / uploads
           create(:file => new)
         end
       end if @resources

@@ -9,6 +9,7 @@ module Zendesk
           begin
             send("orig_#{method}", *args)
           rescue Faraday::Error::ClientError => e
+            puts "#{self} - #{method}"
             puts e.message
             puts e.backtrace
             puts "\t#{e.response[:body].inspect}" if e.response

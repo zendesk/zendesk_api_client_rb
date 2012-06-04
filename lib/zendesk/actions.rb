@@ -30,6 +30,9 @@ module Zendesk
       @attributes.replace @attributes.deep_merge(response.body[self.class.singular_resource_name] || {})
       @attributes.clear_changes
       true
+    rescue
+      puts "Save failed #{method} #{req_path}"
+      raise
     end
 
     def save_associations(time)
@@ -92,6 +95,10 @@ module Zendesk
         resource = new(client, attributes)
         return unless resource.save
         resource
+      end
+
+      def create!(client, attributes={})
+        create(client, attributes) || raise("Create failed #{self} #{attributes}")
       end
 
       rescue_client_error :create

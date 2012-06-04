@@ -63,4 +63,32 @@ describe Zendesk::Ticket do
       end
     end
   end
+
+  it "can upload while creating" do
+    VCR.use_cassette("ticket_inline_uploads") do
+
+      ticket = Zendesk::Ticket.new(client, valid_attributes.merge(default_options))
+      ticket.uploads << "spec/fixtures/Argentina.gif"
+      #ticket.uploads << File.new("spec/fixtures/Argentina.gif") # TODO Zendesk bug: you can only upload 1 picture at a time
+
+      ticket.save
+      ticket.changes.should == {} # uploads where set before save
+      ticket.attributes[:uploads].map(&:class).should == [String]
+
+      ticket = Zendesk::Ticket.find(client, ticket)
+      ticket.id.should_not == nil
+    end
+  end
+
+  #it "can comment while creating" do
+  #  ticket = Zendesk::Ticket.new(client, valid_attributes.merge(default_options))
+  #  ticket.comment =
+  #  ticket.save
+  #
+  #  ticket.attributes[:uploads].map(&:class).should == [String]
+  #
+  #  ticket = Zendesk::Ticket.find(client, ticket)
+  #  ticket.id.should_not == nil
+  #  MethodCallRecorder.recordings[client.connection.class][:post].should == [["uploads"], ["tickets"]]
+  #end
 end

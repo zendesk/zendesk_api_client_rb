@@ -179,7 +179,7 @@ module Zendesk
             resources.map do |res|
               klass.new(@client, klass.resource_name => res, :association => instance_association)
             end
-          elsif klass.ancestors.include?(DataResource)
+          else
             Zendesk::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
           end
 
