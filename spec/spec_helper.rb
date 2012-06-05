@@ -39,6 +39,10 @@ RSpec.configure do |c|
     WebMock.reset!
   end
 
+  c.around(:each, :silence_stdout) do |example|
+    silence_stdout{ example.call }
+  end
+
   c.extend VCR::RSpec::Macros
   c.extend ResourceMacros
 end
