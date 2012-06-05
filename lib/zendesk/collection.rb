@@ -101,7 +101,7 @@ module Zendesk
         elsif new.is_a?(Resource) && new.new_record?
           new.save
           new
-        else # For attachments / uploads
+        else # FIXME edge-case so that strings and files become attachments
           create(:file => new)
         end
       end if @resources
