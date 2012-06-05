@@ -95,7 +95,7 @@ module Zendesk
     def save
       if @resources
         @resources.map! do |item|
-          item.save if item.new_record? # FIXME we only create !?
+          item.save unless item.changes.empty?
           item
         end
       end

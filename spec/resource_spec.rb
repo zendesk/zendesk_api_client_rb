@@ -175,6 +175,19 @@ describe Zendesk::Resource do
           subject.children.first.should_receive(:save)
           subject.save
         end
+
+        it "should not save the associated objects when it is set via full hash" do
+          subject.children = [{:id => 1, :foo => "bar"}]
+          subject.children.first.should_not_receive(:save)
+          subject.save
+        end
+
+        it "should save the associated objects when it is changes" do
+          subject.children = [{:id => 1}]
+          subject.children.first.foo = "bar"
+          subject.children.first.should_receive(:save)
+          subject.save
+        end
       end
     end
   end

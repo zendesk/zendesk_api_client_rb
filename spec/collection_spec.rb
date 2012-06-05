@@ -143,7 +143,7 @@ describe Zendesk::Collection do
     end
 
     context "with a hash" do
-      let(:object) { mock('Zendesk::TestResource', :new_record? => true) }
+      let(:object) { mock('Zendesk::TestResource', :changes => [:xxx]) }
 
       it "should call create with those options" do
         Zendesk::TestResource.should_receive(:new).with(client, options).and_return(object)
@@ -174,7 +174,7 @@ describe Zendesk::Collection do
 
     context "with everything else" do
       it "should pass to new, since this is how attachment handles it" do
-        attachment = mock(:new_record? => true)
+        attachment = mock(:changes => [:xxx])
         Zendesk::TestResource.should_receive(:new).with(client, "img.jpg").and_return attachment
         subject << "img.jpg"
 
