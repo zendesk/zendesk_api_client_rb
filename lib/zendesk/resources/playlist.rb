@@ -33,22 +33,14 @@ module Zendesk
         @ticket = Ticket.new(@client, response.body["ticket"])
         @ticket
       else
-        @destroyed = response.status == 204
+        @destroyed = (response.status == 204)
         nil
       end
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      nil
     end
 
     def destroy
       response = @client.connection.delete("play")
       @destroyed = response.status == 204 
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
-      false
     end
 
     def destroyed?
@@ -64,9 +56,6 @@ module Zendesk
     def init_playlist
       response = @client.connection.get("views/#{id}/play")
       @initialized = response.status == 302
-    rescue Faraday::Error::ClientError => e
-      puts e.message
-      puts "\t#{e.response[:body].inspect}" if e.response
     end
 
     rescue_client_error :next, :init_playlist

@@ -20,7 +20,7 @@ describe Zendesk::Resource do
         end
 
         it "should handle it properly" do
-          expect { silence_stdout{ subject.update(client, :id => id).should be_false } }.to_not raise_error
+          expect { silence_logger{ subject.update(client, :id => id).should be_false } }.to_not raise_error
         end
       end
     end
@@ -45,7 +45,7 @@ describe Zendesk::Resource do
         end
 
         it "should handle it properly" do
-          expect { silence_stdout{ subject.destroy(client, :id => id).should be_false } }.to_not raise_error
+          expect { silence_stderr{ subject.destroy(client, :id => id).should be_false } }.to_not raise_error
         end
       end
     end
@@ -69,7 +69,7 @@ describe Zendesk::Resource do
         end
 
         it "should return false and not set destroyed" do
-          silence_stdout{ subject.destroy.should be_false }
+          silence_logger{ subject.destroy.should be_false }
           subject.destroyed?.should be_false
         end
       end
@@ -105,7 +105,7 @@ describe Zendesk::Resource do
       end
 
       it "should be properly handled" do
-        expect { silence_stdout { subject.save.should be_false } }.to_not raise_error
+        expect { silence_logger { subject.save.should be_false } }.to_not raise_error
       end
     end
 
@@ -229,7 +229,7 @@ describe Zendesk::Resource do
           end
 
           it "should return false" do
-            expect { silence_stdout{ subject.send(method).should be_false } }.to_not raise_error
+            expect { silence_logger{ subject.send(method).should be_false } }.to_not raise_error
           end
         end
       end

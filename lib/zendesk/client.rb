@@ -63,8 +63,12 @@ module Zendesk
       @connection = false
       @callbacks = []
 
-      insert_callback do |env|
-        puts "WARNING: #{env[:response_headers]["X-Zendesk-API-Warn"]}" if env[:response_headers]["X-Zendesk-API-Warn"]
+      if logger = config.logger
+        insert_callback do |env|
+          if warning = env[:response_headers]["X-Zendesk-API-Warn"]
+            logger.warn "WARNING: #{warning}"
+          end
+        end
       end
     end
 
@@ -82,7 +86,7 @@ module Zendesk
         # response
         builder.use Faraday::Response::RaiseError
         builder.use Zendesk::Middleware::Response::Callback, self
-        builder.use Faraday::Response::Logger, config.logger unless config.logger == false
+        builder.use Faraday::Response::Logger, config.logger if config.logger
         builder.use Zendesk::Middleware::Response::ParseIsoDates
         builder.response :json
         builder.use Zendesk::Middleware::Response::Gzip
@@ -92,7 +96,7 @@ module Zendesk
         builder.use Zendesk::Middleware::Request::Upload
         builder.request :multipart
         builder.request :json
-        builder.use Zendesk::Middleware::Request::Retry if config.retry # Should always be first in the stack
+        builder.use Zendesk::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
 
         builder.adapter *config.adapter || Faraday.default_adapter
       end

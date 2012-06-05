@@ -51,13 +51,13 @@ describe Zendesk::Client do
       context "with true value" do
         subject { true }
 
-        it "should use faraday default" do
+        it "should log in faraday" do
           @client.connection.builder.handlers.should include(Faraday::Response::Logger)
         end
 
         context "with a request", :vcr_off do
-          it "should log to the stdout" do
-            STDOUT.should_receive(:write).at_least(:once)
+          it "should log" do
+            client.config.logger.should_receive(:info).at_least(:once)
             @client.connection.get('/bs')
           end
         end
@@ -74,14 +74,14 @@ describe Zendesk::Client do
       context "with a nil value" do
         subject { nil }
 
-        it "should not log" do
-          @client.connection.builder.handlers.should_not include(Faraday::Response::Logger)
+        it "should log" do
+          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
         end
       end
 
       context "with a logger" do
-        require 'logger'
-        subject { Logger.new(STDERR) }
+        let(:out){ StringIO.new }
+        subject { Logger.new(out) }
         
         it "should log" do
           @client.connection.builder.handlers.should include(Faraday::Response::Logger)
@@ -89,7 +89,7 @@ describe Zendesk::Client do
 
         context "with a request", :vcr_off do
           it "should log to the subject" do
-            STDERR.should_receive(:write).at_least(:once)
+            out.should_receive(:write).at_least(:once)
             @client.connection.get('/bs')
           end
         end

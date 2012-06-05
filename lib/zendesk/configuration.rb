@@ -22,16 +22,12 @@ module Zendesk
         raise ConfigurationException.new('zendesk api is ssl only; url must begin with https://')
       end
 
-      # Turns nil -> false, does nothing to true
-      client.config.retry = !!client.config.retry
+      client.config.retry = !!client.config.retry # nil -> false
 
-      # Faraday::Response::Logger defaults to STDOUT
-      # so if true is sent in, use the the Faraday default.
-      # Otherwise if nil/false, don't use the logger period
-      if client.config.logger.nil?
-        client.config.logger = false
-      elsif client.config.logger == true
-        client.config.logger = nil
+      if client.config.logger.nil? || client.config.logger == true
+        require 'logger'
+        client.config.logger = Logger.new($stderr)
+        client.config.logger.level = Logger::WARN
       end
 
       client

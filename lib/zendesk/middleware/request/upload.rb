@@ -14,7 +14,7 @@ module Zendesk
             when String
               path = file
             else
-              puts "WARNING: Passed invalid filename #{file} of type #{file.class} to upload"
+              warn "WARNING: Passed invalid filename #{file} of type #{file.class} to upload"
             end
 
             if path

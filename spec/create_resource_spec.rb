@@ -19,7 +19,7 @@ describe Zendesk::CreateResource do
       end
 
       it "should handle it properly" do
-        expect { silence_stdout { subject.create(client, attr).should be_nil } }.to_not raise_error
+        expect { silence_logger { subject.create(client, attr).should be_nil } }.to_not raise_error
       end
     end
   end

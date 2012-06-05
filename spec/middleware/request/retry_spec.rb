@@ -19,15 +19,29 @@ describe Zendesk::Middleware::Request::Retry, :vcr_off do
     end
   end
 
-  it "should wait default timeout seconds and then retry request on error" do
-    stub_request(:get, %r{blergh}).
-      to_return(:status => 503).
-      to_return(:status => 200)
+  context "with failing request", :prevent_logger_changes do
+    before do
+      stub_request(:get, %r{blergh}).
+        to_return(:status => 503).
+        to_return(:status => 200)
 
-    Zendesk::Middleware::Request::Retry.any_instance.should_receive(:sleep).exactly(10).times.with(1)
+      Zendesk::Middleware::Request::Retry.any_instance.should_receive(:sleep).exactly(10).times.with(1)
+    end
 
-    runtime do
-      client.connection.get("blergh").status.should == 200
-    end.should <= 0.5
+    it "should wait default timeout seconds and then retry request on error" do
+      runtime do
+        client.connection.get("blergh").status.should == 200
+      end.should <= 0.5
+    end
+
+    it "should print to logger" do
+      client.config.logger.should_receive(:warn).at_least(:once)
+      client.connection.get("blergh")
+    end
+
+    it "should not fail without a logger" do
+      client.config.logger = false
+      client.connection.get("blergh")
+    end
   end
 end

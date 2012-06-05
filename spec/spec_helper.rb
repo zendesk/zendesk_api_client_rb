@@ -12,10 +12,55 @@ end
 
 require 'zendesk'
 require 'vcr'
+require 'logger'
+require 'stringio'
 
 require 'resource_macros'
 require 'fixtures/zendesk'
 require 'fixtures/test_resources'
+
+module TestHelper
+  def client
+    credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
+    @client ||= begin
+      client = Zendesk.configure do |config|
+        if File.exist?(credentials)
+          data = YAML.load(File.read(credentials))
+          config.username = data["username"]
+          config.password = data["password"]
+          config.url = data["url"]
+        else
+          puts "using default credentials: live specs will fail."
+          puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
+          config.username = "please.change"
+          config.password = "me"
+          config.url = "https://my.zendesk.com/api/v2"
+        end
+
+        config.retry = true
+      end
+
+      client.config.logger.level = (ENV["LOG"] ? Logger::INFO : Logger::WARN)
+
+      client
+    end
+  end
+
+  def silence_logger
+    old_level = client.config.logger.level
+    client.config.logger.level = 6
+    yield
+  ensure
+    client.config.logger.level = old_level
+  end
+
+  def silence_stderr
+    $stderr = File.new( '/dev/null', 'w' )
+    yield
+  ensure
+    $stderr = STDERR
+  end
+end
 
 RSpec.configure do |c|
   # so we can use `:vcr` rather than `:vcr => true`;
@@ -39,46 +84,29 @@ RSpec.configure do |c|
     WebMock.reset!
   end
 
-  c.around(:each, :silence_stdout) do |example|
-    silence_stdout{ example.call }
+  c.around(:each, :silence_logger) do |example|
+    silence_logger{ example.call }
+  end
+
+  c.around(:each, :prevent_logger_changes) do |example|
+    begin
+      old_logger = client.config.logger
+      example.call
+    ensure
+      client.config.logger = old_logger
+    end
   end
 
   c.extend VCR::RSpec::Macros
   c.extend ResourceMacros
+
+  c.include TestHelper
 end
 
 VCR.configure do |c|
   c.cassette_library_dir = File.join(File.dirname(__FILE__), "fixtures", "cassettes")
   c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true }
   c.hook_into :webmock
-end
-
-def client
-  credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
-  @client ||= Zendesk.configure do |config|
-    if File.exist?(credentials)
-      data = YAML.load(File.read(credentials))
-      config.username = data["username"]
-      config.password = data["password"]
-      config.url = data["url"]
-    else
-      puts "using default credentials: live specs will fail."
-      puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
-      config.username = "please.change"
-      config.password = "me"
-      config.url = "https://my.zendesk.com/api/v2"
-    end
-
-    config.logger = !!ENV["LOG"]
-    config.retry = true
-  end
-end
-
-def silence_stdout
-  $stdout = File.new( '/dev/null', 'w' )
-  yield
-ensure
-  $stdout = STDOUT
 end
 
 include WebMock::API

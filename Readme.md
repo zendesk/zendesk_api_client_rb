@@ -39,11 +39,11 @@ Zendesk.configure do |config|
   # when hitting the rate limit, sleep automatically,
   # then retry the request.
   config.retry = true
-  # Logger prints to STDOUT by default
-  config.logger = true
-  # Logger prints out requests to STDERR
+
+  # Logger prints to STDERR by default, to e.g. print to stdout:
   require 'logger'
-  config.logger = Logger.new(STDERR)
+  config.logger = Logger.new(STDOUT)
+
   # Changes Faraday adapter
   config.adapter = :patron
 

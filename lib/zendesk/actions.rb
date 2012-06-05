@@ -30,9 +30,6 @@ module Zendesk
       @attributes.replace @attributes.deep_merge(response.body[self.class.singular_resource_name] || {})
       @attributes.clear_changes
       true
-    rescue
-      puts "Save failed #{method} #{req_path}"
-      raise
     end
 
     def save!(options={})

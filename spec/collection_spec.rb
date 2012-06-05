@@ -121,7 +121,7 @@ describe Zendesk::Collection do
       end
 
       it "should properly be handled" do
-        silence_stdout { subject.fetch(true).should be_empty }
+        silence_logger { subject.fetch(true).should be_empty }
       end
     end
 
