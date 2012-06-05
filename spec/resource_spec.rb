@@ -151,54 +151,29 @@ describe Zendesk::Resource do
       context "has_many" do
         before(:each) do
           Zendesk::TestResource.associations.clear
-          Zendesk::TestResource.has_many :children, :class => :test_child, :save => :before
+          Zendesk::TestResource.has_many :children, :class => :test_child, :save => true
 
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           stub_request(:get, %r{children}).to_return(:body => {"test_children" => []})
         end
 
-        context "with ids" do
-          before(:each) do
-            subject.child_ids = [1]
-            subject.children = [2, 3]
-            subject.save
-          end
-
-          it "should save the new object" do
-            subject.children.should be_instance_of(Array)
-          end
-
-          specify "child's id" do
-            [2,3].each {|id| subject.children.detect {|c| c.id == id}.should_not be_nil}
-            subject.child_ids.should == [2, 3]
-          end
+        it "should reset children_ids on save" do
+          subject.children = [2, 3]
+          subject.children_ids = [1]
+          subject.save
+          subject.children_ids.should == [2,3]
         end
 
-        context "with an object" do
-          context "with a hash" do
-            let(:association) do
-              Zendesk::Association.new(:class => Zendesk::TestResource::TestChild, :parent => Zendesk::TestResource.new(client, :id => 1))
-            end
+        it "should not save the associated objects when there are no changes" do
+          subject.children = [2]
+          subject.children.first.should_not_receive(:save)
+          subject.save
+        end
 
-            before(:each) do
-              collection = Zendesk::Collection.new(
-                client, Zendesk::TestResource::TestChild,
-                :association => association
-              )
-              collection << { :id => 2, :def => :abc, :test_resource_id => 1 }
-              collection << { :id => 3, :def => :gre, :test_resource_id => 1 }
-              subject.children = collection
-              subject.save
-            end
-
-            it "should save the new object" do
-              subject.children.should be_instance_of(Zendesk::Collection)
-            end
-
-            specify "child's id" do
-              subject.children.collect(&:id).should == [2, 3]
-            end
-          end
+        it "should save the associated objects when it is new" do
+          subject.children = [{:foo => "bar"}]
+          subject.children.first.should_receive(:save)
+          subject.save
         end
       end
     end

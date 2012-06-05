@@ -43,20 +43,16 @@ module Zendesk
       associations = self.class.associations.select{|a| a[:save] || a[:inline] }
 
       associations.each do |association_data|
-        next unless association = send(association_data[:name])
-        association.save if association_data[:save] && association.respond_to?(:save) && (association.is_a?(Collection) || !association.changes.empty?)
+        association_name = association_data[:name]
+        next unless association = send(association_name)
+
+        if association_data[:save] && association.respond_to?(:save) && (association.is_a?(Collection) || !association.changes.empty?)
+          association.save
+          self.send("#{association_name}=", association) # set id/ids columns
+        end
 
         if association_data[:inline]
-          attributes[association_data[:name]] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
-        else
-          association_id_column = "#{association_data[:name]}_id"
-          association_ids_column = "#{association_data[:name].to_s.singular}_ids"
-
-          if has_key? association_id_column
-            attributes[association_id_column] = association.id
-          elsif has_key? association_ids_column
-            attributes[association_ids_column] = association.map(&:id)
-          end
+          attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
         end
       end
     end
