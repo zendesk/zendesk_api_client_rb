@@ -119,7 +119,6 @@ module Zendesk
         class_level_association = {
           :class => klass,
           :name => resource_name,
-          :save => class_level_options.delete(:save),
           :inline => class_level_options.delete(:inline),
           :path => class_level_options.delete(:path)
         }
@@ -167,7 +166,6 @@ module Zendesk
         class_level_association = {
           :class => klass,
           :name => resource_name,
-          :save => class_level_opts.delete(:save),
           :inline => class_level_opts.delete(:inline),
           :path => class_level_opts.delete(:path)
         }

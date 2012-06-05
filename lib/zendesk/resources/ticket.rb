@@ -17,7 +17,7 @@ module Zendesk
     has :forum_topic, :class => :topic
     has :organization
 
-    has_many :uploads, :class => :attachment, :save => true, :inline => true
+    has_many :uploads, :class => :attachment, :inline => true
     has :comment, :class => :ticket_comment, :inline => true
 
     # Gets a incremental export of tickets from the start_time until now.

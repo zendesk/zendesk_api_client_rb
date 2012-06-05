@@ -40,13 +40,11 @@ module Zendesk
     end
 
     def save_associations
-      associations = self.class.associations.select{|a| a[:save] || a[:inline] }
-
-      associations.each do |association_data|
+      self.class.associations.each do |association_data|
         association_name = association_data[:name]
         next unless association = send(association_name)
 
-        if association_data[:save] && association.respond_to?(:save) && (association.is_a?(Collection) || !association.changes.empty?)
+        if association.respond_to?(:save) && (association.is_a?(Collection) || !association.changes.empty?)
           association.save
           self.send("#{association_name}=", association) # set id/ids columns
         end

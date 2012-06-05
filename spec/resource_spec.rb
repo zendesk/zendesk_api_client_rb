@@ -131,7 +131,7 @@ describe Zendesk::Resource do
       context "has" do
         before(:each) do
           Zendesk::TestResource.associations.clear
-          Zendesk::TestResource.has :child, :class => :test_child, :save => true
+          Zendesk::TestResource.has :child, :class => :test_child
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           subject.child = { :id => 2 }
         end
@@ -151,7 +151,7 @@ describe Zendesk::Resource do
       context "has_many" do
         before(:each) do
           Zendesk::TestResource.associations.clear
-          Zendesk::TestResource.has_many :children, :class => :test_child, :save => true
+          Zendesk::TestResource.has_many :children, :class => :test_child
 
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           stub_request(:get, %r{children}).to_return(:body => {"test_children" => []})
