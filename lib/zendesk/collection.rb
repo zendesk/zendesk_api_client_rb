@@ -95,18 +95,25 @@ module Zendesk
     def save
       if @resources
         @resources.map! do |item|
-          if item.is_a?(Resource)
-            item.save if item.new_record? # FIXME we only create !?
-            item
-          else
-            new_obj = @resource_class.new(@client, item)
-            new_obj.save
-            new_obj
-          end
+          item.save if item.new_record? # FIXME we only create !?
+          item
         end
       end
 
       self
+    end
+
+    def <<(item)
+      fetch
+      if item.is_a?(Resource)
+        if item.is_a?(@resource_class)
+          @resources << item
+        else
+          raise "this collection is for #{@resource_class}"
+        end
+      else
+        @resources << @resource_class.new(@client, item)
+      end
     end
 
     def path
@@ -149,6 +156,7 @@ module Zendesk
     end
 
     def replace(collection)
+      raise "this collection is for #{@resource_class}" if collection.any?{|r| !r.is_a?(@resource_class) }
       @resources = collection
     end
 

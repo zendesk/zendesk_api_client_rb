@@ -143,16 +143,15 @@ describe Zendesk::Collection do
     end
 
     context "with a hash" do
-      let(:object) { mock('Zendesk::TestResource') }
-      before(:each) do
+      let(:object) { mock('Zendesk::TestResource', :new_record? => true) }
+
+      it "should call create with those options" do
+        Zendesk::TestResource.should_receive(:new).with(client, options).and_return(object)
         subject << options
 
         object.should_receive(:save)
-        Zendesk::TestResource.should_receive(:new).with(client, options).and_return(object)
-      end
-
-      it "should call create with those options" do
         subject.save
+
         subject.should include(object)
       end
     end
@@ -174,12 +173,12 @@ describe Zendesk::Collection do
     end
 
     context "with everything else" do
-      before(:each) { subject << "img.jpg" }
-
       it "should pass to new, since this is how attachment handles it" do
-        attachment = mock
-        attachment.should_receive :save
+        attachment = mock(:new_record? => true)
         Zendesk::TestResource.should_receive(:new).with(client, "img.jpg").and_return attachment
+        subject << "img.jpg"
+
+        attachment.should_receive :save
         subject.save
       end
     end
