@@ -121,8 +121,6 @@ module Zendesk
         return @resources = []
       end
 
-      save
-
       if @query
         path = @query
         @query = nil
