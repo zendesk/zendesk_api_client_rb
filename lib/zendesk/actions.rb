@@ -44,7 +44,7 @@ module Zendesk
 
       associations.each do |association_data|
         next unless association = send(association_data[:name])
-        association.save if association_data[:save] && association.respond_to?(:save)
+        association.save if association_data[:save] && association.respond_to?(:save) && (association.is_a?(Collection) || !association.changes.empty?)
 
         if association_data[:inline]
           attributes[association_data[:name]] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)

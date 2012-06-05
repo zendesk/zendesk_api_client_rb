@@ -68,7 +68,7 @@ module Zendesk
       elsif options[parent_id_column]
         original_options.delete(parent_id_column) || original_options.delete(parent_id_column.to_sym)
       else
-        raise ArgumentError.new("#{@options[:class].resource_name} require parent id")
+        raise ArgumentError.new("#{@options[:class].resource_name} requires #{parent_id_column} or parent")
       end
     end
 
@@ -148,13 +148,13 @@ module Zendesk
             end
           end
 
-          send("#{resource_name}_id=", resource.id) if resource && has_key?(id_column)
+          send("#{id_column}=", resource.id) if resource && has_key?(id_column)
           instance_variable_set("@#{resource_name}", resource)
         end
 
         define_method "#{resource_name}=" do |resource|
           resource = wrap_resource(resource, klass, class_level_association)
-          send("#{resource_name}_id=", resource.id) if has_key?(id_column)
+          send("#{id_column}=", resource.id) if has_key?(id_column)
           instance_variable_set("@#{resource_name}", resource)
         end
       end
@@ -172,6 +172,8 @@ module Zendesk
           :path => class_level_opts.delete(:path)
         }
         associations << class_level_association
+
+        id_column = "#{resource_name}_ids"
 
         define_method resource_name do |*args|
           instance_opts = args.last.is_a?(Hash) ? args.pop : {}
@@ -196,17 +198,21 @@ module Zendesk
             Zendesk::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
           end
 
+          send("#{id_column}=", resources.map(&:id)) if resource && has_key?(id_column)
           instance_variable_set("@#{resource_name}", resources)
         end
 
-        define_method "#{resource_name}=" do |collection|
-          if collection.is_a?(Array)
-            collection.map! { |attr| wrap_resource(attr, klass, class_level_association) }
-            send(resource_name).replace(collection)
+        define_method "#{resource_name}=" do |resources|
+          if resources.is_a?(Array)
+            resources.map! { |attr| wrap_resource(attr, klass, class_level_association) }
+            send(resource_name).replace(resources)
           else
-            collection.association = instance_association
-            instance_variable_set("@#{resource_name}", collection)
+            resources.association = instance_association
+            instance_variable_set("@#{resource_name}", resources)
           end
+
+          send("#{id_column}=", resources.map(&:id)) if resources && has_key?(id_column)
+          resource
         end
       end
 

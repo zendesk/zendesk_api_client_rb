@@ -55,6 +55,12 @@ describe Zendesk::Association do
         instance.children.map(&:id).should == [1]
       end
 
+      it "should set ids" do
+        instance.children_ids = []
+        instance.children = [child]
+        instance.children_ids.should == [child.id]
+      end
+
       it "should build and cache objects set via hash" do
         instance.children = [{:id => 2}]
         instance.children.map(&:id).should == [2]
@@ -162,7 +168,7 @@ describe Zendesk::Association do
     end
   end
 
-  context "with a signular resource" do
+  context "with a singular resource" do
     subject { described_class.new(:class => Zendesk::SingularTestResource) }
 
     context "with an instance" do

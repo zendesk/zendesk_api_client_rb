@@ -26,7 +26,6 @@ describe Zendesk::Resource do
     end
   end
 
-
   context "destroy", :vcr_off do
     context "class method" do
       let(:id) { 1 }
@@ -121,7 +120,7 @@ describe Zendesk::Resource do
         subject.new_record?.should be_true
       end
 
-      it "should post" do
+      it "should be false after creating" do
         subject.save.should be_true
         subject.new_record?.should be_false
         subject.id.should == id
@@ -130,13 +129,21 @@ describe Zendesk::Resource do
 
     context "with nested associations to save" do
       context "has" do
-        it "should call save on the association" do
+        before(:each) do
           Zendesk::TestResource.associations.clear
-          Zendesk::TestResource.has :child, :class => :test_child, :save => :before
+          Zendesk::TestResource.has :child, :class => :test_child, :save => true
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           subject.child = { :id => 2 }
+        end
 
+        it "should call save on the association" do
+          subject.child.foo = "bar"
           subject.child.should_receive(:save)
+          subject.save
+        end
+
+        it "should not call save on the association if they are synced" do
+          subject.child.should_not_receive(:save)
           subject.save
         end
       end
@@ -150,22 +157,20 @@ describe Zendesk::Resource do
           stub_request(:get, %r{children}).to_return(:body => {"test_children" => []})
         end
 
-        context "with side-loaded resource" do
-          context "with a hash" do
-            before(:each) do
-              subject.child_ids = [1]
-              subject.children = [2, 3]
-              subject.save
-            end
+        context "with ids" do
+          before(:each) do
+            subject.child_ids = [1]
+            subject.children = [2, 3]
+            subject.save
+          end
 
-            it "should save the new object" do
-              subject.children.should be_instance_of(Array)
-            end
+          it "should save the new object" do
+            subject.children.should be_instance_of(Array)
+          end
 
-            specify "child's id" do
-              [2,3].each {|id| subject.children.detect {|c| c.id == id}.should_not be_nil}
-              subject.child_ids.should == [2, 3]
-            end
+          specify "child's id" do
+            [2,3].each {|id| subject.children.detect {|c| c.id == id}.should_not be_nil}
+            subject.child_ids.should == [2, 3]
           end
         end
 
@@ -176,8 +181,10 @@ describe Zendesk::Resource do
             end
 
             before(:each) do
-              collection = Zendesk::Collection.new(client, Zendesk::TestResource::TestChild,
-                :association => association)
+              collection = Zendesk::Collection.new(
+                client, Zendesk::TestResource::TestChild,
+                :association => association
+              )
               collection << { :id => 2, :def => :abc, :test_resource_id => 1 }
               collection << { :id => 3, :def => :gre, :test_resource_id => 1 }
               subject.children = collection
