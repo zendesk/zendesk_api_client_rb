@@ -66,29 +66,24 @@ describe Zendesk::Ticket do
 
   it "can upload while creating" do
     VCR.use_cassette("ticket_inline_uploads") do
-
       ticket = Zendesk::Ticket.new(client, valid_attributes.merge(default_options))
       ticket.uploads << "spec/fixtures/Argentina.gif"
       #ticket.uploads << File.new("spec/fixtures/Argentina.gif") # TODO Zendesk bug: you can only upload 1 picture at a time
 
-      ticket.save
+      ticket.save!
       ticket.changes.should == {} # uploads where set before save
-      ticket.attributes[:uploads].map(&:class).should == [String]
-
-      ticket = Zendesk::Ticket.find(client, ticket)
-      ticket.id.should_not == nil
+      ticket.attributes[:uploads].map(&:class).should == [String] # upload was sent as tokens
     end
   end
 
-  #it "can comment while creating" do
-  #  ticket = Zendesk::Ticket.new(client, valid_attributes.merge(default_options))
-  #  ticket.comment =
-  #  ticket.save
-  #
-  #  ticket.attributes[:uploads].map(&:class).should == [String]
-  #
-  #  ticket = Zendesk::Ticket.find(client, ticket)
-  #  ticket.id.should_not == nil
-  #  MethodCallRecorder.recordings[client.connection.class][:post].should == [["uploads"], ["tickets"]]
-  #end
+  it "can comment while creating" do
+    VCR.use_cassette("ticket_inline_comments") do
+      ticket = Zendesk::Ticket.new(client, valid_attributes.merge(default_options))
+      ticket.comment = Zendesk::TicketComment.new(client, :value => "My comment", :public => false)
+      ticket.save!
+
+      ticket.changes.should == {} # comment was set before save
+      ticket.attributes[:comment].should == {"value" => "My comment", "public" => false}
+    end
+  end
 end

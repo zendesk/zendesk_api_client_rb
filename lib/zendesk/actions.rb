@@ -35,6 +35,10 @@ module Zendesk
       raise
     end
 
+    def save!(options={})
+      save(options) || raise("Save failed")
+    end
+
     def save_associations(time)
       associations = self.class.associations.select{|a| a[:save] == time }
 

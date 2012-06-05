@@ -118,6 +118,7 @@ module Zendesk
         klass = get_class(class_level_options.delete(:class)) || get_class(resource_name)
         class_level_association = { :class => klass, :name => resource_name, :save => class_level_options.delete(:save), :path => class_level_options.delete(:path) }
         associations << class_level_association
+        id_column = "#{resource_name}_id"
 
         define_method resource_name do |*args|
           instance_options = args.last.is_a?(Hash) ? args.pop : {}
@@ -128,7 +129,7 @@ module Zendesk
 
           # find and cache association
           instance_association = Association.new(class_level_association.merge(:parent => self))
-          resource = if resource_id = method_missing("#{resource_name}_id")
+          resource = if resource_id = method_missing(id_column)
             klass.find(@client, :id => resource_id, :association => instance_association)
           elsif found = method_missing(resource_name.to_sym)
             wrap_resource(found, klass, class_level_association)
@@ -141,13 +142,13 @@ module Zendesk
             end
           end
 
-          send("#{resource_name}_id=", resource.id) if resource
+          send("#{resource_name}_id=", resource.id) if resource && has_key?(id_column)
           instance_variable_set("@#{resource_name}", resource)
         end
 
         define_method "#{resource_name}=" do |resource|
           resource = wrap_resource(resource, klass, class_level_association)
-          send("#{resource_name}_id=", resource.id)
+          send("#{resource_name}_id=", resource.id) if has_key?(id_column)
           instance_variable_set("@#{resource_name}", resource)
         end
       end

@@ -16,22 +16,30 @@ describe Zendesk::Association do
         instance.child.should == child
       end
 
+      it "should set id on set if it was there" do
+        instance.child_id = nil
+        instance.child = child
+        instance.child_id.should == child.id
+      end
+
+      it "should not set id on set if it was not there" do
+        instance.child = child
+        instance.child_id.should == nil
+      end
+
       it "should build a object set via hash" do
         instance.child = {:id => 2}
         instance.child.id.should == 2
-        instance.child_id.should == 2
       end
 
       it "should build a object set via id" do
         instance.child = 2
         instance.child.id.should == 2
-        instance.child_id.should == 2
       end
 
       it "should fetch a unknown object" do
         stub_request(:get, %r{test_resources/1/child}).to_return(:body => {"test_child" => {"id" => 2}})
         instance.child.id.should == 2
-        instance.child_id.should == 2
       end
 
       it "should fetch an object known by id" do
