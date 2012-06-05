@@ -93,18 +93,18 @@ module Zendesk
     # Saves all newly created resources stored in this collection.
     # @return [Collection] self
     def save
-      @resources.map! do |new|
-        if new.is_a?(Hash)
-          new_obj = @resource_class.new(@client, new)
-          new_obj.save
-          new_obj
-        elsif new.is_a?(Resource) && new.new_record?
-          new.save
-          new
-        else # FIXME edge-case so that strings and files become attachments
-          create(:file => new)
+      if @resources
+        @resources.map! do |item|
+          if item.is_a?(Resource)
+            item.save if item.new_record? # FIXME we only create !?
+            item
+          else
+            new_obj = @resource_class.new(@client, item)
+            new_obj.save
+            new_obj
+          end
         end
-      end if @resources
+      end
 
       self
     end

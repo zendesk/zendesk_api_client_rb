@@ -173,11 +173,13 @@ describe Zendesk::Collection do
       end
     end
 
-    context "with attachments" do
+    context "with everything else" do
       before(:each) { subject << "img.jpg" }
 
-      it "should call create with the argument in file" do
-        subject.should_receive(:create).with(:file => "img.jpg")
+      it "should pass to new, since this is how attachment handles it" do
+        attachment = mock
+        attachment.should_receive :save
+        Zendesk::TestResource.should_receive(:new).with(client, "img.jpg").and_return attachment
         subject.save
       end
     end

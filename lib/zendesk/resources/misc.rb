@@ -25,13 +25,21 @@ module Zendesk
   end
   
   class Attachment < Data
-    def self.create(client, attributes)
-      upload = Upload.create!(client, :file => attributes[:file])
-      self.new(client, { :token => upload.token })
+    def initialize(client, attributes)
+      if attributes.is_a?(Hash)
+        super
+      else
+        super(client, :file => attributes)
+      end
+    end
+
+    def save
+      upload = Upload.create!(client, :file => file)
+      self.token = upload.token
     end
 
     def to_param
-      @attributes[:token]
+      token
     end
   end
 
