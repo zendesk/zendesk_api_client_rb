@@ -134,7 +134,7 @@ module Zendesk
 
           # find and cache association
           instance_association = Association.new(class_level_association.merge(:parent => self))
-          resource = if resource_id = method_missing(id_column)
+          resource = if resource_id = method_missing(id_column) && klass.respond_to?(:find)
             klass.find(@client, :id => resource_id, :association => instance_association)
           elsif found = method_missing(resource_name.to_sym)
             wrap_resource(found, klass, class_level_association)
