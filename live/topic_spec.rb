@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Topic do
+describe ZendeskAPI::Topic do
   def valid_attributes
     { 
       :forum_id => forum.id, :title => "My Topic",

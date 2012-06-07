@@ -23,7 +23,7 @@ module TestHelper
   def client
     credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
     @client ||= begin
-      client = Zendesk.configure do |config|
+      client = ZendeskAPI.configure do |config|
         if File.exist?(credentials)
           data = YAML.load(File.read(credentials))
           config.username = data["username"]
@@ -68,8 +68,8 @@ RSpec.configure do |c|
   c.treat_symbols_as_metadata_keys_with_true_values = true
 
   c.before(:each) do
-    Zendesk::TestResource.associations.clear
-    Zendesk::TestResource.has_many :children, :class => :test_child
+    ZendeskAPI::TestResource.associations.clear
+    ZendeskAPI::TestResource.has_many :children, :class => :test_child
   end
 
   c.before(:all, :vcr_off) do

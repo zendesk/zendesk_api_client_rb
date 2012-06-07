@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::MobileDevice do
+describe ZendeskAPI::MobileDevice do
   def valid_attributes
     { :device_type => "iPhone", :token => "5D41402ABC4B2A76B9719D911017C592" }
   end

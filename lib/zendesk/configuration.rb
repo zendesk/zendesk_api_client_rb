@@ -1,5 +1,5 @@
-module Zendesk
-  # Raised if a block is not passed to {Zendesk.configure} or if that configuration
+module ZendeskAPI
+  # Raised if a block is not passed to {ZendeskAPI.configure} or if that configuration
   # does not then pass the constraints.
   class ConfigurationException < Exception; end
 
@@ -15,7 +15,7 @@ module Zendesk
     def configure
       raise ConfigurationException.new("must pass block") unless block_given?
 
-      client = Zendesk::Client.new
+      client = ZendeskAPI::Client.new
       yield client.config
 
       if client.config.url !~ /^https/ && client.config.url !~ /(127.0.0.1)|(localhost)/
@@ -62,7 +62,7 @@ module Zendesk
         :headers => {
           :accept => 'application/json',
           :accept_encoding => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          :user_agent => "Zendesk API #{Zendesk::VERSION}"
+          :user_agent => "ZendeskAPI API #{ZendeskAPI::VERSION}"
         },
         :url => @url
       }.merge(client_options)

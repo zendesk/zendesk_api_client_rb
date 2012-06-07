@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Ticket do
+describe ZendeskAPI::Ticket do
   def valid_attributes
     { 
       :type => "question",
@@ -22,7 +22,7 @@ describe Zendesk::Ticket do
   it_should_be_readable organization, :tickets
 
   describe ".incremental_export" do
-    let(:results){ Zendesk::Ticket.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
+    let(:results){ ZendeskAPI::Ticket.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
 
     around do |example|
       # 1 request every 5 minutes allowed <-> you can only test 1 call ...
@@ -34,7 +34,7 @@ describe Zendesk::Ticket do
     end
 
     it "finds tickets after a old date" do
-      results.to_a.first.should be_an_instance_of Zendesk::Ticket
+      results.to_a.first.should be_an_instance_of ZendeskAPI::Ticket
     end
 
     it "is able to do next" do
@@ -52,23 +52,23 @@ describe Zendesk::Ticket do
     it "can import" do
       VCR.use_cassette("ticket_import_can_import") do
         old = Time.now - 5*365*24*60*60
-        ticket = Zendesk::Ticket.import(client, valid_attributes.merge(:created_at => old))
-        Zendesk::Ticket.find(client, ticket).created_at.year.should == old.year
+        ticket = ZendeskAPI::Ticket.import(client, valid_attributes.merge(:created_at => old))
+        ZendeskAPI::Ticket.find(client, ticket).created_at.year.should == old.year
       end
     end
 
     it "returns nothing if import fails" do
       VCR.use_cassette("ticket_import_cannot_import") do
-        silence_stdout { Zendesk::Ticket.import(client, {}).should == nil }
+        silence_stdout { ZendeskAPI::Ticket.import(client, {}).should == nil }
       end
     end
   end
 
   it "can upload while creating" do
     VCR.use_cassette("ticket_inline_uploads") do
-      ticket = Zendesk::Ticket.new(client, valid_attributes.merge(default_options))
+      ticket = ZendeskAPI::Ticket.new(client, valid_attributes.merge(default_options))
       ticket.uploads << "spec/fixtures/Argentina.gif"
-      #ticket.uploads << File.new("spec/fixtures/Argentina.gif") # TODO Zendesk bug: you can only upload 1 picture at a time
+      #ticket.uploads << File.new("spec/fixtures/Argentina.gif") # TODO ZendeskAPI bug: you can only upload 1 picture at a time
 
       ticket.save!
       ticket.changes.should == {} # uploads where set before save
@@ -78,8 +78,8 @@ describe Zendesk::Ticket do
 
   it "can comment while creating" do
     VCR.use_cassette("ticket_inline_comments") do
-      ticket = Zendesk::Ticket.new(client, valid_attributes.merge(default_options))
-      ticket.comment = Zendesk::TicketComment.new(client, :value => "My comment", :public => false)
+      ticket = ZendeskAPI::Ticket.new(client, valid_attributes.merge(default_options))
+      ticket.comment = ZendeskAPI::TicketComment.new(client, :value => "My comment", :public => false)
       ticket.save!
 
       ticket.changes.should == {} # comment was set before save

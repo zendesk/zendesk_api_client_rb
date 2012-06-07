@@ -6,7 +6,7 @@ require 'zendesk/version'
 
 Gem::Specification.new do |s|
   s.name        = "zendesk"
-  s.version     = Zendesk::VERSION
+  s.version     = ZendeskAPI::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Steven Davidovitz"]
   s.email       = ["sdavidovitz@zendesk.com"]

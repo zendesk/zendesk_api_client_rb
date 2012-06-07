@@ -1,7 +1,7 @@
 require 'spec_helper.rb'
 
-describe Zendesk::Configuration do
-  subject { Zendesk::Configuration.new }
+describe ZendeskAPI::Configuration do
+  subject { ZendeskAPI::Configuration.new }
 
   it "should properly merge options" do
     url = "test.host"
@@ -14,7 +14,7 @@ describe Zendesk::Configuration do
   end
 
   it "should set user agent header properly" do
-    subject.options[:headers][:user_agent].should =~ /Zendesk API/
+    subject.options[:headers][:user_agent].should =~ /ZendeskAPI API/
   end
 
   it "should merge options with client_options" do

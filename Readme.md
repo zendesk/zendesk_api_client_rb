@@ -20,11 +20,11 @@ or add it to a Gemfile like so:
 
 ## Configuration
 
-Configuration is done through a block returning an instance of Zendesk::Client.
-The block is mandatory and if not passed, a Zendesk::ConfigurationException will be thrown.
+Configuration is done through a block returning an instance of ZendeskAPI::Client.
+The block is mandatory and if not passed, a ZendeskAPI::ConfigurationException will be thrown.
 
 ```
-Zendesk.configure do |config|
+ZendeskAPI.configure do |config|
   # Mandatory:
 
   # Must be https URL unless it is localhost or 127.0.0.1
@@ -55,19 +55,19 @@ Zendesk.configure do |config|
 end
 ```
 
-Note: This Zendesk API client only supports basic authentication at the moment.
+Note: This ZendeskAPI API client only supports basic authentication at the moment.
 
 ## Usage
 
-The result of configuration is an instance of Zendesk::Client which can then be used in two different methods.
+The result of configuration is an instance of ZendeskAPI::Client which can then be used in two different methods.
 
 One way to use the client is to pass it in as an argument to individual classes.
 
 ```
-Zendesk::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save
-Zendesk::Ticket.create(client, :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.current_user.id, :priority => "urgent")
-Zendesk::Ticket.find(client, :id => 1)
-Zendesk::Ticket.delete(client, :id => 1)
+ZendeskAPI::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save
+ZendeskAPI::Ticket.create(client, :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.current_user.id, :priority => "urgent")
+ZendeskAPI::Ticket.find(client, :id => 1)
+ZendeskAPI::Ticket.delete(client, :id => 1)
 ```
 
 Another way is to use the instance methods under client.
@@ -79,13 +79,13 @@ client.tickets.create(:subject => "Test Ticket", :description => "This is a test
 client.tickets.delete(:id => 1)
 ```
 
-The methods under Zendesk::Client (such as .tickets) return an instance of Zendesk::Collection a lazy-loaded list of that resource.
-Actual requests may not be sent until an explicit Zendesk::Collection#fetch, Zendesk::Collection#to_a, or an applicable methods such
+The methods under ZendeskAPI::Client (such as .tickets) return an instance of ZendeskAPI::Collection a lazy-loaded list of that resource.
+Actual requests may not be sent until an explicit ZendeskAPI::Collection#fetch, ZendeskAPI::Collection#to_a, or an applicable methods such
 as #each.
 
 ### Pagination
 
-Zendesk::Collections can be paginated:
+ZendeskAPI::Collections can be paginated:
 
 ```
 tickets = client.tickets.page(2).per_page(3)
@@ -95,7 +95,7 @@ previous_page = tickets.prev
 
 ### Callbacks
 
-Callbacks can be added to the Zendesk::Client instance and will be called (with the response env) after all response middleware.
+Callbacks can be added to the ZendeskAPI::Client instance and will be called (with the response env) after all response middleware.
 
 ```
 client.insert_callback do |env|
@@ -110,13 +110,13 @@ end
 Individual resources can be created, modified, saved, and destroyed.
 
 ```
-ticket = client.tickets[0] # Zendesk::Ticket.find(client, :id => 1)
+ticket = client.tickets[0] # ZendeskAPI::Ticket.find(client, :id => 1)
 ticket.priority = "urgent"
 ticket.attributes # => { "priority" => "urgent" }
 ticket.save # Will PUT => true
 ticket.destroy # => true
 
-Zendesk::Ticket.new(client, { :priority => "urgent" })
+ZendeskAPI::Ticket.new(client, { :priority => "urgent" })
 ticket.new_record? # => true
 ticket.save # Will POST
 ```
@@ -134,11 +134,11 @@ client.play('incoming')
 OR
 
 ```
-Zendesk::Playlist.new(client, id)
+ZendeskAPI::Playlist.new(client, id)
 ```
 
 Playlists are automatically started server-side when created and can then be played using the
-Zendesk::Playlist#next method. Also available is the Zendesk::Playlist#each method which
+ZendeskAPI::Playlist#next method. Also available is the ZendeskAPI::Playlist#each method which
 takes a block and will successively get and yield each ticket until the end of the playlist.
 
 ```
@@ -151,7 +151,7 @@ end
 ### Special case: Custom resources paths
 
 API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
-They will too return an instance of Zendesk::Collection.
+They will too return an instance of ZendeskAPI::Collection.
 
 ```
 client.tickets.recent

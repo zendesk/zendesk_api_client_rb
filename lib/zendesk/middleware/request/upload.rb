@@ -1,7 +1,7 @@
 require "faraday/middleware"
 require "mime/types"
 
-module Zendesk
+module ZendeskAPI
   module Middleware
     module Request
       class Upload < Faraday::Middleware
