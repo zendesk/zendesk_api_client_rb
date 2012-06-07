@@ -1,7 +1,7 @@
-require 'zendesk/trackie'
-require 'zendesk/actions'
-require 'zendesk/association'
-require 'zendesk/verbs'
+require 'zendesk_api/trackie'
+require 'zendesk_api/actions'
+require 'zendesk_api/association'
+require 'zendesk_api/verbs'
 
 module ZendeskAPI
   # Represents a resource that only holds data.

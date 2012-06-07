@@ -1,4 +1,4 @@
-require 'zendesk/resources/forum'
+require 'zendesk_api/resources/forum'
 
 module ZendeskAPI
   class CRMData < DataResource; end

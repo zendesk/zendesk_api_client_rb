@@ -1,5 +1,5 @@
 require 'hashie'
-require 'zendesk/track_changes'
+require 'zendesk_api/track_changes'
 
 module ZendeskAPI
   class Trackie < Hashie::Mash

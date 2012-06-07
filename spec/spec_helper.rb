@@ -10,7 +10,7 @@ if RUBY_VERSION =~ /1.9/ && ENV["COVERAGE"]
   end
 end
 
-require 'zendesk'
+require 'zendesk_api'
 require 'vcr'
 require 'logger'
 require 'stringio'

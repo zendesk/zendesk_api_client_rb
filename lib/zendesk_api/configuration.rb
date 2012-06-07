@@ -19,7 +19,7 @@ module ZendeskAPI
       yield client.config
 
       if client.config.url !~ /^https/ && client.config.url !~ /(127.0.0.1)|(localhost)/
-        raise ConfigurationException.new('zendesk api is ssl only; url must begin with https://')
+        raise ConfigurationException.new('zendesk_api api is ssl only; url must begin with https://')
       end
 
       client.config.retry = !!client.config.retry # nil -> false

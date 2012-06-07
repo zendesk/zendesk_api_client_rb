@@ -1,16 +1,16 @@
 require 'faraday'
 require 'faraday_middleware'
 
-require 'zendesk/version'
-require 'zendesk/rescue'
-require 'zendesk/configuration'
-require 'zendesk/collection'
-require 'zendesk/middleware/request/retry'
-require 'zendesk/middleware/request/upload'
-require 'zendesk/middleware/response/callback'
-require 'zendesk/middleware/response/deflate'
-require 'zendesk/middleware/response/gzip'
-require 'zendesk/middleware/response/parse_iso_dates'
+require 'zendesk_api/version'
+require 'zendesk_api/rescue'
+require 'zendesk_api/configuration'
+require 'zendesk_api/collection'
+require 'zendesk_api/middleware/request/retry'
+require 'zendesk_api/middleware/request/upload'
+require 'zendesk_api/middleware/response/callback'
+require 'zendesk_api/middleware/response/deflate'
+require 'zendesk_api/middleware/response/gzip'
+require 'zendesk_api/middleware/response/parse_iso_dates'
 
 module ZendeskAPI
   class Client
