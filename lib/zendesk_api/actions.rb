@@ -1,4 +1,4 @@
-module Zendesk
+module ZendeskAPI
   module Save
     # If this resource hasn't been deleted, then create or save it.
     # Executes a POST if it is a {#new_record?}, otherwise a PUT.
@@ -87,7 +87,7 @@ module Zendesk
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to create.
       def create(client, attributes = {})
-        Zendesk::Client.check_deprecated_namespace_usage attributes, singular_resource_name
+        ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
         resource = new(client, attributes)
         return unless resource.save
         resource
@@ -162,7 +162,7 @@ module Zendesk
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to update. Default to {} 
       def update(client, attributes = {})
-        Zendesk::Client.check_deprecated_namespace_usage attributes, singular_resource_name
+        ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
         resource = new(client, attributes)
         resource.save
       end

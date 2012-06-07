@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Category, :delete_after do
+describe ZendeskAPI::Category, :delete_after do
   def valid_attributes
     { :name => "My Category" }
   end

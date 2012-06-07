@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Middleware::Response::Callback, :vcr_off do
+describe ZendeskAPI::Middleware::Response::Callback, :vcr_off do
   let(:response) { "TEST" }
 
   before(:each) do

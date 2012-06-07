@@ -1,13 +1,13 @@
 require 'spec_helper.rb'
 
-describe Zendesk::Collection do
+describe ZendeskAPI::Collection do
   subject do
-    Zendesk::Collection.new(client, Zendesk::TestResource)
+    ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource)
   end
 
   context "initialization" do
     it "should set the resource class" do
-      subject.instance_variable_get(:@resource_class).should == Zendesk::TestResource
+      subject.instance_variable_get(:@resource_class).should == ZendeskAPI::TestResource
     end
 
     it "should initially be empty" do
@@ -16,7 +16,7 @@ describe Zendesk::Collection do
   end
 
   context "with array option passed in" do
-    subject { Zendesk::Collection.new(client, Zendesk::TestResource, :ids => [1, 2, 3, 4]) }
+    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :ids => [1, 2, 3, 4]) }
 
     it "should join array with commas" do
       subject.instance_variable_get(:@options)[:ids].should == "1,2,3,4"
@@ -46,12 +46,12 @@ describe Zendesk::Collection do
 
     context "with a class with a parent" do
       let(:association) do
-        Zendesk::Association.new(:class => Zendesk::TestResource::TestChild,
-          :parent => Zendesk::TestResource.new(client, :id => 1))
+        ZendeskAPI::Association.new(:class => ZendeskAPI::TestResource::TestChild,
+          :parent => ZendeskAPI::TestResource.new(client, :id => 1))
       end
 
       subject do
-        Zendesk::Collection.new(client, Zendesk::TestResource::TestChild,
+        ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource::TestChild,
           :association => association)
       end
 
@@ -111,8 +111,8 @@ describe Zendesk::Collection do
 
   context "fetch", :vcr_off do
     it "does not fetch if associated is a new record" do
-      Zendesk::Category.new(client).forums.fetch.should == []
-      Zendesk::Category.new(client).forums.to_a.should == []
+      ZendeskAPI::Category.new(client).forums.fetch.should == []
+      ZendeskAPI::Category.new(client).forums.to_a.should == []
     end
 
     context "with client error" do
@@ -126,7 +126,7 @@ describe Zendesk::Collection do
     end
 
     context "with unfetchable resource" do
-      subject { Zendesk::Collection.new(client, Zendesk::NilResource) }
+      subject { ZendeskAPI::Collection.new(client, ZendeskAPI::NilResource) }
 
       it "should not call connection" do
         client.connection.should_not_receive(:get)
@@ -143,10 +143,10 @@ describe Zendesk::Collection do
     end
 
     context "with a hash" do
-      let(:object) { mock('Zendesk::TestResource', :changes => [:xxx]) }
+      let(:object) { mock('ZendeskAPI::TestResource', :changes => [:xxx]) }
 
       it "should call create with those options" do
-        Zendesk::TestResource.should_receive(:new).with(client, options).and_return(object)
+        ZendeskAPI::TestResource.should_receive(:new).with(client, options).and_return(object)
         subject << options
 
         object.should_receive(:save)
@@ -157,7 +157,7 @@ describe Zendesk::Collection do
     end
 
     context "with a new object" do
-      let(:object) { Zendesk::TestResource.new(client, options) }
+      let(:object) { ZendeskAPI::TestResource.new(client, options) }
       before(:each) do
         subject << object
       end
@@ -175,7 +175,7 @@ describe Zendesk::Collection do
     context "with everything else" do
       it "should pass to new, since this is how attachment handles it" do
         attachment = mock(:changes => [:xxx])
-        Zendesk::TestResource.should_receive(:new).with(client, "img.jpg").and_return attachment
+        ZendeskAPI::TestResource.should_receive(:new).with(client, "img.jpg").and_return attachment
         subject << "img.jpg"
 
         attachment.should_receive :save
@@ -186,7 +186,7 @@ describe Zendesk::Collection do
 
   context "without real data", :vcr_off do
     subject do
-      Zendesk::Collection.new(client, Zendesk::User)
+      ZendeskAPI::Collection.new(client, ZendeskAPI::User)
     end
 
     before(:each) do
@@ -263,7 +263,7 @@ describe Zendesk::Collection do
     end
 
     it "should create a new collection if it isn't an array method" do
-      subject.recent.should be_instance_of(Zendesk::Collection)
+      subject.recent.should be_instance_of(ZendeskAPI::Collection)
     end
 
     it "should pass the correct query_path to the new collection" do
@@ -274,7 +274,7 @@ describe Zendesk::Collection do
 
   context "with different path", :vcr_off do
     subject do
-      Zendesk::Collection.new(client, Zendesk::TestResource, :collection_path => ["test_resources", "active"])
+      ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :collection_path => ["test_resources", "active"])
     end
 
     before(:each) do

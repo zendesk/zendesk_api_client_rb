@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe Zendesk::Association do
-  let(:instance) { Zendesk::TestResource.new(client, :id => 1) }
-  let(:child) { Zendesk::TestResource::TestChild.new(client, :id => 1, :test_resource_id => 2) }
+describe ZendeskAPI::Association do
+  let(:instance) { ZendeskAPI::TestResource.new(client, :id => 1) }
+  let(:child) { ZendeskAPI::TestResource::TestChild.new(client, :id => 1, :test_resource_id => 2) }
 
   describe "setting/getting", :vcr_off do
     context "has" do
       before do
-        Zendesk::TestResource.associations.clear
-        Zendesk::TestResource.has :child, :class => :test_child
+        ZendeskAPI::TestResource.associations.clear
+        ZendeskAPI::TestResource.has :child, :class => :test_child
       end
 
       it "should cache an set object" do
@@ -79,7 +79,7 @@ describe Zendesk::Association do
   end
 
   context "class only" do
-    subject { described_class.new(:class => Zendesk::TestResource) }
+    subject { described_class.new(:class => ZendeskAPI::TestResource) }
 
     it "should generate resource path" do
       subject.generate_path.should == "test_resources"
@@ -98,7 +98,7 @@ describe Zendesk::Association do
 
       context "with an instance that is a new record" do
         it "should generate general resource path" do
-          subject.generate_path(Zendesk::TestResource.new(client)).should == "test_resources"
+          subject.generate_path(ZendeskAPI::TestResource.new(client)).should == "test_resources"
         end
       end
     end
@@ -121,7 +121,7 @@ describe Zendesk::Association do
   end
 
   context "class with a specified parent" do
-    subject { described_class.new(:class => Zendesk::TestResource::TestChild, :parent => instance) }
+    subject { described_class.new(:class => ZendeskAPI::TestResource::TestChild, :parent => instance) }
 
     it "should generate nested resource path" do
       subject.generate_path.should == "test_resources/1/children"
@@ -149,7 +149,7 @@ describe Zendesk::Association do
   end
 
   context "class with a parent id" do
-    subject { described_class.new(:class => Zendesk::TestResource::TestChild) }
+    subject { described_class.new(:class => ZendeskAPI::TestResource::TestChild) }
 
     it "should raise an error if not passed an instance or id" do
       expect { subject.generate_path }.to raise_error(ArgumentError)
@@ -169,11 +169,11 @@ describe Zendesk::Association do
   end
 
   context "with a singular resource" do
-    subject { described_class.new(:class => Zendesk::SingularTestResource) }
+    subject { described_class.new(:class => ZendeskAPI::SingularTestResource) }
 
     context "with an instance" do
       it "should not generate a specific resource path" do
-        subject.generate_path(Zendesk::SingularTestResource.new(client, :id => 1)).should == "singular_test_resources"
+        subject.generate_path(ZendeskAPI::SingularTestResource.new(client, :id => 1)).should == "singular_test_resources"
       end
     end
   end

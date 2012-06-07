@@ -1,6 +1,6 @@
 require 'faraday_middleware/response_middleware'
 
-module Zendesk
+module ZendeskAPI
   module Middleware
     module Response
       # Faraday middleware to handle content-encoding = gzip

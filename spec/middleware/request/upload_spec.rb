@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Zendesk::Middleware::Request::Upload do
-  subject { Zendesk::Middleware::Request::Upload.new(lambda {|env| env}) }
+describe ZendeskAPI::Middleware::Request::Upload do
+  subject { ZendeskAPI::Middleware::Request::Upload.new(lambda {|env| env}) }
   let(:filename) { File.join(File.dirname(__FILE__), "test.jpg") }
 
   it "should handle no body" do

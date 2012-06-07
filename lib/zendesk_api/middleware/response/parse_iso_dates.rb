@@ -1,7 +1,7 @@
 require 'time'
 require "faraday/response"
 
-module Zendesk
+module ZendeskAPI
   module Middleware
     module Response
       # Parse ISO dates from response body

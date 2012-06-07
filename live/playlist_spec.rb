@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Zendesk::Playlist, :vcr_off do
-  subject { Zendesk::Playlist }
+describe ZendeskAPI::Playlist, :vcr_off do
+  subject { ZendeskAPI::Playlist }
 
   before(:each) do
     stub_request(:get, %r{views/\d+/play}).to_return(:status => 302)
@@ -12,14 +12,14 @@ describe Zendesk::Playlist, :vcr_off do
   end
 
   context "#next" do
-    subject { Zendesk::Playlist.new(client, 1) }
+    subject { ZendeskAPI::Playlist.new(client, 1) }
 
     before(:each) do
       stub_request(:get, %r{play/next}).to_return(:body => {})
     end
 
     it "should return ticket" do
-      subject.next.should be_instance_of(Zendesk::Ticket)
+      subject.next.should be_instance_of(ZendeskAPI::Ticket)
     end
 
     context "with client error", :silence_stdout do
@@ -45,7 +45,7 @@ describe Zendesk::Playlist, :vcr_off do
   end
 
   context "#destroy" do
-    subject { Zendesk::Playlist.new(client, 1) }
+    subject { ZendeskAPI::Playlist.new(client, 1) }
 
     before(:each) do
       stub_request(:delete, %r{play}).to_return(:status => 204)

@@ -1,6 +1,6 @@
 require "faraday/middleware"
 
-module Zendesk
+module ZendeskAPI
   module Middleware
     module Request
       # Faraday middleware to handle HTTP Status 429 (rate limiting) / 503 (maintenance)

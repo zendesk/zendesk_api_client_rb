@@ -1,30 +1,30 @@
 require 'spec_helper'
 
-describe Zendesk::Client do
+describe ZendeskAPI::Client do
   subject { client }
 
   context "#configure" do
     it "should require a block" do
-      expect { Zendesk.configure }.to raise_error(Zendesk::ConfigurationException)
+      expect { ZendeskAPI.configure }.to raise_error(ZendeskAPI::ConfigurationException)
     end
 
     it "should raise an exception when url isn't ssl and is not localhost" do
       expect do
-        Zendesk.configure do |config|
+        ZendeskAPI.configure do |config|
           config.url = "http://www.google.com"
         end
-      end.to raise_error(Zendesk::ConfigurationException) 
+      end.to raise_error(ZendeskAPI::ConfigurationException) 
     end
 
     it "should not raise an exception when url isn't ssl and is localhost" do
       expect do
-        Zendesk.configure do |config|
+        ZendeskAPI.configure do |config|
           config.url = "https://127.0.0.1/"
         end
       end.to_not raise_error
 
       expect do
-        Zendesk.configure do |config|
+        ZendeskAPI.configure do |config|
           config.url = "https://localhost/"
         end
       end.to_not raise_error
@@ -32,7 +32,7 @@ describe Zendesk::Client do
 
     it "should handle valid url" do
       expect do
-        Zendesk.configure do |config|
+        ZendeskAPI.configure do |config|
           config.url = "https://example.zendesk.com/"
         end.to_not raise_error
       end
@@ -40,7 +40,7 @@ describe Zendesk::Client do
 
     context "#logger" do
       before(:each) do
-        @client = Zendesk.configure do |config| 
+        @client = ZendeskAPI.configure do |config| 
           config.url = "https://example.zendesk.com/"
           config.logger = subject
         end
@@ -103,7 +103,7 @@ describe Zendesk::Client do
     end
 
     it "should be a user instance" do
-      client.current_user.should be_instance_of(Zendesk::User)
+      client.current_user.should be_instance_of(ZendeskAPI::User)
     end
   end
 
@@ -118,8 +118,8 @@ describe Zendesk::Client do
   end
 
   context "resources" do
-    it "should return an instance of Zendesk::Collection if there is no method" do
-      subject.tickets.should be_instance_of(Zendesk::Collection)
+    it "should return an instance of ZendeskAPI::Collection if there is no method" do
+      subject.tickets.should be_instance_of(ZendeskAPI::Collection)
       subject.instance_variable_defined?(:@tickets).should be_true
     end
   end
@@ -132,8 +132,8 @@ describe Zendesk::Client do
       end
     end
 
-    it "should return an instance of Zendesk::Playlist" do
-      subject.play(1).should be_instance_of(Zendesk::Playlist)
+    it "should return an instance of ZendeskAPI::Playlist" do
+      subject.play(1).should be_instance_of(ZendeskAPI::Playlist)
     end
   end
 end

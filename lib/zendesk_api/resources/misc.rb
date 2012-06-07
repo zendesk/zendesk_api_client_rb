@@ -1,4 +1,4 @@
-module Zendesk
+module ZendeskAPI
   class Activity < Resource
     has :user
     has :actor, :class => :user

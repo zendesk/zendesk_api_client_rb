@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Topic::TopicComment, :not_findable do
+describe ZendeskAPI::Topic::TopicComment, :not_findable do
   def valid_attributes
     { :body => "Texty-text, text.", :topic_id => topic.id }
   end

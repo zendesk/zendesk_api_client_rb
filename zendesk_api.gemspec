@@ -2,11 +2,11 @@
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
-require 'zendesk/version'
+require 'zendesk_api/version'
 
 Gem::Specification.new do |s|
-  s.name        = "zendesk"
-  s.version     = Zendesk::VERSION
+  s.name        = "zendesk_api"
+  s.version     = ZendeskAPI::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Steven Davidovitz"]
   s.email       = ["sdavidovitz@zendesk.com"]
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
 
   s.add_development_dependency "rspec", ">= 2.0.0"
-  s.add_development_dependency "vcr"
+  s.add_development_dependency "vcr", "~> 2.1.0"
   s.add_development_dependency "webmock"
   s.add_development_dependency "rake"
   s.add_development_dependency "yard"

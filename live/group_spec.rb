@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Group do
+describe ZendeskAPI::Group do
   def valid_attributes
     { :name => "My Group" }
   end

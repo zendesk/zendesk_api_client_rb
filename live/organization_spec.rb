@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Organization, :delete_after do
+describe ZendeskAPI::Organization, :delete_after do
   def valid_attributes
     { :name => "Awesome-O" }
   end

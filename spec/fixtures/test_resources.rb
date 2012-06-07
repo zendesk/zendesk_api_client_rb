@@ -1,8 +1,8 @@
-class Zendesk::TestResource < Zendesk::Resource
-  class TestChild < Zendesk::Resource
+class ZendeskAPI::TestResource < ZendeskAPI::Resource
+  class TestChild < ZendeskAPI::Resource
   end
 end
 
-class Zendesk::NilResource < Zendesk::Data; end
+class ZendeskAPI::NilResource < ZendeskAPI::Data; end
 
-class Zendesk::SingularTestResource < Zendesk::SingularResource; end
+class ZendeskAPI::SingularTestResource < ZendeskAPI::SingularResource; end

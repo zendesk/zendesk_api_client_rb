@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Zendesk::CreateResource do
+describe ZendeskAPI::CreateResource do
   context "create", :vcr_off do
     let(:attr) { { :test_field => "blah" } }
-    subject { Zendesk::TestResource }
+    subject { ZendeskAPI::TestResource }
 
     before(:each) do
       stub_request(:post, %r{test_resources}).to_return(:body => {})

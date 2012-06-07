@@ -1,4 +1,4 @@
-module Zendesk
+module ZendeskAPI
   class TicketField < Resource; end
   class TicketComment < Data; end
   class TicketMetric < ReadResource; end
@@ -25,7 +25,7 @@ module Zendesk
     # @param [Integer] start_time The start_time parameter
     # @return [Collection] Collection of {Ticket}
     def self.incremental_export(client, start_time)
-      Zendesk::Collection.new(client, self, :path => "exports/tickets?start_time=#{start_time.to_i}")
+      ZendeskAPI::Collection.new(client, self, :path => "exports/tickets?start_time=#{start_time.to_i}")
     end
 
     # Imports a ticket through the imports/tickets endpoint

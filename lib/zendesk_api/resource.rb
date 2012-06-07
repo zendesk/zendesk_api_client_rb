@@ -1,21 +1,21 @@
-require 'zendesk/trackie'
-require 'zendesk/actions'
-require 'zendesk/association'
-require 'zendesk/verbs'
+require 'zendesk_api/trackie'
+require 'zendesk_api/actions'
+require 'zendesk_api/association'
+require 'zendesk_api/verbs'
 
-module Zendesk
+module ZendeskAPI
   # Represents a resource that only holds data.
   class Data
     include Associations
     extend Rescue
 
     class << self
-      # The singular resource name taken from the class name (e.g. Zendesk::Tickets -> ticket)
+      # The singular resource name taken from the class name (e.g. ZendeskAPI::Tickets -> ticket)
       def singular_resource_name
         @singular_resource_name ||= to_s.split("::").last.snakecase
       end
 
-      # The resource name taken from the class name (e.g. Zendesk::Tickets -> tickets)
+      # The resource name taken from the class name (e.g. ZendeskAPI::Tickets -> tickets)
       def resource_name
         @resource_name ||= singular_resource_name.plural
       end
@@ -38,7 +38,7 @@ module Zendesk
 
     # @return [Hash] The resource's attributes
     attr_reader :attributes
-    # @return [Zendesk::Association] The association
+    # @return [ZendeskAPI::Association] The association
     attr_accessor :association
 
     # Create a new resource instance.
@@ -47,8 +47,8 @@ module Zendesk
     def initialize(client, attributes = {})
       @association = (attributes || {}).delete(:association) || Association.new(:class => self.class)
       @client = client
-      @attributes = Zendesk::Trackie.new(attributes)
-      Zendesk::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
+      @attributes = ZendeskAPI::Trackie.new(attributes)
+      ZendeskAPI::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
 
       @attributes.clear_changes unless new_record?
     end

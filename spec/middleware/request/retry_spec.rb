@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Middleware::Request::Retry, :vcr_off do
+describe ZendeskAPI::Middleware::Request::Retry, :vcr_off do
   def runtime
     start = Time.now.to_f
     yield
@@ -25,7 +25,7 @@ describe Zendesk::Middleware::Request::Retry, :vcr_off do
         to_return(:status => 503).
         to_return(:status => 200)
 
-      Zendesk::Middleware::Request::Retry.any_instance.should_receive(:sleep).exactly(10).times.with(1)
+      ZendeskAPI::Middleware::Request::Retry.any_instance.should_receive(:sleep).exactly(10).times.with(1)
     end
 
     it "should wait default timeout seconds and then retry request on error" do

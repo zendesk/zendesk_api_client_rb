@@ -1,18 +1,18 @@
 require 'faraday'
 require 'faraday_middleware'
 
-require 'zendesk/version'
-require 'zendesk/rescue'
-require 'zendesk/configuration'
-require 'zendesk/collection'
-require 'zendesk/middleware/request/retry'
-require 'zendesk/middleware/request/upload'
-require 'zendesk/middleware/response/callback'
-require 'zendesk/middleware/response/deflate'
-require 'zendesk/middleware/response/gzip'
-require 'zendesk/middleware/response/parse_iso_dates'
+require 'zendesk_api/version'
+require 'zendesk_api/rescue'
+require 'zendesk_api/configuration'
+require 'zendesk_api/collection'
+require 'zendesk_api/middleware/request/retry'
+require 'zendesk_api/middleware/request/upload'
+require 'zendesk_api/middleware/response/callback'
+require 'zendesk_api/middleware/response/deflate'
+require 'zendesk_api/middleware/response/gzip'
+require 'zendesk_api/middleware/response/parse_iso_dates'
 
-module Zendesk
+module ZendeskAPI
   class Client
     extend Rescue
 
@@ -28,17 +28,17 @@ module Zendesk
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
       return instance_variable_get("@#{method}") if !options.delete(:reload) && instance_variable_defined?("@#{method}")
-      instance_variable_set("@#{method}", Zendesk::Collection.new(self, Zendesk.get_class(method.singular), options))
+      instance_variable_set("@#{method}", ZendeskAPI::Collection.new(self, ZendeskAPI.get_class(method.singular), options))
     end
 
     # Plays a view playlist.
     # @param [String/Number] id View id or 'incoming'
     def play(id)
-      Zendesk::Playlist.new(self, id)
+      ZendeskAPI::Playlist.new(self, id)
     end
 
     # Returns the current user (aka me)
-    # @return [Zendesk::User] Current user or nil
+    # @return [ZendeskAPI::User] Current user or nil
     def current_user(reload = false)
       return @current_user if @current_user && !reload
       @current_user = users.find(:id => 'me')
@@ -59,7 +59,7 @@ module Zendesk
 
     # Creates a new Client instance with no configuration options and no connection.
     def initialize
-      @config = Zendesk::Configuration.new
+      @config = ZendeskAPI::Configuration.new
       @connection = false
       @callbacks = []
 
@@ -85,18 +85,18 @@ module Zendesk
       @connection = Faraday.new(config.options) do |builder|
         # response
         builder.use Faraday::Response::RaiseError
-        builder.use Zendesk::Middleware::Response::Callback, self
+        builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use Faraday::Response::Logger, config.logger if config.logger
-        builder.use Zendesk::Middleware::Response::ParseIsoDates
+        builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.response :json
-        builder.use Zendesk::Middleware::Response::Gzip
-        builder.use Zendesk::Middleware::Response::Deflate
+        builder.use ZendeskAPI::Middleware::Response::Gzip
+        builder.use ZendeskAPI::Middleware::Response::Deflate
 
         # request
-        builder.use Zendesk::Middleware::Request::Upload
+        builder.use ZendeskAPI::Middleware::Request::Upload
         builder.request :multipart
         builder.request :json
-        builder.use Zendesk::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
+        builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
 
         builder.adapter *config.adapter || Faraday.default_adapter
       end

@@ -1,4 +1,4 @@
-module Zendesk
+module ZendeskAPI
   class Playlist
     extend Rescue
 

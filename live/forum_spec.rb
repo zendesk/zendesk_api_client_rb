@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Forum, :delete_after do
+describe ZendeskAPI::Forum, :delete_after do
   def valid_attributes
     { :name => "My Forum", :forum_type => "articles", :access => "logged-in users", :category_id => category.id }
   end
