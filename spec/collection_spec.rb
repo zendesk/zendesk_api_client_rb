@@ -74,6 +74,18 @@ describe ZendeskAPI::Collection do
       it "should defer #update to the resource class with the parent id" do
         subject.update(:id => 1)
       end
+
+      context "on object push" do
+        before(:each) do
+          stub_request(:get, %r{test_resources/\d+/children}).
+            to_return(:body => json(:test_children => []))
+          subject << { :id => 1 }
+        end
+
+        it "should pass association" do
+          subject.last.association.should == association
+        end
+      end
     end
   end
 
@@ -143,11 +155,11 @@ describe ZendeskAPI::Collection do
     end
 
     context "with a hash" do
-      let(:object) { mock('ZendeskAPI::TestResource', :association => mock, :changes => [:xxx]) }
+      let(:object) { mock('ZendeskAPI::TestResource', :changes => [:xxx]) }
 
       it "should call create with those options" do
         ZendeskAPI::TestResource.should_receive(:new).
-          with(client, options.merge(:assocation => subject.association)).
+          with(client, options.merge(:association => subject.association)).
           and_return(object)
 
         subject << options

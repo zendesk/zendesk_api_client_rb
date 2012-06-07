@@ -112,7 +112,7 @@ module ZendeskAPI
           raise "this collection is for #{@resource_class}"
         end
       else
-        item.merge!(:assocation => @association) if item.is_a?(Hash)
+        item.merge!(:association => @association) if item.is_a?(Hash)
         @resources << @resource_class.new(@client, item)
       end
     end
