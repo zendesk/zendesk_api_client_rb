@@ -4,6 +4,10 @@
 
 This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
+## Important Notice
+
+Version 0.0.5 brings with it a change to the top-level namespace. All references to Zendesk should now use ZendeskAPI.
+
 ## Installation
 
 Currently
