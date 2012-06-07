@@ -9,7 +9,7 @@ module ZendeskAPI
     #
     #
     # Does basic configuration constraints:
-    # * Configuration#url must be https unless it is localhost of 127.0.0.1
+    # * {Configuration#url} must be https unless {Configuration#dont_enforce_https} is set.
     #
     # @return [Client] {Client} instance with given configuration options
     def configure
@@ -18,8 +18,8 @@ module ZendeskAPI
       client = ZendeskAPI::Client.new
       yield client.config
 
-      if client.config.url !~ /^https/ && client.config.url !~ /(127.0.0.1)|(localhost)/
-        raise ConfigurationException.new('zendesk_api api is ssl only; url must begin with https://')
+      if !client.config.dont_enforce_https && client.config.url !~ /^https/
+        raise ConfigurationException.new('zendesk_api is ssl only; url must begin with https://')
       end
 
       client.config.retry = !!client.config.retry # nil -> false
@@ -39,7 +39,7 @@ module ZendeskAPI
     attr_accessor :username
     # @return [String] The basic auth password.
     attr_accessor :password
-    # @return [String] The API url. Must be https if not localhost or 127.0.0.1
+    # @return [String] The API url. Must be https unless {#dont_enforce_https} is set.
     attr_accessor :url
     # @return [Boolean] Whether to attempt to retry when rate-limited (http status: 429).
     attr_accessor :retry
@@ -49,6 +49,8 @@ module ZendeskAPI
     attr_accessor :client_options
     # @return [Symbol] Faraday adapter
     attr_accessor :adapter
+    # @return [Boolean] Whether to allow non-HTTPS connections for development purposes.
+    attr_accessor :dont_enforce_https
 
     def initialize
       @client_options = {}
