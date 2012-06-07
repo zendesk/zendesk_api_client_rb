@@ -8,7 +8,7 @@ This client **only** supports Zendesk's v2 API.  Please see our [API documentati
 
 Currently
 
-    gem install zendesk
+    gem install zendesk_api
 
 will not install this version of the API client. To install this client, either clone this repository and run
 
@@ -16,7 +16,7 @@ will not install this version of the API client. To install this client, either 
 
 or add it to a Gemfile like so:
 
-    gem "zendesk", :git => "git://github.com/zendesk/zendesk_api_client_rb.git" #, :tag => "vX.X.X"
+    gem "zendesk_api", :git => "git://github.com/zendesk/zendesk_api_client_rb.git" #, :tag => "vX.X.X"
 
 ## Configuration
 

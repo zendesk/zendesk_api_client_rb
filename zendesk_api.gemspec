@@ -5,7 +5,7 @@ $:.unshift lib unless $:.include?(lib)
 require 'zendesk_api/version'
 
 Gem::Specification.new do |s|
-  s.name        = "zendesk"
+  s.name        = "zendesk_api"
   s.version     = ZendeskAPI::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Steven Davidovitz"]
