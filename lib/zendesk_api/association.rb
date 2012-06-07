@@ -1,4 +1,4 @@
-module Zendesk
+module ZendeskAPI
   # Represents an association between two resources 
   class Association
     # @return [Hash] Options passed into the association
@@ -29,11 +29,11 @@ module Zendesk
       instance = args.first
 
       namespace = @options[:class].to_s.split("::")
-      namespace.delete("Zendesk")
+      namespace.delete("ZendeskAPI")
       has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
 
       if has_parent
-        parent_class = @options.parent ? @options.parent.class : Zendesk.get_class(namespace[0])
+        parent_class = @options.parent ? @options.parent.class : ZendeskAPI.get_class(namespace[0])
         parent_namespace = build_parent_namespace(parent_class, instance, options, original_options)
         namespace[1..1] = parent_namespace if parent_namespace
         namespace[0] = parent_class.resource_name
@@ -193,7 +193,7 @@ module Zendesk
               klass.new(@client, klass.resource_name => res, :association => instance_association)
             end
           else
-            Zendesk::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
+            ZendeskAPI::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
           end
 
           send("#{id_column}=", resources.map(&:id)) if resource && has_key?(id_column)
@@ -224,7 +224,7 @@ module Zendesk
         begin
           const_get(res)
         rescue NameError
-          Zendesk.get_class(resource)
+          ZendeskAPI.get_class(resource)
         end
       end
     end
@@ -244,7 +244,7 @@ module Zendesk
       res = resource.to_s.modulize.split("::")
 
       begin
-        res[1..-1].inject(Zendesk.const_get(res[0])) do |iter, k|
+        res[1..-1].inject(ZendeskAPI.const_get(res[0])) do |iter, k|
           begin
             iter.const_get(k)
           rescue
@@ -252,7 +252,7 @@ module Zendesk
           end
         end
       rescue NameError
-        Zendesk.const_set(res[0], Class.new(Resource))
+        ZendeskAPI.const_set(res[0], Class.new(Resource))
       end
     end
   end

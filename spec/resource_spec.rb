@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Zendesk::Resource do
+describe ZendeskAPI::Resource do
   context "update", :vcr_off do
     context "class method" do
       let(:id) { 1 }
-      subject { Zendesk::TestResource }
+      subject { ZendeskAPI::TestResource }
 
       before(:each) do
         stub_request(:put, %r{test_resources/#{id}}).to_return(:body => {})
@@ -29,7 +29,7 @@ describe Zendesk::Resource do
   context "destroy", :vcr_off do
     context "class method" do
       let(:id) { 1 }
-      subject { Zendesk::TestResource }
+      subject { ZendeskAPI::TestResource }
 
       before(:each) do
         stub_request(:delete, %r{test_resources/#{id}}).to_return(:body => {})
@@ -51,7 +51,7 @@ describe Zendesk::Resource do
     end
 
     context "instance method" do
-      subject { Zendesk::TestResource.new(client, :id => 1) }
+      subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
       before(:each) do
         stub_request(:delete, %r{test_resources}).to_return(:status => 200)
@@ -79,7 +79,7 @@ describe Zendesk::Resource do
   context "save", :vcr_off do
     let(:id) { 1 }
     let(:attr) { { :param => "test" } }
-    subject { Zendesk::TestResource.new(client, attr.merge(:id => id)) }
+    subject { ZendeskAPI::TestResource.new(client, attr.merge(:id => id)) }
 
     before :each do
       stub_request(:put, %r{test_resources/#{id}}).to_return(:body => {"test_resource" => { :param => "abc" } })
@@ -110,7 +110,7 @@ describe Zendesk::Resource do
     end
 
     context "new record" do
-      subject { Zendesk::TestResource.new(client, attr) }
+      subject { ZendeskAPI::TestResource.new(client, attr) }
 
       before :each do
         stub_request(:post, %r{test_resources}).to_return(:status => 201, :body => {"test_resource" => attr.merge(:id => id)})
@@ -130,8 +130,8 @@ describe Zendesk::Resource do
     context "with nested associations to save" do
       context "has" do
         before(:each) do
-          Zendesk::TestResource.associations.clear
-          Zendesk::TestResource.has :child, :class => :test_child
+          ZendeskAPI::TestResource.associations.clear
+          ZendeskAPI::TestResource.has :child, :class => :test_child
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           subject.child = { :id => 2 }
         end
@@ -150,8 +150,8 @@ describe Zendesk::Resource do
 
       context "has_many" do
         before(:each) do
-          Zendesk::TestResource.associations.clear
-          Zendesk::TestResource.has_many :children, :class => :test_child
+          ZendeskAPI::TestResource.associations.clear
+          ZendeskAPI::TestResource.has_many :children, :class => :test_child
 
           stub_request(:put, %r{test_resources}).to_return(:body => {})
           stub_request(:get, %r{children}).to_return(:body => {"test_children" => []})
@@ -196,11 +196,11 @@ describe Zendesk::Resource do
     context "on #{verb}", :vcr_off do
       let(:method) { "test_#{verb}_method" }
       before(:each) do
-        Zendesk::TestResource.send(verb, method)
+        ZendeskAPI::TestResource.send(verb, method)
       end
 
       context "class method" do
-        subject { Zendesk::TestResource }
+        subject { ZendeskAPI::TestResource }
 
         it "should create a method of the same name" do
           subject.instance_methods.map(&:to_s).should include(method)
@@ -208,7 +208,7 @@ describe Zendesk::Resource do
       end
 
       context "instance method" do
-        subject { Zendesk::TestResource.new(client, :id => 1) }
+        subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
         before(:each) do
           stub_request(verb.to_sym, %r{test_resources/1/#{method}}).to_return(:body => { "test_resources" => [{ "id" => 1, "method" => method }]})

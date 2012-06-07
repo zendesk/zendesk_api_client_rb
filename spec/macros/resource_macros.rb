@@ -24,7 +24,7 @@ module ResourceMacros
 
       it "should be findable", :unless => metadata[:not_findable] do
         options = default_options
-        options.merge!(:id => @object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
+        options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
         described_class.find(client, options).should == @object
       end 
 
@@ -65,7 +65,7 @@ module ResourceMacros
 
         it "should be findable", :unless => metadata[:not_findable] do
           options = default_options
-          options.merge!(:id => @object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
+          options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
           described_class.find(client, options).should == @object
         end 
       end
@@ -98,7 +98,7 @@ module ResourceMacros
 
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
           opts = default_options
-          opts.merge!(:id => @object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
+          opts.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
           obj = silence_logger{ described_class.find(client, opts) }
 
           if options[:find]
@@ -114,7 +114,7 @@ module ResourceMacros
   def it_should_be_readable(*args)
     options = args.last.is_a?(Hash) ? args.pop : {}
     create = !!options.delete(:create)
-    klass = args.first.is_a?(Zendesk::DataResource) ? args.shift : client
+    klass = args.first.is_a?(ZendeskAPI::DataResource) ? args.shift : client
     context_name = "read_#{klass.class}_#{args.join("_")}"
 
     context context_name do
@@ -136,7 +136,7 @@ module ResourceMacros
         result = klass
         args.each {|a| result = result.send(a, options) }
 
-        if result.is_a?(Zendesk::Collection)
+        if result.is_a?(ZendeskAPI::Collection)
           result.fetch(true).should_not be_empty
           result.fetch.should include(@object) if create
           object = result.first
@@ -148,7 +148,7 @@ module ResourceMacros
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           options = default_options
-          options.merge!(:id => object.id) unless described_class.ancestors.include?(Zendesk::SingularResource)
+          options.merge!(:id => object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
           described_class.find(client, options).should_not be_nil 
         end
       end

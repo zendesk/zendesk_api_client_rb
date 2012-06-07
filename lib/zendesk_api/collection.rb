@@ -1,16 +1,16 @@
-require 'zendesk/resource'
-require 'zendesk/resources/misc'
-require 'zendesk/resources/ticket'
-require 'zendesk/resources/user'
-require 'zendesk/resources/playlist'
+require 'zendesk_api/resource'
+require 'zendesk_api/resources/misc'
+require 'zendesk_api/resources/ticket'
+require 'zendesk_api/resources/user'
+require 'zendesk_api/resources/playlist'
 
-module Zendesk
+module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
     extend Rescue
 
-    # @return [Zendesk::Association] The class association
+    # @return [ZendeskAPI::Association] The class association
     attr_reader :association
 
     # Creates a new Collection instance. Does not fetch resources.
@@ -39,7 +39,7 @@ module Zendesk
       @fetchable = true
 
       # Used for Attachments, TicketComment
-      if @resource_class.superclass == Zendesk::Data
+      if @resource_class.superclass == ZendeskAPI::Data
         @resources = []
         @fetchable = false
       end

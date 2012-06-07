@@ -1,4 +1,4 @@
-module Zendesk
+module ZendeskAPI
   module Rescue
     def rescue_client_error(*args)
       opts = args.last.is_a?(Hash) ? args.pop : {}

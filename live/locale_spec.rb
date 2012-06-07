@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::Locale do
+describe ZendeskAPI::Locale do
   use_vcr_cassette
 
   specify "client#current_locale" do

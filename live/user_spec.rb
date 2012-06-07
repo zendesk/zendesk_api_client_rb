@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Zendesk::User, :delete_after do
+describe ZendeskAPI::User, :delete_after do
   def valid_attributes
     { :name => "Test U.", :email => "test@example.org" }
   end

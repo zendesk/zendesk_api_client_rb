@@ -1,6 +1,6 @@
-require 'zendesk/resources/forum'
+require 'zendesk_api/resources/forum'
 
-module Zendesk
+module ZendeskAPI
   class CRMData < DataResource; end
   class CRMDataStatus < DataResource; end
   class CustomRole < DataResource; end

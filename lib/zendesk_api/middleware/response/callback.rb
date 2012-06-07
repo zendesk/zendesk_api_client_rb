@@ -1,6 +1,6 @@
 require "faraday/response"
 
-module Zendesk
+module ZendeskAPI
   module Middleware
     module Response
       class Callback < Faraday::Response::Middleware

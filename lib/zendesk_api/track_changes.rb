@@ -1,6 +1,6 @@
 # Shamelessly stolen and modified from https://github.com/archan937/dirty_hashy
 
-module Zendesk
+module ZendeskAPI
   module TrackChanges
     def self.included(base)
       base.method_defined?(:regular_writer).tap do |defined|

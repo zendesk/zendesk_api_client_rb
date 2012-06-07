@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Zendesk::ReadResource do
+describe ZendeskAPI::ReadResource do
   context "find", :vcr_off do
     let(:id) { 1 }
-    subject { Zendesk::TestResource }
+    subject { ZendeskAPI::TestResource }
 
     before(:each) do
       stub_request(:get, %r{test_resources/#{id}}).to_return(:body => {})

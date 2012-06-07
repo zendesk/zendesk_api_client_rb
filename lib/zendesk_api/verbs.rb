@@ -1,4 +1,4 @@
-module Zendesk
+module ZendeskAPI
   # Creates put, post, delete class methods for custom resource methods.
   module Verbs
     extend Rescue
@@ -24,7 +24,7 @@ module Zendesk
 
             if (resources = response.body[self.class.resource_name]) &&
               (res = resources.find {|res| res["id"] == id})
-              @attributes = Zendesk::Trackie.new(res)
+              @attributes = ZendeskAPI::Trackie.new(res)
               @attributes.clear_changes
             end
 

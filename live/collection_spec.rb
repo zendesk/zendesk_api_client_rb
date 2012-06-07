@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe Zendesk::Collection do
+describe ZendeskAPI::Collection do
   subject do
-    Zendesk::Collection.new(client, Zendesk::TestResource)
+    ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource)
   end
 
   context "with real data" do
     subject do
-      Zendesk::Collection.new(client, Zendesk::User)
+      ZendeskAPI::Collection.new(client, ZendeskAPI::User)
     end
 
     before(:all) do

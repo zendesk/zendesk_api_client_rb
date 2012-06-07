@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Zendesk::Rescue do
+describe ZendeskAPI::Rescue do
   class Boom
-    extend Zendesk::Rescue
+    extend ZendeskAPI::Rescue
     attr_reader :client
 
     def initialize(client)
@@ -38,7 +38,7 @@ describe Zendesk::Rescue do
 
   it "logs to logger" do
     out = StringIO.new
-    client = Zendesk.configure do |config|
+    client = ZendeskAPI.configure do |config|
       config.logger = Logger.new(out)
       config.url = "https://idontcare.com"
     end
@@ -47,7 +47,7 @@ describe Zendesk::Rescue do
   end
 
   it "does crash without logger" do
-    client = Zendesk.configure do |config|
+    client = ZendeskAPI.configure do |config|
       config.logger = false
       config.url = "https://idontcare.com"
     end
