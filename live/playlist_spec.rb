@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ZendeskAPI::Playlist, :vcr_off do
+describe ZendeskAPI::Playlist do
   subject { ZendeskAPI::Playlist }
 
   before(:each) do
@@ -15,7 +15,7 @@ describe ZendeskAPI::Playlist, :vcr_off do
     subject { ZendeskAPI::Playlist.new(client, 1) }
 
     before(:each) do
-      stub_request(:get, %r{play/next}).to_return(:body => {})
+      stub_request(:get, %r{play/next}).to_return(:body => json)
     end
 
     it "should return ticket" do
@@ -71,7 +71,7 @@ describe ZendeskAPI::Playlist, :vcr_off do
     context "with client error", :silence_stdout do
       before(:each) do
         stub_request(:get, %r{views/\d+/play}).to_return(:status => 500).to_return(:status => 302)
-        stub_request(:get, %r{play/next}).to_return(:body => {})
+        stub_request(:get, %r{play/next}).to_return(:body => json)
       end
 
       it "should be able to be created" do

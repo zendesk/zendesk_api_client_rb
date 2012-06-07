@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ZendeskAPI::Middleware::Request::Retry, :vcr_off do
+describe ZendeskAPI::Middleware::Request::Retry do
   def runtime
     start = Time.now.to_f
     yield

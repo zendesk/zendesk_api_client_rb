@@ -14,6 +14,7 @@ require 'zendesk_api'
 require 'vcr'
 require 'logger'
 require 'stringio'
+require 'json'
 
 require 'resource_macros'
 require 'fixtures/zendesk'
@@ -60,6 +61,10 @@ module TestHelper
   ensure
     $stderr = STDERR
   end
+
+  def json(body = {})
+    JSON.dump(body)
+  end
 end
 
 RSpec.configure do |c|
@@ -70,14 +75,6 @@ RSpec.configure do |c|
   c.before(:each) do
     ZendeskAPI::TestResource.associations.clear
     ZendeskAPI::TestResource.has_many :children, :class => :test_child
-  end
-
-  c.before(:all, :vcr_off) do
-    VCR.turn_off!
-  end
-
-  c.after(:all, :vcr_off) do
-    VCR.turn_on!
   end
 
   c.before(:each) do

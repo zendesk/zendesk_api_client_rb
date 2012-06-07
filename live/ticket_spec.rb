@@ -40,7 +40,7 @@ describe ZendeskAPI::Ticket do
     it "is able to do next" do
       first = results.to_a.first
       recent_url = "api/v2/exports/tickets.json?start_time=#{Time.now.to_i.to_s[0..5]}"
-      response = mock(:body => {"results" => []})
+      response = mock(:body => json(:results => []))
       client.connection.should_receive(:get).with{|url| url.include?(recent_url) }.and_return response
 
       results.next

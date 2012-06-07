@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe ZendeskAPI::ReadResource do
-  context "find", :vcr_off do
+  context "find" do
     let(:id) { 1 }
     subject { ZendeskAPI::TestResource }
 
     before(:each) do
-      stub_request(:get, %r{test_resources/#{id}}).to_return(:body => {})
+      stub_request(:get, %r{test_resources/#{id}}).to_return(:body => json)
     end
 
     it "should return instance of resource" do

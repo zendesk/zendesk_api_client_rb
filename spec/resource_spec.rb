@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe ZendeskAPI::Resource do
-  context "update", :vcr_off do
+  context "update" do
     context "class method" do
       let(:id) { 1 }
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_request(:put, %r{test_resources/#{id}}).to_return(:body => {})
+        stub_request(:put, %r{test_resources/#{id}}).to_return(:body => json)
       end
 
       it "should return instance of resource" do
@@ -26,13 +26,13 @@ describe ZendeskAPI::Resource do
     end
   end
 
-  context "destroy", :vcr_off do
+  context "destroy" do
     context "class method" do
       let(:id) { 1 }
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_request(:delete, %r{test_resources/#{id}}).to_return(:body => {})
+        stub_request(:delete, %r{test_resources/#{id}}).to_return(:body => json)
       end
 
       it "should return instance of resource" do
@@ -76,13 +76,13 @@ describe ZendeskAPI::Resource do
     end
   end
 
-  context "save", :vcr_off do
+  context "save" do
     let(:id) { 1 }
     let(:attr) { { :param => "test" } }
     subject { ZendeskAPI::TestResource.new(client, attr.merge(:id => id)) }
 
     before :each do
-      stub_request(:put, %r{test_resources/#{id}}).to_return(:body => {"test_resource" => { :param => "abc" } })
+      stub_request(:put, %r{test_resources/#{id}}).to_return(:body => json(:test_resource => { :param => "abc" }))
     end
 
     it "should not save if already destroyed" do
@@ -113,7 +113,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource.new(client, attr) }
 
       before :each do
-        stub_request(:post, %r{test_resources}).to_return(:status => 201, :body => {"test_resource" => attr.merge(:id => id)})
+        stub_request(:post, %r{test_resources}).to_return(:status => 201, :body => json(:test_resource => attr.merge(:id => id)))
       end
 
       it "should be true without an id" do
@@ -132,7 +132,7 @@ describe ZendeskAPI::Resource do
         before(:each) do
           ZendeskAPI::TestResource.associations.clear
           ZendeskAPI::TestResource.has :child, :class => :test_child
-          stub_request(:put, %r{test_resources}).to_return(:body => {})
+          stub_request(:put, %r{test_resources}).to_return(:body => json)
           subject.child = { :id => 2 }
         end
 
@@ -153,8 +153,8 @@ describe ZendeskAPI::Resource do
           ZendeskAPI::TestResource.associations.clear
           ZendeskAPI::TestResource.has_many :children, :class => :test_child
 
-          stub_request(:put, %r{test_resources}).to_return(:body => {})
-          stub_request(:get, %r{children}).to_return(:body => {"test_children" => []})
+          stub_request(:put, %r{test_resources}).to_return(:body => json)
+          stub_request(:get, %r{children}).to_return(:body => json(:test_children => []))
         end
 
         it "should reset children_ids on save" do
@@ -193,7 +193,7 @@ describe ZendeskAPI::Resource do
   end
 
   %w{put post delete}.each do |verb|
-    context "on #{verb}", :vcr_off do
+    context "on #{verb}" do
       let(:method) { "test_#{verb}_method" }
       before(:each) do
         ZendeskAPI::TestResource.send(verb, method)
@@ -211,7 +211,7 @@ describe ZendeskAPI::Resource do
         subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
         before(:each) do
-          stub_request(verb.to_sym, %r{test_resources/1/#{method}}).to_return(:body => { "test_resources" => [{ "id" => 1, "method" => method }]})
+          stub_request(verb.to_sym, %r{test_resources/1/#{method}}).to_return(:body => json(:test_resources => [{ :id => 1, :method => method }]))
         end
 
         it "should return true" do

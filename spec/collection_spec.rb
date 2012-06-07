@@ -23,9 +23,9 @@ describe ZendeskAPI::Collection do
     end
   end
 
-  context "deferral", :vcr_off do
+  context "deferral" do
     before(:each) do
-      stub_request(:any, %r{test_resources}).to_return(:body => {})
+      stub_request(:any, %r{test_resources}).to_return(:body => json)
     end
 
     it "should defer #create to the resource class" do
@@ -56,7 +56,7 @@ describe ZendeskAPI::Collection do
       end
 
       before(:each) do
-        stub_request(:any, %r{test_resources/\d+/test_child}).to_return(:body => {})
+        stub_request(:any, %r{test_resources/\d+/test_child}).to_return(:body => json)
       end
 
       it "should defer #create to the resource class with the parent id" do
@@ -109,7 +109,7 @@ describe ZendeskAPI::Collection do
     end
   end
 
-  context "fetch", :vcr_off do
+  context "fetch" do
     it "does not fetch if associated is a new record" do
       ZendeskAPI::Category.new(client).forums.fetch.should == []
       ZendeskAPI::Category.new(client).forums.to_a.should == []
@@ -135,10 +135,10 @@ describe ZendeskAPI::Collection do
     end
   end
 
-  context "save", :vcr_off do
+  context "save" do
     let(:options) { { :abc => 1 } }
     before(:each) do
-      stub_request(:get, %r{test_resources}).to_return(:body => {"test_resources" => []})
+      stub_request(:get, %r{test_resources}).to_return(:body => json(:test_resources => []))
       subject.clear_cache
     end
 
@@ -187,17 +187,17 @@ describe ZendeskAPI::Collection do
     end
   end
 
-  context "without real data", :vcr_off do
+  context "without real data" do
     subject do
       ZendeskAPI::Collection.new(client, ZendeskAPI::User)
     end
 
     before(:each) do
-      stub_request(:get, %r{users\?page=2}).to_return(:body => {
-        "users" => [{"id" => 2}],
-        "next_page" => "/users?page=3&per_page=1",
-        "previous_page" => "/users?page=1&per_page=1"
-      })
+      stub_request(:get, %r{users\?page=2}).to_return(:body => json( 
+        :users => [{:id => 2}],
+        :next_page => "/users?page=3&per_page=1",
+        :previous_page => "/users?page=1&per_page=1"
+      ))
 
       subject.per_page(1).page(2)
       subject.fetch(true)
@@ -205,9 +205,7 @@ describe ZendeskAPI::Collection do
 
     context "pagination with no options" do
       before(:each) do
-        stub_request(:get, %r{users\?page=(1|3)}).to_return(:body => {
-          "users" => [{"id" => 3}]
-        })
+        stub_request(:get, %r{users\?page=(1|3)}).to_return(:body => json(:users => [{:id => 3}]))
 
         subject.per_page(nil).page(nil)
       end
@@ -275,13 +273,13 @@ describe ZendeskAPI::Collection do
   end
 
 
-  context "with different path", :vcr_off do
+  context "with different path" do
     subject do
       ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :collection_path => ["test_resources", "active"])
     end
 
     before(:each) do
-      @request = stub_request(:post, %r{test_resources/active}).to_return(:body => {})
+      @request = stub_request(:post, %r{test_resources/active}).to_return(:body => json)
     end
 
     context "deferral" do

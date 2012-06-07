@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe ZendeskAPI::CreateResource do
-  context "create", :vcr_off do
+  context "create" do
     let(:attr) { { :test_field => "blah" } }
     subject { ZendeskAPI::TestResource }
 
     before(:each) do
-      stub_request(:post, %r{test_resources}).to_return(:body => {})
+      stub_request(:post, %r{test_resources}).to_return(:body => json)
     end
 
     it "should return instance of resource" do

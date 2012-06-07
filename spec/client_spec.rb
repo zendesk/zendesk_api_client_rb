@@ -55,7 +55,7 @@ describe ZendeskAPI::Client do
           @client.connection.builder.handlers.should include(Faraday::Response::Logger)
         end
 
-        context "with a request", :vcr_off do
+        context "with a request" do
           it "should log" do
             client.config.logger.should_receive(:info).at_least(:once)
             @client.connection.get('/bs')
@@ -87,7 +87,7 @@ describe ZendeskAPI::Client do
           @client.connection.builder.handlers.should include(Faraday::Response::Logger)
         end
 
-        context "with a request", :vcr_off do
+        context "with a request" do
           it "should log to the subject" do
             out.should_receive(:write).at_least(:once)
             @client.connection.get('/bs')
@@ -97,9 +97,9 @@ describe ZendeskAPI::Client do
     end
   end
 
-  context "#current_user", :vcr_off do
+  context "#current_user" do
     before(:each) do
-      stub_request(:get, %r{users/me}).to_return(:body => {})
+      stub_request(:get, %r{users/me}).to_return(:body => json)
     end
 
     it "should be a user instance" do
@@ -124,7 +124,7 @@ describe ZendeskAPI::Client do
     end
   end
 
-  context "#play", :vcr_off do
+  context "#play" do
     # TODO may be able to be replaced by VCR
     before(:each) do 
       stub_request(:get, %r{play}).to_return do

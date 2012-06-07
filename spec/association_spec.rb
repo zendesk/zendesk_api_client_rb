@@ -4,7 +4,7 @@ describe ZendeskAPI::Association do
   let(:instance) { ZendeskAPI::TestResource.new(client, :id => 1) }
   let(:child) { ZendeskAPI::TestResource::TestChild.new(client, :id => 1, :test_resource_id => 2) }
 
-  describe "setting/getting", :vcr_off do
+  describe "setting/getting" do
     context "has" do
       before do
         ZendeskAPI::TestResource.associations.clear
@@ -38,12 +38,12 @@ describe ZendeskAPI::Association do
       end
 
       it "should fetch a unknown object" do
-        stub_request(:get, %r{test_resources/1/child}).to_return(:body => {"test_child" => {"id" => 2}})
+        stub_request(:get, %r{test_resources/1/child}).to_return(:body => json(:test_child => {:id => 2}))
         instance.child.id.should == 2
       end
 
       it "should fetch an object known by id" do
-        stub_request(:get, %r{test_resources/1/child/5}).to_return(:body => {"test_child" => {"id" => 5}})
+        stub_request(:get, %r{test_resources/1/child/5}).to_return(:body => json(:test_child => {:id => 5}))
         instance.child_id = 5
         instance.child.id.should == 5
       end
@@ -72,7 +72,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should fetch unknown objects" do
-        stub_request(:get, %r{test_resources/1/children}).to_return(:body => {"test_children" => [{"id" => 2}, {"id" => 3}]})
+        stub_request(:get, %r{test_resources/1/children}).to_return(:body => json(:test_children => [{:id => 2}, {:id => 3}]))
         instance.children.map(&:id).should == [2,3]
       end
     end
