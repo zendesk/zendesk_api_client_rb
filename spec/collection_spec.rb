@@ -143,10 +143,13 @@ describe ZendeskAPI::Collection do
     end
 
     context "with a hash" do
-      let(:object) { mock('ZendeskAPI::TestResource', :changes => [:xxx]) }
+      let(:object) { mock('ZendeskAPI::TestResource', :association => mock, :changes => [:xxx]) }
 
       it "should call create with those options" do
-        ZendeskAPI::TestResource.should_receive(:new).with(client, options).and_return(object)
+        ZendeskAPI::TestResource.should_receive(:new).
+          with(client, options.merge(:assocation => subject.association)).
+          and_return(object)
+
         subject << options
 
         object.should_receive(:save)
