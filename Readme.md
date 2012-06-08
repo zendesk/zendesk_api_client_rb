@@ -25,7 +25,7 @@ or add it to a Gemfile like so:
 ## Configuration
 
 Configuration is done through a block returning an instance of ZendeskAPI::Client.
-The block is mandatory and if not passed, a ZendeskAPI::ConfigurationException will be thrown.
+The block is mandatory and if not passed, an ArgumentError will be thrown.
 
 ```
 ZendeskAPI::Client.new do |config|
