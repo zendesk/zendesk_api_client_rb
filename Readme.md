@@ -185,8 +185,7 @@ ticket.save
 ## TODO
 
 * Search class detection
-* Nested association saving
-* Testing
+* Live Testing
 
 ## Note on Patches/Pull Requests
 1. Fork the project.
