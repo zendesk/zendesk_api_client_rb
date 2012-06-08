@@ -24,7 +24,7 @@ module ZendeskAPI
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
     # @return [Collection] Collection instance for resource
-    def method_missing(method, *args, &blk)
+    def method_missing(method, *args, &block)
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
       return instance_variable_get("@#{method}") if !options.delete(:reload) && instance_variable_defined?("@#{method}")
@@ -101,9 +101,9 @@ module ZendeskAPI
     end
 
     # Pushes a callback onto the stack. Callbacks are executed on responses, last in the Faraday middleware stack.
-    # @param [Proc] blk The block to execute. Takes one parameter, env.
-    def insert_callback(&blk)
-      @callbacks << blk
+    # @param [Proc] block The block to execute. Takes one parameter, env.
+    def insert_callback(&block)
+      @callbacks << block
     end
 
     # show a nice warning for people using the old style api

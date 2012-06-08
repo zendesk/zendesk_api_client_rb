@@ -207,9 +207,9 @@ module ZendeskAPI
     def to_ary; nil; end
 
     # Sends methods to underlying array of resources.
-    def method_missing(name, *args, &blk)
+    def method_missing(name, *args, &block)
       if Array.new.respond_to?(name)
-        to_a.send(name, *args, &blk)
+        to_a.send(name, *args, &block)
       else
         opts = args.last.is_a?(Hash) ? args.last : {}
         opts.merge!(:collection_path => @collection_path.dup.push(name))
