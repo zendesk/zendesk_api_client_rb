@@ -24,7 +24,7 @@ module TestHelper
   def client
     credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
     @client ||= begin
-      client = ZendeskAPI.configure do |config|
+      client = ZendeskAPI::Client.new do |config|
         if File.exist?(credentials)
           data = YAML.load(File.read(credentials))
           config.username = data["username"]

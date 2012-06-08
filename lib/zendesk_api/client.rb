@@ -57,10 +57,30 @@ module ZendeskAPI
       @locale = locales.find(:id => 'current')
     end
 
-    # Creates a new Client instance with no configuration options and no connection.
+    # Creates a new {Client} instance and yields {#config}.
+    #
+    # Requires a block to be given.
+    #
+    # Does basic configuration constraints:
+    # * {Configuration#url} must be https unless {Configuration#dont_enforce_https} is set.
     def initialize
+      raise ArgumentError, "block not given" unless block_given?
+
       @config = ZendeskAPI::Configuration.new
-      @connection = false
+      yield config
+
+      if !config.dont_enforce_https && config.url !~ /^https/
+        raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
+      end
+
+      config.retry = !!config.retry # nil -> false
+
+      if config.logger.nil? || config.logger == true
+        require 'logger'
+        config.logger = Logger.new($stderr)
+        config.logger.level = Logger::WARN
+      end
+
       @callbacks = []
 
       if logger = config.logger
@@ -74,16 +94,38 @@ module ZendeskAPI
 
     # Creates a connection if there is none, otherwise returns the existing connection.
     #
+    # @returns [Faraday::Connection] Faraday connection for the client
+    def connection
+      @connection ||= build_connection
+      return @connection
+    end
+
+    # Pushes a callback onto the stack. Callbacks are executed on responses, last in the Faraday middleware stack.
+    # @param [Proc] blk The block to execute. Takes one parameter, env.
+    def insert_callback(&blk)
+      @callbacks << blk
+    end
+
+    # show a nice warning for people using the old style api
+    def self.check_deprecated_namespace_usage(attributes, name)
+      raise "un-nest '#{name}' from the attributes" if attributes[name].is_a?(Hash)
+    end
+
+    protected
+
+    # Called by {#connection} to build a connection. Can be overwritten in a
+    # subclass to add additional middleware and make other configuration
+    # changes.
+    #
     # Uses middleware according to configuration options.
     #
     # Request logger if logger is not nil
     # 
     # Retry middleware if retry is true
-    def connection
-      return @connection if @connection
-
-      @connection = Faraday.new(config.options) do |builder|
+    def build_connection
+      Faraday.new(config.options) do |builder|
         # response
+        builder.use Faraday::Request::BasicAuthentication, config.username, config.password
         builder.use Faraday::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use Faraday::Response::Logger, config.logger if config.logger
@@ -100,18 +142,6 @@ module ZendeskAPI
 
         builder.adapter *config.adapter || Faraday.default_adapter
       end
-      @connection.tap {|c| c.basic_auth(config.username, config.password)}
-    end
-
-    # Pushes a callback onto the stack. Callbacks are executed on responses, last in the Faraday middleware stack.
-    # @param [Proc] blk The block to execute. Takes one parameter, env.
-    def insert_callback(&blk)
-      @callbacks << blk
-    end
-
-    # show a nice warning for people using the old style api
-    def self.check_deprecated_namespace_usage(attributes, name)
-      raise "un-nest '#{name}' from the attributes" if attributes[name].is_a?(Hash)
     end
   end
 end
