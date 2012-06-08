@@ -31,7 +31,6 @@ The block is mandatory and if not passed, a ZendeskAPI::ConfigurationException w
 ZendeskAPI::Client.new do |config|
   # Mandatory:
 
-  # Must be https URL unless config.dont_enforce_https is set
   config.url = "https://mydesk.zendesk.com/api/v2"
 
   config.username = "test.user"

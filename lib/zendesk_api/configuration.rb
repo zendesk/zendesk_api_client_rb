@@ -4,7 +4,7 @@ module ZendeskAPI
     attr_accessor :username
     # @return [String] The basic auth password.
     attr_accessor :password
-    # @return [String] The API url. Must be https unless {#dont_enforce_https} is set.
+    # @return [String] The API url. Must be https unless {#allow_http} is set.
     attr_accessor :url
     # @return [Boolean] Whether to attempt to retry when rate-limited (http status: 429).
     attr_accessor :retry
@@ -15,7 +15,7 @@ module ZendeskAPI
     # @return [Symbol] Faraday adapter
     attr_accessor :adapter
     # @return [Boolean] Whether to allow non-HTTPS connections for development purposes.
-    attr_accessor :dont_enforce_https
+    attr_accessor :allow_http
 
     def initialize
       @client_options = {}

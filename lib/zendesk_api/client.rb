@@ -62,14 +62,14 @@ module ZendeskAPI
     # Requires a block to be given.
     #
     # Does basic configuration constraints:
-    # * {Configuration#url} must be https unless {Configuration#dont_enforce_https} is set.
+    # * {Configuration#url} must be https unless {Configuration#allow_http} is set.
     def initialize
       raise ArgumentError, "block not given" unless block_given?
 
       @config = ZendeskAPI::Configuration.new
       yield config
 
-      if !config.dont_enforce_https && config.url !~ /^https/
+      if !config.allow_http && config.url !~ /^https/
         raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
       end
 

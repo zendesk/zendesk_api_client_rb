@@ -16,10 +16,10 @@ describe ZendeskAPI::Client do
       end.to raise_error(ArgumentError) 
     end
 
-    it "should not raise an exception when url isn't ssl and dont_enforce_https is set to true" do
+    it "should not raise an exception when url isn't ssl and allow_http is set to true" do
       expect do
         ZendeskAPI::Client.new do |config|
-          config.dont_enforce_https = true
+          config.allow_http = true
           config.url = "http://www.google.com/"
         end
       end.to_not raise_error
