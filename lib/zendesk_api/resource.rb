@@ -10,12 +10,12 @@ module ZendeskAPI
     extend Rescue
 
     class << self
-      # The singular resource name taken from the class name (e.g. ZendeskAPI::Tickets -> ticket)
+      # The singular resource name taken from the class name (e.g. ZendeskAPI::Ticket -> ticket)
       def singular_resource_name
         @singular_resource_name ||= to_s.split("::").last.snakecase
       end
 
-      # The resource name taken from the class name (e.g. ZendeskAPI::Tickets -> tickets)
+      # The resource name taken from the class name (e.g. ZendeskAPI::Ticket -> tickets)
       def resource_name
         @resource_name ||= singular_resource_name.plural
       end
