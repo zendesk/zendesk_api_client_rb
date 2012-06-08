@@ -1,5 +1,11 @@
 require 'spec_helper'
 
+class SimpleClient < ZendeskAPI::Client
+  def build_connection
+    "FOO"
+  end
+end
+
 describe ZendeskAPI::Client do
   subject { client }
 
@@ -130,5 +136,14 @@ describe ZendeskAPI::Client do
     it "should return an instance of ZendeskAPI::Playlist" do
       subject.play(1).should be_instance_of(ZendeskAPI::Playlist)
     end
+  end
+
+  it "can be subclassed" do
+    client = SimpleClient.new do |config|
+      config.allow_http = true
+    end
+    client.config.allow_http.should == true
+    client.connection.should == "FOO"
+    client.connection.object_id.should == client.connection.object_id # it's cached
   end
 end
