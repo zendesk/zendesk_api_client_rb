@@ -98,6 +98,7 @@ RSpec.configure do |c|
   c.extend ResourceMacros
 
   c.include TestHelper
+  c.extend TestHelper
 end
 
 VCR.configure do |c|
