@@ -95,7 +95,6 @@ module ZendeskAPI
 
       def create!(client, attributes={})
         c = create(client, attributes)
-        puts c.inspect
         c || raise("Create failed #{self} #{attributes}")
       end
 

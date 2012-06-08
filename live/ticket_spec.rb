@@ -59,7 +59,7 @@ describe ZendeskAPI::Ticket do
 
     it "returns nothing if import fails" do
       VCR.use_cassette("ticket_import_cannot_import") do
-        silence_stdout { ZendeskAPI::Ticket.import(client, {}).should == nil }
+        silence_logger { ZendeskAPI::Ticket.import(client, {}).should == nil }
       end
     end
   end

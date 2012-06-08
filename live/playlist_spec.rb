@@ -22,7 +22,7 @@ describe ZendeskAPI::Playlist do
       subject.next.should be_instance_of(ZendeskAPI::Ticket)
     end
 
-    context "with client error", :silence_stdout do
+    context "with client error", :silence_logger do
       before(:each) do
         stub_request(:get, %r{play/next}).to_return(:status => 500)
       end
@@ -56,7 +56,7 @@ describe ZendeskAPI::Playlist do
       subject.destroyed?.should be_true
     end
 
-    context "with client error", :silence_stdout do
+    context "with client error", :silence_logger do
       before(:each) do
         stub_request(:delete, %r{play}).to_return(:status => 500)
       end
@@ -68,7 +68,7 @@ describe ZendeskAPI::Playlist do
   end
 
   context "initialization" do
-    context "with client error", :silence_stdout do
+    context "with client error", :silence_logger do
       before(:each) do
         stub_request(:get, %r{views/\d+/play}).to_return(:status => 500).to_return(:status => 302)
         stub_request(:get, %r{play/next}).to_return(:body => json)
