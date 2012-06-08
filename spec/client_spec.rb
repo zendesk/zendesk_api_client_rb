@@ -3,36 +3,31 @@ require 'spec_helper'
 describe ZendeskAPI::Client do
   subject { client }
 
-  context "#configure" do
+  context "#initialize" do
     it "should require a block" do
-      expect { ZendeskAPI.configure }.to raise_error(ZendeskAPI::ConfigurationException)
+      expect { ZendeskAPI::Client.new }.to raise_error(ArgumentError)
     end
 
-    it "should raise an exception when url isn't ssl and is not localhost" do
+    it "should raise an exception when url isn't ssl" do
       expect do
-        ZendeskAPI.configure do |config|
+        ZendeskAPI::Client.new do |config|
           config.url = "http://www.google.com"
         end
-      end.to raise_error(ZendeskAPI::ConfigurationException) 
+      end.to raise_error(ArgumentError) 
     end
 
-    it "should not raise an exception when url isn't ssl and is localhost" do
+    it "should not raise an exception when url isn't ssl and dont_enforce_https is set to true" do
       expect do
-        ZendeskAPI.configure do |config|
-          config.url = "https://127.0.0.1/"
-        end
-      end.to_not raise_error
-
-      expect do
-        ZendeskAPI.configure do |config|
-          config.url = "https://localhost/"
+        ZendeskAPI::Client.new do |config|
+          config.dont_enforce_https = true
+          config.url = "http://www.google.com/"
         end
       end.to_not raise_error
     end
 
     it "should handle valid url" do
       expect do
-        ZendeskAPI.configure do |config|
+        ZendeskAPI::Client.new do |config|
           config.url = "https://example.zendesk.com/"
         end.to_not raise_error
       end
@@ -40,7 +35,7 @@ describe ZendeskAPI::Client do
 
     context "#logger" do
       before(:each) do
-        @client = ZendeskAPI.configure do |config| 
+        @client = ZendeskAPI::Client.new do |config| 
           config.url = "https://example.zendesk.com/"
           config.logger = subject
         end
