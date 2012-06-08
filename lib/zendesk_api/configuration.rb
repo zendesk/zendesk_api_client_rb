@@ -1,39 +1,4 @@
 module ZendeskAPI
-  # Raised if a block is not passed to {ZendeskAPI.configure} or if that configuration
-  # does not then pass the constraints.
-  class ConfigurationException < Exception; end
-
-  class << self
-
-    # Takes a block, yields a new {Configuration} instance, then returns a new {Client} instance.
-    #
-    #
-    # Does basic configuration constraints:
-    # * {Configuration#url} must be https unless {Configuration#dont_enforce_https} is set.
-    #
-    # @return [Client] {Client} instance with given configuration options
-    def configure
-      raise ConfigurationException.new("must pass block") unless block_given?
-
-      client = ZendeskAPI::Client.new
-      yield client.config
-
-      if !client.config.dont_enforce_https && client.config.url !~ /^https/
-        raise ConfigurationException.new('zendesk_api is ssl only; url must begin with https://')
-      end
-
-      client.config.retry = !!client.config.retry # nil -> false
-
-      if client.config.logger.nil? || client.config.logger == true
-        require 'logger'
-        client.config.logger = Logger.new($stderr)
-        client.config.logger.level = Logger::WARN
-      end
-
-      client
-    end
-  end
-
   class Configuration
     # @return [String] The basic auth username.
     attr_accessor :username

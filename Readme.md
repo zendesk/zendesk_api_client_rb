@@ -28,7 +28,7 @@ Configuration is done through a block returning an instance of ZendeskAPI::Clien
 The block is mandatory and if not passed, a ZendeskAPI::ConfigurationException will be thrown.
 
 ```
-ZendeskAPI.configure do |config|
+ZendeskAPI::Client.new do |config|
   # Mandatory:
 
   # Must be https URL unless config.dont_enforce_https is set

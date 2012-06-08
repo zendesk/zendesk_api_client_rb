@@ -38,7 +38,7 @@ describe ZendeskAPI::Rescue do
 
   it "logs to logger" do
     out = StringIO.new
-    client = ZendeskAPI.configure do |config|
+    client = ZendeskAPI::Client.new do |config|
       config.logger = Logger.new(out)
       config.url = "https://idontcare.com"
     end
@@ -47,7 +47,7 @@ describe ZendeskAPI::Rescue do
   end
 
   it "does crash without logger" do
-    client = ZendeskAPI.configure do |config|
+    client = ZendeskAPI::Client.new do |config|
       config.logger = false
       config.url = "https://idontcare.com"
     end

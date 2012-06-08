@@ -21,40 +21,30 @@ require 'fixtures/zendesk'
 require 'fixtures/test_resources'
 
 module TestHelper
-  def self.included(base)
-    base.send :extend, ClassMethods
-  end
-
-  module ClassMethods
-    def client
-      credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
-      @@client ||= begin
-        client = ZendeskAPI.configure do |config|
-          if File.exist?(credentials)
-            data = YAML.load(File.read(credentials))
-            config.username = data["username"]
-            config.password = data["password"]
-            config.url = data["url"]
-          else
-            puts "using default credentials: live specs will fail."
-            puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
-            config.username = "please.change"
-            config.password = "me"
-            config.url = "https://my.zendesk.com/api/v2"
-          end
-
-          config.retry = true
+  def client
+    credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
+    @client ||= begin
+      client = ZendeskAPI::Client.new do |config|
+        if File.exist?(credentials)
+          data = YAML.load(File.read(credentials))
+          config.username = data["username"]
+          config.password = data["password"]
+          config.url = data["url"]
+        else
+          puts "using default credentials: live specs will fail."
+          puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
+          config.username = "please.change"
+          config.password = "me"
+          config.url = "https://my.zendesk.com/api/v2"
         end
 
-        client.config.logger.level = (ENV["LOG"] ? Logger::INFO : Logger::WARN)
-
-        client
+        config.retry = true
       end
-    end
-  end
 
-  def client
-    self.class.client
+      client.config.logger.level = (ENV["LOG"] ? Logger::INFO : Logger::WARN)
+
+      client
+    end
   end
 
   def silence_logger
