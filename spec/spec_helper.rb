@@ -20,33 +20,34 @@ require 'resource_macros'
 require 'fixtures/zendesk'
 require 'fixtures/test_resources'
 
-module TestHelper
-  def client
-    credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
-    @client ||= begin
-      client = ZendeskAPI::Client.new do |config|
-        if File.exist?(credentials)
-          data = YAML.load(File.read(credentials))
-          config.username = data["username"]
-          config.password = data["password"]
-          config.url = data["url"]
-        else
-          puts "using default credentials: live specs will fail."
-          puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
-          config.username = "please.change"
-          config.password = "me"
-          config.url = "https://my.zendesk.com/api/v2"
-        end
-
-        config.retry = true
+# tests fail when this is included in a Module (someone else also defines client)
+def client
+  credentials = File.join(File.dirname(__FILE__), "fixtures", "credentials.yml")
+  @client ||= begin
+    client = ZendeskAPI::Client.new do |config|
+      if File.exist?(credentials)
+        data = YAML.load(File.read(credentials))
+        config.username = data["username"]
+        config.password = data["password"]
+        config.url = data["url"]
+      else
+        puts "using default credentials: live specs will fail."
+        puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
+        config.username = "please.change"
+        config.password = "me"
+        config.url = "https://my.zendesk.com/api/v2"
       end
 
-      client.config.logger.level = (ENV["LOG"] ? Logger::INFO : Logger::WARN)
-
-      client
+      config.retry = true
     end
-  end
 
+    client.config.logger.level = (ENV["LOG"] ? Logger::INFO : Logger::WARN)
+
+    client
+  end
+end
+
+module TestHelper
   def silence_logger
     old_level = client.config.logger.level
     client.config.logger.level = 6
