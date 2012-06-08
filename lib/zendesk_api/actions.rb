@@ -94,7 +94,9 @@ module ZendeskAPI
       end
 
       def create!(client, attributes={})
-        create(client, attributes) || raise("Create failed #{self} #{attributes}")
+        c = create(client, attributes)
+        puts c.inspect
+        c || raise("Create failed #{self} #{attributes}")
       end
 
       rescue_client_error :create

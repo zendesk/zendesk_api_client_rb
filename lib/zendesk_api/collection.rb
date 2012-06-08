@@ -95,7 +95,10 @@ module ZendeskAPI
     def save
       if @resources
         @resources.map! do |item|
-          item.save unless item.changes.empty?
+          unless !item.respond_to?(:save) || item.changes.empty?
+            item.save
+          end
+
           item
         end
       end

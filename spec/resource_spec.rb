@@ -76,6 +76,18 @@ describe ZendeskAPI::Resource do
     end
   end
 
+  context "save!" do
+    subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+
+    before(:each) do
+      subject.should_receive(:save).and_return(false)
+    end
+
+    it "should raise if save fails" do
+      expect { subject.save! }.to raise_error
+    end
+  end
+
   context "save" do
     let(:id) { 1 }
     let(:attr) { { :param => "test" } }
@@ -187,6 +199,24 @@ describe ZendeskAPI::Resource do
           subject.children.first.foo = "bar"
           subject.children.first.should_receive(:save)
           subject.save
+        end
+      end
+
+      context "inline" do
+        before(:each) do
+          class ZendeskAPI::NilResource
+            def to_param; "TESTDATA"; end
+          end
+
+          ZendeskAPI::TestResource.associations.clear
+          ZendeskAPI::TestResource.has :nil, :class => :nil_resource, :inline => true
+
+          subject.nil = { :abc => :def }
+          subject.save_associations
+        end
+
+        it "should save param data" do
+          subject.attributes[:nil].should == "TESTDATA"
         end
       end
     end

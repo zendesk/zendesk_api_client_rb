@@ -23,5 +23,17 @@ describe ZendeskAPI::CreateResource do
       end
     end
   end
+
+  context "create!" do
+    subject { ZendeskAPI::TestResource }
+
+    before(:each) do
+      subject.should_receive(:create).and_return(nil)
+    end
+
+    it "should raise if save fails" do
+      expect { subject.create!(client, :test_field => "blah") }.to raise_error
+    end
+  end
 end
 
