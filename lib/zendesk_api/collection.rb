@@ -8,6 +8,8 @@ module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
+    SPECIALLY_JOINED_PARAMS = [:include, :ids, :only]
+
     extend Rescue
 
     # @return [ZendeskAPI::Association] The class association
@@ -29,9 +31,11 @@ module ZendeskAPI
       association_options[:path] ||= @collection_path.join("/") if @collection_path
       @association = @options.delete(:association) || Association.new(association_options.merge(:class => resource))
 
-      # Special case POST topics/show_many
+      # some params use comma-joined strings instead of query-based arrays for multiple values
       @options.each do |k, v|
-        @options[k] = v.join(',') if v.is_a?(Array) 
+        if SPECIALLY_JOINED_PARAMS.include?(k.to_sym) && v.is_a?(Array)
+          @options[k] = v.join(',')
+        end
       end
 
       @collection_path ||= [@resource]
