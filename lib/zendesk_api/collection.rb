@@ -10,7 +10,7 @@ module ZendeskAPI
   class Collection
     SPECIALLY_JOINED_PARAMS = [:include, :ids, :only]
 
-    extend Rescue
+    include Rescue
 
     # @return [ZendeskAPI::Association] The class association
     attr_reader :association

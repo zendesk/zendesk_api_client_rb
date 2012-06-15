@@ -1,6 +1,6 @@
 module ZendeskAPI
   class Playlist
-    extend Rescue
+    include Rescue
 
     attr_reader :ticket
     attr_accessor :id

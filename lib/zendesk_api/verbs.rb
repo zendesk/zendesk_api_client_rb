@@ -1,7 +1,7 @@
 module ZendeskAPI
   # Creates put, post, delete class methods for custom resource methods.
   module Verbs
-    extend Rescue
+    include Rescue
 
     class << self
       private

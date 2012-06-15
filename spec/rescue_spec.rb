@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe ZendeskAPI::Rescue do
+  include ZendeskAPI::Rescue
+
   class Boom
-    extend ZendeskAPI::Rescue
+    include ZendeskAPI::Rescue
     attr_reader :client
 
     def initialize(client)
@@ -52,5 +54,41 @@ describe ZendeskAPI::Rescue do
       config.url = "https://idontcare.com"
     end
     Boom.new(client).puff(Faraday::Error::ClientError)
+  end
+
+  context "passing a block" do
+    it "rescues from client errors", :silence_logger do
+      rescue_client_error do
+        raise Faraday::Error::ClientError, "error"
+      end
+    end
+
+    it "raises everything else" do
+      expect{
+        rescue_client_error { raise RuntimeError, "error" }
+      }.to raise_error RuntimeError
+    end
+
+    it "logs to logger" do
+      out = StringIO.new
+      @client = ZendeskAPI::Client.new do |config|
+        config.logger = Logger.new(out)
+        config.url = "https://idontcare.com"
+      end
+      out.should_receive(:write).at_least(:twice)
+      rescue_client_error do
+        raise Faraday::Error::ClientError, "error"
+      end
+    end
+
+    it "does crash without logger" do
+      @client = ZendeskAPI::Client.new do |config|
+        config.logger = false
+        config.url = "https://idontcare.com"
+      end
+      rescue_client_error do
+        raise Faraday::Error::ClientError, "error"
+      end
+    end
   end
 end

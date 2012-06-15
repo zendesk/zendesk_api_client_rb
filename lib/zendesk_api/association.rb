@@ -107,6 +107,8 @@ module ZendeskAPI
     end
 
     module ClassMethods
+      include Rescue
+
       def associations
         @assocations ||= []
       end
@@ -139,11 +141,9 @@ module ZendeskAPI
           elsif found = method_missing(resource_name.to_sym)
             wrap_resource(found, klass, class_level_association)
           elsif klass.ancestors.include?(DataResource)
-            begin
+            rescue_client_error do
               response = @client.connection.get(instance_association.generate_path(:with_parent => true))
               klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
-            rescue Faraday::Error::ClientError
-              nil
             end
           end
 

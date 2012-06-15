@@ -54,7 +54,7 @@ module ZendeskAPI
   end
 
   module Read
-    extend Rescue
+    include Rescue
 
     # Finds a resource by an id and any options passed in.
     # A custom path to search at can be passed into opts. It defaults to the {DataResource.resource_name} of the class. 
@@ -77,11 +77,11 @@ module ZendeskAPI
     include Save
 
     def self.included(base)
-      base.send(:extend, ClassMethods)
+      base.extend(ClassMethods)
     end
 
     module ClassMethods
-      extend Rescue
+      include Rescue
 
       # Create a resource given the attributes passed in.
       # @param [Client] client The {Client} object to be used
@@ -103,7 +103,7 @@ module ZendeskAPI
   end
 
   module Destroy
-    extend Rescue
+    include Rescue
 
     def self.included(klass)
       klass.extend(ClassMethod)
@@ -127,7 +127,7 @@ module ZendeskAPI
     rescue_client_error :destroy, :with => false
 
     module ClassMethod
-      extend Rescue
+      include Rescue
 
       # Deletes a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
@@ -147,7 +147,7 @@ module ZendeskAPI
   end
 
   module Update
-    extend Rescue
+    include Rescue
     include Save
 
     def self.included(klass)
@@ -157,7 +157,7 @@ module ZendeskAPI
     rescue_client_error :save, :with => false
 
     module ClassMethod
-      extend Rescue
+      include Rescue
 
       # Updates  a resource given the id passed in.
       # @param [Client] client The {Client} object to be used

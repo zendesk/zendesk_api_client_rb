@@ -14,7 +14,7 @@ require 'zendesk_api/middleware/response/parse_iso_dates'
 
 module ZendeskAPI
   class Client
-    extend Rescue
+    include Rescue
 
     # @return [Configuration] Config instance
     attr_reader :config

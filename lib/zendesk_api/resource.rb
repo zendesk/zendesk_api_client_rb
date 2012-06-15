@@ -7,7 +7,7 @@ module ZendeskAPI
   # Represents a resource that only holds data.
   class Data
     include Associations
-    extend Rescue
+    include Rescue
 
     class << self
       # The singular resource name taken from the class name (e.g. ZendeskAPI::Ticket -> ticket)
