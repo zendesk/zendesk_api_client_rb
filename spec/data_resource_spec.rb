@@ -110,7 +110,7 @@ describe ZendeskAPI::DataResource do
           before(:each) { stub_request(:get, %r{test_resources/\d+/foo}).to_return(:status => 500) }
 
           it "should handle it properly" do
-            expect { subject.foo.should be_nil }.to_not raise_error
+            expect { silence_stderr{ subject.foo.should be_nil } }.to_not raise_error
           end
         end
         
