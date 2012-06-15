@@ -46,6 +46,7 @@ def client
     end
 
     client.config.logger.level = (ENV["LOG"] ? Logger::INFO : Logger::WARN)
+    client.config.cache.size = 0
 
     client
   end
