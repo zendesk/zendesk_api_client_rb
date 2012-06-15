@@ -30,6 +30,10 @@ def client
         config.username = data["username"]
         config.password = data["password"]
         config.url = data["url"]
+
+        if data["url"].start_with?("http://")
+          config.allow_http = true
+        end
       else
         puts "using default credentials: live specs will fail."
         puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
