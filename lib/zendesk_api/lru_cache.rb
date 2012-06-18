@@ -31,6 +31,10 @@ class ZendeskAPI::LRUCache
     end
   end
 
+  def clear
+    @store.clear
+  end
+
   private
 
   def set_lru(key)

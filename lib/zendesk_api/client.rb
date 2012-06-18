@@ -6,7 +6,6 @@ require 'zendesk_api/rescue'
 require 'zendesk_api/configuration'
 require 'zendesk_api/collection'
 require 'zendesk_api/lru_cache'
-require 'zendesk_api/middleware/request/etag_cache'
 require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/response/callback'
@@ -137,7 +136,11 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::Deflate
 
         # request
-        builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+        require 'rack/cache'
+        builder.use FaradayMiddleware::RackCompatible, Rack::Cache::Context,
+          #:metastore   => config.cache,
+          #:entitystore => config.cache,
+          :ignore_headers => %w[Set-Cookie X-Content-Digest]
         builder.use ZendeskAPI::Middleware::Request::Upload
         builder.request :multipart
         builder.request :json

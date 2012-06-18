@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ZendeskAPI::Middleware::Request::EtagCache do
+describe "EtagCache" do
   def fake_response(data)
     stub_request(:get, %r{blergh}).to_return(:status => 200, :body => data)
     response = client.connection.get("blergh")
@@ -8,17 +8,26 @@ describe ZendeskAPI::Middleware::Request::EtagCache do
     response
   end
 
-  it "caches" do
-    client.config.cache.size = 1
+  before do
+    stub_request(:get, %r{blergh}).to_return(:status => 200, :body => '{"x":1}', :headers => {"Cache-Control" => "public, max-age=2592000"})
+    response = client.connection.get("blergh")
+    response.status.should == 200
+    response.body.should == {"x" => 1}
+  end
 
-    stub_request(:get, %r{blergh}).to_return(:status => 200, :body => '{"x":1}', :headers => {"Etag" => "x"})
+  it "caches" do
+    WebMock::StubRegistry.instance.reset! # no connection allowed
     response = client.connection.get("blergh")
     response.status.should == 200
     response.body.should == {"x"=>1}
+  end
 
-    stub_request(:get, %r{blergh}).to_return(:status => 304, :response_headers => {"Etag" => "x"})
+  it "uses given cache store" do
+    client.config.cache.clear
+    stub_request(:get, %r{blergh}).to_return(:status => 200, :body => '{"x":2}', :headers => {"Cache-Control" => "public, max-age=2592000"})
+
     response = client.connection.get("blergh")
-    response.status.should == 304
-    response.body.should == {"x"=>1}
+    response.status.should == 200
+    response.body.should == {"x"=>2}
   end
 end
