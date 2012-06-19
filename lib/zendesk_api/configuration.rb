@@ -2,23 +2,37 @@ module ZendeskAPI
   class Configuration
     # @return [String] The basic auth username.
     attr_accessor :username
+
     # @return [String] The basic auth password.
     attr_accessor :password
+
     # @return [String] The API url. Must be https unless {#allow_http} is set.
     attr_accessor :url
+
     # @return [Boolean] Whether to attempt to retry when rate-limited (http status: 429).
     attr_accessor :retry
+
     # @return [Logger] Logger to use when logging requests.
     attr_accessor :logger
+
     # @return [Hash] Client configurations (eg ssh config) to pass to Faraday
     attr_accessor :client_options
+
     # @return [Symbol] Faraday adapter
     attr_accessor :adapter
+
     # @return [Boolean] Whether to allow non-HTTPS connections for development purposes.
     attr_accessor :allow_http
 
+    # Use this cache instead of default ZendeskAPI::LRUCache.new
+    # - must respond to read/write/fetch e.g. ActiveSupport::Cache::MemoryStore.new)
+    # - pass false to disable caching
+    # @return [ZendeskAPI::LRUCache]
+    attr_accessor :cache
+
     def initialize
       @client_options = {}
+      self.cache = ZendeskAPI::LRUCache.new(1000)
     end
 
     # Sets accept and user_agent headers, and url.
