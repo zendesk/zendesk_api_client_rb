@@ -1,4 +1,4 @@
- - Make an empty account
+ - Make an empty account (company name Z3N, email <something>@zendesk.com, so it can be filtered)
  - add credentials into spec/fixtures/credentials.yml
  - mark 1 ticket as solved, change end-users email to on your can receive, copy ticket url, login as end-user (do not just assume identity), rate it
  - create a new ticket and cc "zendesk-api-client-ruby-end-user-#{client.config.username}" (run tests once to create this user)
