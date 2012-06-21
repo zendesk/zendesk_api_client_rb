@@ -98,13 +98,11 @@ previous_page = tickets.prev
 
 ### Callbacks
 
-Callbacks can be added to the ZendeskAPI::Client instance and will be called (with the response env) after all response middleware.
+Callbacks can be added to the ZendeskAPI::Client instance and will be called (with the response env) after all response middleware on a successful request.
 
 ```
 client.insert_callback do |env|
-  if env[:status] == 404
-    puts "Invalid request"
-  end
+  puts env[:response_headers]
 end
 ```
 
