@@ -2,7 +2,7 @@
 
 ## Current version
 
-The latest version is v0.0.6
+The latest version is v0.0.7
 
 ## API version support
 
