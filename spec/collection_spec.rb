@@ -25,7 +25,7 @@ describe ZendeskAPI::Collection do
 
   context "deferral" do
     before(:each) do
-      stub_request(:any, %r{test_resources}).to_return(:body => json)
+      stub_json_request(:any, %r{test_resources})
     end
 
     it "should defer #create to the resource class" do
@@ -56,7 +56,7 @@ describe ZendeskAPI::Collection do
       end
 
       before(:each) do
-        stub_request(:any, %r{test_resources/\d+/test_child}).to_return(:body => json)
+        stub_json_request(:any, %r{test_resources/\d+/test_child})
       end
 
       it "should defer #create to the resource class with the parent id" do
@@ -77,8 +77,7 @@ describe ZendeskAPI::Collection do
 
       context "on object push" do
         before(:each) do
-          stub_request(:get, %r{test_resources/\d+/children}).
-            to_return(:body => json(:test_children => []))
+          stub_json_request(:get, %r{test_resources/\d+/children}, json(:test_children => []))
           subject << { :id => 1 }
         end
 
@@ -117,7 +116,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should decreate page option" do
-      subject.prev.should == 1 
+      subject.prev.should == 1
     end
   end
 
@@ -150,7 +149,7 @@ describe ZendeskAPI::Collection do
   context "save" do
     let(:options) { { :abc => 1 } }
     before(:each) do
-      stub_request(:get, %r{test_resources}).to_return(:body => json(:test_resources => []))
+      stub_json_request(:get, %r{test_resources}, json(:test_resources => []))
       subject.clear_cache
     end
 
@@ -205,7 +204,7 @@ describe ZendeskAPI::Collection do
     end
 
     before(:each) do
-      stub_request(:get, %r{users\?page=2}).to_return(:body => json( 
+      stub_json_request(:get, %r{users\?page=2}, json(
         :users => [{:id => 2}],
         :next_page => "/users?page=3&per_page=1",
         :previous_page => "/users?page=1&per_page=1"
@@ -217,7 +216,7 @@ describe ZendeskAPI::Collection do
 
     context "pagination with no options" do
       before(:each) do
-        stub_request(:get, %r{users\?page=(1|3)}).to_return(:body => json(:users => [{:id => 3}]))
+        stub_json_request(:get, %r{users\?page=(1|3)}, json(:users => [{:id => 3}]))
 
         subject.per_page(nil).page(nil)
       end
@@ -243,15 +242,15 @@ describe ZendeskAPI::Collection do
       before(:each) { subject.per_page(1).page(2) }
 
       it "should increase page option and not call fetch" do
-        subject.next.should == 3 
+        subject.next.should == 3
       end
 
       it "should decrease page option and not call fetch" do
-        subject.prev.should == 1 
+        subject.prev.should == 1
       end
 
       context "with page == 1" do
-        before do 
+        before do
           subject.page(1)
           subject.clear_cache
           subject.should_not_receive(:fetch)
@@ -291,7 +290,7 @@ describe ZendeskAPI::Collection do
     end
 
     before(:each) do
-      @request = stub_request(:post, %r{test_resources/active}).to_return(:body => json)
+      stub_json_request(:post, %r{test_resources/active})
     end
 
     context "deferral" do

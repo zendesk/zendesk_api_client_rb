@@ -7,7 +7,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_request(:put, %r{test_resources/#{id}}).to_return(:body => json)
+        stub_json_request(:put, %r{test_resources/#{id}})
       end
 
       it "should return instance of resource" do
@@ -32,7 +32,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_request(:delete, %r{test_resources/#{id}}).to_return(:body => json)
+        stub_json_request(:delete, %r{test_resources/#{id}})
       end
 
       it "should return instance of resource" do
@@ -94,7 +94,7 @@ describe ZendeskAPI::Resource do
     subject { ZendeskAPI::TestResource.new(client, attr.merge(:id => id)) }
 
     before :each do
-      stub_request(:put, %r{test_resources/#{id}}).to_return(:body => json(:test_resource => { :param => "abc" }))
+      stub_json_request(:put, %r{test_resources/#{id}}, json(:test_resource => { :param => "abc" }))
     end
 
     it "should not save if already destroyed" do
@@ -125,7 +125,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource.new(client, attr) }
 
       before :each do
-        stub_request(:post, %r{test_resources}).to_return(:status => 201, :body => json(:test_resource => attr.merge(:id => id)))
+        stub_json_request(:post, %r{test_resources}, json(:test_resource => attr.merge(:id => id)), :status => 201)
       end
 
       it "should be true without an id" do
@@ -144,7 +144,7 @@ describe ZendeskAPI::Resource do
         before(:each) do
           ZendeskAPI::TestResource.associations.clear
           ZendeskAPI::TestResource.has :child, :class => :test_child
-          stub_request(:put, %r{test_resources}).to_return(:body => json)
+          stub_json_request(:put, %r{test_resources})
           subject.child = { :id => 2 }
         end
 
@@ -165,8 +165,8 @@ describe ZendeskAPI::Resource do
           ZendeskAPI::TestResource.associations.clear
           ZendeskAPI::TestResource.has_many :children, :class => :test_child
 
-          stub_request(:put, %r{test_resources}).to_return(:body => json)
-          stub_request(:get, %r{children}).to_return(:body => json(:test_children => []))
+          stub_json_request(:put, %r{test_resources})
+          stub_json_request(:get, %r{children}, json(:test_children => []))
         end
 
         it "should reset children_ids on save" do
@@ -241,7 +241,7 @@ describe ZendeskAPI::Resource do
         subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
         before(:each) do
-          stub_request(verb.to_sym, %r{test_resources/1/#{method}}).to_return(:body => json(:test_resources => [{ :id => 1, :method => method }]))
+          stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resources => [{ :id => 1, :method => method }]))
         end
 
         it "should return true" do

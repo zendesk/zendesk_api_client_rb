@@ -71,6 +71,12 @@ module TestHelper
   def json(body = {})
     JSON.dump(body)
   end
+
+  def stub_json_request(verb, path_matcher, body = json, options = {})
+    stub_request(verb, path_matcher).to_return(Hashie::Mash.new(
+      :body => body, :headers => { :content_type => "application/json" }
+    ).deep_merge(options))
+  end
 end
 
 RSpec.configure do |c|

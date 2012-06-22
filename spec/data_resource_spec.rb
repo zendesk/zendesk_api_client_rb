@@ -27,7 +27,7 @@ describe ZendeskAPI::DataResource do
     ZendeskAPI::Category.resource_name.should == "categories"
   end
 
-  context "user" do 
+  context "user" do
     context "with first order attributes" do
       subject { ZendeskAPI::TestResource.new(client) }
       before(:each) { subject.attributes[:priority] = "normal" }
@@ -96,7 +96,7 @@ describe ZendeskAPI::DataResource do
     context "instance method" do
       context "with no side-loading" do
         subject { ZendeskAPI::TestResource.new(client, :id => 1) }
-        before(:each) { stub_request(:get, %r{test_resources/\d+/foo}).to_return(:body => json(:foo => {})) }
+        before(:each) { stub_json_request(:get, %r{test_resources/\d+/foo}, json(:foo => {})) }
 
         it "should attempt to grab the resource from the host" do
           subject.foo.should be_instance_of(ZendeskAPI::Foo)
@@ -117,7 +117,7 @@ describe ZendeskAPI::DataResource do
         context "with an explicit path set" do
           before(:each) do
             ZendeskAPI::TestResource.has :foo, :path => "blergh"
-            stub_request(:get, %r{test_resources/\d+/blergh}).to_return(:body => json(:foo => {}))
+            stub_json_request(:get, %r{test_resources/\d+/blergh}, json(:foo => {}))
           end
 
           it "should call the right path" do
@@ -139,7 +139,7 @@ describe ZendeskAPI::DataResource do
         let(:foo) { 1 }
         subject { ZendeskAPI::TestResource.new(client, :foo_id => foo) }
         before(:each) do
-          stub_request(:get, %r{foos/1}).to_return(:body => json)
+          stub_json_request(:get, %r{foos/1})
         end
 
         it "should find foo_id and load it from the api" do

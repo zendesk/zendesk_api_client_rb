@@ -4,7 +4,7 @@ describe ZendeskAPI::Playlist do
   subject { ZendeskAPI::Playlist }
 
   before(:each) do
-    stub_request(:get, %r{views/\d+/play}).to_return(:status => 302)
+    stub_request(:get, %r{views/\d+/play}).to_return(:status => 302, :body => "You are being redirected...")
   end
 
   it "should begin playing the playlist on initialization" do

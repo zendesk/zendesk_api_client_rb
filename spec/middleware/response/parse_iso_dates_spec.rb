@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ZendeskAPI::Middleware::Response::ParseIsoDates do
   def fake_response(data)
-    stub_request(:get, %r{blergh}).to_return(:status => 200, :body => data)
+    stub_json_request(:get, %r{blergh}, data)
     response = client.connection.get("blergh")
     response.status.should == 200
     response

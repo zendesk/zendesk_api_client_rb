@@ -132,7 +132,7 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use Faraday::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
-        builder.response :json
+        builder.response :json, :content_type => 'application/json'
         builder.use ZendeskAPI::Middleware::Response::Gzip
         builder.use ZendeskAPI::Middleware::Response::Deflate
 

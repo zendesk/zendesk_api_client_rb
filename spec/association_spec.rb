@@ -38,12 +38,12 @@ describe ZendeskAPI::Association do
       end
 
       it "should fetch a unknown object" do
-        stub_request(:get, %r{test_resources/1/child}).to_return(:body => json(:test_child => {:id => 2}))
+        stub_json_request(:get, %r{test_resources/1/child}, json(:test_child => {:id => 2}))
         instance.child.id.should == 2
       end
 
       it "should fetch an object known by id" do
-        stub_request(:get, %r{test_resources/1/child/5}).to_return(:body => json(:test_child => {:id => 5}))
+        stub_json_request(:get, %r{test_resources/1/child/5}, json(:test_child => {:id => 5}))
         instance.child_id = 5
         instance.child.id.should == 5
       end
@@ -84,7 +84,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should fetch unknown objects" do
-        stub_request(:get, %r{test_resources/1/children}).to_return(:body => json(:test_children => [{:id => 2}, {:id => 3}]))
+        stub_json_request(:get, %r{test_resources/1/children}, json(:test_children => [{:id => 2}, {:id => 3}]))
         instance.children.map(&:id).should == [2,3]
       end
     end
