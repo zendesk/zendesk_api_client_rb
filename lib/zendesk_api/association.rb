@@ -190,7 +190,7 @@ module ZendeskAPI
             end.compact
           elsif (resources = method_missing(resource_name.to_sym)) && resources.any?
             resources.map do |res|
-              klass.new(@client, klass.resource_name => res, :association => instance_association)
+              klass.new(@client, res.merge(:association => instance_association))
             end
           else
             ZendeskAPI::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))

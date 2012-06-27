@@ -44,8 +44,33 @@ module ZendeskAPI
     put :recover
   end
 
-  class View < DataResource
-    # Owner => { id, type }
-    # But if account, what to do?
+  class ViewRow < DataResource
+    has :ticket
+
+    # Optional columns
+    has :group
+    has :assignee, :class => :user
+    has :requester, :class => :user
+    has :submitter, :class => :user
+    has :organization
+
+    def self.model_key
+      "rows"
+    end
   end
+
+  class ViewExecution < Data
+    has_many :custom_fields, :class => :ticket_field
+  end
+
+  class View < ReadResource
+    has_many :rows, :class => :view_row, :path => "execute"
+    has :execution, :class => :view_execution
+
+    def self.preview(client, options = {})
+      Zendesk::Collection.new(client, ViewRow, options.merge(:path => "views/preview"))
+    end
+  end
+
+
 end
