@@ -126,33 +126,6 @@ ticket.new_record? # => true
 ticket.save # Will POST
 ```
 
-### Special case: playlists
-
-Views can be played using different syntax than normal resources.
-Playlists are started with:
-
-```
-client.play(id)
-client.play('incoming')
-```
-
-OR
-
-```
-ZendeskAPI::Playlist.new(client, id)
-```
-
-Playlists are automatically started server-side when created and can then be played using the
-ZendeskAPI::Playlist#next method. Also available is the ZendeskAPI::Playlist#each method which
-takes a block and will successively get and yield each ticket until the end of the playlist.
-
-```
-playlist.each do |ticket|
-  ticket.status = "solved"
-  ticket.save
-end
-```
-
 ### Special case: Custom resources paths
 
 API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
