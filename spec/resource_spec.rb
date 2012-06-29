@@ -265,4 +265,10 @@ describe ZendeskAPI::Resource do
       end
     end
   end
+
+  context "#inspect" do
+    it "should display nicely" do
+      ZendeskAPI::User.new(client, :foo => :bar).inspect.should == "#<ZendeskAPI::User {\"foo\"=>:bar}>"
+    end
+  end
 end

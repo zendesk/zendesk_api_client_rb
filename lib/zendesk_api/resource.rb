@@ -87,6 +87,10 @@ module ZendeskAPI
     alias :eql :==
     alias :hash :id
 
+    def inspect
+      "#<#{self.class.name} #{@attributes.to_hash.inspect}>"
+    end
+
     alias :to_param :attributes
   end
 
