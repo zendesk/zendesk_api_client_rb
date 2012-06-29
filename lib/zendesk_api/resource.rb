@@ -81,8 +81,8 @@ module ZendeskAPI
     alias :inspect :to_s
 
     def ==(other)
-      warn "Trying to compare #{other.class} to a Resource" unless other.is_a?(Data)
-      other.id == id
+      warn "Trying to compare #{other.class} to a Resource" if other && !other.is_a?(Data)
+      other.is_a?(self.class) && ((other.id && other.id == id) || (other.object_id == self.object_id))
     end
     alias :eql :==
     alias :hash :id

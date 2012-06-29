@@ -271,4 +271,37 @@ describe ZendeskAPI::Resource do
       ZendeskAPI::User.new(client, :foo => :bar).inspect.should == "#<ZendeskAPI::User {\"foo\"=>:bar}>"
     end
   end
+
+  context "#==" do
+    it "is same when id is same" do
+      ZendeskAPI::TestResource.new(client, :id => 1, "bar" => "baz").should == ZendeskAPI::TestResource.new(client, :id => 1, "foo" => "bar")
+    end
+
+    it "is same when object_id is same" do
+      object = ZendeskAPI::TestResource.new(client, "bar" => "baz")
+      object.should == object
+    end
+
+    it "is different when both have no id" do
+      ZendeskAPI::TestResource.new(client).should_not == ZendeskAPI::TestResource.new(client)
+    end
+
+    it "is different when id is different" do
+      ZendeskAPI::TestResource.new(client, :id => 2).should_not == ZendeskAPI::TestResource.new(client, :id => 1)
+    end
+
+    it "is different when class is different" do
+      ZendeskAPI::TestResource.new(client, :id => 2).should_not == ZendeskAPI::TestResource::TestChild.new(client, :id => 2)
+    end
+
+    it "is different when other is no resource" do
+      ZendeskAPI::TestResource.new(client, :id => 2).should_not == nil
+    end
+
+    it "warns about weird comparissons" do
+      object = ZendeskAPI::TestResource.new(client, :id => 2)
+      object.should_receive(:warn)
+      object.should_not == "xxx"
+    end
+  end
 end
