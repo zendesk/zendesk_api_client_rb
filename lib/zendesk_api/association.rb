@@ -127,6 +127,10 @@ module ZendeskAPI
         associations << class_level_association
         id_column = "#{resource_name}_id"
 
+        define_method "#{resource_name}_used?" do
+          !!instance_variable_get("@#{resource_name}")
+        end
+
         define_method resource_name do |*args|
           instance_options = args.last.is_a?(Hash) ? args.pop : {}
 
@@ -172,6 +176,10 @@ module ZendeskAPI
         associations << class_level_association
 
         id_column = "#{resource_name}_ids"
+
+        define_method "#{resource_name}_used?" do
+          !!instance_variable_get("@#{resource_name}")
+        end
 
         define_method resource_name do |*args|
           instance_opts = args.last.is_a?(Hash) ? args.pop : {}

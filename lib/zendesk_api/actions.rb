@@ -39,7 +39,7 @@ module ZendeskAPI
     def save_associations
       self.class.associations.each do |association_data|
         association_name = association_data[:name]
-        next unless association = send(association_name)
+        next unless send("#{association_name}_used?") && association = send(association_name)
 
         if association.respond_to?(:save) && (association.is_a?(Collection) || !association.changes.empty?)
           association.save

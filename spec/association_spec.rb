@@ -59,6 +59,15 @@ describe ZendeskAPI::Association do
         instance.child_id = 5
         silence_logger{ instance.child.should be_nil }
       end
+
+      it "is not used when not used" do
+        instance.child_used?.should == false
+      end
+
+      it "is used when used" do
+        instance.child = child
+        instance.child_used?.should == true
+      end
     end
 
     context "has_many" do
@@ -86,6 +95,15 @@ describe ZendeskAPI::Association do
       it "should fetch unknown objects" do
         stub_json_request(:get, %r{test_resources/1/children}, json(:test_children => [{:id => 2}, {:id => 3}]))
         instance.children.map(&:id).should == [2,3]
+      end
+
+      it "is not used when not used" do
+        instance.children_used?.should == false
+      end
+
+      it "is used when used" do
+        instance.children = [child]
+        instance.children_used?.should == true
       end
     end
   end

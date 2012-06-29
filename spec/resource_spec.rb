@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ZendeskAPI::Resource do
-  context "update" do
+  context "#update" do
     context "class method" do
       let(:id) { 1 }
       subject { ZendeskAPI::TestResource }
@@ -26,7 +26,7 @@ describe ZendeskAPI::Resource do
     end
   end
 
-  context "destroy" do
+  context "#destroy" do
     context "class method" do
       let(:id) { 1 }
       subject { ZendeskAPI::TestResource }
@@ -76,7 +76,7 @@ describe ZendeskAPI::Resource do
     end
   end
 
-  context "save!" do
+  context "#save!" do
     subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
     before(:each) do
@@ -88,7 +88,7 @@ describe ZendeskAPI::Resource do
     end
   end
 
-  context "save" do
+  context "#save" do
     let(:id) { 1 }
     let(:attr) { { :param => "test" } }
     subject { ZendeskAPI::TestResource.new(client, attr.merge(:id => id)) }
@@ -109,6 +109,18 @@ describe ZendeskAPI::Resource do
     it "should put on save" do
       subject.save.should be_true
       subject[:param].should == "abc"
+    end
+
+    context "with unused associations" do
+      before do
+        ZendeskAPI::TestResource.associations.clear
+        ZendeskAPI::TestResource.has :child, :class => :test_child
+        ZendeskAPI::TestResource.has_many :children, :class => :test_child
+      end
+
+      it "should not touch them" do
+        subject.save.should == true
+      end
     end
 
     context "with client error" do
