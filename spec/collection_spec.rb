@@ -25,7 +25,7 @@ describe ZendeskAPI::Collection do
 
   context "deferral" do
     before(:each) do
-      stub_json_request(:any, %r{test_resources})
+      stub_json_request(:any, %r{test_resources}, json(:test_resource => {}))
     end
 
     it "should defer #create to the resource class" do
@@ -56,7 +56,7 @@ describe ZendeskAPI::Collection do
       end
 
       before(:each) do
-        stub_json_request(:any, %r{test_resources/\d+/test_child})
+        stub_json_request(:any, %r{/test_resources/\d+/child}, json("test_child" => {}))
       end
 
       it "should defer #create to the resource class with the parent id" do

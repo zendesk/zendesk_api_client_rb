@@ -59,12 +59,15 @@ module ZendeskAPI
     # Finds a resource by an id and any options passed in.
     # A custom path to search at can be passed into opts. It defaults to the {DataResource.resource_name} of the class. 
     # @param [Client] client The {Client} object to be used
-    # @param [Hash] opts Any additional GET parameters to be added
-    def find(client, opts = {})
-      association = opts.delete(:association) || Association.new(:class => self)
+    # @param [Hash] options Any additional GET parameters to be added
+    def find(client, options = {})
+      @client = client # so we can use client.logger in rescue
 
-      response = client.connection.get(association.generate_path(opts)) do |req|
-        req.params = opts
+      raise "No :id given" unless options[:id] || options["id"]
+      association = options.delete(:association) || Association.new(:class => self)
+
+      response = client.connection.get(association.generate_path(options)) do |req|
+        req.params = options
       end
 
       new(client, response.body[singular_resource_name])
@@ -118,10 +121,8 @@ module ZendeskAPI
     # @return [Boolean] Successful?
     def destroy
       return false if destroyed? || new_record?
-
-      response = @client.connection.delete(url || path)
-
-      @destroyed = true # FIXME always returns true
+      @client.connection.delete(url || path)
+      @destroyed = true
     end
 
     rescue_client_error :destroy, :with => false
@@ -133,6 +134,7 @@ module ZendeskAPI
       # @param [Client] client The {Client} object to be used
       # @param [Hash] opts The optional parameters to pass. Defaults to {}
       def destroy(client, opts = {})
+        @client = client # so we can use client.logger in rescue
         association = opts.delete(:association) || Association.new(:class => self)
 
         client.connection.delete(association.generate_path(opts)) do |req|

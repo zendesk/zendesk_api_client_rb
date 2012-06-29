@@ -15,7 +15,7 @@ describe ZendeskAPI::Playlist do
     subject { ZendeskAPI::Playlist.new(client, 1) }
 
     before(:each) do
-      stub_request(:get, %r{play/next}).to_return(:body => json)
+      stub_json_request(:get, %r{play/next}, json("ticket" => {}))
     end
 
     it "should return ticket" do

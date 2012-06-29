@@ -45,7 +45,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should handle it properly" do
-          expect { silence_stderr{ subject.destroy(client, :id => id).should be_false } }.to_not raise_error
+          expect { silence_logger{ subject.destroy(client, :id => id).should be_false } }.to_not raise_error
         end
       end
     end
@@ -302,6 +302,19 @@ describe ZendeskAPI::Resource do
       object = ZendeskAPI::TestResource.new(client, :id => 2)
       object.should_receive(:warn)
       object.should_not == "xxx"
+    end
+  end
+
+  context "#new" do
+    it "builds with hash" do
+      object = ZendeskAPI::TestResource.new(client, {})
+      object.attributes.should == {}
+    end
+
+    it "fails to build with nil (e.g. empty response from server)" do
+      expect{
+        ZendeskAPI::TestResource.new(client, nil)
+      }.to raise_error(/Expected a Hash/i)
     end
   end
 end

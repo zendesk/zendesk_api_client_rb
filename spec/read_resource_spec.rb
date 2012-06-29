@@ -6,20 +6,30 @@ describe ZendeskAPI::ReadResource do
     subject { ZendeskAPI::TestResource }
 
     before(:each) do
-      stub_request(:get, %r{test_resources/#{id}}).to_return(:body => json)
+      stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => {}))
     end
 
     it "should return instance of resource" do
       subject.find(client, :id => id).should be_instance_of(subject)
     end
 
+    it "should blow up without an id which would build an invalid url" do
+      expect{
+        ZendeskAPI::User.find(client, :foo => :bar)
+      }.to raise_error("No :id given")
+    end
+
     context "with client error" do
-      before(:each) do
+      it "should handle 500 properly" do
         stub_request(:get, %r{test_resources/#{id}}).to_return(:status => 500)
+        client.config.logger.should_receive(:warn).at_least(:once)
+        subject.find(client, :id => id).should == nil
       end
 
-      it "should handle it properly" do
-        expect { silence_stderr { subject.find(client, :id => id).should be_nil } }.to_not raise_error
+      it "should handle 404 properly" do
+        stub_request(:get, %r{test_resources/#{id}}).to_return(:status => 404)
+        client.config.logger.should_receive(:warn).at_least(:once)
+        subject.find(client, :id => id).should == nil
       end
     end
   end

@@ -51,13 +51,13 @@ describe ZendeskAPI::Association do
       it "should handle client errors" do
         stub_request(:get, %r{test_resources/1/child/5}).to_return(:status => 500)
         instance.child_id = 5
-        expect { silence_stderr { instance.child } }.to_not raise_error
+        expect { silence_logger { instance.child } }.to_not raise_error
       end
 
       it "should handle resource not found errors" do
         stub_request(:get, %r{test_resources/1/child/5}).to_return(:status => 404)
         instance.child_id = 5
-        silence_stderr{ instance.child.should be_nil }
+        silence_logger{ instance.child.should be_nil }
       end
     end
 

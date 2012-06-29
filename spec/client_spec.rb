@@ -100,7 +100,7 @@ describe ZendeskAPI::Client do
 
   context "#current_user" do
     before(:each) do
-      stub_request(:get, %r{users/me}).to_return(:body => json)
+      stub_json_request(:get, %r{users/me}, json("user" => {}))
     end
 
     it "should be a user instance" do

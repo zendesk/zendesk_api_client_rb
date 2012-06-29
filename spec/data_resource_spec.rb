@@ -110,7 +110,7 @@ describe ZendeskAPI::DataResource do
           before(:each) { stub_request(:get, %r{test_resources/\d+/foo}).to_return(:status => 500) }
 
           it "should handle it properly" do
-            expect { silence_stderr{ subject.foo.should be_nil } }.to_not raise_error
+            expect { silence_logger{ subject.foo.should be_nil } }.to_not raise_error
           end
         end
         
@@ -136,10 +136,9 @@ describe ZendeskAPI::DataResource do
       end
 
       context "with side-loading of id" do
-        let(:foo) { 1 }
-        subject { ZendeskAPI::TestResource.new(client, :foo_id => foo) }
+        subject { ZendeskAPI::TestResource.new(client, :foo_id => 1) }
         before(:each) do
-          stub_json_request(:get, %r{foos/1})
+          stub_json_request(:get, %r{foos/1}, json("foo" => {}))
         end
 
         it "should find foo_id and load it from the api" do

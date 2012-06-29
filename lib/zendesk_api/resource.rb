@@ -45,7 +45,8 @@ module ZendeskAPI
     # @param [Client] client The client to use
     # @param [Hash] attributes The optional attributes that describe the resource
     def initialize(client, attributes = {})
-      @association = (attributes || {}).delete(:association) || Association.new(:class => self.class)
+      raise "Expected a Hash for attributes, got #{attributes.inspect}" unless attributes.is_a?(Hash)
+      @association = attributes.delete(:association) || Association.new(:class => self.class)
       @client = client
       @attributes = ZendeskAPI::Trackie.new(attributes)
       ZendeskAPI::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
