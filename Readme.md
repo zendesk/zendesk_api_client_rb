@@ -1,9 +1,5 @@
 # Zendesk API Client
 
-## Current version
-
-The latest version is v0.0.8
-
 ## API version support
 
 This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
