@@ -14,13 +14,31 @@ Currently
 
     gem install zendesk_api
 
-will not install this version of the API client. To install this client, either clone this repository and run
+will not install this version of the API client. There are two ways to install the client.
+
+### Method 1 - Clone repo and install from local code
+
+Clone this repository and run
 
     rake install
 
-or add it to a Gemfile like so:
+### Method 2 - use bundler and Gemfile
+
+Add it to a Gemfile like so:
 
     gem "zendesk_api", :git => "git://github.com/zendesk/zendesk_api_client_rb.git" #, :tag => "vX.X.X"
+
+After you add it to the Gemfile, run
+    
+    bundle install
+    
+Then, in your code, you'll need to do this:
+
+```
+require 'bundler'
+Bundler.setup
+require 'zendesk_api'
+```
 
 ## Configuration
 
