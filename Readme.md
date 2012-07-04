@@ -14,13 +14,31 @@ Currently
 
     gem install zendesk_api
 
-will not install this version of the API client. To install this client, either clone this repository and run
+will not install this version of the API client. There are two ways to install the client.
+
+### Method 1 - Clone repo and install from local code
+
+Clone this repository and run
 
     rake install
 
-or add it to a Gemfile like so:
+### Method 2 - use bundler and Gemfile
+
+Add it to a Gemfile like so:
 
     gem "zendesk_api", :git => "git://github.com/zendesk/zendesk_api_client_rb.git" #, :tag => "vX.X.X"
+
+After you add it to the Gemfile, run
+    
+    bundle install
+    
+Then, in your code, you'll need to do this:
+
+```
+require 'bundler'
+Bundler.setup
+require 'zendesk_api'
+```
 
 ## Configuration
 
@@ -31,10 +49,10 @@ The block is mandatory and if not passed, an ArgumentError will be thrown.
 ZendeskAPI::Client.new do |config|
   # Mandatory:
 
-  config.url = "https://mydesk.zendesk.com/api/v2"
+  config.url = "https://mydesk.zendesk.com/api/v2"   # remember to replace 'mydesk' with your zendesk account name
 
-  config.username = "test.user"
-  config.password = "test.password"
+  config.username = "test.user"                      # often an email address
+  config.password = "test.password"                  # the one associated with your profile page in Zendesk
 
   # Optional:
 
