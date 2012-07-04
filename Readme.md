@@ -49,10 +49,10 @@ The block is mandatory and if not passed, an ArgumentError will be thrown.
 ZendeskAPI::Client.new do |config|
   # Mandatory:
 
-  config.url = "https://mydesk.zendesk.com/api/v2"
+  config.url = "https://mydesk.zendesk.com/api/v2"   # remember to replace 'mydesk' with your zendesk account name
 
-  config.username = "test.user"
-  config.password = "test.password"
+  config.username = "test.user"                      # often an email address
+  config.password = "test.password"                  # the one associated with your profile page in Zendesk
 
   # Optional:
 
