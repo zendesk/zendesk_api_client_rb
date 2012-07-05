@@ -14,7 +14,9 @@ The Zendesk API client can be installed using Rubygems or Bundler.
 
 ### Rubygems
 
-    gem install zendesk_api
+```sh
+gem install zendesk_api
+```
 
 ### Bundler
 
@@ -32,7 +34,7 @@ The block is mandatory and if not passed, an ArgumentError will be thrown.
 ```ruby
 require 'zendesk_api'
 
-ZendeskAPI::Client.new do |config|
+client = ZendeskAPI::Client.new do |config|
   # Mandatory:
 
   config.url = "<- your-zendesk-url ->" # e.g. https://mydesk.zendesk.com/api/v2
