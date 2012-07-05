@@ -10,17 +10,32 @@ Version 0.0.5 brings with it a change to the top-level namespace. All references
 
 ## Installation
 
-Currently
+
+The Zendesk API client can be installed using Rubygems or Bundler.
+
+### Rubygems
 
     gem install zendesk_api
 
-will not install this version of the API client. To install this client, either clone this repository and run
+### Bundler
 
-    rake install
+Add it to your Gemfile
 
-or add it to a Gemfile like so:
+    gem "zendesk_api"
 
-    gem "zendesk_api", :git => "git://github.com/zendesk/zendesk_api_client_rb.git" #, :tag => "vX.X.X"
+install using
+
+    bundle install
+
+and run your program using
+
+    bundle exec program.rb
+
+or by adding the following to your program
+
+    require 'bundler'
+    Bundler.setup
+    require 'zendesk_api'
 
 ## Configuration
 
@@ -31,10 +46,10 @@ The block is mandatory and if not passed, an ArgumentError will be thrown.
 ZendeskAPI::Client.new do |config|
   # Mandatory:
 
-  config.url = "https://mydesk.zendesk.com/api/v2"
+  config.url = "<- your-zendesk-url ->" # e.g. https://mydesk.zendesk.com/api/v2
 
-  config.username = "test.user"
-  config.password = "test.password"
+  config.username = "login.email@zendesk.com"
+  config.password = "your zendesk password or token"
 
   # Optional:
 
@@ -53,7 +68,7 @@ ZendeskAPI::Client.new do |config|
   # Merged with the default client options hash
   config.client_options = { :ssl => false }
 
-  # When getting the error 'hostname does not match the server certificate' 
+  # When getting the error 'hostname does not match the server certificate'
   # use the API at https://yoursubdomain.zendesk.com/api/v2
 end
 ```
