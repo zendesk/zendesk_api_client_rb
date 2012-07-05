@@ -10,7 +10,6 @@ Version 0.0.5 brings with it a change to the top-level namespace. All references
 
 ## Installation
 
-
 The Zendesk API client can be installed using Rubygems or Bundler.
 
 ### Rubygems
@@ -23,26 +22,16 @@ Add it to your Gemfile
 
     gem "zendesk_api"
 
-install using
-
-    bundle install
-
-and run your program using
-
-    bundle exec program.rb
-
-or by adding the following to your program
-
-    require 'bundler'
-    Bundler.setup
-    require 'zendesk_api'
+and follow normal [Bundler](http://gembundler.com/) installation and execution procedures.
 
 ## Configuration
 
 Configuration is done through a block returning an instance of ZendeskAPI::Client.
 The block is mandatory and if not passed, an ArgumentError will be thrown.
 
-```
+```ruby
+require 'zendesk_api'
+
 ZendeskAPI::Client.new do |config|
   # Mandatory:
 
@@ -81,7 +70,7 @@ The result of configuration is an instance of ZendeskAPI::Client which can then 
 
 One way to use the client is to pass it in as an argument to individual classes.
 
-```
+```ruby
 ZendeskAPI::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save
 ZendeskAPI::Ticket.create(client, :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.current_user.id, :priority => "urgent")
 ZendeskAPI::Ticket.find(client, :id => 1)
@@ -90,7 +79,7 @@ ZendeskAPI::Ticket.delete(client, :id => 1)
 
 Another way is to use the instance methods under client.
 
-```
+```ruby
 client.tickets.first
 client.tickets.find(:id => 1)
 client.tickets.create(:subject => "Test Ticket", :description => "This is a test", :submitter_id => client.current_user.id, :priority => "urgent")
@@ -105,7 +94,7 @@ as #each.
 
 ZendeskAPI::Collections can be paginated:
 
-```
+```ruby
 tickets = client.tickets.page(2).per_page(3)
 next_page = tickets.next
 previous_page = tickets.prev
@@ -115,7 +104,7 @@ previous_page = tickets.prev
 
 Callbacks can be added to the ZendeskAPI::Client instance and will be called (with the response env) after all response middleware on a successful request.
 
-```
+```ruby
 client.insert_callback do |env|
   puts env[:response_headers]
 end
@@ -125,7 +114,7 @@ end
 
 Individual resources can be created, modified, saved, and destroyed.
 
-```
+```ruby
 ticket = client.tickets[0] # ZendeskAPI::Ticket.find(client, :id => 1)
 ticket.priority = "urgent"
 ticket.attributes # => { "priority" => "urgent" }
@@ -142,7 +131,7 @@ ticket.save # Will POST
 API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
 They will too return an instance of ZendeskAPI::Collection.
 
-```
+```ruby
 client.tickets.recent
 client.topics.show_many(:verb => :post, :ids => [1, 2, 3])
 ```
@@ -151,7 +140,7 @@ client.topics.show_many(:verb => :post, :ids => [1, 2, 3])
 
 Use either of the following to obtain the current user instance:
 
-```
+```ruby
 client.users.find(:id => 'me')
 client.current_user
 ```
@@ -161,7 +150,7 @@ client.current_user
 Files can be attached to tickets using either a path or the File class and will
 be automatically uploaded and attached.
 
-```
+```ruby
 ticket = Ticket.new(...)
 ticket.uploads << "img.jpg"
 ticket.uploads << File.new("img.jpg")
