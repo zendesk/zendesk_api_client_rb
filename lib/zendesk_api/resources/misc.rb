@@ -23,7 +23,7 @@ module ZendeskAPI
     has :ticket
     has :group
   end
-  
+
   class Attachment < Data
     def initialize(client, attributes)
       if attributes.is_a?(Hash)

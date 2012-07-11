@@ -6,25 +6,64 @@ module ZendeskAPI
     module Request
       class Upload < Faraday::Middleware
         def call(env)
-          if env[:body] && env[:body][:file]
-            file = env[:body].delete(:file)
-            case file
-            when File
-              path = file.path
-            when String
-              path = file
-            else
-              warn "WARNING: Passed invalid filename #{file} of type #{file.class} to upload"
-            end
-
-            if path
-              env[:body][:filename] ||= File.basename(path)
-              mime_type = MIME::Types.type_for(path).first || "application/octet-stream"
-              env[:body][:uploaded_data] = Faraday::UploadIO.new(path, mime_type)
-            end
+          if env[:body]
+            set_file(env[:body], :file, true)
+            traverse_hash(env[:body])
           end
 
           @app.call(env)
+        end
+
+        private
+
+        # Sets the proper file parameters :uploaded_data and :filename
+        # If top_level, then it removes key and and sets the parameters directly on hash,
+        # otherwise it adds the parameters to hash[key]
+        def set_file(hash, key, top_level)
+          return unless hash.key?(key)
+
+          file = if hash[key].is_a?(Hash) && hash[key].key?(:file)
+            hash[key].delete(:file)
+          else
+            hash.delete(key)
+          end
+
+          case file
+          when File
+            path = file.path
+          when String
+            path = file
+          else
+            warn "WARNING: Passed invalid filename #{file} of type #{file.class} to upload"
+          end
+
+          if path
+            if !top_level
+              hash[key] ||= {}
+              hash = hash[key]
+            end
+
+            mime_type = MIME::Types.type_for(path).first || "application/octet-stream"
+
+            hash[:filename] ||= File.basename(path)
+            hash[:uploaded_data] = Faraday::UploadIO.new(path, mime_type)
+          end
+        end
+
+        # Calls #set_file on File instances or Hashes
+        # of the format { :file => File (, :filename => ...) }
+        def traverse_hash(hash)
+          hash.keys.each do |key|
+            if hash[key].is_a?(File)
+              set_file(hash, key, false)
+            elsif hash[key].is_a?(Hash)
+              if hash[key].key?(:file)
+                set_file(hash, key, false)
+              else
+                traverse_hash(hash[key])
+              end
+            end
+          end
         end
       end
     end

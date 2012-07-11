@@ -45,29 +45,61 @@ describe ZendeskAPI::Middleware::Request::Upload do
   end
 
   context "with file instance" do
-    before(:each) do
-      @env = subject.call(:body => { :file => File.new(filename) })
-    end
-
-    it "should convert file string to UploadIO" do
-      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
-    end
-
-    it "should remove file string" do
-      @env[:body][:file].should be_nil
-    end
-
-    it "should add filename if none exist" do
-      @env[:body][:filename].should == "test.jpg"
-    end
-
-    context "with filename" do
+    context "top-level" do
       before(:each) do
-        @env = subject.call(:body => { :file => File.new(filename), :filename => "test" })
+        @env = subject.call(:body => { :file => File.new(filename) })
       end
 
-      it "should not change filename" do
-        @env[:body][:filename].should_not == "test.jpg"
+      it "should convert file string to UploadIO" do
+        @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+      end
+
+      it "should remove file string" do
+        @env[:body][:file].should be_nil
+      end
+
+      it "should add filename if none exist" do
+        @env[:body][:filename].should == "test.jpg"
+      end
+
+      context "with filename" do
+        before(:each) do
+          @env = subject.call(:body => { :file => File.new(filename), :filename => "test" })
+        end
+
+        it "should not change filename" do
+          @env[:body][:filename].should_not == "test.jpg"
+        end
+      end
+    end
+
+    context "underneath a key" do
+      context "only a file" do
+        before(:each) do
+          @env = subject.call(:body => { :user => { :photo => File.new(filename) } })
+        end
+
+        it "should convert file string to UploadIO" do
+          @env[:body][:user][:photo][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+        end
+
+        it "should add filename if none exist" do
+          @env[:body][:user][:photo][:filename].should == "test.jpg"
+        end
+      end
+
+      context "with filename" do
+        before(:each) do
+          @env = subject.call(:body => { :user => { :photo => { :file => File.new(filename), :filename => "test" } } })
+        end
+
+        it "should convert file string to UploadIO" do
+          @env[:body][:user][:photo][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+        end
+
+        it "should not change filename" do
+          @env[:body][:user][:photo][:filename].should_not == "test.jpg"
+        end
       end
     end
   end
