@@ -5,3 +5,4 @@ spec/fixtures/cassettes
 spec/fixtures/credentials.yml
 coverage
 .yardoc
+example.rb
