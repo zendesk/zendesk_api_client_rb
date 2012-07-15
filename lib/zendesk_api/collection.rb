@@ -283,13 +283,17 @@ module ZendeskAPI
       end
     end
 
-    alias :orig_to_s :to_s
     def to_s
       if @resources
         @resources.inspect
       else
-        orig_to_s
+        inspect = []
+        inspect << "options=#{@options.inspect}" if @options.any?
+        inspect << "path=#{path}"
+        "#{@resource.singular} collection [#{inspect.join(",")}]"
       end
     end
+
+    alias :to_str :to_s
   end
 end

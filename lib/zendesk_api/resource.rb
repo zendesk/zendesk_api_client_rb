@@ -10,6 +10,14 @@ module ZendeskAPI
     include Rescue
 
     class << self
+      def inherited(klass)
+        subclasses.push(klass)
+      end
+
+      def subclasses
+        @subclasses ||= []
+      end
+
       # The singular resource name taken from the class name (e.g. ZendeskAPI::Ticket -> ticket)
       def singular_resource_name
         @singular_resource_name ||= to_s.split("::").last.snakecase

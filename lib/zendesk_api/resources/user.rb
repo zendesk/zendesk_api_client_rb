@@ -1,8 +1,13 @@
 require 'zendesk_api/resources/forum'
 
 module ZendeskAPI
-  class CRMData < DataResource; end
-  class CRMDataStatus < DataResource; end
+  class CrmData < DataResource
+    class << self
+      alias :resource_name :singular_resource_name
+    end
+  end
+
+  class CrmDataStatus < DataResource; end
   class CustomRole < DataResource; end
 
   class GroupMembership < Resource
