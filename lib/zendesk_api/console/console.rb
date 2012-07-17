@@ -1,4 +1,19 @@
 module ZendeskAPI::Console
+  ZD_DIRUP = -999
+
+  module Eval
+    def loop_eval(str)
+      split = str.split(/\s*\/\s*/)
+      split[1..-1] = split[1..-1].map do |s|
+        s =~ /\d+/ ? s : "\"#{s}\""
+      end
+      split = split.join('/')
+      split += '/' if str[-1] == '/'
+      split.gsub!(/\.\./, "ZendeskAPI::Console::ZD_DIRUP")
+      super(split)
+    end
+  end
+
   def client(&blk)
     return @client if @client && blk.nil?
 
@@ -43,9 +58,8 @@ This is help.
   def cd(new_path = nil)
     if new_path.class.to_s =~ /^Zendesk/
       @path = new_path
-    elsif new_path.is_a?(Fixnum)
-      found = path.find(:id => new_path)
-      @path = found if found
+    elsif new_path.is_a?(Fixnum) && @path
+      @path /= new_path
     else
       @path = nil
     end
@@ -62,7 +76,13 @@ This is help.
   end
 
   def ls(*args)
-    if path.respond_to?(:to_a)
+    if args.any?
+      args.inject(path) do |obj, arg|
+        obj.send(:/, arg)
+      end
+    elsif path.respond_to?(:to_a)
+      puts format_headers
+      puts "---"
       puts to_a.map {|elem|
         if elem.method(:format).arity == 1
           elem.format(client)

@@ -8,4 +8,5 @@ require 'ripl'
 
 ARGV.clear
 Ripl.shell.prompt = lambda { "#{cwd.respond_to?(:path) ? '/' + cwd.path : cwd} > " }
+Ripl.shell.extend ZendeskAPI::Console::Eval
 Ripl.start

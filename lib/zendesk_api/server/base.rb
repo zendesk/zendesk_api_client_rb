@@ -1,9 +1,19 @@
 require 'sinatra/base'
 require 'optparse'
 
+require 'compass'
+require 'haml'
+
+require 'zendesk_api/console/extensions'
+
 class ZendeskAPI::Server < Sinatra::Base
+  configure do
+    set :public_folder, File.join(File.dirname(__FILE__), 'public')
+    set :views, File.join(File.dirname(__FILE__), 'templates')
+  end
+
   get '/' do
-    "Hi!!!!"
+    haml :index, :format => :html5
   end
 
   OptionParser.new {|op|

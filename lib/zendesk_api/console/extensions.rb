@@ -1,7 +1,18 @@
 class ZendeskAPI::Collection
   def /(id)
-    if id.is_a?(Fixnum)
-      find(:id => id)
+    if id == ZendeskAPI::Console::ZD_DIRUP
+      if @collection_path.length == 1
+        @client
+      else
+        @collection_path.shift
+        self
+      end
+    elsif id.is_a?(Fixnum)
+      if loaded?
+        detect {|obj| obj.id == id}
+      else
+        find(:id => id)
+      end
     elsif !id.is_a?(ZendeskAPI::Collection)
       send(id)
     end
@@ -13,6 +24,10 @@ class ZendeskAPI::Collection
 
   def to_s
     "/#{path}"
+  end
+
+  def format_headers
+    "id\tcreated_at"
   end
 end
 
@@ -40,14 +55,34 @@ class ZendeskAPI::Client
   def to_a
     self.class.resources
   end
+
+  def format_headers
+    "resource name"
+  end
 end
 
-class << ZendeskAPI::Data
-  def format(client)
-    if client.send(resource_name).loaded?
-      "@#{resource_name}"
+class ZendeskAPI::Data
+  def /(method)
+    if method == ZendeskAPI::Console::ZD_DIRUP
+      if association.options.parent
+        association.options.parent
+      elsif (res = @client.send(self.class.resource_name)).loaded?
+        res
+      else
+        ZendeskAPI::Collection.new(@client, self.class)
+      end
     else
-      resource_name
+      send(method)
+    end
+  end
+
+  class << self
+    def format(client)
+      if client.send(resource_name).loaded?
+        "@#{resource_name}"
+      else
+        resource_name
+      end
     end
   end
 end
