@@ -102,6 +102,14 @@ module ZendeskAPI
       self
     end
 
+    def first_page?
+      @options["page"].to_i <= 1
+    end
+
+    def last_page?
+      @options["page"].to_i * @options["per_page"].to_i >= count
+    end
+
     # Saves all newly created resources stored in this collection.
     # @return [Collection] self
     def save

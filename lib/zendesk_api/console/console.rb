@@ -81,13 +81,13 @@ This is help.
         obj.send(:/, arg)
       end
     elsif path.respond_to?(:to_a)
-      puts format_headers
+      puts format_headers.join("\t") # use printf maybe? TODO
       puts "---"
       puts to_a.map {|elem|
         if elem.method(:format).arity == 1
-          elem.format(client)
+          elem.format(client).join("\t")
         else
-          elem.format
+          elem.format.join("\t")
         end
       }.join("\n")
     else

@@ -27,7 +27,7 @@ class ZendeskAPI::Collection
   end
 
   def format_headers
-    "id\tcreated_at"
+    @resource_class.format_headers
   end
 end
 
@@ -57,7 +57,7 @@ class ZendeskAPI::Client
   end
 
   def format_headers
-    "resource name"
+    ["resource name"]
   end
 end
 
@@ -79,16 +79,22 @@ class ZendeskAPI::Data
   class << self
     def format(client)
       if client.send(resource_name).loaded?
-        "@#{resource_name}"
+        ["@#{resource_name}"]
       else
-        resource_name
+        [resource_name]
       end
     end
   end
 end
 
 class ZendeskAPI::Resource
+  class << self
+    def format_headers
+      [:id, :created_at]
+    end
+  end
+
   def format
-    "#{id}\t#{created_at}"
+    [id, created_at]
   end
 end
