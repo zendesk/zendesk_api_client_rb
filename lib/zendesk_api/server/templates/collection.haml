@@ -1,0 +1,18 @@
+%h1= @resource.resource_name
+
+- content_for :with_client do
+  %table.table-striped
+    %thead
+      %tr
+        - @collection.format_headers.each do |header|
+          %th
+            = header
+    %tbody
+      - @collection.each do |resource|
+        %tr
+          - resource.format.each do |field|
+            %td= field
+  - if !@collection.first_page?
+    %a{:href => "previous page"} prev
+  - if !@collection.last_page?
+    %a{:href => "next page"} next

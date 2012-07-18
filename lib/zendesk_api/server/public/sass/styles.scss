@@ -1,0 +1,14 @@
+// I gather this file is a starting point for the project.
+@import "bootstrap";
+
+#credentials-spinner {
+  height: 28px;
+  margin-right: 10px;
+}
+
+#credentials-error {
+  color: red;
+}
+
+// Include responsive Bootstrap styles
+// @import "bootstrap-responsive";

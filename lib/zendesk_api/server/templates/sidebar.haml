@@ -1,0 +1,9 @@
+%ul.nav.navlist
+  %li.navheader
+    %a{:href => "/"} Home
+  - readable_resources.each do |resource|
+    %li
+      - if @resource == resource
+        = resource.resource_name
+      - else
+        %a{:href => resource.resource_name}= resource.resource_name

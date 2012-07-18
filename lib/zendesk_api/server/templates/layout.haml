@@ -1,0 +1,25 @@
+!!! HTML5
+%html
+  %head
+    %link{:rel => "stylesheet", :href => "stylesheets/styles.css", :type => "text/css"}
+    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
+    %script{:src => "/javascripts/bootstrap-modal.js"}
+    %script{:src => "/javascripts/application.js"}
+  %body
+    %div.container-fluid
+      %div.row-fluid
+        %div.span2
+          = haml :sidebar
+        %div.span10
+          = haml :credentials
+
+          - if session[:client]
+            %form{:action => "/client", :method => "post"}
+              %input{:name => "_method", :type => "hidden", :value => "delete"}
+              %input{:name => "submit", :type => "submit", :value => "Clear Session"}
+
+            = yield
+            = yield_content :with_client
+          - else
+            :javascript
+              $(document).ready(credentials_modal);
