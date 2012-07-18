@@ -7,3 +7,4 @@ coverage
 .yardoc
 example.rb
 bin/*.yml
+.sass-cache
