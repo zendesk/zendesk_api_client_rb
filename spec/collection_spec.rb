@@ -266,6 +266,12 @@ describe ZendeskAPI::Collection do
   context "method missing" do
     before(:each) { subject.stub(:fetch).and_return([1, 2, nil, 3]) }
 
+    context "with an class method on the resource class" do
+      it "should pass methods to class if defined" do
+        subject.test.should == "hi"
+      end
+    end
+
     it "should pass all methods not defined to resources" do
       subject.compact.should == [1, 2, 3]
     end

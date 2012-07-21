@@ -1,4 +1,8 @@
 class ZendeskAPI::TestResource < ZendeskAPI::Resource
+  def self.test(client)
+    "hi"
+  end
+
   class TestChild < ZendeskAPI::Resource
   end
 end

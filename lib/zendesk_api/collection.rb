@@ -212,7 +212,11 @@ module ZendeskAPI
 
     # Sends methods to underlying array of resources.
     def method_missing(name, *args, &block)
-      if Array.new.respond_to?(name)
+      methods = @resource_class.singleton_methods(false).map(&:to_sym)
+
+      if methods.include?(name)
+        @resource_class.send(name, @client, *args, &block)
+      elsif Array.new.respond_to?(name)
         to_a.send(name, *args, &block)
       else
         opts = args.last.is_a?(Hash) ? args.last : {}
