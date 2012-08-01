@@ -34,7 +34,7 @@ module ZendeskAPI
     end
 
     def save
-      upload = Upload.create!(client, :file => file)
+      upload = Upload.create!(@client, :file => file)
       self.token = upload.token
     end
 
