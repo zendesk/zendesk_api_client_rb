@@ -5,7 +5,7 @@ describe ZendeskAPI::Ticket do
     { 
       :type => "question",
       :subject => "This is a question?",
-      :description => "Indeed it is!",
+      :comment => { :value => "Indeed it is!" },
       :priority => "normal",
       :requester_id => user.id,
       :submitter_id => user.id
@@ -66,12 +66,12 @@ describe ZendeskAPI::Ticket do
   it "can upload while creating" do
     VCR.use_cassette("ticket_inline_uploads") do
       ticket = ZendeskAPI::Ticket.new(client, valid_attributes.merge(default_options))
-      ticket.uploads << "spec/fixtures/Argentina.gif"
-      #ticket.uploads << File.new("spec/fixtures/Argentina.gif") # TODO ZendeskAPI bug: you can only upload 1 picture at a time
+      ticket.comment.uploads << "spec/fixtures/Argentina.gif"
+      ticket.comment.uploads << File.new("spec/fixtures/Argentina.gif")
 
       ticket.save!
-      ticket.changes.should == {} # uploads where set before save
-      ticket.attributes[:uploads].map(&:class).should == [String] # upload was sent as tokens
+      ticket.changes.should == {} # uploads were set before save
+      ticket.comment.attributes[:uploads].map(&:class).should == [String, String] # upload was sent as tokens
     end
   end
 

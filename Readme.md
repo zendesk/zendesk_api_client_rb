@@ -74,7 +74,7 @@ One way to use the client is to pass it in as an argument to individual classes.
 
 ```ruby
 ZendeskAPI::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save
-ZendeskAPI::Ticket.create(client, :subject => "Test Ticket", :description => "This is a test", :submitter_id => client.current_user.id, :priority => "urgent")
+ZendeskAPI::Ticket.create(client, :subject => "Test Ticket", :comment => { :value => "This is a test" }, :submitter_id => client.current_user.id, :priority => "urgent")
 ZendeskAPI::Ticket.find(client, :id => 1)
 ZendeskAPI::Ticket.delete(client, :id => 1)
 ```
@@ -84,7 +84,7 @@ Another way is to use the instance methods under client.
 ```ruby
 client.tickets.first
 client.tickets.find(:id => 1)
-client.tickets.create(:subject => "Test Ticket", :description => "This is a test", :submitter_id => client.current_user.id, :priority => "urgent")
+client.tickets.create(:subject => "Test Ticket", :comment => { :value => "This is a test" }, :submitter_id => client.current_user.id, :priority => "urgent")
 client.tickets.delete(:id => 1)
 ```
 
@@ -149,11 +149,11 @@ client.current_user
 
 ### Attaching files
 
-Files can be attached to tickets using either a path or the File class and will
+Files can be attached to ticket comments using either a path or the File class and will
 be automatically uploaded and attached.
 
 ```ruby
-ticket = Ticket.new(...)
+ticket = ZendeskAPI::Ticket.new(client, :comment => { :value => "attachments" })
 ticket.comment.uploads << "img.jpg"
 ticket.comment.uploads << File.new("img.jpg")
 ticket.save
