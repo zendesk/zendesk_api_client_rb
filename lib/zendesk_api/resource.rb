@@ -125,7 +125,7 @@ module ZendeskAPI
     extend Read
     include Create
 
-    include Update 
+    include Update
     include Destroy
   end
 

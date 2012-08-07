@@ -154,8 +154,8 @@ be automatically uploaded and attached.
 
 ```ruby
 ticket = Ticket.new(...)
-ticket.uploads << "img.jpg"
-ticket.uploads << File.new("img.jpg")
+ticket.comment.uploads << "img.jpg"
+ticket.comment.uploads << File.new("img.jpg")
 ticket.save
 ```
 

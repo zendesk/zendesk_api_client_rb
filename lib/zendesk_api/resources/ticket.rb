@@ -1,6 +1,19 @@
 module ZendeskAPI
   class TicketField < Resource; end
-  class TicketComment < Data; end
+
+  class TicketComment < Data
+    include Save
+
+    has_many :uploads, :class => :attachment, :inline => true
+
+    def save
+      save_associations
+      true
+    end
+
+    alias :save! :save
+  end
+
   class TicketMetric < ReadResource; end
 
   class Ticket < Resource
@@ -17,7 +30,6 @@ module ZendeskAPI
     has :forum_topic, :class => :topic
     has :organization
 
-    has_many :uploads, :class => :attachment, :inline => true
     has :comment, :class => :ticket_comment, :inline => true
 
     # Gets a incremental export of tickets from the start_time until now.
@@ -71,6 +83,4 @@ module ZendeskAPI
       Zendesk::Collection.new(client, ViewRow, options.merge(:path => "views/preview"))
     end
   end
-
-
 end
