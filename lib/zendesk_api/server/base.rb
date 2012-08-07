@@ -5,7 +5,9 @@ require 'optparse'
 require 'compass'
 require 'haml'
 
+require 'zendesk_api'
 require 'zendesk_api/console/extensions'
+
 require 'debugger'
 
 module ZendeskAPI
@@ -78,7 +80,6 @@ module ZendeskAPI
         get "/#{resource.resource_name}" do
           @resource = resource
           @collection = ZendeskAPI::Collection.new(client, resource, params)
-          puts session.inspect
           haml :collection, :format => :html5
         end
       end

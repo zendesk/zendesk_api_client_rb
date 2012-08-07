@@ -1,17 +1,30 @@
 %h1= @resource.resource_name
 
 - content_for :with_client do
-  %table.table-striped
+  %form.form-horizontal
+    .control-group
+      %label.control-label{:for => "page"} Page
+      .controls
+        %input.input-mini{:type => "text", :placeholder => "1", :name => "page", :id => "page"}
+    .control-group
+      %label.control-label{:for => "per_page"} Per Page
+      .controls
+        %input.input-mini{:type => "text", :placeholder => "20", :name => "per_page", :id => "per_page"}
+    .form-actions
+      %input.btn{:type => "submit", :value => "Reload"}
+
+  %table.table.table-striped
     %thead
       %tr
         - @collection.format_headers.each do |header|
-          %th
-            = header
+          %th= header
+        %th actions
     %tbody
       - @collection.each do |resource|
         %tr
           - resource.format.each do |field|
             %td= field
+          %td edit
   - if !@collection.first_page?
     %a{:href => "previous page"} prev
   - if !@collection.last_page?

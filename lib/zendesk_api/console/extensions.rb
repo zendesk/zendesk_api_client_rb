@@ -1,3 +1,7 @@
+module ZendeskAPI
+  class FormatError < ArgumentError; end
+end
+
 class ZendeskAPI::Collection
   def /(id)
     if id == ZendeskAPI::Console::ZD_DIRUP
@@ -23,7 +27,7 @@ class ZendeskAPI::Collection
   end
 
   def to_s
-    "/#{path}"
+    path
   end
 
   def format_headers
@@ -49,7 +53,13 @@ class ZendeskAPI::Client
   end
 
   def self.resources
-    @resources ||= GET_SUBCLASSES.call(ZendeskAPI::Data.subclasses).sort_by(&:resource_name)
+    @resources ||= begin
+      subclasses = GET_SUBCLASSES.call(ZendeskAPI::Data.subclasses)
+      subclasses.delete_if do |resource|
+        resource.name =~ /ZendeskAPI(::.*){2,}/
+      end
+      subclasses.sort_by(&:resource_name)
+    end
   end
 
   def to_a
@@ -77,8 +87,16 @@ class ZendeskAPI::Data
   end
 
   class << self
-    def format(client)
-      if client.send(resource_name).loaded?
+    attr_accessor :format_headers
+
+    def format(client = nil, &block)
+      if block_given?
+        class_eval do
+          define_method :format do
+            instance_eval &block
+          end
+        end
+      elsif client && client.send(resource_name).loaded?
         ["@#{resource_name}"]
       else
         [resource_name]
@@ -87,14 +105,70 @@ class ZendeskAPI::Data
   end
 end
 
-class ZendeskAPI::Resource
-  class << self
-    def format_headers
-      [:id, :created_at]
+class ZendeskAPI::DataResource
+  format_headers = %w{id created_at}
+
+  format do
+    if self.format_headers
+      self.format_headers.map {|attr| send(attr.to_s.downcase)}
+    else
+      raise ZendeskAPI::FormatError.new("#{self.class.name} hasn't defined an ouput format")
     end
   end
+end
 
-  def format
-    [id, created_at]
+module ZendeskAPI
+  ForumSubscription.format_headers = %w{id forum_id user_id created_at}
+  GroupMembership.format_headers = %w{id group_id user_id created_at}
+  TopicSubscription.format_headers = %w{id topic_id user_id created_at}
+  Locale.format_headers = %w{Id Locale Name}
+  TicketField.format_headers = %w{Id Type Title Description}
+  Macro.format_headers = %w{Id Title}
+
+  Forum.format_headers = %w{Id Name Description Created Updated}
+  Forum.format do
+    [id, name, description, created_at, updated_at]
+  end
+
+  Category.format_headers = %w{Id Name Description Position Created Updated}
+  Category.format do
+    [id, name, description, position, created_at, updated_at]
+  end
+
+  Topic.format_headers = %w{Id Title Type}
+  Topic.format do
+    [id, title, topic_type]
+  end
+
+  # Topic::*, MobileDevice, TicketMetric, SuspendedTicket, Views, customRole, CrmData...
+
+  Activity.format_headers = %w{Id Title User Actor Ticket}
+  Activity.format do
+    [id, title, user.name, actor.name, target.ticket.subject]
+  end
+
+  SatisfactionRating.format_headers = %w{Id Ticket Score Comment}
+  SatisfactionRating.format do
+    [id, ticket_id, score, comment]
+  end
+
+  Bookmark.format_headers = %w{Id Ticket Created}
+  Bookmark.format do
+    [id, ticket.id, created_at]
+  end
+
+  User.format_headers = %w{Id Name Email Created Update}
+  User.format do
+    [id, name, email, created_at, updated_at]
+  end
+
+  Ticket.format_headers = %w{Id Type Subject Description Status Created Updated}
+  Ticket.format do
+    [id, type, subject, description, status, created_at, updated_at]
+  end
+
+  Organization.format_headers = %w{Id Name Created Updated}
+  Organization.format do
+    [id, name, created_at, updated_at]
   end
 end

@@ -1,5 +1,11 @@
 module ZendeskAPI::Console
-  ZD_DIRUP = -999
+  ZD_DIRUP = Object.new.tap do |dir|
+    dir.instance_eval do
+      def /(stuff = nil)
+        puts stuff
+      end
+    end
+  end
 
   module Eval
     def loop_eval(str)
@@ -9,6 +15,7 @@ module ZendeskAPI::Console
       end
       split = split.join('/')
       split += '/' if str[-1] == '/'
+      puts ZendeskAPI::Console::ZD_DIRUP
       split.gsub!(/\.\./, "ZendeskAPI::Console::ZD_DIRUP")
       super(split)
     end
@@ -81,15 +88,38 @@ This is help.
         obj.send(:/, arg)
       end
     elsif path.respond_to?(:to_a)
-      puts format_headers.join("\t") # use printf maybe? TODO
-      puts "---"
-      puts to_a.map {|elem|
+      format = to_a.map do |elem|
         if elem.method(:format).arity == 1
-          elem.format(client).join("\t")
+          elem.format(client)
         else
-          elem.format.join("\t")
+          elem.format
         end
-      }.join("\n")
+      end
+
+      lengths = format.inject([]) do |lengths, object|
+        object.each_with_index do |field, i|
+          lengths[i] = [field.to_s.length, lengths[i] || 0].max
+        end
+
+        lengths
+      end
+
+      format_headers.each_with_index do |header, i|
+        printf("%-#{lengths[i] + 2}s", header)
+      end
+
+      puts
+      puts "---"
+
+      format.each do |object|
+        object.each_with_index do |field, i|
+          printf("%-#{lengths[i] + 2}s", field)
+        end
+
+        puts
+      end
+
+      nil
     else
       methods = path.public_methods.reject do |method|
         method =~ /^orig_/ || method.to_sym == :method_missing ||

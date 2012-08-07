@@ -1,23 +1,30 @@
 !!! 5
 %html
   %head
-    %link{:rel => "stylesheet", :href => "stylesheets/styles.css", :type => "text/css"}
-    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
-    %script{:src => "/javascripts/bootstrap-modal.js"}
-    %script{:src => "/javascripts/application.js"}
+    %link{:rel => "stylesheet", :href => url("/stylesheets/styles.css"), :type => "text/css"}
+    <!-- script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"} -->
+    %script{:src => url("/javascripts/jquery-1.7.1.min.js")}
+
+    %script{:src => url("/javascripts/bootstrap-modal.js")}
+    %script{:src => url("/javascripts/application.js")}
   %body
-    %div.container-fluid
-      %div.row-fluid
-        %div.span2
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.brand{:href => url('/')} Zendesk API Client
+          - if session[:client]
+            %form.pull-right{:action => "/client", :method => "post", :style => "margin: 0;"}
+              %input{:name => "_method", :type => "hidden", :value => "delete"}
+              %input.btn{:name => "submit", :type => "submit", :value => "Clear Session"}
+
+    .container-fluid
+      .row-fluid
+        .span2
           = haml :sidebar
-        %div.span10
+        .span10
           = haml :credentials
 
           - if session[:client]
-            %form{:action => "/client", :method => "post"}
-              %input{:name => "_method", :type => "hidden", :value => "delete"}
-              %input{:name => "submit", :type => "submit", :value => "Clear Session"}
-
             = yield
             = yield_content :with_client
           - else

@@ -5022,3 +5022,8 @@ a.label:hover, a.badge:hover {
 #credentials-error {
   color: red;
 }
+
+/* line 13, ../sass/styles.scss */
+body {
+  padding-top: 60px;
+}
