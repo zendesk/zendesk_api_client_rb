@@ -239,9 +239,9 @@ module ZendeskAPI
   end
 
   class << self
-    # Revert Rails' overwrite of const_missing
-    if method_defined?(:const_missing_without_dependencies)
-      alias :const_missing :const_missing_without_dependencies
+    # Make sure Rails' overwriting of const_missing doesn't cause trouble
+    def const_missing(*args)
+      Object.const_missing(*args)
     end
 
     # Allows using has and has_many without having class defined yet
