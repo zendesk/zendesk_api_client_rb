@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = "zendesk_api"
   s.version     = ZendeskAPI::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Steven Davidovitz"]
-  s.email       = ["sdavidovitz@zendesk.com"]
+  s.authors     = ["Steven Davidovitz", "Michael Grosser"]
+  s.email       = ["support@zendesk.com"]
   s.homepage    = "http://developer.zendesk.com"
   s.summary     = %q{Zendesk REST API Client}
   s.description = %q{Ruby wrapper for the REST API at http://www.zendesk.com. Documentation at http://developer.zendesk.com.}
