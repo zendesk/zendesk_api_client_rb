@@ -58,7 +58,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
     context "with an ActionDispatch::Http::UploadedFile" do
       before(:each) do
-        @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello", :tempfile => Tempfile.new(filename))
+        @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello", :tempfile => Tempfile.new(File.basename(filename)))
         @env = subject.call(:body => { :file => @upload })
       end
 
@@ -78,7 +78,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
   context "with a Tempfile" do
     before(:each) do
-      @tempfile = Tempfile.new(filename)
+      @tempfile = Tempfile.new(File.basename(filename))
       @env = subject.call(:body => { :file => @tempfile })
     end
 
