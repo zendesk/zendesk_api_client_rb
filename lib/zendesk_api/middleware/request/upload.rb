@@ -29,12 +29,16 @@ module ZendeskAPI
           end
 
           case file
-          when File
+          when File, Tempfile
             path = file.path
           when String
             path = file
           else
-            warn "WARNING: Passed invalid filename #{file} of type #{file.class} to upload"
+            if defined?(ActionDispatch) && file.is_a?(ActionDispatch::Http::UploadedFile)
+              path = file.tempfile.path
+            else
+              warn "WARNING: Passed invalid filename #{file} of type #{file.class} to upload"
+            end
           end
 
           if path
@@ -45,7 +49,12 @@ module ZendeskAPI
 
             mime_type = MIME::Types.type_for(path).first || "application/octet-stream"
 
-            hash[:filename] ||= File.basename(path)
+            hash[:filename] ||= if file.respond_to?(:original_filename)
+              file.original_filename
+            else
+              File.basename(path)
+            end
+
             hash[:uploaded_data] = Faraday::UploadIO.new(path, mime_type)
           end
         end

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tempfile'
 
 describe ZendeskAPI::Middleware::Request::Upload do
   subject { ZendeskAPI::Middleware::Request::Upload.new(lambda {|env| env}) }
@@ -41,6 +42,56 @@ describe ZendeskAPI::Middleware::Request::Upload do
       it "should not change filename" do
         @env[:body][:filename].should_not == "test.jpg"
       end
+    end
+  end
+
+  begin
+    require 'action_dispatch'
+  rescue LoadError
+    warn "Could not load ActionDispatch; not running ActionDispatch::Http::UploadedFile tests"
+  end
+
+  if defined?(ActionDispatch)
+    class String
+      def encoding_aware?; false; end
+    end
+
+    context "with an ActionDispatch::Http::UploadedFile" do
+      before(:each) do
+        @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello", :tempfile => Tempfile.new(filename))
+        @env = subject.call(:body => { :file => @upload })
+      end
+
+      it "should convert file string to UploadIO" do
+        @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+      end
+
+      it "should remove file string" do
+        @env[:body][:file].should be_nil
+      end
+
+      it "should add filename if none exist" do
+        @env[:body][:filename].should == "hello"
+      end
+    end
+  end
+
+  context "with a Tempfile" do
+    before(:each) do
+      @tempfile = Tempfile.new(filename)
+      @env = subject.call(:body => { :file => @tempfile })
+    end
+
+    it "should convert file string to UploadIO" do
+      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+    end
+
+    it "should remove file string" do
+      @env[:body][:file].should be_nil
+    end
+
+    it "should add filename if none exist" do
+      @env[:body][:filename].should == File.basename(@tempfile.path)
     end
   end
 

@@ -24,6 +24,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "yard"
 
+# Optional. Only used for uploads testing.
+#  s.add_development_dependency "actionpack"
+
   s.add_runtime_dependency "faraday", ">= 0.8.0"
   s.add_runtime_dependency "faraday_middleware", ">= 0.8.7"
   s.add_runtime_dependency "hashie"
