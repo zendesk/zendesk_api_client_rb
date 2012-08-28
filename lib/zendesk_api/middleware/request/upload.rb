@@ -1,4 +1,5 @@
 require "faraday/middleware"
+require "tempfile"
 require "mime/types"
 
 module ZendeskAPI
