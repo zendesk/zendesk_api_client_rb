@@ -1,4 +1,13 @@
 module ZendeskAPI
+  class Request < Resource
+    class Comment < ReadResource
+      has_many :attachments, :inline => true
+    end
+
+    has_many :comments
+    has :organization
+  end
+
   class TicketField < Resource; end
 
   class TicketComment < Data
