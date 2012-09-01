@@ -1,10 +1,15 @@
+GIT
+  remote: https://github.com/steved555/hashie.git
+  revision: d433d8b1574130f8f3752019ea4db3519c69e6df
+  specs:
+    hashie (2.0.0.beta)
+
 PATH
   remote: .
   specs:
     zendesk_api (0.1.2)
       faraday (>= 0.8.0)
       faraday_middleware (>= 0.8.7)
-      hashie
       inflection
       json
       mime-types
@@ -20,7 +25,6 @@ GEM
       multipart-post (~> 1.1)
     faraday_middleware (0.8.8)
       faraday (>= 0.7.4, < 0.9)
-    hashie (1.2.0)
     inflection (1.0.0)
     json (1.7.5)
     mime-types (1.19)
@@ -49,6 +53,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  hashie!
   jruby-openssl
   rake
   rspec
