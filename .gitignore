@@ -6,3 +6,4 @@ spec/fixtures/credentials.yml
 coverage
 .yardoc
 example.rb
+Gemfile.lock
