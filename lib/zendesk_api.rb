@@ -1,5 +1,3 @@
-require "rubygems"
-require "bundler/setup"
 
 require 'zendesk_api/core_ext/modulize'
 require 'zendesk_api/core_ext/snakecase'
