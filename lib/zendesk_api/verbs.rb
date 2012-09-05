@@ -6,7 +6,7 @@ module ZendeskAPI
     class << self
       private
 
-      # @macro [attach] container.create_verb 
+      # @macro [attach] container.create_verb
       #   @method $1(method)
       #   Executes a $1 using the passed in method as a path.
       #   Reloads the resource's attributes if any are in the response body.
@@ -16,7 +16,7 @@ module ZendeskAPI
         define_method verb do |method|
           define_method method do |*method_args|
             opts = method_args.last.is_a?(Hash) ? method_args.pop : {}
-            return instance_variable_get("@#{method}") if instance_variable_defined?("@#{verb}") && !opts[:reload]
+            return instance_variable_get("@_#{verb}_#{method}") if instance_variable_defined?("@_#{verb}_#{method}") && !opts[:reload]
 
             response = @client.connection.send(verb, "#{path}/#{method}") do |req|
               req.body = opts
