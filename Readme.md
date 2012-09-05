@@ -39,7 +39,7 @@ client = ZendeskAPI::Client.new do |config|
 
   config.url = "<- your-zendesk-url ->" # e.g. https://mydesk.zendesk.com/api/v2
 
-  config.username = "login.email@zendesk.com"
+  config.username = "login.email@zendesk.com"  # use login.email@zendesk.com/token for token auth
   config.password = "your zendesk password or token"
 
   # Optional:
