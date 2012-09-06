@@ -84,6 +84,7 @@ module ZendeskAPI
     # @return [Collection] self
     def per_page(count)
       @options["per_page"] = count
+      clear_cache
       self
     end
 
@@ -91,6 +92,7 @@ module ZendeskAPI
     # @return [Collection] self
     def page(number)
       @options["page"] = number
+      clear_cache
       self
     end
 
