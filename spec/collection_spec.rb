@@ -88,6 +88,51 @@ describe ZendeskAPI::Collection do
     end
   end
 
+  context "pagination with data" do
+    before(:each) do
+      stub_json_request(:get, %r{test_resources}, json(
+        :test_resources => [{ :id => 1 }]
+      ))
+      subject.fetch(true)
+    end
+
+    context "on #page" do
+      context "with nil" do
+        before(:each) { subject.page(nil) }
+
+        it "should not empty the cache" do
+          subject.instance_variable_get(:@resources).should_not be_empty
+        end
+      end
+
+      context "with a number" do
+        before(:each) { subject.page(3) }
+
+        it "should empty the cache" do
+          subject.instance_variable_get(:@resources).should be_nil
+        end
+      end
+    end
+
+    context "on #per_page" do
+      context "with nil" do
+        before(:each) { subject.per_page(nil) }
+
+        it "should not empty the cache" do
+          subject.instance_variable_get(:@resources).should_not be_empty
+        end
+      end
+
+      context "with a number" do
+        before(:each) { subject.per_page(20) }
+
+        it "should empty the cache" do
+          subject.instance_variable_get(:@resources).should be_nil
+        end
+      end
+    end
+  end
+
   context "pagination with no options and no data" do
     it "should return an empty array on #next" do
       subject.next.should be_empty
