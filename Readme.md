@@ -193,7 +193,7 @@ ticket.save
 ## Supported Ruby Versions
 
 Tested with Ruby 1.8.7 and 1.9.3
-[![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
+[![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png?branch=master)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
 
 ## Copyright
 
