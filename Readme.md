@@ -1,3 +1,15 @@
+# Zendesk Server
+
+```sh
+ruby lib/zendesk_api/server/base.rb --help
+```
+
+# Zendesk Console
+
+```sh
+bin/zendesk --help
+```
+
 # Zendesk API Client
 
 ## API version support
