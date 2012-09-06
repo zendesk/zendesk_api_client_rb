@@ -137,9 +137,20 @@ describe ZendeskAPI::Collection do
 
     it "should yield resource if arity == 1" do
       expect do |block|
-        b = block.to_proc
-        b.stub(:arity).and_return(1)
-        silence_logger { subject.each_page(&b) }
+        # Needed to make sure the arity == 1
+        block.instance_eval do
+          def to_proc
+            @used = true
+
+            probe = self
+            Proc.new do |arg|
+              probe.num_yields += 1
+              probe.yielded_args << [arg]
+            end
+          end
+        end
+
+        silence_logger { subject.each_page(&block) }
       end.to yield_successive_args(
         ZendeskAPI::TestResource.new(client, :id => 1),
         ZendeskAPI::TestResource.new(client, :id => 2)
