@@ -63,7 +63,7 @@ module ZendeskAPI
     def find(client, options = {})
       @client = client # so we can use client.logger in rescue
 
-      raise "No :id given" unless options[:id] || options["id"] || ancestors.include?(SingularResource)
+      raise ArgumentError, "No :id given" unless options[:id] || options["id"] || ancestors.include?(SingularResource)
       association = options.delete(:association) || Association.new(:class => self)
 
       response = client.connection.get(association.generate_path(options)) do |req|

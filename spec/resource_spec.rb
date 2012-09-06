@@ -317,6 +317,16 @@ describe ZendeskAPI::Resource do
     end
   end
 
+  context "SingularTestResource" do
+    context "#find" do
+      it "should not require an id" do
+        expect do
+          ZendeskAPI::SingularTestResource.find(client)
+        end.to_not raise_error(ArgumentError)
+      end
+    end
+  end
+
   context "#new" do
     it "builds with hash" do
       object = ZendeskAPI::TestResource.new(client, {})
