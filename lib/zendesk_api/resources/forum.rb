@@ -39,7 +39,7 @@ module ZendeskAPI
 
     has_many :comments, :class => :topic_comment
     has_many :subscriptions, :class => :topic_subscription
-    has :vote, :class => :topic_vote 
+    has :vote, :class => :topic_vote
 
     def votes(opts = {})
       return @votes if @votes && !opts[:reload]

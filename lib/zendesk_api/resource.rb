@@ -68,7 +68,7 @@ module ZendeskAPI
 
     # Has this been object been created server-side? Does this by checking for an id.
     def new_record?
-      id.nil? 
+      id.nil?
     end
 
     # Returns the path to the resource
