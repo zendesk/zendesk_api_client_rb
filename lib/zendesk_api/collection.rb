@@ -83,16 +83,16 @@ module ZendeskAPI
     # Changes the per_page option. Returns self, so it can be chained. No execution.
     # @return [Collection] self
     def per_page(count)
+      clear_cache if count
       @options["per_page"] = count
-      clear_cache
       self
     end
 
     # Changes the page option. Returns self, so it can be chained. No execution.
     # @return [Collection] self
     def page(number)
+      clear_cache if number
       @options["page"] = number
-      clear_cache
       self
     end
 
