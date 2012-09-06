@@ -25,10 +25,6 @@ begin
       config["url"] = a
     end
 
-#    opts.on("-r", "--[no-]retry", "Retry rate-limited requests automatically") do |r|
-#      config["retry"] = r
-#    end
-
     opts.on_tail("-h", "--help", "Show this message") do
       puts opts
       exit

@@ -1,6 +1,4 @@
-module ZendeskAPI
-  class FormatError < ArgumentError; end
-end
+class ZendeskAPI::FormatError < ArgumentError; end
 
 class ZendeskAPI::Collection
   def /(id)
@@ -140,7 +138,7 @@ module ZendeskAPI
     [id, title, topic_type]
   end
 
-  # Topic::*, MobileDevice, TicketMetric, SuspendedTicket, Views, customRole, CrmData...
+  # Topic::*, MobileDevice, TicketMetric, SuspendedTicket, customRole, CrmData...
 
   Activity.format_headers = %w{Id Title User Actor Ticket}
   Activity.format do
@@ -157,7 +155,7 @@ module ZendeskAPI
     [id, ticket.id, created_at]
   end
 
-  User.format_headers = %w{Id Name Email Created Update}
+  User.format_headers = %w{Id Name Email Created Updated}
   User.format do
     [id, name, email, created_at, updated_at]
   end
@@ -170,5 +168,10 @@ module ZendeskAPI
   Organization.format_headers = %w{Id Name Created Updated}
   Organization.format do
     [id, name, created_at, updated_at]
+  end
+
+  View.format_headers = %w{Id Title Created Updated}
+  View.format do
+    [id, title, created_at, updated_at]
   end
 end

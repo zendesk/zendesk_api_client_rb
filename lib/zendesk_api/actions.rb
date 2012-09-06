@@ -19,7 +19,7 @@ module ZendeskAPI
 
       save_associations
 
-      response = @client.connection.send(method, req_path) do |req|
+      @response = @client.connection.send(method, req_path) do |req|
         req.body = if self.class.unnested_params
           attributes.changes
         else
@@ -27,7 +27,7 @@ module ZendeskAPI
         end
       end
 
-      @attributes.replace @attributes.deep_merge(response.body[self.class.singular_resource_name] || {})
+      @attributes.replace @attributes.deep_merge(@response.body[self.class.singular_resource_name] || {})
       @attributes.clear_changes
       clear_associations
       true

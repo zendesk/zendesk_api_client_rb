@@ -1,31 +1,35 @@
 %h1= @resource.resource_name
 
 - content_for :with_client do
-  %form.form-horizontal
-    .control-group
-      %label.control-label{:for => "page"} Page
-      .controls
-        %input.input-mini{:type => "text", :placeholder => "1", :name => "page", :id => "page"}
-    .control-group
-      %label.control-label{:for => "per_page"} Per Page
-      .controls
-        %input.input-mini{:type => "text", :placeholder => "20", :name => "per_page", :id => "per_page"}
-    .form-actions
-      %input.btn{:type => "submit", :value => "Reload"}
-
   %table.table.table-striped
     %thead
       %tr
-        - @collection.format_headers.each do |header|
-          %th= header
+        - format_headers.each do |header|
+          %th
+            - if sort_by == header.downcase.to_sym
+              - if sort_order == :asc
+                %i.icon-arrow-up
+              - else
+                %i.icon-arrow-down
+              %a{:href => url_for("sort_order" => sort_order == :asc ? 'DESC' : 'ASC')}= header
+            - else
+              %a{:href => url_for("sort_by" => header)}= header
         %th actions
     %tbody
-      - @collection.each do |resource|
+      - collection.each do |resource|
         %tr
-          - resource.format.each do |field|
+          - format(resource).each do |field|
             %td= field
-          %td edit
-  - if !@collection.first_page?
-    %a{:href => "previous page"} prev
-  - if !@collection.last_page?
-    %a{:href => "next page"} next
+          %td
+            %a{:href => url("/#{@resource.resource_name}/#{resource.id}")} edit
+  %form.form-inline{:style => "float: right;"}
+    %input.input-mini{:type => "text", :placeholder => "page", :value => params[:page], :name => "page", :id => "page"}
+    %input.input-mini{:type => "text", :placeholder => "per page", :value => params[:per_page], :name => "per_page", :id => "per_page"}
+    %input.btn{:type => "submit", :value => "Reload"}
+  .pagination.pagination-right
+    - if !@collection.first_page?
+      %li
+        %a{:href => previous_page} prev
+    - if !@collection.last_page?
+      %li
+        %a{:href => next_page} next

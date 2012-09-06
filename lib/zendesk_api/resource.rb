@@ -49,6 +49,9 @@ module ZendeskAPI
     # @return [ZendeskAPI::Association] The association
     attr_accessor :association
 
+    # Place to dump the last response
+    attr_accessor :response
+
     # Create a new resource instance.
     # @param [Client] client The client to use
     # @param [Hash] attributes The optional attributes that describe the resource
@@ -97,7 +100,7 @@ module ZendeskAPI
     alias :inspect :to_s
 
     def ==(other)
-      warn "Trying to compare #{other.class} to a Resource" if other && !other.is_a?(Data)
+      warn "Trying to compare #{other.class} to a Resource from #{caller.first}" if other && !other.is_a?(Data)
       other.is_a?(self.class) && ((other.id && other.id == id) || (other.object_id == self.object_id))
     end
     alias :eql :==
