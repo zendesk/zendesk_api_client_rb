@@ -102,6 +102,22 @@ next_page = tickets.next
 previous_page = tickets.prev
 ```
 
+Iteration over all resources and pages is handled by Collection#page_page
+
+```ruby
+client.tickets.each_page do |resource|
+  # all resources will be yielded
+end
+```
+
+If given a block with two arguments, the page is also passed in.
+
+```ruby
+client.tickets.each_page do |resource, page|
+  # all resources will be yielded along with the page
+end
+```
+
 ### Callbacks
 
 Callbacks can be added to the ZendeskAPI::Client instance and will be called (with the response env) after all response middleware on a successful request.

@@ -155,6 +155,12 @@ module ZendeskAPI
       @count = (response.body["count"] || @resources.size).to_i
       @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]
 
+      if @next_page =~ /page=(\d+)/
+        @options["page"] = $1.to_i - 1
+      elsif @prev_page =~ /page=(\d+)/
+        @options["page"] = $1.to_i + 1
+      end
+
       @resources
     end
 
@@ -163,6 +169,27 @@ module ZendeskAPI
     # Alias for fetch(false)
     def to_a
       fetch
+    end
+
+    # Calls #each on every page with the passed in block
+    # @param [Block] block Passed to #each
+    def each_page(&block)
+      page(nil)
+      clear_cache
+
+      while !empty?
+        each do |resource|
+          arguments = [resource, @options["page"] || 1]
+
+          if block.arity >= 0
+            arguments = arguments.take(block.arity)
+          end
+
+          block.call(*arguments)
+        end
+
+        self.next
+      end
     end
 
     def replace(collection)
@@ -182,23 +209,25 @@ module ZendeskAPI
         @query = @next_page
         fetch(true)
       else
-        []
+        clear_cache
+        @resources = []
       end
     end
 
-    # Find the previous page. Does one of three things: 
+    # Find the previous page. Does one of three things:
     # * If there is already a page number in the options hash, it increases it and invalidates the cache, returning the new page number.
     # * If there is a prev_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
     def prev
-      if @options["page"] && @options["page"] > 1 
+      if @options["page"] && @options["page"] > 1
         clear_cache
         @options["page"] -= 1
       elsif @prev_page
         @query = @prev_page
         fetch(true)
       else
-        []
+        clear_cache
+        @resources = []
       end
     end
 

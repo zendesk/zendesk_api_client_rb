@@ -120,7 +120,89 @@ describe ZendeskAPI::Collection do
     end
   end
 
+  context "each_page" do
+    before(:each) do
+      stub_json_request(:get, %r{test_resources$}, json(
+        :test_resources => [{:id => 1}],
+        :next_page => "/test_resources?page=2"
+      ))
+
+      stub_json_request(:get, %r{test_resources\?page=2}, json(
+        :test_resources => [{:id => 2}],
+        :next_page => "/test_resources?page=3"
+      ))
+
+      stub_request(:get, %r{test_resources\?page=3}).to_return(:status => 404)
+    end
+
+    it "should yield resource if arity == 1" do
+      expect do |block|
+        b = block.to_proc
+        b.stub(:arity).and_return(1)
+        silence_logger { subject.each_page(&b) }
+      end.to yield_successive_args(
+        ZendeskAPI::TestResource.new(client, :id => 1),
+        ZendeskAPI::TestResource.new(client, :id => 2)
+      )
+    end
+
+    it "should yield resource and page" do
+      expect do |b|
+        silence_logger { subject.each_page(&b) }
+      end.to yield_successive_args(
+        [ZendeskAPI::TestResource.new(client, :id => 1), 1],
+        [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+      )
+    end
+  end
+
   context "fetch" do
+    context "grabbing the current page" do
+      context "from next_page" do
+        before(:each) do
+          stub_json_request(:get, %r{test_resources}, json(
+            :test_resources => [{:id => 2}],
+            :next_page => "/test_resources?page=2"
+          ))
+
+          subject.fetch(true)
+          @page = subject.instance_variable_get(:@options)["page"]
+        end
+
+        it "should set the page to 1" do
+          @page.should == 1
+        end
+      end
+
+      context "from prev_page" do
+        before(:each) do
+          stub_json_request(:get, %r{test_resources}, json(
+            :test_resources => [{:id => 2}],
+            :previous_page => "/test_resources?page=1"
+          ))
+
+          subject.fetch(true)
+          @page = subject.instance_variable_get(:@options)["page"]
+        end
+
+        it "should set the page to 2" do
+          @page.should == 2
+        end
+      end
+
+      context "with nothing" do
+        before(:each) do
+          stub_json_request(:get, %r{test_resources}, json(:test_resources => [{:id => 2}]))
+          subject.fetch(true)
+          @page = subject.instance_variable_get(:@options)["page"]
+        end
+
+        it "should not set the page" do
+          @page.should be_nil
+        end
+      end
+    end
+
     it "does not fetch if associated is a new record" do
       ZendeskAPI::Category.new(client).forums.fetch.should == []
       ZendeskAPI::Category.new(client).forums.to_a.should == []
