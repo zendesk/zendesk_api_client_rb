@@ -29,6 +29,7 @@ module ZendeskAPI
 
       @attributes.replace @attributes.deep_merge(response.body[self.class.singular_resource_name] || {})
       @attributes.clear_changes
+      clear_associations
       true
     end
 
@@ -36,17 +37,27 @@ module ZendeskAPI
       save(options) || raise("Save failed")
     end
 
+    def clear_associations
+      self.class.associations.each do |association_data|
+        name = association_data[:name]
+        instance_variable_set("@#{name}", nil) if instance_variable_defined?("@#{name}")
+      end
+    end
+
     def save_associations
       self.class.associations.each do |association_data|
         association_name = association_data[:name]
         next unless send("#{association_name}_used?") && association = send(association_name)
 
-        if association.respond_to?(:save) && (association.is_a?(Collection) || !association.changes.empty?)
-          association.save
+        inline_creation = association_data[:inline] == :create && new_record?
+        changed = association.is_a?(Collection) || !association.changes.empty?
+
+        if association.respond_to?(:save) && changed && !inline_creation && association.save
           self.send("#{association_name}=", association) # set id/ids columns
         end
 
-        if association_data[:inline]
+
+        if association_data[:inline] == true || inline_creation
           attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
         end
       end

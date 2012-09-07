@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ZendeskAPI::Ticket do
   def valid_attributes
-    { 
+    {
       :type => "question",
       :subject => "This is a question?",
       :comment => { :value => "Indeed it is!" },

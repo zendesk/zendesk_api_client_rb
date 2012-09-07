@@ -221,14 +221,47 @@ describe ZendeskAPI::Resource do
           end
 
           ZendeskAPI::TestResource.associations.clear
-          ZendeskAPI::TestResource.has :nil, :class => :nil_resource, :inline => true
-
-          subject.nil = { :abc => :def }
-          subject.save_associations
         end
 
-        it "should save param data" do
-          subject.attributes[:nil].should == "TESTDATA"
+        context "true" do
+          before(:each) do
+            ZendeskAPI::TestResource.has :nil, :class => :nil_resource, :inline => true
+
+            subject.nil = { :abc => :def }
+            subject.save_associations
+          end
+
+          it "should save param data" do
+            subject.attributes[:nil].should == "TESTDATA"
+          end
+        end
+
+        context "create" do
+          before(:each) do
+            ZendeskAPI::TestResource.has :nil, :class => :nil_resource, :inline => :create
+            subject.nil = { :abc => :def }
+          end
+
+          context "with a new record" do
+            before(:each) do
+              subject.id = nil
+              subject.save_associations
+            end
+
+            it "should save param data" do
+              subject.attributes[:nil].should == "TESTDATA"
+            end
+          end
+
+          context "with a saved record" do
+            before(:each) do
+              subject.save_associations
+            end
+
+            it "should not save param data" do
+              subject.attributes[:nil].should be_nil
+            end
+          end
         end
       end
     end
