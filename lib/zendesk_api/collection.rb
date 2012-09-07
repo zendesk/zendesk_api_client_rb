@@ -146,7 +146,13 @@ module ZendeskAPI
       end
 
       response = @client.connection.send(@verb || "get", path) do |req|
-        req.params.merge!(@options.delete_if {|k, v| v.nil?})
+        opts = @options.delete_if {|k, v| v.nil?}
+
+        if %w{put post}.include?(@verb.to_s)
+          req.body = opts
+        else
+          req.params.merge!(opts)
+        end
       end
 
       results = response.body[@resource_class.model_key] || response.body["results"]

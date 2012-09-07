@@ -89,7 +89,7 @@ module ZendeskAPI
     has :execution, :class => :view_execution
 
     def self.preview(client, options = {})
-      Zendesk::Collection.new(client, ViewRow, options.merge(:path => "views/preview"))
+      Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
     end
   end
 end
