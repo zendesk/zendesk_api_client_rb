@@ -8,7 +8,8 @@ describe ZendeskAPI::Ticket do
       :comment => { :value => "Indeed it is!" },
       :priority => "normal",
       :requester_id => user.id,
-      :submitter_id => user.id
+      :submitter_id => user.id,
+      :collaborator_ids => [agent.id]
     }
   end
 
@@ -18,7 +19,7 @@ describe ZendeskAPI::Ticket do
   it_should_be_readable :tickets
   it_should_be_readable :tickets, :recent
   it_should_be_readable user, :requested_tickets
-  it_should_be_readable user, :ccd_tickets
+  it_should_be_readable agent, :ccd_tickets
   it_should_be_readable organization, :tickets
 
   describe ".incremental_export" do
