@@ -163,12 +163,18 @@ describe ZendeskAPI::Resource do
         it "should call save on the association" do
           subject.child.foo = "bar"
           subject.child.should_receive(:save)
+
           subject.save
+
+          subject.instance_variable_get(:@child).should be_nil
         end
 
         it "should not call save on the association if they are synced" do
           subject.child.should_not_receive(:save)
+
           subject.save
+
+          subject.instance_variable_get(:@child).should be_nil
         end
       end
 
@@ -186,24 +192,28 @@ describe ZendeskAPI::Resource do
           subject.children_ids = [1]
           subject.save
           subject.children_ids.should == [2,3]
+          subject.instance_variable_get(:@children).should be_nil
         end
 
         it "should not save the associated objects when there are no changes" do
           subject.children = [2]
           subject.children.first.should_not_receive(:save)
           subject.save
+          subject.instance_variable_get(:@children).should be_nil
         end
 
         it "should save the associated objects when it is new" do
           subject.children = [{:foo => "bar"}]
           subject.children.first.should_receive(:save)
           subject.save
+          subject.instance_variable_get(:@children).should be_nil
         end
 
         it "should not save the associated objects when it is set via full hash" do
           subject.children = [{:id => 1, :foo => "bar"}]
           subject.children.first.should_not_receive(:save)
           subject.save
+          subject.instance_variable_get(:@children).should be_nil
         end
 
         it "should save the associated objects when it is changes" do
@@ -211,6 +221,7 @@ describe ZendeskAPI::Resource do
           subject.children.first.foo = "bar"
           subject.children.first.should_receive(:save)
           subject.save
+          subject.instance_variable_get(:@children).should be_nil
         end
       end
 
