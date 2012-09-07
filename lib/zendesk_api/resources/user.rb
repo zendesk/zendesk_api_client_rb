@@ -20,6 +20,8 @@ module ZendeskAPI
     has :organization
     has :custom_role
     has_many :identities
+
+    has_many :requests
     has_many :requested_tickets, :class => :ticket, :path => 'tickets/requested'
     has_many :ccd_tickets, :class => :ticket, :path => 'tickets/ccd'
 

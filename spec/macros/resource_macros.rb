@@ -70,11 +70,11 @@ module ResourceMacros
         end 
       end
 
-      after(:all, :if => metadata[:delete_after]) do
+      after(:all) do
         VCR.use_cassette("#{described_class.to_s}_update_delete") do
           @object.destroy
         end
-      end
+      end if metadata[:delete_after]
     end
   end
 
