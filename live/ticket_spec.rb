@@ -17,10 +17,21 @@ describe ZendeskAPI::Ticket do
   it_should_be_updatable :subject
   it_should_be_deletable
   it_should_be_readable :tickets
-  it_should_be_readable :tickets, :recent
   it_should_be_readable user, :requested_tickets
   it_should_be_readable agent, :ccd_tickets
   it_should_be_readable organization, :tickets
+
+  context "recent tickets" do
+    before(:each) do
+      VCR.use_cassette("visit_recent_ticket") do
+        client.connection.get("/tickets/#{@object.id}") do |req|
+          req.headers[:Accept] = "*/*"
+        end
+      end
+    end
+
+    it_should_be_readable :tickets, :recent, :create => true
+  end
 
   describe ".incremental_export" do
     let(:results){ ZendeskAPI::Ticket.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
