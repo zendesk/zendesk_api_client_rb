@@ -12,6 +12,8 @@ group :console do
   gem "haml"
   gem "compass"
   gem "debugger"
+  # Sytax highlight
+  # gem "coderay"
 end
 
 
