@@ -127,7 +127,11 @@ module ZendeskAPI
     def build_connection
       Faraday.new(config.options) do |builder|
         # response
-        builder.use Faraday::Request::BasicAuthentication, config.username, config.password
+        if config.password == nil && config.token != nil
+          builder.use Faraday::Request::BasicAuthentication, "#{config.username}/token", config.token
+        else  
+          builder.use Faraday::Request::BasicAuthentication, config.username, config.password
+        end
         builder.use Faraday::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use Faraday::Response::Logger, config.logger if config.logger
