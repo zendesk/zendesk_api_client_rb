@@ -6,6 +6,9 @@ module ZendeskAPI
     # @return [String] The basic auth password.
     attr_accessor :password
 
+    # @return [String] The basic auth token.
+    attr_accessor :token
+
     # @return [String] The API url. Must be https unless {#allow_http} is set.
     attr_accessor :url
 

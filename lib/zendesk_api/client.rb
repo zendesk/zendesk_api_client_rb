@@ -77,6 +77,11 @@ module ZendeskAPI
 
       config.retry = !!config.retry # nil -> false
 
+      if config.token && !config.password
+        config.password = config.token
+        config.username += "/token" unless config.username.end_with?("/token")
+      end
+
       if config.logger.nil? || config.logger == true
         require 'logger'
         config.logger = Logger.new($stderr)

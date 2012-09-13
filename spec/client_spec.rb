@@ -39,6 +39,40 @@ describe ZendeskAPI::Client do
       end
     end
 
+    context "#token" do
+      context "with a username with /token" do
+        subject do
+          ZendeskAPI::Client.new do |config|
+            config.url = "https://example.zendesk.com"
+            config.username = "hello/token"
+            config.token = "token"
+          end.config
+        end
+
+        it "should not add /token to the username" do
+          subject.username.should == "hello/token"
+        end
+      end
+
+      context "with no password" do
+        subject do
+          ZendeskAPI::Client.new do |config|
+            config.url = "https://example.zendesk.com"
+            config.username = "hello"
+            config.token = "token"
+          end.config
+        end
+
+        it "should copy token to password" do
+          subject.token.should == subject.password
+        end
+
+        it "should add /token to the username" do
+          subject.username.should == "hello/token"
+        end
+      end
+    end
+
     context "#logger" do
       before(:each) do
         @client = ZendeskAPI::Client.new do |config| 
