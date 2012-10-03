@@ -11,21 +11,10 @@
       .navbar-inner
         .container
           %a.brand{:href => url('/')} Zendesk API Client
-          - if session[:client]
-            %form.pull-right{:action => "/client", :method => "post", :style => "margin: 0;"}
-              %input{:name => "_method", :type => "hidden", :value => "delete"}
-              %input.btn{:name => "submit", :type => "submit", :value => "Clear Session"}
 
     .container-fluid
       .row-fluid
         .span2
           = haml :sidebar
         .span10
-          = haml :credentials
-
-          - if session[:client]
-            = yield
-            = yield_content :with_client
-          - else
-            :javascript
-              $(document).ready(credentials_modal);
+          = yield

@@ -1,6 +1,4 @@
 %ul.nav.nav-list.well
   %li.nav.nav-header
     %a{:href => url("/")} Home
-  - readable_resources.each do |resource|
-    %li{:class => @resource == resource ? "active" : ""}
-      %a{:href => url(resource.resource_name)}= resource.resource_name
+    %a{:href => url("http://developer.zendesk.com")} Documentation

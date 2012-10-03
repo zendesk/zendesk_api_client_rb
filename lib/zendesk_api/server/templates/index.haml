@@ -1,2 +1,66 @@
-%a{:href => "/help"} Help!
-%a{:href => "http://developer.zendesk.com/"} Where am I?
+%h1 Make an API Request
+
+%form.form{:method => :post}
+  %input.input-xlarge{:id => "username", :name => "username", :placeholder => "username"}
+  %input.input-xlarge{:id => "password", :name => "password", :placeholder => "password / token", :type => "password"}
+
+  %br
+
+  https://
+  %input{:name => "url", :type => "text"}
+  \.zendesk.com/api/v2/
+  %select{:name => "resource"}
+    - readable_resources.each do |resource|
+      %option{:value => resource.resource_name}= resource.resource_name
+
+  %br
+
+  %select{:id => "method", :name => "method"}
+    %option{:value => "GET"} GET
+    %option{:value => "POST"} POST
+    %option{:value => "PUT"} PUT
+    %option{:value => "DELETE"} DELETE
+
+  %br
+
+  %p#error
+  %textarea#json.hide{:name => "json"}
+    { "": "" }
+
+  %input{:type => :submit}
+
+- if @html_request
+  %div.code
+    %pre= @html_request
+
+- if @html_response
+  %div.code
+    %pre= @html_response
+
+:javascript
+  $('#json').keydown(function() {
+    $('#error').html('');
+  });
+
+  $('#json').keyup(function() {
+    var value = $('#json').val();
+
+    if(value == '')
+      return;
+
+    try {
+      JSON.parse(value);
+    } catch(e) {
+      $('#error').html("There was an error with your JSON syntax. " + e.message);
+    }
+  });
+
+  $('#method').change(function() {
+    var method = $(this).val();
+
+    if(method == "POST" || method == "PUT") {
+      $('#json').show();
+    } else {
+      $('#json').hide();
+    }
+  });

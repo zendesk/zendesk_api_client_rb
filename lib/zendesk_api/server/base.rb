@@ -1,9 +1,11 @@
 require 'sinatra/base'
 require 'sinatra/content_for'
+require 'sinatra/reloader'
 
 require 'optparse'
 require 'compass'
 require 'haml'
+require 'coderay'
 
 require 'zendesk_api'
 require 'zendesk_api/console/extensions'
@@ -94,7 +96,7 @@ module ZendeskAPI
         end
       end
 
-      def setup_client(params = {})
+      def client(params = params)
         ZendeskAPI::Client.new do |c|
           params.each do |key, value|
             value = "https://#{value}.zendesk.com/api/v2/" if key == 'url'
@@ -102,14 +104,6 @@ module ZendeskAPI
           end
 
           c.allow_http = true if App.development?
-        end
-      end
-
-      def client
-        begin
-          setup_client(session[:client])
-        rescue => e
-          session[:client] = nil
         end
       end
 
@@ -132,59 +126,45 @@ module ZendeskAPI
         haml :index, :format => :html5
       end
 
-      delete '/client' do
-        session[:client] = nil
-        redirect '/'
-      end
+      post '/' do
+        method = (params.delete("method") || "get").downcase.to_sym
+        resource = params.delete("resource")
+        json = params.delete("json")
 
-      post '/client' do
-        begin
-          setup_client(params)
-        rescue => e
-          status 422
-          body e.message
+        collection = client.send(resource)
+
+        response = case method
+        when :get
+          json.clear if json
+          collection.fetch
+          collection.response
         else
-          session[:client] = params.dup.tap do |p|
-            p.default = nil # Rack can't dump a hash with a default
-          end
-
-          status 200
-        end
-      end
-
-      Helpers.readable_resources.each do |resource|
-        get "/#{resource.resource_name}" do
-          @resource = resource
-          @collection = ZendeskAPI::Collection.new(client, resource, params)
-          haml :collection, :format => :html5
         end
 
-        get "/#{resource.resource_name}/:id" do
-          @klass = resource
-          haml :resource, :format => :html5
+        puts response.inspect
+
+        headers = response.env[:request_headers].map {|k,v| "#{k} #{v}"}.join("\n")
+        @html_request = <<-END
+HTTP/1.1 #{method.to_s.upcase} #{response.env[:url]}
+#{headers}
+        END
+
+        if json && !json.empty?
+          json = CodeRay.scan(json, :json).span
+          @html_request << "\n\n#{json}"
         end
 
-        put "/#{resource.resource_name}/:id" do |id|
-          @klass = resource
-          @resource = resource.find(client, :id => id)
-          @resource.attributes.merge!(params[resource.singular_resource_name])
+        headers = response.env[:response_headers].map {|k,v| "#{k} #{v}"}.join("\n")
 
-          @json_request =<<-EOF
-#{client_headers.join("\n")}
+        @html_response =<<-END
+HTTP/1.1 #{response.env[:status]}
+#{headers}
 
-#{JSON.pretty_generate(@resource.attributes)}
-          EOF
 
-          @success = @resource.save
+#{CodeRay.scan(response.body, :ruby).span}
+        END
 
-          @json_response =<<-EOF
-#{response_headers.join("\n")}
-
-#{JSON.pretty_generate(@resource.response.body)}
-          EOF
-
-          haml :resource, :format => :html5
-        end
+        haml :index, :format => :html5
       end
 
       OptionParser.new {|op|
