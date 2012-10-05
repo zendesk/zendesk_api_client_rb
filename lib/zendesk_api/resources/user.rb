@@ -17,8 +17,19 @@ module ZendeskAPI
       put :request_verification
     end
 
+    def initialize(*)
+      super
+
+      # Needed for side-loading to work
+      self.role_id = role.id if self.key?(:role)
+    end
+
     has :organization
-    has :custom_role
+
+    has :custom_role, :include => :roles
+    has :role, :inline => true, :include_key => :name
+    has :ability, :inline => true
+
     has_many :identities
 
     has_many :requests
@@ -39,7 +50,9 @@ module ZendeskAPI
   end
 
   class Organization < Resource
+    has :ability, :inline => true
     has :group
+
     has_many :tickets
     has_many :users
   end

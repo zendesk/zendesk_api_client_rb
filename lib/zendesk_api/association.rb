@@ -48,7 +48,55 @@ module ZendeskAPI
       namespace.join("/")
     end
 
+    def side_load(resources, side_loads)
+      key = "#{options.name}_id"
+      plural_key = "#{options.name.to_s.singular}_ids"
+
+      resources.each do |resource|
+        if resource.key?(plural_key) # Grab associations from child_ids field on resource
+          ids = resource.send(plural_key)
+
+          resource.send("#{options.name}=", _side_load(resource, side_loads.select {|side_load|
+            ids.include?(side_load[options.include_key])
+          }))
+        elsif resource.key?(key) || options.singular
+        # Either grab association from child_id field on resource or parent_id on child resource
+          if resource.key?(key)
+            id = resource.send(key)
+            key = options.include_key
+          else
+            id = resource.id
+            key = "#{resource.class.singular_resource_name}_id"
+          end
+
+          next unless id
+
+          side_load = side_loads.detect do |side_load|
+            id == side_load[key]
+          end
+
+          resource.send("#{options.name}=", side_load) if side_load
+        else # Grab associations from parent_id field from multiple child resources
+          key = "#{resource.class.singular_resource_name}_id"
+
+          resource.send("#{options.name}=", _side_load(resource, side_loads.select {|side_load|
+            side_load[key] == resource.id
+          }))
+        end
+      end
+    end
+
     private
+
+    def _side_load(resource, side_loads)
+      side_loads.map! do |side_load|
+        resource.send(:wrap_resource, side_load, options[:class], options)
+      end
+
+      ZendeskAPI::Collection.new(resource.client, options[:class]).tap do |collection|
+        collection.replace(side_loads)
+      end
+    end
 
     def build_parent_namespace(parent_class, instance, options, original_options)
       return unless association_on_parent = parent_class.associations.detect {|a| a[:class] == @options[:class] }
@@ -110,7 +158,17 @@ module ZendeskAPI
       include Rescue
 
       def associations
-        @assocations ||= []
+        @associations ||= []
+      end
+
+      def associated_with(name)
+        associations.inject([]) do |associated_with, association|
+          if association[:include] == name.to_s
+            associated_with.push(Association.new(association))
+          end
+
+          associated_with
+        end
       end
 
       # Represents a parent-to-child association between resources. Options to pass in are: class, path.
@@ -118,13 +176,19 @@ module ZendeskAPI
       # @param [Hash] opts The options to pass to the method definition.
       def has(resource_name, class_level_options = {})
         klass = get_class(class_level_options.delete(:class)) || get_class(resource_name)
+
         class_level_association = {
           :class => klass,
           :name => resource_name,
           :inline => class_level_options.delete(:inline),
-          :path => class_level_options.delete(:path)
+          :path => class_level_options.delete(:path),
+          :include => (class_level_options.delete(:include) || klass.resource_name).to_s,
+          :include_key => (class_level_options.delete(:include_key) || :id).to_s,
+          :singular => true
         }
+
         associations << class_level_association
+
         id_column = "#{resource_name}_id"
 
         define_method "#{resource_name}_used?" do
@@ -167,12 +231,17 @@ module ZendeskAPI
       # @param [Hash] opts The options to pass to the method definition.
       def has_many(resource_name, class_level_opts = {})
         klass = get_class(class_level_opts.delete(:class)) || get_class(resource_name.to_s.singular)
+
         class_level_association = {
           :class => klass,
           :name => resource_name,
           :inline => class_level_opts.delete(:inline),
-          :path => class_level_opts.delete(:path)
+          :path => class_level_opts.delete(:path),
+          :include => (class_level_opts.delete(:include) || klass.resource_name).to_s,
+          :include_key => (class_level_opts.delete(:include_key) || :id).to_s,
+          :singular => false
         }
+
         associations << class_level_association
 
         id_column = "#{resource_name}_ids"

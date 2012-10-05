@@ -3,6 +3,7 @@ require 'faraday_middleware'
 
 require 'zendesk_api/version'
 require 'zendesk_api/rescue'
+require 'zendesk_api/sideloading'
 require 'zendesk_api/configuration'
 require 'zendesk_api/collection'
 require 'zendesk_api/lru_cache'

@@ -8,12 +8,17 @@ module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
-    SPECIALLY_JOINED_PARAMS = [:include, :ids, :only]
+    include ZendeskAPI::Sideloading
+
+    SPECIALLY_JOINED_PARAMS = [:ids, :only]
 
     include Rescue
 
     # @return [ZendeskAPI::Association] The class association
     attr_reader :association
+
+    # @return [Faraday::Response] The last response
+    attr_reader :response
 
     # Creates a new Collection instance. Does not fetch resources.
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
@@ -41,6 +46,7 @@ module ZendeskAPI
       @collection_path ||= [@resource]
       @resource_class = resource
       @fetchable = true
+      @includes = Array(@options.delete(:include))
 
       # Used for Attachments, TicketComment
       if @resource_class.superclass == ZendeskAPI::Data
@@ -112,6 +118,10 @@ module ZendeskAPI
       self
     end
 
+    def include(*sideloads)
+      self.tap { @includes.concat(sideloads.map(&:to_s)) }
+    end
+
     def <<(item)
       fetch
       if item.is_a?(Resource)
@@ -134,6 +144,7 @@ module ZendeskAPI
     # @param [Boolean] reload Whether to disregard cache
     def fetch(reload = false)
       return @resources if @resources && (!@fetchable || !reload)
+
       if association && association.options.parent && association.options.parent.new_record?
         return @resources = []
       end
@@ -145,8 +156,10 @@ module ZendeskAPI
         path = self.path
       end
 
-      response = @client.connection.send(@verb || "get", path) do |req|
+      @response = @client.connection.send(@verb || "get", path) do |req|
         opts = @options.delete_if {|k, v| v.nil?}
+
+        req.params.merge!(:include => @includes.join(",")) if @includes.any?
 
         if %w{put post}.include?(@verb.to_s)
           req.body = opts
@@ -155,20 +168,28 @@ module ZendeskAPI
         end
       end
 
-      results = response.body[@resource_class.model_key] || response.body["results"]
-      @resources = results.map { |res| @resource_class.new(@client, res) }
+      body = @response.body.dup
 
-      @count = (response.body["count"] || @resources.size).to_i
-      @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]
+      results = body.delete(@resource_class.model_key) || body.delete("results")
+      @resources = results.map {|res| @resource_class.new(@client, res)}
+
+      set_page_and_count(body)
+      set_includes(@resources, @includes, body)
+
+      @resources
+    end
+
+    def set_page_and_count(body)
+      @count = (body["count"] || @resources.size).to_i
+      @next_page, @prev_page = body["next_page"], body["previous_page"]
 
       if @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
         @options["page"] = $1.to_i + 1
       end
-
-      @resources
     end
+
 
     rescue_client_error :fetch, :with => lambda { Array.new }
 

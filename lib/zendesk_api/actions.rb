@@ -56,7 +56,6 @@ module ZendeskAPI
           self.send("#{association_name}=", association) # set id/ids columns
         end
 
-
         if association_data[:inline] == true || inline_creation
           attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
         end
@@ -66,6 +65,10 @@ module ZendeskAPI
 
   module Read
     include Rescue
+
+    def self.extended(klass)
+      klass.send(:include, ZendeskAPI::Sideloading)
+    end
 
     # Finds a resource by an id and any options passed in.
     # A custom path to search at can be passed into opts. It defaults to the {DataResource.resource_name} of the class. 
@@ -77,11 +80,16 @@ module ZendeskAPI
       raise ArgumentError, "No :id given" unless options[:id] || options["id"] || ancestors.include?(SingularResource)
       association = options.delete(:association) || Association.new(:class => self)
 
+      includes = Array(options[:include])
+      options[:include] = includes.join(",") if includes.any?
+
       response = client.connection.get(association.generate_path(options)) do |req|
         req.params = options
       end
 
-      new(client, response.body[singular_resource_name])
+      new(client, response.body[singular_resource_name]).tap do |resource|
+        resource.set_includes(resource, includes, response.body)
+      end
     end
 
     rescue_client_error :find

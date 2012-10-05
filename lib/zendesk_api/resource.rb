@@ -71,6 +71,13 @@ module ZendeskAPI
       id.nil?
     end
 
+    def loaded_associations
+      self.class.associations.select do |association|
+        loaded = @attributes.method_missing(association[:name])
+        loaded && !(loaded.respond_to?(:empty?) && loaded.empty?)
+      end
+    end
+
     # Returns the path to the resource
     def path(*args)
       @association.generate_path(self, *args)

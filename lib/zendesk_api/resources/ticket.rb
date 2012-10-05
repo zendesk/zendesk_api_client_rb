@@ -14,6 +14,7 @@ module ZendeskAPI
     include Save
 
     has_many :uploads, :class => :attachment, :inline => true
+    has :author, :class => :user
 
     def save
       save_associations
@@ -40,6 +41,7 @@ module ZendeskAPI
     has :organization
 
     has :comment, :class => :ticket_comment, :inline => true
+    has :last_comment, :class => :ticket_comment, :inline => true
 
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used

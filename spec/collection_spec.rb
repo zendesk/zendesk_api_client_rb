@@ -401,6 +401,149 @@ describe ZendeskAPI::Collection do
     end
   end
 
+  context "side loading" do
+    before(:each) do
+      subject.include(:nil_resources)
+    end
+
+    context "singular id on resource" do
+      before(:each) do
+        ZendeskAPI::TestResource.has :nil_resource
+
+        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
+          :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
+          :nil_resources => [{ :id => 1, :name => :bye }, { :id => 4, :name => :hi }]
+        ))
+
+        subject.fetch(true)
+
+        @resource = subject.detect {|res| res.id == 1}
+      end
+
+      it "should side load nil_resources" do
+        @resource.nil_resource.should_not be_nil
+      end
+
+      it "should side load the correct nil_resource" do
+        @resource.nil_resource.name.should == "hi"
+      end
+    end
+
+    context "plural ids on resource" do
+      before(:each) do
+        ZendeskAPI::TestResource.has_many :nil_resources
+
+        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
+          :test_resources => [{ :id => 1, :nil_resource_ids => [1, 4] }],
+          :nil_resources => [{ :id => 1, :name => :hi }, { :id => 4, :name => :hello }, { :id => 5, :name => :goodbye }]
+        ))
+
+        subject.fetch(true)
+
+        @resource = subject.detect {|res| res.id == 1}
+      end
+
+      it "should side load nil_resources" do
+        @resource.nil_resources.should_not be_empty
+      end
+
+      it "should side load the correct nil_resources" do
+        @resource.nil_resources.map(&:name).should == %w{hi hello}
+      end
+    end
+
+    context "ids in side load" do
+      before(:each) do
+        ZendeskAPI::TestResource.has_many :nil_resources
+
+        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
+          :test_resources => [{ :id => 1 }],
+          :nil_resources => [{ :id => 1, :test_resource_id => 2 }, { :id => 2, :test_resource_id => 1 }, { :id => 4, :test_resource_id => 1 }]
+        ))
+
+        subject.fetch(true)
+        @resource = subject.detect {|res| res.id == 1}
+      end
+
+      it "should side load nil_resources" do
+        @resource.nil_resources.should_not be_empty
+      end
+
+      it "should side load the correct nil_resources" do
+        @resource.nil_resources.map(&:id).should == [2, 4]
+      end
+    end
+
+    context "id in side load" do
+      before(:each) do
+        ZendeskAPI::TestResource.has :nil_resource
+
+        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
+          :test_resources => [{ :id => 1 }],
+          :nil_resources => [{ :id => 1, :test_resource_id => 2 }, { :id => 2, :test_resource_id => 1 }]
+        ))
+
+        subject.fetch(true)
+        @resource = subject.detect {|res| res.id == 1}
+      end
+
+      it "should side load nil_resources" do
+        @resource.nil_resource.should_not be_nil
+      end
+
+      it "should side load the correct nil_resources" do
+        @resource.nil_resource.id.should == 2
+      end
+    end
+
+    context "with name as key" do
+      before(:each) do
+        ZendeskAPI::TestResource.has :nil_resource, :include_key => :name
+
+        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
+          :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
+          :nil_resources => [{ :name => 1 }, { :name => 4 }]
+        ))
+
+        subject.fetch(true)
+
+        @resource = subject.detect {|res| res.id == 1}
+      end
+
+      it "should side load nil_resources" do
+        @resource.nil_resource.should_not be_nil
+      end
+
+      it "should side load the correct nil_resource" do
+        @resource.nil_resource.name.should == 4
+      end
+    end
+
+    context "sub-loading" do
+      before(:each) do
+        ZendeskAPI::TestResource.has :test_child
+        ZendeskAPI::TestResource::TestChild.has :nil_resource
+
+        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
+          :test_resources => [{ :id => 1, :test_child => { :nil_resource_id => 4 } }],
+          :nil_resources => [{ :id => 1 }, { :id => 4 }]
+        ))
+
+        subject.fetch(true)
+
+        @resource = subject.detect {|res| res.id == 1}.test_child
+      end
+
+      it "should side load nil_resources" do
+        @resource.nil_resource.should_not be_nil
+      end
+
+      it "should side load the correct nil_resource" do
+        @resource.nil_resource.id.should == 4
+      end
+    end
+  end
+
   context "method missing" do
     before(:each) { subject.stub(:fetch).and_return([1, 2, nil, 3]) }
 
