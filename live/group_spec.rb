@@ -22,7 +22,6 @@ describe ZendeskAPI::Group, :delete_after do
     after(:each) do
       VCR.use_cassette("read_ZendeskAPI::User_groups_delete") do
         @object.destroy
-        @membership.destroy
       end
     end
 
