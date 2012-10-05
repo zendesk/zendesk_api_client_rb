@@ -231,7 +231,7 @@ module ZendeskAPI
 
         begin
           const_get(res)
-        rescue NameError
+        rescue NameError, ArgumentError # ruby raises NameError, rails raises ArgumentError
           ZendeskAPI.get_class(resource)
         end
       end
