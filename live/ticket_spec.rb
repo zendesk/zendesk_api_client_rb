@@ -23,14 +23,12 @@ describe ZendeskAPI::Ticket do
 
   context "recent tickets" do
     before(:each) do
-      VCR.use_cassette("visit_recent_ticket") do
-        client.connection.get("/tickets/#{@object.id}") do |req|
-          req.headers[:Accept] = "*/*"
-        end
+      client.connection.get("/tickets/#{@object.id}") do |req|
+        req.headers[:Accept] = "*/*"
       end
     end
 
-    it_should_be_readable :tickets, :recent, :create => true
+    it_should_be_readable :tickets, :recent
   end
 
   describe ".incremental_export" do
