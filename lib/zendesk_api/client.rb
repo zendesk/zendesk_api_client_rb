@@ -31,7 +31,7 @@ module ZendeskAPI
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
       return instance_variable_get("@#{method}") if !options.delete(:reload) && instance_variable_defined?("@#{method}")
-      instance_variable_set("@#{method}", ZendeskAPI::Collection.new(self, ZendeskAPI.get_class(method.singular), options))
+      instance_variable_set("@#{method}", ZendeskAPI::Collection.new(self, ZendeskAPI.get_class(Inflection.singular(method)), options))
     end
 
     # Plays a view playlist.

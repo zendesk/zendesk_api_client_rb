@@ -1,3 +1,5 @@
+require 'zendesk_api/helpers'
+
 module ZendeskAPI
   # Represents an association between two resources 
   class Association
@@ -50,7 +52,7 @@ module ZendeskAPI
 
     def side_load(resources, side_loads)
       key = "#{options.name}_id"
-      plural_key = "#{options.name.to_s.singular}_ids"
+      plural_key = "#{Inflection.singular options.name.to_s}_ids"
 
       resources.each do |resource|
         if resource.key?(plural_key) # Grab associations from child_ids field on resource
@@ -230,7 +232,7 @@ module ZendeskAPI
       # @param [Symbol] resource The underlying resource name
       # @param [Hash] opts The options to pass to the method definition.
       def has_many(resource_name, class_level_opts = {})
-        klass = get_class(class_level_opts.delete(:class)) || get_class(resource_name.to_s.singular)
+        klass = get_class(class_level_opts.delete(:class)) || get_class(Inflection.singular(resource_name.to_s))
 
         class_level_association = {
           :class => klass,
@@ -259,7 +261,7 @@ module ZendeskAPI
 
           # find and cache association
           instance_association = Association.new(class_level_association.merge(:parent => self))
-          singular_resource_name = resource_name.to_s.singular
+          singular_resource_name = Inflection.singular(resource_name.to_s)
 
           resources = if (ids = method_missing("#{singular_resource_name}_ids")) && ids.any?
             ids.map do |id|
@@ -296,7 +298,7 @@ module ZendeskAPI
       # reopened under a different superclass, an error will be thrown
       def get_class(resource)
         return false if resource.nil?
-        res = resource.to_s.modulize
+        res = ZendeskAPI::Helpers.modulize_string(resource.to_s)
 
         begin
           const_get(res)
@@ -318,7 +320,7 @@ module ZendeskAPI
     # reopened under a different superclass, an error will be thrown
     def get_class(resource)
       return false if resource.nil?
-      res = resource.to_s.modulize.split("::")
+      res = ZendeskAPI::Helpers.modulize_string(resource.to_s).split("::")
 
       begin
         res[1..-1].inject(ZendeskAPI.const_get(res[0])) do |iter, k|
