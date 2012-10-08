@@ -1,3 +1,4 @@
+require 'zendesk_api/helpers'
 require 'zendesk_api/trackie'
 require 'zendesk_api/actions'
 require 'zendesk_api/association'
@@ -12,12 +13,12 @@ module ZendeskAPI
     class << self
       # The singular resource name taken from the class name (e.g. ZendeskAPI::Ticket -> ticket)
       def singular_resource_name
-        @singular_resource_name ||= to_s.split("::").last.snakecase
+        @singular_resource_name ||= ZendeskAPI::Helpers.snakecase_string(to_s.split("::").last)
       end
 
       # The resource name taken from the class name (e.g. ZendeskAPI::Ticket -> tickets)
       def resource_name
-        @resource_name ||= singular_resource_name.plural
+        @resource_name ||= Inflection.plural(singular_resource_name)
       end
 
       alias :model_key :resource_name
