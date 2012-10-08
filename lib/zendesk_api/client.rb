@@ -35,12 +35,6 @@ module ZendeskAPI
       instance_variable_set("@#{method}", ZendeskAPI::Collection.new(self, ZendeskAPI.get_class(Inflection.singular(method)), options))
     end
 
-    # Plays a view playlist.
-    # @param [String/Number] id View id or 'incoming'
-    def play(id)
-      ZendeskAPI::Playlist.new(self, id)
-    end
-
     # Returns the current user (aka me)
     # @return [ZendeskAPI::User] Current user or nil
     def current_user(reload = false)

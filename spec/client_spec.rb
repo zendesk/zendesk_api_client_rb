@@ -159,19 +159,6 @@ describe ZendeskAPI::Client do
     end
   end
 
-  context "#play" do
-    # TODO may be able to be replaced by VCR
-    before(:each) do 
-      stub_request(:get, %r{play}).to_return do
-        { :status => 302 }
-      end
-    end
-
-    it "should return an instance of ZendeskAPI::Playlist" do
-      subject.play(1).should be_instance_of(ZendeskAPI::Playlist)
-    end
-  end
-
   it "can be subclassed" do
     client = SimpleClient.new do |config|
       config.allow_http = true
