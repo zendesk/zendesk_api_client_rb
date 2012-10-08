@@ -14,6 +14,7 @@ require 'zendesk_api/middleware/response/callback'
 require 'zendesk_api/middleware/response/deflate'
 require 'zendesk_api/middleware/response/gzip'
 require 'zendesk_api/middleware/response/parse_iso_dates'
+require 'zendesk_api/middleware/response/logger'
 
 module ZendeskAPI
   class Client
@@ -136,7 +137,7 @@ module ZendeskAPI
         builder.use Faraday::Request::BasicAuthentication, config.username, config.password
         builder.use Faraday::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
-        builder.use Faraday::Response::Logger, config.logger if config.logger
+        builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.response :json, :content_type => 'application/json'
         builder.use ZendeskAPI::Middleware::Response::Gzip
