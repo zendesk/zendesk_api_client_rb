@@ -87,7 +87,7 @@ describe ZendeskAPI::Client do
         subject { true }
 
         it "should log in faraday" do
-          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
+          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
         end
 
         context "with a request" do
@@ -102,7 +102,7 @@ describe ZendeskAPI::Client do
         subject { false }
 
         it "should not log" do
-          @client.connection.builder.handlers.should_not include(Faraday::Response::Logger)
+          @client.connection.builder.handlers.should_not include(ZendeskAPI::Middleware::Response::Logger)
         end
       end
 
@@ -110,7 +110,7 @@ describe ZendeskAPI::Client do
         subject { nil }
 
         it "should log" do
-          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
+          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
         end
       end
 
@@ -119,7 +119,7 @@ describe ZendeskAPI::Client do
         subject { Logger.new(out) }
         
         it "should log" do
-          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
+          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
         end
 
         context "with a request" do
