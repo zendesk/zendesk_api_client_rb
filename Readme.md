@@ -178,11 +178,6 @@ ticket.comment.uploads << File.new("img.jpg")
 ticket.save
 ```
 
-## TODO
-
-* Search class detection
-* Live Testing
-
 ## Note on Patches/Pull Requests
 1. Fork the project.
 2. Make your feature addition or bug fix.

@@ -54,7 +54,20 @@ module ZendeskAPI
   class Bookmark < Resource; end
   class Macro < DataResource; end
 
-  class Search < DataResource
+  module Search
+    class Result < Data; end
+
+    def self.new(client, attributes)
+      result_type = attributes["result_type"]
+
+      if result_type
+        result_type = ZendeskAPI::Helpers.modulize_string(result_type)
+        klass = ZendeskAPI.const_get(result_type) rescue nil
+      end
+
+      (klass || Result).new(client, attributes)
+    end
+
     def self.resource_name
       "search"
     end
