@@ -328,6 +328,15 @@ describe ZendeskAPI::Resource do
     end
   end
 
+  context "#to_json" do
+    subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+
+    it "should call #to_json on @attributes" do
+      subject.attributes.should_receive(:to_json)
+      subject.to_json
+    end
+  end
+
   context "#==" do
     it "is same when id is same" do
       ZendeskAPI::TestResource.new(client, :id => 1, "bar" => "baz").should == ZendeskAPI::TestResource.new(client, :id => 1, "foo" => "bar")

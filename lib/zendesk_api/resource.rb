@@ -84,6 +84,10 @@ module ZendeskAPI
       @association.generate_path(self, *args)
     end
 
+    def to_json(*args)
+      method_missing(:to_json, *args)
+    end
+
     def to_s
       "#{self.class.singular_resource_name}: #{attributes.inspect}"
     end
