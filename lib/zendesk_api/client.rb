@@ -32,7 +32,7 @@ module ZendeskAPI
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
       return instance_variable_get("@#{method}") if !options.delete(:reload) && instance_variable_defined?("@#{method}")
-      instance_variable_set("@#{method}", ZendeskAPI::Collection.new(self, ZendeskAPI.get_class(Inflection.singular(method)), options))
+      instance_variable_set("@#{method}", ZendeskAPI::Collection.new(self, ZendeskAPI.const_get(ZendeskAPI::Helpers.modulize_string(Inflection.singular(method))), options))
     end
 
     # Returns the current user (aka me)
@@ -111,7 +111,9 @@ module ZendeskAPI
 
     # show a nice warning for people using the old style api
     def self.check_deprecated_namespace_usage(attributes, name)
-      raise "un-nest '#{name}' from the attributes" if attributes[name].is_a?(Hash)
+      if attributes[name].is_a?(Hash)
+        raise "un-nest '#{name}' from the attributes"
+      end
     end
 
     protected

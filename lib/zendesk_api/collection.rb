@@ -1,7 +1,5 @@
 require 'zendesk_api/resource'
-require 'zendesk_api/resources/misc'
-require 'zendesk_api/resources/ticket'
-require 'zendesk_api/resources/user'
+require 'zendesk_api/resources'
 
 module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't

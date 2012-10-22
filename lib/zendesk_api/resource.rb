@@ -50,7 +50,10 @@ module ZendeskAPI
       @association = attributes.delete(:association) || Association.new(:class => self.class)
       @client = client
       @attributes = ZendeskAPI::Trackie.new(attributes)
-      ZendeskAPI::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
+
+      if self.class.associations.none? {|a| a[:name] == self.class.singular_resource_name}
+        ZendeskAPI::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
+      end
 
       @attributes.clear_changes unless new_record?
     end

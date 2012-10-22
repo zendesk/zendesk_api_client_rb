@@ -114,8 +114,8 @@ describe ZendeskAPI::Resource do
     context "with unused associations" do
       before do
         ZendeskAPI::TestResource.associations.clear
-        ZendeskAPI::TestResource.has :child, :class => :test_child
-        ZendeskAPI::TestResource.has_many :children, :class => :test_child
+        ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
+        ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
       end
 
       it "should not touch them" do
@@ -155,7 +155,7 @@ describe ZendeskAPI::Resource do
       context "has" do
         before(:each) do
           ZendeskAPI::TestResource.associations.clear
-          ZendeskAPI::TestResource.has :child, :class => :test_child
+          ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
           stub_json_request(:put, %r{test_resources})
           subject.child = { :id => 2 }
         end
@@ -181,7 +181,7 @@ describe ZendeskAPI::Resource do
       context "has_many" do
         before(:each) do
           ZendeskAPI::TestResource.associations.clear
-          ZendeskAPI::TestResource.has_many :children, :class => :test_child
+          ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
 
           stub_json_request(:put, %r{test_resources})
           stub_json_request(:get, %r{children}, json(:test_children => []))
@@ -236,7 +236,7 @@ describe ZendeskAPI::Resource do
 
         context "true" do
           before(:each) do
-            ZendeskAPI::TestResource.has :nil, :class => :nil_resource, :inline => true
+            ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => true
 
             subject.nil = { :abc => :def }
             subject.save_associations
@@ -249,7 +249,7 @@ describe ZendeskAPI::Resource do
 
         context "create" do
           before(:each) do
-            ZendeskAPI::TestResource.has :nil, :class => :nil_resource, :inline => :create
+            ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => :create
             subject.nil = { :abc => :def }
           end
 
