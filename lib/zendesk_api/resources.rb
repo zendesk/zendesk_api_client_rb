@@ -44,6 +44,7 @@ module ZendeskAPI
     include Create
 
     only_send_unnested_params
+
     has_many Attachment
   end
 

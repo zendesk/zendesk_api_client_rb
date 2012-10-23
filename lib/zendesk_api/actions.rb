@@ -71,7 +71,7 @@ module ZendeskAPI
     end
 
     # Finds a resource by an id and any options passed in.
-    # A custom path to search at can be passed into opts. It defaults to the {DataResource.resource_name} of the class. 
+    # A custom path to search at can be passed into opts. It defaults to the {DataResource.resource_name} of the class.
     # @param [Client] client The {Client} object to be used
     # @param [Hash] options Any additional GET parameters to be added
     def find(client, options = {})

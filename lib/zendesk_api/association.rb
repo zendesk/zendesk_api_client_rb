@@ -50,6 +50,7 @@ module ZendeskAPI
       namespace.join("/")
     end
 
+    # Tries to place side loads onto given resources.
     def side_load(resources, side_loads)
       key = "#{options.name}_id"
       plural_key = "#{Inflection.singular options.name.to_s}_ids"
@@ -174,8 +175,8 @@ module ZendeskAPI
       end
 
       # Represents a parent-to-child association between resources. Options to pass in are: class, path.
-      # @param [Symbol] resource_name The underlying resource name
-      # @param [Hash] opts The options to pass to the method definition.
+      # @param [Symbol] resource_name_or_class The underlying resource name or a class to get it from
+      # @param [Hash] class_level_options The options to pass to the method definition.
       def has(resource_name_or_class, class_level_options = {})
         if klass = class_level_options.delete(:class)
           resource_name = resource_name_or_class
@@ -234,10 +235,10 @@ module ZendeskAPI
       end
 
       # Represents a parent-to-children association between resources. Options to pass in are: class, path.
-      # @param [Symbol] resource The underlying resource name
-      # @param [Hash] opts The options to pass to the method definition.
-      def has_many(resource_name_or_class, class_level_opts = {})
-        if klass = class_level_opts.delete(:class)
+      # @param [Symbol] resource_name_or_class The underlying resource name or class to get it from
+      # @param [Hash] class_level_options The options to pass to the method definition.
+      def has_many(resource_name_or_class, class_level_options = {})
+        if klass = class_level_options.delete(:class)
           resource_name = resource_name_or_class
         else
           klass = resource_name_or_class
@@ -247,10 +248,10 @@ module ZendeskAPI
         class_level_association = {
           :class => klass,
           :name => resource_name,
-          :inline => class_level_opts.delete(:inline),
-          :path => class_level_opts.delete(:path),
-          :include => (class_level_opts.delete(:include) || klass.resource_name).to_s,
-          :include_key => (class_level_opts.delete(:include_key) || :id).to_s,
+          :inline => class_level_options.delete(:inline),
+          :path => class_level_options.delete(:path),
+          :include => (class_level_options.delete(:include) || klass.resource_name).to_s,
+          :include_key => (class_level_options.delete(:include_key) || :id).to_s,
           :singular => false
         }
 

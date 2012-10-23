@@ -97,7 +97,7 @@ module ZendeskAPI
 
     # Creates a connection if there is none, otherwise returns the existing connection.
     #
-    # @returns [Faraday::Connection] Faraday connection for the client
+    # @return [Faraday::Connection] Faraday connection for the client
     def connection
       @connection ||= build_connection
       return @connection
