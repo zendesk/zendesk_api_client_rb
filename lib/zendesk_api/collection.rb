@@ -48,7 +48,7 @@ module ZendeskAPI
       @includes = Array(@options.delete(:include))
 
       # Used for Attachments, TicketComment
-      if @resource_class.superclass == ZendeskAPI::Data
+      if @resource_class.is_a?(Class) && @resource_class.superclass == ZendeskAPI::Data
         @resources = []
         @fetchable = false
       end

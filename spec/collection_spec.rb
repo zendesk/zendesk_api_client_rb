@@ -570,6 +570,17 @@ describe ZendeskAPI::Collection do
     end
   end
 
+  context "with a module (Search)" do
+    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::Search, :query => "hello") }
+
+    before(:each) do
+      stub_json_request(:get, %r{search\?query=hello}, json(:results => []))
+    end
+
+    it "should not blow up" do
+      subject.to_a.should == []
+    end
+  end
 
   context "with different path" do
     subject do
