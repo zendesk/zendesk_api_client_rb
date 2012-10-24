@@ -31,8 +31,14 @@ module ZendeskAPI
     def method_missing(method, *args, &block)
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
-      return instance_variable_get("@#{method}") if !options.delete(:reload) && instance_variable_defined?("@#{method}")
-      instance_variable_set("@#{method}", ZendeskAPI::Collection.new(self, ZendeskAPI.get_class(Inflection.singular(method)), options))
+
+      @resource_cache[method] ||= {}
+
+      if !options[:reload] && (cached = @resource_cache[method][options.hash])
+        cached
+      else
+        @resource_cache[method][options.hash] = ZendeskAPI::Collection.new(self, ZendeskAPI.get_class(Inflection.singular(method)), options)
+      end
     end
 
     # Returns the current user (aka me)
@@ -85,6 +91,8 @@ module ZendeskAPI
       end
 
       @callbacks = []
+
+      @resource_cache = {}
 
       if logger = config.logger
         insert_callback do |env|

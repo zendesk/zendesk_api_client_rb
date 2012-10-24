@@ -117,7 +117,7 @@ describe ZendeskAPI::Client do
       context "with a logger" do
         let(:out){ StringIO.new }
         subject { Logger.new(out) }
-        
+
         it "should log" do
           @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
         end
@@ -154,8 +154,19 @@ describe ZendeskAPI::Client do
 
   context "resources" do
     it "should return an instance of ZendeskAPI::Collection if there is no method" do
+      subject.instance_variable_get(:@resource_cache)["tickets"].should be_nil
+
       subject.tickets.should be_instance_of(ZendeskAPI::Collection)
-      subject.instance_variable_defined?(:@tickets).should be_true
+
+      subject.instance_variable_get(:@resource_cache)["tickets"].should_not be_empty
+    end
+
+    it "should not cache calls with different options" do
+      subject.search(:query => 'abc').should_not == subject.search(:query => '123')
+    end
+
+    it "should cache calls with the same options" do
+      subject.search(:query => 'abc').should == subject.search(:query => 'abc')
     end
   end
 
