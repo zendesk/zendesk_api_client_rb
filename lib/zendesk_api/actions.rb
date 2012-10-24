@@ -1,7 +1,7 @@
 module ZendeskAPI
   module Save
     # If this resource hasn't been deleted, then create or save it.
-    # Executes a POST if it is a {#new_record?}, otherwise a PUT.
+    # Executes a POST if it is a {Data#new_record?}, otherwise a PUT.
     # Merges returned attributes on success.
     # @return [Boolean] Success?
     def save(options={})
@@ -37,6 +37,9 @@ module ZendeskAPI
       save(options) || raise("Save failed")
     end
 
+    private
+
+    # Removes all cached associations
     def clear_associations
       self.class.associations.each do |association_data|
         name = association_data[:name]
@@ -44,6 +47,8 @@ module ZendeskAPI
       end
     end
 
+    # Saves associations
+    # Takes into account inlining, collections, and id setting on the parent resource.
     def save_associations
       self.class.associations.each do |association_data|
         association_name = association_data[:name]
@@ -71,7 +76,7 @@ module ZendeskAPI
     end
 
     # Finds a resource by an id and any options passed in.
-    # A custom path to search at can be passed into opts. It defaults to the {DataResource.resource_name} of the class.
+    # A custom path to search at can be passed into opts. It defaults to the {Data.resource_name} of the class.
     # @param [Client] client The {Client} object to be used
     # @param [Hash] options Any additional GET parameters to be added
     def find(client, options = {})

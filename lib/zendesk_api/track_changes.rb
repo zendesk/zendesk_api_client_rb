@@ -1,6 +1,6 @@
-# Shamelessly stolen and modified from https://github.com/archan937/dirty_hashy
-
 module ZendeskAPI
+  # Shamelessly stolen and modified from https://github.com/archan937/dirty_hashy
+  # @private
   module TrackChanges
     def self.included(base)
       base.method_defined?(:regular_writer).tap do |defined|
@@ -17,6 +17,7 @@ module ZendeskAPI
       end
     end
 
+    # @private
     module InstanceMethods
       def clear_changes
         each do |k, v|

@@ -23,15 +23,12 @@ module ZendeskAPI
 
       alias :model_key :resource_name
 
-      # Rails tries to load dependencies, which messes up automatic resource our own loading
-      if method_defined?(:const_missing_without_dependencies)
-        alias :const_missing :const_missing_without_dependencies
-      end
-
+      # @private
       def only_send_unnested_params
         @unnested_params = true
       end
 
+      # @private
       def unnested_params
         @unnested_params ||= false
       end
@@ -75,6 +72,7 @@ module ZendeskAPI
       id.nil?
     end
 
+    # @private
     def loaded_associations
       self.class.associations.select do |association|
         loaded = @attributes.method_missing(association[:name])
@@ -87,6 +85,7 @@ module ZendeskAPI
       @association.generate_path(self, *args)
     end
 
+    # Passes #to_json to the underlying attributes hash
     def to_json(*args)
       method_missing(:to_json, *args)
     end

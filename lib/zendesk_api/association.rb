@@ -2,6 +2,7 @@ require 'zendesk_api/helpers'
 
 module ZendeskAPI
   # Represents an association between two resources 
+  # @private
   class Association
     # @return [Hash] Options passed into the association
     attr_reader :options
@@ -139,6 +140,8 @@ module ZendeskAPI
   # * Commonly used resources are automatically side-loaded server side and sent along with their parent object.
   # * Associated resource ids are sent and are then loaded one-by-one into the parent collection.
   # * The association is represented with Rails' nested association urls (such as tickets/:id/groups) and are loaded that way.
+  #
+  # @private
   module Associations
     def self.included(base)
       base.send(:extend, ClassMethods)
@@ -157,6 +160,7 @@ module ZendeskAPI
       end
     end
 
+    # @private
     module ClassMethods
       include Rescue
 
