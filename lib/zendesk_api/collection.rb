@@ -19,6 +19,9 @@ module ZendeskAPI
     # @return [Faraday::Response] The last response
     attr_reader :response
 
+    # @return [Hash] query options
+    attr_reader :options
+
     # Creates a new Collection instance. Does not fetch resources.
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
     # @param [Client] client The {Client} to use.
