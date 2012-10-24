@@ -23,15 +23,12 @@ module ZendeskAPI
 
       alias :model_key :resource_name
 
-      # Rails tries to load dependencies, which messes up automatic resource our own loading
-      if method_defined?(:const_missing_without_dependencies)
-        alias :const_missing :const_missing_without_dependencies
-      end
-
+      # @private
       def only_send_unnested_params
         @unnested_params = true
       end
 
+      # @private
       def unnested_params
         @unnested_params ||= false
       end
@@ -50,7 +47,10 @@ module ZendeskAPI
       @association = attributes.delete(:association) || Association.new(:class => self.class)
       @client = client
       @attributes = ZendeskAPI::Trackie.new(attributes)
-      ZendeskAPI::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
+
+      if self.class.associations.none? {|a| a[:name] == self.class.singular_resource_name}
+        ZendeskAPI::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
+      end
 
       @attributes.clear_changes unless new_record?
     end
@@ -72,6 +72,7 @@ module ZendeskAPI
       id.nil?
     end
 
+    # @private
     def loaded_associations
       self.class.associations.select do |association|
         loaded = @attributes.method_missing(association[:name])
@@ -84,15 +85,18 @@ module ZendeskAPI
       @association.generate_path(self, *args)
     end
 
+    # Passes #to_json to the underlying attributes hash
     def to_json(*args)
       method_missing(:to_json, *args)
     end
 
+    # @private
     def to_s
       "#{self.class.singular_resource_name}: #{attributes.inspect}"
     end
     alias :inspect :to_s
 
+    # Compares resources by class and id. If id is nil, then by object_id
     def ==(other)
       warn "Trying to compare #{other.class} to a Resource" if other && !other.is_a?(Data)
       other.is_a?(self.class) && ((other.id && other.id == id) || (other.object_id == self.object_id))
@@ -100,6 +104,7 @@ module ZendeskAPI
     alias :eql :==
     alias :hash :id
 
+    # @private
     def inspect
       "#<#{self.class.name} #{@attributes.to_hash.inspect}>"
     end

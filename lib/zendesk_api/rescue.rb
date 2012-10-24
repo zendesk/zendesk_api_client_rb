@@ -1,10 +1,12 @@
 module ZendeskAPI
+  # @private
   module Rescue
     def self.included(klass)
       klass.extend(Methods)
       klass.send(:include, Methods)
     end
 
+    # @private
     module Methods
       def log_error(e, method = false)
         if logger = (@client ? @client.config.logger : Kernel)

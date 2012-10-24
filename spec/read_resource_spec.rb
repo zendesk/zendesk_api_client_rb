@@ -28,7 +28,7 @@ describe ZendeskAPI::ReadResource do
           "nil_resources" => [{ :id => 1, :name => :bye }, { :id => 2, :name => :hi }]
         ))
 
-        subject.has :nil_resource
+        subject.has ZendeskAPI::NilResource
         @resource = subject.find(client, :id => id, :include => :nil_resource)
       end
 

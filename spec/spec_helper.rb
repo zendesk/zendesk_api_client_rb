@@ -85,7 +85,7 @@ RSpec.configure do |c|
 
   c.before(:each) do
     ZendeskAPI::TestResource.associations.clear
-    ZendeskAPI::TestResource.has_many :children, :class => :test_child
+    ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
   end
 
   c.before(:each) do

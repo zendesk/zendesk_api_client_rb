@@ -1,4 +1,5 @@
 module ZendeskAPI
+  # Holds the configuration options for the client and connection
   class Configuration
     # @return [String] The basic auth username.
     attr_accessor :username

@@ -1,4 +1,5 @@
 module ZendeskAPI
+  # @private
   module Helpers
     # From https://github.com/rubyworks/facets/blob/master/lib/core/facets/string/modulize.rb
     def self.modulize_string(string)

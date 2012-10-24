@@ -5,6 +5,7 @@ module ZendeskAPI
     module Request
       # Request middleware that caches responses based on etags
       # can be removed once this is merged: https://github.com/pengwynn/faraday_middleware/pull/42
+      # @private
       class EtagCache < Faraday::Middleware
         def initialize(app, options = {})
           @app = app

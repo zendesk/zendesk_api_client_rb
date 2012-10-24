@@ -4,6 +4,7 @@ module ZendeskAPI
   module Middleware
     module Response
       # Faraday middleware to handle logging
+      # @private
       class Logger < Faraday::Response::Middleware
         def initialize(app, logger = nil)
           super(app)

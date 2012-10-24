@@ -8,7 +8,7 @@ describe ZendeskAPI::Association do
     context "has" do
       before do
         ZendeskAPI::TestResource.associations.clear
-        ZendeskAPI::TestResource.has :child, :class => :test_child
+        ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
       end
 
       it "should cache an set object" do

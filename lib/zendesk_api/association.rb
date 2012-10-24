@@ -2,6 +2,7 @@ require 'zendesk_api/helpers'
 
 module ZendeskAPI
   # Represents an association between two resources 
+  # @private
   class Association
     # @return [Hash] Options passed into the association
     attr_reader :options
@@ -35,7 +36,7 @@ module ZendeskAPI
       has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
 
       if has_parent
-        parent_class = @options.parent ? @options.parent.class : ZendeskAPI.get_class(namespace[0])
+        parent_class = @options.parent ? @options.parent.class : ZendeskAPI.const_get(ZendeskAPI::Helpers.modulize_string(namespace[0]))
         parent_namespace = build_parent_namespace(parent_class, instance, options, original_options)
         namespace[1..1] = parent_namespace if parent_namespace
         namespace[0] = parent_class.resource_name
@@ -50,6 +51,7 @@ module ZendeskAPI
       namespace.join("/")
     end
 
+    # Tries to place side loads onto given resources.
     def side_load(resources, side_loads)
       key = "#{options.name}_id"
       plural_key = "#{Inflection.singular options.name.to_s}_ids"
@@ -138,6 +140,8 @@ module ZendeskAPI
   # * Commonly used resources are automatically side-loaded server side and sent along with their parent object.
   # * Associated resource ids are sent and are then loaded one-by-one into the parent collection.
   # * The association is represented with Rails' nested association urls (such as tickets/:id/groups) and are loaded that way.
+  #
+  # @private
   module Associations
     def self.included(base)
       base.send(:extend, ClassMethods)
@@ -156,6 +160,7 @@ module ZendeskAPI
       end
     end
 
+    # @private
     module ClassMethods
       include Rescue
 
@@ -174,10 +179,15 @@ module ZendeskAPI
       end
 
       # Represents a parent-to-child association between resources. Options to pass in are: class, path.
-      # @param [Symbol] resource_name The underlying resource name
-      # @param [Hash] opts The options to pass to the method definition.
-      def has(resource_name, class_level_options = {})
-        klass = get_class(class_level_options.delete(:class)) || get_class(resource_name)
+      # @param [Symbol] resource_name_or_class The underlying resource name or a class to get it from
+      # @param [Hash] class_level_options The options to pass to the method definition.
+      def has(resource_name_or_class, class_level_options = {})
+        if klass = class_level_options.delete(:class)
+          resource_name = resource_name_or_class
+        else
+          klass = resource_name_or_class
+          resource_name = klass.singular_resource_name
+        end
 
         class_level_association = {
           :class => klass,
@@ -229,18 +239,23 @@ module ZendeskAPI
       end
 
       # Represents a parent-to-children association between resources. Options to pass in are: class, path.
-      # @param [Symbol] resource The underlying resource name
-      # @param [Hash] opts The options to pass to the method definition.
-      def has_many(resource_name, class_level_opts = {})
-        klass = get_class(class_level_opts.delete(:class)) || get_class(Inflection.singular(resource_name.to_s))
+      # @param [Symbol] resource_name_or_class The underlying resource name or class to get it from
+      # @param [Hash] class_level_options The options to pass to the method definition.
+      def has_many(resource_name_or_class, class_level_options = {})
+        if klass = class_level_options.delete(:class)
+          resource_name = resource_name_or_class
+        else
+          klass = resource_name_or_class
+          resource_name = klass.resource_name
+        end
 
         class_level_association = {
           :class => klass,
           :name => resource_name,
-          :inline => class_level_opts.delete(:inline),
-          :path => class_level_opts.delete(:path),
-          :include => (class_level_opts.delete(:include) || klass.resource_name).to_s,
-          :include_key => (class_level_opts.delete(:include_key) || :id).to_s,
+          :inline => class_level_options.delete(:inline),
+          :path => class_level_options.delete(:path),
+          :include => (class_level_options.delete(:include) || klass.resource_name).to_s,
+          :include_key => (class_level_options.delete(:include_key) || :id).to_s,
           :singular => false
         }
 
@@ -291,47 +306,6 @@ module ZendeskAPI
           send("#{id_column}=", resources.map(&:id)) if resources && has_key?(id_column)
           resource
         end
-      end
-
-      # Allows using has and has_many without having class defined yet
-      # Guesses at Resource, if it's anything else and the class is later
-      # reopened under a different superclass, an error will be thrown
-      def get_class(resource)
-        return false if resource.nil?
-        res = ZendeskAPI::Helpers.modulize_string(resource.to_s)
-
-        begin
-          const_get(res)
-        rescue NameError, ArgumentError # ruby raises NameError, rails raises ArgumentError
-          ZendeskAPI.get_class(resource)
-        end
-      end
-    end
-  end
-
-  class << self
-    # Make sure Rails' overwriting of const_missing doesn't cause trouble
-    def const_missing(*args)
-      Object.const_missing(*args)
-    end
-
-    # Allows using has and has_many without having class defined yet
-    # Guesses at Resource, if it's anything else and the class is later
-    # reopened under a different superclass, an error will be thrown
-    def get_class(resource)
-      return false if resource.nil?
-      res = ZendeskAPI::Helpers.modulize_string(resource.to_s).split("::")
-
-      begin
-        res[1..-1].inject(ZendeskAPI.const_get(res[0])) do |iter, k|
-          begin
-            iter.const_get(k)
-          rescue
-            iter.const_set(k, Class.new(Resource))
-          end
-        end
-      rescue NameError
-        ZendeskAPI.const_set(res[0], Class.new(Resource))
       end
     end
   end

@@ -1,4 +1,5 @@
 module ZendeskAPI
+  # @private
   module Sideloading
     def self.included(klass)
       klass.send(:attr_reader, :included)

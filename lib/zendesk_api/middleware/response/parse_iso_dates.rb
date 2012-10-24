@@ -5,6 +5,7 @@ module ZendeskAPI
   module Middleware
     module Response
       # Parse ISO dates from response body
+      # @private
       class ParseIsoDates < Faraday::Response::Middleware
         def call(env)
           response = @app.call(env)

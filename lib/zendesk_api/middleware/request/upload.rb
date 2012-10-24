@@ -5,6 +5,7 @@ require 'tempfile'
 module ZendeskAPI
   module Middleware
     module Request
+      # @private
       class Upload < Faraday::Middleware
         def call(env)
           if env[:body]
