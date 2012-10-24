@@ -12,7 +12,7 @@ module ZendeskAPI
   class Locale < ReadResource; end
   class CRMData < DataResource; end
   class CRMDataStatus < DataResource; end
-  class CustomRole < ReadResource; end
+  class CustomRole < DataResource; end
   class Role < DataResource; end
   class Topic < Resource; end
   class Bookmark < Resource; end
