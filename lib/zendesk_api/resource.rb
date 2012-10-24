@@ -90,11 +90,13 @@ module ZendeskAPI
       method_missing(:to_json, *args)
     end
 
+    # @private
     def to_s
       "#{self.class.singular_resource_name}: #{attributes.inspect}"
     end
     alias :inspect :to_s
 
+    # Compares resources by class and id. If id is nil, then by object_id
     def ==(other)
       warn "Trying to compare #{other.class} to a Resource" if other && !other.is_a?(Data)
       other.is_a?(self.class) && ((other.id && other.id == id) || (other.object_id == self.object_id))
@@ -102,6 +104,7 @@ module ZendeskAPI
     alias :eql :==
     alias :hash :id
 
+    # @private
     def inspect
       "#<#{self.class.name} #{@attributes.to_hash.inspect}>"
     end

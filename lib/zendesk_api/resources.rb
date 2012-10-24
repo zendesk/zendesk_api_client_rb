@@ -1,25 +1,27 @@
 module ZendeskAPI
-## The following are redefined later, but needed by some circular resources (e.g. Ticket -> User, User -> Ticket)
+# @internal The following are redefined later, but needed by some circular resources (e.g. Ticket -> User, User -> Ticket)
+
+
   class Ticket < Resource; end
   class Forum < Resource; end
   class User < Resource; end
   class Category < Resource; end
 
-## Here begins actual Resource definitions
+# @internal Begin actual Resource definitions
 
   class Locale < ReadResource; end
   class CRMData < DataResource; end
   class CRMDataStatus < DataResource; end
-  class CustomRole < DataResource; end
+  class CustomRole < ReadResource; end
   class Role < DataResource; end
   class Topic < Resource; end
   class Bookmark < Resource; end
   class Ability < DataResource; end
-
-  class Macro < DataResource
-  end
-
+  class Macro < Resource; end
   class Group < Resource; end
+  class Trigger < ReadResource; end
+  class SharingAgreement < ReadResource; end
+  class JobStatus < ReadResource; end
 
   class Attachment < Data
     def initialize(client, attributes)
@@ -49,6 +51,7 @@ module ZendeskAPI
   end
 
   class MobileDevice < Resource
+    # Clears this devices' badge
     put :clear_badge
   end
 
@@ -132,9 +135,19 @@ module ZendeskAPI
     has Group
   end
 
-  module Search
+  class Search
     class Result < Data; end
 
+    # Creates a search collection
+    def self.search(client, options = {})
+      unless (%w{query external_id} & options.keys.map(&:to_s)).any?
+        warn "you have not specified a query for this search"
+      end
+
+      ZendeskAPI::Collection.new(client, self, options)
+    end
+
+    # Creates the correct resource class from the result_type passed in
     def self.new(client, attributes)
       result_type = attributes["result_type"]
 
@@ -219,13 +232,16 @@ module ZendeskAPI
 
   class SuspendedTicket < ReadResource
     include Destroy
+
+    # Recovers this suspended ticket to an actual ticket
     put :recover
   end
 
   class ViewRow < DataResource
     has Ticket
 
-    # Optional columns
+    # @internal Optional columns
+
     has Group
     has :assignee, :class => User
     has :requester, :class => User
@@ -258,8 +274,13 @@ module ZendeskAPI
 
   class User < Resource
     class Identity < Resource
+      # Makes this identity the primary one bumping all other identities down one
       put :make_primary
+
+      # Verifies this identity
       put :verify
+
+      # Requests verification for this identity
       put :request_verification
     end
 

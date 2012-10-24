@@ -17,6 +17,8 @@ require 'zendesk_api/middleware/response/parse_iso_dates'
 require 'zendesk_api/middleware/response/logger'
 
 module ZendeskAPI
+  # The top-level class that handles configuration and connection to the Zendesk API.
+  # Can also be used as an accessor to resource collections.
   class Client
     include Rescue
 
@@ -42,6 +44,8 @@ module ZendeskAPI
       @current_user = users.find(:id => 'me')
     end
 
+    # Returns the current account
+    # @return [Hash] The attributes of the current account or nil
     def current_account(reload = false)
       return @current_account if @current_account && !reload
       @current_account = Hashie::Mash.new(connection.get('account/resolve').body)
@@ -50,6 +54,7 @@ module ZendeskAPI
     rescue_client_error :current_account
 
     # Returns the current locale
+    # @return [ZendeskAPI::Locale] Current locale or nil
     def current_locale(reload = false)
       return @locale if @locale && !reload
       @locale = locales.find(:id => 'current')
@@ -125,7 +130,7 @@ module ZendeskAPI
     # Uses middleware according to configuration options.
     #
     # Request logger if logger is not nil
-    # 
+    #
     # Retry middleware if retry is true
     def build_connection
       Faraday.new(config.options) do |builder|

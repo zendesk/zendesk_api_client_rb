@@ -33,6 +33,8 @@ module ZendeskAPI
       true
     end
 
+    # Saves, raising an Argument error if it fails
+    # @raise [ArgumentError] if saving failed
     def save!(options={})
       save(options) || raise("Save failed")
     end
@@ -120,6 +122,8 @@ module ZendeskAPI
         resource
       end
 
+      # Creates the resource, raising an ArgumentError if it fails
+      # @raise [ArgumentError] if the creation fails
       def create!(client, attributes={})
         c = create(client, attributes)
         c || raise("Create failed #{self} #{attributes}")
