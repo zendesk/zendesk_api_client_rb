@@ -151,6 +151,44 @@ ticket.new_record? # => true
 ticket.save # Will POST
 ```
 
+### Side-loading
+
+**Warning: this is an experimental feature. Abuse it and lose it.**
+
+To facilitate a smaller number of requests and easier manipulation of associated data we allow "side-loading", or inclusion, of selected resources.
+
+For example:
+A ZendeskAPI::Ticket is associated with ZendeskAPI::User through the requester_id field.
+API requests for that ticket return a structure similar to this:
+```json
+"ticket": {
+  "id": 1,
+  "url": "http.....",
+  "requester_id": 7,
+  ...
+}
+```
+
+Calling ZendeskAPI::Ticket#requester automatically fetches and loads the user referenced above (`/api/v2/users/7`).
+Using side-loading, however, the user can be partially loaded in the same request as the ticket.
+
+```ruby
+tickets = client.tickets.include(:users)
+# Or client.tickets(include: :users)
+# Does *NOT* make a request to the server since it is already loaded
+tickets.first.requester # => #<ZendeskAPI::User id=...>
+```
+
+OR
+
+```ruby
+ticket = client.tickets.find(:id => 1, :include => :users)
+ticket.requester # => #<ZendeskAPI::User id=...>
+```
+
+Currently, this feature is limited to only a few resources and their associations.
+They are documented on [developer.zendesk.com](http://developer.zendesk.com/documentation/rest_api/introduction.html#side-loading).
+
 ### Special case: Custom resources paths
 
 API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
