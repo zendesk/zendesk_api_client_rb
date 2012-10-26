@@ -112,7 +112,7 @@ end
 
 VCR.configure do |c|
   c.cassette_library_dir = File.join(File.dirname(__FILE__), "fixtures", "cassettes")
-  c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true }
+  c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true, :serialize_with => :json }
   c.hook_into :webmock
 end
 
