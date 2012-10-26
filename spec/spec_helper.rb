@@ -1,4 +1,3 @@
-$:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 $:.unshift(File.join(File.dirname(__FILE__), "macros"))
 
 ENV['TZ'] = 'CET' # something that is not local and not utc so we find all the bugs
@@ -86,7 +85,7 @@ RSpec.configure do |c|
 
   c.before(:each) do
     ZendeskAPI::TestResource.associations.clear
-    ZendeskAPI::TestResource.has_many :children, :class => :test_child
+    ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
   end
 
   c.before(:each) do
@@ -113,7 +112,7 @@ end
 
 VCR.configure do |c|
   c.cassette_library_dir = File.join(File.dirname(__FILE__), "fixtures", "cassettes")
-  c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true }
+  c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true, :serialize_with => :json, :preserve_exact_body_bytes => true }
   c.hook_into :webmock
 end
 

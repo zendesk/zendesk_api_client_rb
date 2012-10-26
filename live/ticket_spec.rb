@@ -2,13 +2,14 @@ require 'spec_helper'
 
 describe ZendeskAPI::Ticket do
   def valid_attributes
-    { 
+    {
       :type => "question",
       :subject => "This is a question?",
       :comment => { :value => "Indeed it is!" },
       :priority => "normal",
       :requester_id => user.id,
-      :submitter_id => user.id
+      :submitter_id => user.id,
+      :collaborator_ids => [agent.id]
     }
   end
 
@@ -16,10 +17,21 @@ describe ZendeskAPI::Ticket do
   it_should_be_updatable :subject
   it_should_be_deletable
   it_should_be_readable :tickets
-  it_should_be_readable :tickets, :recent
   it_should_be_readable user, :requested_tickets
-  it_should_be_readable user, :ccd_tickets
+  it_should_be_readable agent, :ccd_tickets
   it_should_be_readable organization, :tickets
+
+  context "recent tickets" do
+    before(:each) do
+      VCR.use_cassette("visit_recent_ticket") do
+        client.connection.get("/tickets/1") do |req|
+          req.headers[:Accept] = "*/*"
+        end
+      end
+    end
+
+    it_should_be_readable :tickets, :recent
+  end
 
   describe ".incremental_export" do
     let(:results){ ZendeskAPI::Ticket.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
@@ -39,7 +51,7 @@ describe ZendeskAPI::Ticket do
 
     it "is able to do next" do
       first = results.to_a.first
-      recent_url = "api/v2/exports/tickets.json?start_time=#{Time.now.to_i.to_s[0..5]}"
+      recent_url = "api/v2/exports/tickets.json\\?start_time=#{Time.now.to_i.to_s[0..5]}"
       stub_json_request(:get, /#{recent_url}/, json(:results => []))
 
       results.next

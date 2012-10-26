@@ -2,8 +2,10 @@ require "faraday/middleware"
 
 module ZendeskAPI
   module Middleware
+    # @private
     module Request
       # Faraday middleware to handle HTTP Status 429 (rate limiting) / 503 (maintenance)
+      # @private
       class Retry < Faraday::Middleware
         DEFAULT_RETRY_AFTER = 10
         ERROR_CODES = [429, 503]

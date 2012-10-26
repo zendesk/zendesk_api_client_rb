@@ -5,18 +5,36 @@ describe ZendeskAPI::ReadResource do
     let(:id) { 1 }
     subject { ZendeskAPI::TestResource }
 
-    before(:each) do
-      stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => {}))
-    end
+    context "normal request" do
+      before(:each) do
+        stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => {}))
+      end
 
-    it "should return instance of resource" do
-      subject.find(client, :id => id).should be_instance_of(subject)
+      it "should return instance of resource" do
+        subject.find(client, :id => id).should be_instance_of(subject)
+      end
     end
 
     it "should blow up without an id which would build an invalid url" do
       expect{
         ZendeskAPI::User.find(client, :foo => :bar)
       }.to raise_error("No :id given")
+    end
+
+    context "with side loads" do
+      before(:each) do
+        stub_json_request(:get, %r{test_resources/#{id}\?include=nil_resource}, json(
+          "test_resource" => { :id => 1, :nil_resource_id => 2 },
+          "nil_resources" => [{ :id => 1, :name => :bye }, { :id => 2, :name => :hi }]
+        ))
+
+        subject.has ZendeskAPI::NilResource
+        @resource = subject.find(client, :id => id, :include => :nil_resource)
+      end
+
+      it "should side load nil resource" do
+        @resource.nil_resource.name.should == "hi"
+      end
     end
 
     context "with client error" do

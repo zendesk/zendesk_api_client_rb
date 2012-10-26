@@ -1,7 +1,7 @@
 module ZendeskAPI
   module Save
     # If this resource hasn't been deleted, then create or save it.
-    # Executes a POST if it is a {#new_record?}, otherwise a PUT.
+    # Executes a POST if it is a {Data#new_record?}, otherwise a PUT.
     # Merges returned attributes on success.
     # @return [Boolean] Success?
     def save(options={})
@@ -29,24 +29,39 @@ module ZendeskAPI
 
       @attributes.replace @attributes.deep_merge(response.body[self.class.singular_resource_name] || {})
       @attributes.clear_changes
+      clear_associations
       true
     end
 
+    # Saves, raising an Argument error if it fails
+    # @raise [ArgumentError] if saving failed
     def save!(options={})
       save(options) || raise("Save failed")
     end
 
+    # Removes all cached associations
+    def clear_associations
+      self.class.associations.each do |association_data|
+        name = association_data[:name]
+        instance_variable_set("@#{name}", nil) if instance_variable_defined?("@#{name}")
+      end
+    end
+
+    # Saves associations
+    # Takes into account inlining, collections, and id setting on the parent resource.
     def save_associations
       self.class.associations.each do |association_data|
         association_name = association_data[:name]
         next unless send("#{association_name}_used?") && association = send(association_name)
 
-        if association.respond_to?(:save) && (association.is_a?(Collection) || !association.changes.empty?)
-          association.save
+        inline_creation = association_data[:inline] == :create && new_record?
+        changed = association.is_a?(Collection) || !association.changes.empty?
+
+        if association.respond_to?(:save) && changed && !inline_creation && association.save
           self.send("#{association_name}=", association) # set id/ids columns
         end
 
-        if association_data[:inline]
+        if association_data[:inline] == true || inline_creation
           attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
         end
       end
@@ -56,21 +71,30 @@ module ZendeskAPI
   module Read
     include Rescue
 
+    def self.extended(klass)
+      klass.send(:include, ZendeskAPI::Sideloading)
+    end
+
     # Finds a resource by an id and any options passed in.
-    # A custom path to search at can be passed into opts. It defaults to the {DataResource.resource_name} of the class. 
+    # A custom path to search at can be passed into opts. It defaults to the {Data.resource_name} of the class.
     # @param [Client] client The {Client} object to be used
     # @param [Hash] options Any additional GET parameters to be added
     def find(client, options = {})
       @client = client # so we can use client.logger in rescue
 
-      raise "No :id given" unless options[:id] || options["id"]
+      raise ArgumentError, "No :id given" unless options[:id] || options["id"] || ancestors.include?(SingularResource)
       association = options.delete(:association) || Association.new(:class => self)
+
+      includes = Array(options[:include])
+      options[:include] = includes.join(",") if includes.any?
 
       response = client.connection.get(association.generate_path(options)) do |req|
         req.params = options
       end
 
-      new(client, response.body[singular_resource_name])
+      new(client, response.body[singular_resource_name]).tap do |resource|
+        resource.set_includes(resource, includes, response.body)
+      end
     end
 
     rescue_client_error :find
@@ -96,6 +120,8 @@ module ZendeskAPI
         resource
       end
 
+      # Creates the resource, raising an ArgumentError if it fails
+      # @raise [ArgumentError] if the creation fails
       def create!(client, attributes={})
         c = create(client, attributes)
         c || raise("Create failed #{self} #{attributes}")

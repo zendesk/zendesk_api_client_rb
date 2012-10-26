@@ -114,8 +114,8 @@ describe ZendeskAPI::Resource do
     context "with unused associations" do
       before do
         ZendeskAPI::TestResource.associations.clear
-        ZendeskAPI::TestResource.has :child, :class => :test_child
-        ZendeskAPI::TestResource.has_many :children, :class => :test_child
+        ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
+        ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
       end
 
       it "should not touch them" do
@@ -155,7 +155,7 @@ describe ZendeskAPI::Resource do
       context "has" do
         before(:each) do
           ZendeskAPI::TestResource.associations.clear
-          ZendeskAPI::TestResource.has :child, :class => :test_child
+          ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
           stub_json_request(:put, %r{test_resources})
           subject.child = { :id => 2 }
         end
@@ -163,19 +163,25 @@ describe ZendeskAPI::Resource do
         it "should call save on the association" do
           subject.child.foo = "bar"
           subject.child.should_receive(:save)
+
           subject.save
+
+          subject.instance_variable_get(:@child).should be_nil
         end
 
         it "should not call save on the association if they are synced" do
           subject.child.should_not_receive(:save)
+
           subject.save
+
+          subject.instance_variable_get(:@child).should be_nil
         end
       end
 
       context "has_many" do
         before(:each) do
           ZendeskAPI::TestResource.associations.clear
-          ZendeskAPI::TestResource.has_many :children, :class => :test_child
+          ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
 
           stub_json_request(:put, %r{test_resources})
           stub_json_request(:get, %r{children}, json(:test_children => []))
@@ -186,24 +192,28 @@ describe ZendeskAPI::Resource do
           subject.children_ids = [1]
           subject.save
           subject.children_ids.should == [2,3]
+          subject.instance_variable_get(:@children).should be_nil
         end
 
         it "should not save the associated objects when there are no changes" do
           subject.children = [2]
           subject.children.first.should_not_receive(:save)
           subject.save
+          subject.instance_variable_get(:@children).should be_nil
         end
 
         it "should save the associated objects when it is new" do
           subject.children = [{:foo => "bar"}]
           subject.children.first.should_receive(:save)
           subject.save
+          subject.instance_variable_get(:@children).should be_nil
         end
 
         it "should not save the associated objects when it is set via full hash" do
           subject.children = [{:id => 1, :foo => "bar"}]
           subject.children.first.should_not_receive(:save)
           subject.save
+          subject.instance_variable_get(:@children).should be_nil
         end
 
         it "should save the associated objects when it is changes" do
@@ -211,6 +221,7 @@ describe ZendeskAPI::Resource do
           subject.children.first.foo = "bar"
           subject.children.first.should_receive(:save)
           subject.save
+          subject.instance_variable_get(:@children).should be_nil
         end
       end
 
@@ -221,14 +232,47 @@ describe ZendeskAPI::Resource do
           end
 
           ZendeskAPI::TestResource.associations.clear
-          ZendeskAPI::TestResource.has :nil, :class => :nil_resource, :inline => true
-
-          subject.nil = { :abc => :def }
-          subject.save_associations
         end
 
-        it "should save param data" do
-          subject.attributes[:nil].should == "TESTDATA"
+        context "true" do
+          before(:each) do
+            ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => true
+
+            subject.nil = { :abc => :def }
+            subject.save_associations
+          end
+
+          it "should save param data" do
+            subject.attributes[:nil].should == "TESTDATA"
+          end
+        end
+
+        context "create" do
+          before(:each) do
+            ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => :create
+            subject.nil = { :abc => :def }
+          end
+
+          context "with a new record" do
+            before(:each) do
+              subject.id = nil
+              subject.save_associations
+            end
+
+            it "should save param data" do
+              subject.attributes[:nil].should == "TESTDATA"
+            end
+          end
+
+          context "with a saved record" do
+            before(:each) do
+              subject.save_associations
+            end
+
+            it "should not save param data" do
+              subject.attributes[:nil].should be_nil
+            end
+          end
         end
       end
     end
@@ -284,6 +328,15 @@ describe ZendeskAPI::Resource do
     end
   end
 
+  context "#to_json" do
+    subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+
+    it "should call #to_json on @attributes" do
+      subject.attributes.should_receive(:to_json)
+      subject.to_json
+    end
+  end
+
   context "#==" do
     it "is same when id is same" do
       ZendeskAPI::TestResource.new(client, :id => 1, "bar" => "baz").should == ZendeskAPI::TestResource.new(client, :id => 1, "foo" => "bar")
@@ -314,6 +367,16 @@ describe ZendeskAPI::Resource do
       object = ZendeskAPI::TestResource.new(client, :id => 2)
       object.should_receive(:warn)
       object.should_not == "xxx"
+    end
+  end
+
+  context "SingularTestResource" do
+    context "#find" do
+      it "should not require an id" do
+        expect do
+          ZendeskAPI::SingularTestResource.find(client)
+        end.to_not raise_error(ArgumentError)
+      end
     end
   end
 

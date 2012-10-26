@@ -4,6 +4,10 @@
 
 This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
+## Additional Documentation
+
+Additional documentation can be found on [rubydoc.info](http://rubydoc.info/gems/zendesk_api/frames)
+
 ## Important Notice
 
 Version 0.0.5 brings with it a change to the top-level namespace. All references to Zendesk should now use ZendeskAPI.
@@ -39,8 +43,11 @@ client = ZendeskAPI::Client.new do |config|
 
   config.url = "<- your-zendesk-url ->" # e.g. https://mydesk.zendesk.com/api/v2
 
-  config.username = "login.email@zendesk.com"  # use login.email@zendesk.com/token for token auth
-  config.password = "your zendesk password or token"
+  config.username = "login.email@zendesk.com"
+
+  # Choose one of the following depending on your authentication choice
+  config.token = "your zendesk token"
+  config.password = "your zendesk password"
 
   # Optional:
 
@@ -102,6 +109,22 @@ next_page = tickets.next
 previous_page = tickets.prev
 ```
 
+Iteration over all resources and pages is handled by Collection#page_page
+
+```ruby
+client.tickets.each_page do |resource|
+  # all resources will be yielded
+end
+```
+
+If given a block with two arguments, the page is also passed in.
+
+```ruby
+client.tickets.each_page do |resource, page|
+  # all resources will be yielded along with the page
+end
+```
+
 ### Callbacks
 
 Callbacks can be added to the ZendeskAPI::Client instance and will be called (with the response env) after all response middleware on a successful request.
@@ -127,6 +150,44 @@ ZendeskAPI::Ticket.new(client, { :priority => "urgent" })
 ticket.new_record? # => true
 ticket.save # Will POST
 ```
+
+### Side-loading
+
+**Warning: this is an experimental feature. Abuse it and lose it.**
+
+To facilitate a smaller number of requests and easier manipulation of associated data we allow "side-loading", or inclusion, of selected resources.
+
+For example:
+A ZendeskAPI::Ticket is associated with ZendeskAPI::User through the requester_id field.
+API requests for that ticket return a structure similar to this:
+```json
+"ticket": {
+  "id": 1,
+  "url": "http.....",
+  "requester_id": 7,
+  ...
+}
+```
+
+Calling ZendeskAPI::Ticket#requester automatically fetches and loads the user referenced above (`/api/v2/users/7`).
+Using side-loading, however, the user can be partially loaded in the same request as the ticket.
+
+```ruby
+tickets = client.tickets.include(:users)
+# Or client.tickets(include: :users)
+# Does *NOT* make a request to the server since it is already loaded
+tickets.first.requester # => #<ZendeskAPI::User id=...>
+```
+
+OR
+
+```ruby
+ticket = client.tickets.find(:id => 1, :include => :users)
+ticket.requester # => #<ZendeskAPI::User id=...>
+```
+
+Currently, this feature is limited to only a few resources and their associations.
+They are documented on [developer.zendesk.com](http://developer.zendesk.com/documentation/rest_api/introduction.html#side-loading).
 
 ### Special case: Custom resources paths
 
@@ -159,11 +220,6 @@ ticket.comment.uploads << File.new("img.jpg")
 ticket.save
 ```
 
-## TODO
-
-* Search class detection
-* Live Testing
-
 ## Note on Patches/Pull Requests
 1. Fork the project.
 2. Make your feature addition or bug fix.
@@ -177,7 +233,7 @@ ticket.save
 ## Supported Ruby Versions
 
 Tested with Ruby 1.8.7 and 1.9.3
-[![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
+[![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png?branch=master)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
 
 ## Copyright
 

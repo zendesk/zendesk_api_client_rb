@@ -1,19 +1,25 @@
 require 'zendesk_api/resource'
-require 'zendesk_api/resources/misc'
-require 'zendesk_api/resources/ticket'
-require 'zendesk_api/resources/user'
-require 'zendesk_api/resources/playlist'
+require 'zendesk_api/resources'
 
 module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
-    SPECIALLY_JOINED_PARAMS = [:include, :ids, :only]
+    include ZendeskAPI::Sideloading
+
+    # Options passed in that are automatically converted from an array to a comma-separated list.
+    SPECIALLY_JOINED_PARAMS = [:ids, :only]
 
     include Rescue
 
     # @return [ZendeskAPI::Association] The class association
     attr_reader :association
+
+    # @return [Faraday::Response] The last response
+    attr_reader :response
+
+    # @return [Hash] query options
+    attr_reader :options
 
     # Creates a new Collection instance. Does not fetch resources.
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
@@ -41,9 +47,10 @@ module ZendeskAPI
       @collection_path ||= [@resource]
       @resource_class = resource
       @fetchable = true
+      @includes = Array(@options.delete(:include))
 
       # Used for Attachments, TicketComment
-      if @resource_class.superclass == ZendeskAPI::Data
+      if @resource_class.is_a?(Class) && @resource_class.superclass == ZendeskAPI::Data
         @resources = []
         @fetchable = false
       end
@@ -83,6 +90,7 @@ module ZendeskAPI
     # Changes the per_page option. Returns self, so it can be chained. No execution.
     # @return [Collection] self
     def per_page(count)
+      clear_cache if count
       @options["per_page"] = count
       self
     end
@@ -90,6 +98,7 @@ module ZendeskAPI
     # Changes the page option. Returns self, so it can be chained. No execution.
     # @return [Collection] self
     def page(number)
+      clear_cache if number
       @options["page"] = number
       self
     end
@@ -110,6 +119,15 @@ module ZendeskAPI
       self
     end
 
+    # Adds an item (or items) to the list of side-loaded resources to request
+    # @option sideloads [Symbol or String] The item(s) to sideload
+    def include(*sideloads)
+      self.tap { @includes.concat(sideloads.map(&:to_s)) }
+    end
+
+    # Adds an item to this collection
+    # @option item [ZendeskAPI::Data] the resource to add
+    # @raise [ArgumentError] if the resource doesn't belong in this collection
     def <<(item)
       fetch
       if item.is_a?(Resource)
@@ -124,6 +142,7 @@ module ZendeskAPI
       end
     end
 
+    # The API path to this collection
     def path
       @association.generate_path(:with_parent => true)
     end
@@ -132,6 +151,7 @@ module ZendeskAPI
     # @param [Boolean] reload Whether to disregard cache
     def fetch(reload = false)
       return @resources if @resources && (!@fetchable || !reload)
+
       if association && association.options.parent && association.options.parent.new_record?
         return @resources = []
       end
@@ -143,15 +163,25 @@ module ZendeskAPI
         path = self.path
       end
 
-      response = @client.connection.send(@verb || "get", path) do |req|
-        req.params.merge!(@options.delete_if {|k, v| v.nil?})
+      @response = @client.connection.send(@verb || "get", path) do |req|
+        opts = @options.delete_if {|k, v| v.nil?}
+
+        req.params.merge!(:include => @includes.join(",")) if @includes.any?
+
+        if %w{put post}.include?(@verb.to_s)
+          req.body = opts
+        else
+          req.params.merge!(opts)
+        end
       end
 
-      results = response.body[@resource_class.model_key] || response.body["results"]
-      @resources = results.map { |res| @resource_class.new(@client, res) }
+      body = @response.body.dup
 
-      @count = (response.body["count"] || @resources.size).to_i
-      @next_page, @prev_page = response.body["next_page"], response.body["previous_page"]
+      results = body.delete(@resource_class.model_key) || body.delete("results")
+      @resources = results.map {|res| @resource_class.new(@client, res)}
+
+      set_page_and_count(body)
+      set_includes(@resources, @includes, body)
 
       @resources
     end
@@ -163,12 +193,36 @@ module ZendeskAPI
       fetch
     end
 
+    # Calls #each on every page with the passed in block
+    # @param [Block] block Passed to #each
+    def each_page(&block)
+      page(nil)
+      clear_cache
+
+      while !empty?
+        each do |resource|
+          arguments = [resource, @options["page"] || 1]
+
+          if block.arity >= 0
+            arguments = arguments.take(block.arity)
+          end
+
+          block.call(*arguments)
+        end
+
+        self.next
+      end
+    end
+
+    # Replaces the current (loaded or not) resources with the passed in collection
+    # @option collection [Array] The collection to replace this one with
+    # @raise [ArgumentError] if any resources passed in don't belong in this collection
     def replace(collection)
       raise "this collection is for #{@resource_class}" if collection.any?{|r| !r.is_a?(@resource_class) }
       @resources = collection
     end
 
-    # Find the next page. Does one of three things: 
+    # Find the next page. Does one of three things:
     # * If there is already a page number in the options hash, it increases it and invalidates the cache, returning the new page number.
     # * If there is a next_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
@@ -180,23 +234,25 @@ module ZendeskAPI
         @query = @next_page
         fetch(true)
       else
-        []
+        clear_cache
+        @resources = []
       end
     end
 
-    # Find the previous page. Does one of three things: 
+    # Find the previous page. Does one of three things:
     # * If there is already a page number in the options hash, it increases it and invalidates the cache, returning the new page number.
     # * If there is a prev_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
     def prev
-      if @options["page"] && @options["page"] > 1 
+      if @options["page"] && @options["page"] > 1
         clear_cache
         @options["page"] -= 1
       elsif @prev_page
         @query = @prev_page
         fetch(true)
       else
-        []
+        clear_cache
+        @resources = []
       end
     end
 
@@ -208,6 +264,7 @@ module ZendeskAPI
       @prev_page = nil
     end
 
+    # @private
     def to_ary; nil; end
 
     # Sends methods to underlying array of resources.
@@ -226,11 +283,26 @@ module ZendeskAPI
     end
 
     alias :orig_to_s :to_s
+
+    # @private
     def to_s
       if @resources
         @resources.inspect
       else
         orig_to_s
+      end
+    end
+
+    private
+
+    def set_page_and_count(body)
+      @count = (body["count"] || @resources.size).to_i
+      @next_page, @prev_page = body["next_page"], body["previous_page"]
+
+      if @next_page =~ /page=(\d+)/
+        @options["page"] = $1.to_i - 1
+      elsif @prev_page =~ /page=(\d+)/
+        @options["page"] = $1.to_i + 1
       end
     end
   end

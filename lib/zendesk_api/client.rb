@@ -3,6 +3,7 @@ require 'faraday_middleware'
 
 require 'zendesk_api/version'
 require 'zendesk_api/rescue'
+require 'zendesk_api/sideloading'
 require 'zendesk_api/configuration'
 require 'zendesk_api/collection'
 require 'zendesk_api/lru_cache'
@@ -13,8 +14,11 @@ require 'zendesk_api/middleware/response/callback'
 require 'zendesk_api/middleware/response/deflate'
 require 'zendesk_api/middleware/response/gzip'
 require 'zendesk_api/middleware/response/parse_iso_dates'
+require 'zendesk_api/middleware/response/logger'
 
 module ZendeskAPI
+  # The top-level class that handles configuration and connection to the Zendesk API.
+  # Can also be used as an accessor to resource collections.
   class Client
     include Rescue
 
@@ -29,14 +33,14 @@ module ZendeskAPI
     def method_missing(method, *args, &block)
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
-      return instance_variable_get("@#{method}") if !options.delete(:reload) && instance_variable_defined?("@#{method}")
-      instance_variable_set("@#{method}", ZendeskAPI::Collection.new(self, ZendeskAPI.get_class(method.singular), options))
-    end
 
-    # Plays a view playlist.
-    # @param [String/Number] id View id or 'incoming'
-    def play(id)
-      ZendeskAPI::Playlist.new(self, id)
+      @resource_cache[method] ||= {}
+
+      if !options[:reload] && (cached = @resource_cache[method][options.hash])
+        cached
+      else
+        @resource_cache[method][options.hash] = ZendeskAPI::Collection.new(self, ZendeskAPI.const_get(ZendeskAPI::Helpers.modulize_string(Inflection.singular(method))), options)
+      end
     end
 
     # Returns the current user (aka me)
@@ -46,6 +50,8 @@ module ZendeskAPI
       @current_user = users.find(:id => 'me')
     end
 
+    # Returns the current account
+    # @return [Hash] The attributes of the current account or nil
     def current_account(reload = false)
       return @current_account if @current_account && !reload
       @current_account = Hashie::Mash.new(connection.get('account/resolve').body)
@@ -54,6 +60,7 @@ module ZendeskAPI
     rescue_client_error :current_account
 
     # Returns the current locale
+    # @return [ZendeskAPI::Locale] Current locale or nil
     def current_locale(reload = false)
       return @locale if @locale && !reload
       @locale = locales.find(:id => 'current')
@@ -77,6 +84,11 @@ module ZendeskAPI
 
       config.retry = !!config.retry # nil -> false
 
+      if config.token && !config.password
+        config.password = config.token
+        config.username += "/token" unless config.username.end_with?("/token")
+      end
+
       if config.logger.nil? || config.logger == true
         require 'logger'
         config.logger = Logger.new($stderr)
@@ -84,6 +96,8 @@ module ZendeskAPI
       end
 
       @callbacks = []
+
+      @resource_cache = {}
 
       if logger = config.logger
         insert_callback do |env|
@@ -96,7 +110,7 @@ module ZendeskAPI
 
     # Creates a connection if there is none, otherwise returns the existing connection.
     #
-    # @returns [Faraday::Connection] Faraday connection for the client
+    # @return [Faraday::Connection] Faraday connection for the client
     def connection
       @connection ||= build_connection
       return @connection
@@ -110,7 +124,9 @@ module ZendeskAPI
 
     # show a nice warning for people using the old style api
     def self.check_deprecated_namespace_usage(attributes, name)
-      raise "un-nest '#{name}' from the attributes" if attributes[name].is_a?(Hash)
+      if attributes[name].is_a?(Hash)
+        raise "un-nest '#{name}' from the attributes"
+      end
     end
 
     protected
@@ -122,7 +138,7 @@ module ZendeskAPI
     # Uses middleware according to configuration options.
     #
     # Request logger if logger is not nil
-    # 
+    #
     # Retry middleware if retry is true
     def build_connection
       Faraday.new(config.options) do |builder|
@@ -134,7 +150,7 @@ module ZendeskAPI
         end
         builder.use Faraday::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
-        builder.use Faraday::Response::Logger, config.logger if config.logger
+        builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.response :json, :content_type => 'application/json'
         builder.use ZendeskAPI::Middleware::Response::Gzip

@@ -1,5 +1,6 @@
 module ZendeskAPI
   # http://codesnippets.joyent.com/posts/show/12329
+  # @private
   class ZendeskAPI::LRUCache
     attr_accessor :size
 

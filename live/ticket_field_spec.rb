@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ZendeskAPI::TicketField do
+describe ZendeskAPI::TicketField, :delete_after do
   def valid_attributes
     { :type => "text", :title => "Age" }
   end

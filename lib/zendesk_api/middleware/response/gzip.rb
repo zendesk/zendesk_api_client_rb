@@ -1,7 +1,9 @@
 require 'faraday_middleware/response_middleware'
 
 module ZendeskAPI
+  # @private
   module Middleware
+    # @private
     module Response
       # Faraday middleware to handle content-encoding = gzip
       class Gzip < FaradayMiddleware::ResponseMiddleware

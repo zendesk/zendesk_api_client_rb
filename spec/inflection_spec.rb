@@ -2,6 +2,6 @@ require 'spec_helper'
 
 describe String do
   specify "the plural of forum if forums" do
-    "forum".plural.should == "forums"
+    Inflection.plural("forum").should == "forums"
   end
 end

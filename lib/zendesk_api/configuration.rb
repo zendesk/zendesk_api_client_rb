@@ -1,4 +1,5 @@
 module ZendeskAPI
+  # Holds the configuration options for the client and connection
   class Configuration
     # @return [String] The basic auth username.
     attr_accessor :username
@@ -7,6 +8,9 @@ module ZendeskAPI
     attr_accessor :password
     
     # @return [String] The authorization token. Must be set if password is nil.
+    attr_accessor :token
+
+    # @return [String] The basic auth token.
     attr_accessor :token
 
     # @return [String] The API url. Must be https unless {#allow_http} is set.
