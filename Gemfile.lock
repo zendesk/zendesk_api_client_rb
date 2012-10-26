@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/steved555/hashie.git
-  revision: 2fa400b58956f3ae4c4eaaaa196084ffc659072f
+  remote: git://github.com/intridea/hashie.git
+  revision: f7adbf6b6e29bfcd3efbc33695fe0e018d62e66e
   specs:
     hashie (2.0.0.beta)
 
