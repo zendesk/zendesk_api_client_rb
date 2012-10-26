@@ -1,5 +1,6 @@
 require 'rake/testtask'
 require 'bundler/gem_tasks'
+require 'bump/tasks'
 
 begin
   require 'rspec/core/rake_task'
