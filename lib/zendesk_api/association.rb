@@ -67,16 +67,16 @@ module ZendeskAPI
         # Either grab association from child_id field on resource or parent_id on child resource
           if resource.key?(key)
             id = resource.send(key)
-            key = options.include_key
+            include_key = options.include_key
           else
             id = resource.id
-            key = "#{resource.class.singular_resource_name}_id"
+            include_key = "#{resource.class.singular_resource_name}_id"
           end
 
           next unless id
 
           side_load = side_loads.detect do |side_load|
-            id == side_load[key]
+            id == side_load[include_key]
           end
 
           resource.send("#{options.name}=", side_load) if side_load

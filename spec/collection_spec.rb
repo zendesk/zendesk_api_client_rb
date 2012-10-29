@@ -429,6 +429,45 @@ describe ZendeskAPI::Collection do
       end
     end
 
+
+    context "multiple resources" do
+      before(:each) do
+        ZendeskAPI::TestResource.has ZendeskAPI::NilResource
+
+        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
+          :test_resources => [{ :id => 1, :nil_resource_id => 4 }, { :id => 2, :nil_resource_id => 1 }],
+          :nil_resources => [{ :id => 1, :name => :bye }, { :id => 4, :name => :hi }]
+        ))
+
+        subject.fetch(true)
+
+      end
+
+      context "first resource" do
+        before(:each) { @resource = subject.detect {|res| res.id == 1} }
+
+        it "should side load nil_resources" do
+          @resource.nil_resource.should_not be_nil
+        end
+
+        it "should side load the correct nil_resource" do
+          @resource.nil_resource.name.should == "hi"
+        end
+      end
+
+      context "second resource" do
+        before(:each) { @resource = subject.detect {|res| res.id == 2} }
+
+        it "should side load nil_resources" do
+          @resource.nil_resource.should_not be_nil
+        end
+
+        it "should side load the correct nil_resource" do
+          @resource.nil_resource.name.should == "bye"
+        end
+      end
+    end
+
     context "plural ids on resource" do
       before(:each) do
         ZendeskAPI::TestResource.has_many ZendeskAPI::NilResource
