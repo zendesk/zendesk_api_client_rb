@@ -196,7 +196,10 @@ module ZendeskAPI
   class TicketMetric < ReadResource; end
 
   class Ticket < Resource
-    class Audit < DataResource; end
+    class Audit < DataResource
+      # need this to support SideLoading
+      has :author, :class => User
+    end
 
     has :requester, :class => User, :inline => :create
     has :submitter, :class => User
