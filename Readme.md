@@ -208,6 +208,16 @@ client.users.find(:id => 'me')
 client.current_user
 ```
 
+### Special Case: Importing a ticket
+
+Bulk importing tickets allows you to move large amounts of data into Zendesk.
+
+```ruby
+ticket = ZendeskAPI::Ticket.import(client, :subject => "Help", :comments => [{ :author_id => 19, :value => "This is a comment" }])
+```
+
+http://developer.zendesk.com/documentation/rest_api/ticket_import.html
+
 ### Attaching files
 
 Files can be attached to ticket comments using either a path or the File class and will
