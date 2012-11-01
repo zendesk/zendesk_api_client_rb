@@ -77,8 +77,8 @@ describe ZendeskAPI::DataResource do
 
     context "instance method" do
       context "with no side-loading" do
-        subject { ZendeskAPI::TestResource.new(client, :id => 1) }
-        before(:each) { stub_json_request(:get, %r{test_resources/\d+/test_resource}, json(:test_resource => {})) }
+        subject { ZendeskAPI::TestResource.new(client, :id => 1, :test_resource_id => 1) }
+        before(:each) { stub_json_request(:get, %r{test_resources/\d+}, json(:test_resource => {})) }
 
         it "should attempt to grab the resource from the host" do
           subject.test_resource.should be_instance_of(ZendeskAPI::TestResource)
@@ -89,7 +89,7 @@ describe ZendeskAPI::DataResource do
         end
 
         context "with a client error" do
-          before(:each) { stub_request(:get, %r{test_resources/\d+/test_resource}).to_return(:status => 500) }
+          before(:each) { stub_request(:get, %r{test_resources/\d+}).to_return(:status => 500) }
 
           it "should handle it properly" do
             expect { silence_logger{ subject.test_resource.should be_nil } }.to_not raise_error
@@ -99,7 +99,7 @@ describe ZendeskAPI::DataResource do
         context "with an explicit path set" do
           before(:each) do
             ZendeskAPI::TestResource.has ZendeskAPI::TestResource, :path => "blergh"
-            stub_json_request(:get, %r{test_resources/\d+/blergh}, json(:test_resource => {}))
+            stub_json_request(:get, %r{blergh/\d+}, json(:test_resource => {}))
           end
 
           it "should call the right path" do

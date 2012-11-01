@@ -216,13 +216,11 @@ module ZendeskAPI
 
           # find and cache association
           instance_association = Association.new(class_level_association.merge(:parent => self))
-          resource = if klass.respond_to?(:find)
-            if resource_id = method_missing(id_column)
-              klass.find(@client, :id => resource_id, :association => instance_association)
-            end
+          resource = if klass.respond_to?(:find) && resource_id = method_missing(id_column)
+            klass.find(@client, :id => resource_id, :association => instance_association)
           elsif found = method_missing(resource_name.to_sym)
             wrap_resource(found, klass, class_level_association)
-          elsif klass.ancestors.include?(DataResource)
+          elsif klass.superclass == DataResource
             rescue_client_error do
               response = @client.connection.get(instance_association.generate_path(:with_parent => true))
               klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
