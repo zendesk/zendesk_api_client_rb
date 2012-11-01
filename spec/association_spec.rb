@@ -37,9 +37,8 @@ describe ZendeskAPI::Association do
         instance.child.id.should == 2
       end
 
-      it "should fetch a unknown object" do
-        stub_json_request(:get, %r{test_resources/1/child}, json(:test_child => {:id => 2}))
-        instance.child.id.should == 2
+      it "should not fetch an unknown object" do
+       instance.child.should be_nil
       end
 
       it "should fetch an object known by id" do

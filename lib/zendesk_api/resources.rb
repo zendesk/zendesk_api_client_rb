@@ -193,7 +193,9 @@ module ZendeskAPI
     alias :save! :save
   end
 
-  class TicketMetric < ReadResource; end
+  class TicketMetric < DataResource
+    include Read
+  end
 
   class Ticket < Resource
     class Audit < DataResource; end
