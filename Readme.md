@@ -187,7 +187,7 @@ ticket.requester # => #<ZendeskAPI::User id=...>
 ```
 
 Currently, this feature is limited to only a few resources and their associations.
-They are documented on [developer.zendesk.com](http://developer.zendesk.com/documentation/rest_api/introduction.html#side-loading).
+They are documented on [developer.zendesk.com](http://developer.zendesk.com/documentation/rest_api/introduction.html#side-loading-\(beta)\).
 
 ### Special case: Custom resources paths
 
