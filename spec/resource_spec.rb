@@ -380,6 +380,14 @@ describe ZendeskAPI::Resource do
     end
   end
 
+  context "Ticket#assignee" do
+    subject { ZendeskAPI::Ticket.new(client, :id => 1, :assignee_id => nil) }
+
+    it "should not try and make a request" do
+      subject.assignee.should be_nil
+    end
+  end
+
   context "#new" do
     it "builds with hash" do
       object = ZendeskAPI::TestResource.new(client, {})

@@ -11,6 +11,11 @@ describe ZendeskAPI::Association do
         ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
       end
 
+      it "should not try and fetch nil child" do
+        instance.child_id = nil
+        instance.child.should be_nil
+      end
+
       it "should cache an set object" do
         instance.child = child
         instance.child.should == child
@@ -20,11 +25,6 @@ describe ZendeskAPI::Association do
         instance.child_id = nil
         instance.child = child
         instance.child_id.should == child.id
-      end
-
-      it "should not set id on set if it was not there" do
-        instance.child = child
-        instance.child_id.should == nil
       end
 
       it "should build a object set via hash" do
