@@ -198,7 +198,10 @@ module ZendeskAPI
   end
 
   class Ticket < Resource
-    class Audit < DataResource; end
+    class Audit < DataResource
+      # need this to support SideLoading
+      has :author, :class => User
+    end
 
     has :requester, :class => User, :inline => :create
     has :submitter, :class => User
@@ -260,6 +263,7 @@ module ZendeskAPI
   end
 
   class View < ReadResource
+    has_many :tickets, :class => Ticket
     has_many :rows, :class => ViewRow, :path => "execute"
     has :execution, :class => ViewExecution
 
