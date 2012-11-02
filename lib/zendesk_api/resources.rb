@@ -263,6 +263,7 @@ module ZendeskAPI
   end
 
   class View < ReadResource
+    has_many :tickets, :class => Ticket
     has_many :rows, :class => ViewRow, :path => "execute"
     has :execution, :class => ViewExecution
 
