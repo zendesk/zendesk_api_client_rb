@@ -1,4 +1,6 @@
 require 'faraday_middleware/response_middleware'
+require 'zlib'
+require 'stringio'
 
 module ZendeskAPI
   # @private
