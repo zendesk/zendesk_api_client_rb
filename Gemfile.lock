@@ -4,6 +4,12 @@ GIT
   specs:
     hashie (2.0.0.beta)
 
+GIT
+  remote: git://github.com/steved555/multipart-post.git
+  revision: f5bc9450fad3895542a7cf18dbdd9af4ba5ab031
+  specs:
+    multipart-post (1.1.5)
+
 PATH
   remote: .
   specs:
@@ -31,7 +37,6 @@ GEM
     json (1.7.5)
     mime-types (1.19)
     multi_json (1.3.6)
-    multipart-post (1.1.5)
     rake (0.9.2.2)
     rspec (2.11.0)
       rspec-core (~> 2.11.0)
@@ -58,6 +63,7 @@ DEPENDENCIES
   bump
   hashie!
   jruby-openssl
+  multipart-post!
   rake
   rspec
   simplecov
