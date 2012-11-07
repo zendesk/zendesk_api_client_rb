@@ -13,8 +13,6 @@ require 'coderay_bash'
 require 'json'
 require 'redcarpet'
 
-require 'zendesk_api'
-
 require 'debugger'
 
 module ZendeskAPI
