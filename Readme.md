@@ -16,6 +16,10 @@ bin/zendesk --help
 
 This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
+## Additional Documentation
+
+Additional documentation can be found on [rubydoc.info](http://rubydoc.info/gems/zendesk_api/frames)
+
 ## Important Notice
 
 Version 0.0.5 brings with it a change to the top-level namespace. All references to Zendesk should now use ZendeskAPI.
@@ -159,6 +163,44 @@ ticket.new_record? # => true
 ticket.save # Will POST
 ```
 
+### Side-loading
+
+**Warning: this is an experimental feature. Abuse it and lose it.**
+
+To facilitate a smaller number of requests and easier manipulation of associated data we allow "side-loading", or inclusion, of selected resources.
+
+For example:
+A ZendeskAPI::Ticket is associated with ZendeskAPI::User through the requester_id field.
+API requests for that ticket return a structure similar to this:
+```json
+"ticket": {
+  "id": 1,
+  "url": "http.....",
+  "requester_id": 7,
+  ...
+}
+```
+
+Calling ZendeskAPI::Ticket#requester automatically fetches and loads the user referenced above (`/api/v2/users/7`).
+Using side-loading, however, the user can be partially loaded in the same request as the ticket.
+
+```ruby
+tickets = client.tickets.include(:users)
+# Or client.tickets(include: :users)
+# Does *NOT* make a request to the server since it is already loaded
+tickets.first.requester # => #<ZendeskAPI::User id=...>
+```
+
+OR
+
+```ruby
+ticket = client.tickets.find(:id => 1, :include => :users)
+ticket.requester # => #<ZendeskAPI::User id=...>
+```
+
+Currently, this feature is limited to only a few resources and their associations.
+They are documented on [developer.zendesk.com](http://developer.zendesk.com/documentation/rest_api/introduction.html#side-loading-\(beta\)).
+
 ### Special case: Custom resources paths
 
 API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
@@ -178,6 +220,16 @@ client.users.find(:id => 'me')
 client.current_user
 ```
 
+### Special Case: Importing a ticket
+
+Bulk importing tickets allows you to move large amounts of data into Zendesk.
+
+```ruby
+ticket = ZendeskAPI::Ticket.import(client, :subject => "Help", :comments => [{ :author_id => 19, :value => "This is a comment" }])
+```
+
+http://developer.zendesk.com/documentation/rest_api/ticket_import.html
+
 ### Attaching files
 
 Files can be attached to ticket comments using either a path or the File class and will
@@ -189,11 +241,6 @@ ticket.comment.uploads << "img.jpg"
 ticket.comment.uploads << File.new("img.jpg")
 ticket.save
 ```
-
-## TODO
-
-* Search class detection
-* Live Testing
 
 ## Note on Patches/Pull Requests
 1. Fork the project.

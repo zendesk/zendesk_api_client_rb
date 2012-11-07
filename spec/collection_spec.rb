@@ -408,7 +408,7 @@ describe ZendeskAPI::Collection do
 
     context "singular id on resource" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource
+        ZendeskAPI::TestResource.has ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
@@ -429,9 +429,48 @@ describe ZendeskAPI::Collection do
       end
     end
 
+
+    context "multiple resources" do
+      before(:each) do
+        ZendeskAPI::TestResource.has ZendeskAPI::NilResource
+
+        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
+          :test_resources => [{ :id => 1, :nil_resource_id => 4 }, { :id => 2, :nil_resource_id => 1 }],
+          :nil_resources => [{ :id => 1, :name => :bye }, { :id => 4, :name => :hi }]
+        ))
+
+        subject.fetch(true)
+
+      end
+
+      context "first resource" do
+        before(:each) { @resource = subject.detect {|res| res.id == 1} }
+
+        it "should side load nil_resources" do
+          @resource.nil_resource.should_not be_nil
+        end
+
+        it "should side load the correct nil_resource" do
+          @resource.nil_resource.name.should == "hi"
+        end
+      end
+
+      context "second resource" do
+        before(:each) { @resource = subject.detect {|res| res.id == 2} }
+
+        it "should side load nil_resources" do
+          @resource.nil_resource.should_not be_nil
+        end
+
+        it "should side load the correct nil_resource" do
+          @resource.nil_resource.name.should == "bye"
+        end
+      end
+    end
+
     context "plural ids on resource" do
       before(:each) do
-        ZendeskAPI::TestResource.has_many :nil_resources
+        ZendeskAPI::TestResource.has_many ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_ids => [1, 4] }],
@@ -454,7 +493,7 @@ describe ZendeskAPI::Collection do
 
     context "ids in side load" do
       before(:each) do
-        ZendeskAPI::TestResource.has_many :nil_resources
+        ZendeskAPI::TestResource.has_many ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1 }],
@@ -476,7 +515,7 @@ describe ZendeskAPI::Collection do
 
     context "id in side load" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource
+        ZendeskAPI::TestResource.has ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1 }],
@@ -498,7 +537,7 @@ describe ZendeskAPI::Collection do
 
     context "with name as key" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, :include_key => :name
+        ZendeskAPI::TestResource.has ZendeskAPI::NilResource, :include_key => :name
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
@@ -521,8 +560,8 @@ describe ZendeskAPI::Collection do
 
     context "sub-loading" do
       before(:each) do
-        ZendeskAPI::TestResource.has :test_child
-        ZendeskAPI::TestResource::TestChild.has :nil_resource
+        ZendeskAPI::TestResource.has ZendeskAPI::TestResource::TestChild
+        ZendeskAPI::TestResource::TestChild.has ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :test_child => { :nil_resource_id => 4 } }],
@@ -570,6 +609,17 @@ describe ZendeskAPI::Collection do
     end
   end
 
+  context "with a module (Search)" do
+    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::Search, :query => "hello") }
+
+    before(:each) do
+      stub_json_request(:get, %r{search\?query=hello}, json(:results => []))
+    end
+
+    it "should not blow up" do
+      subject.to_a.should == []
+    end
+  end
 
   context "with different path" do
     subject do

@@ -1,21 +1,6 @@
 require 'spec_helper'
 
 describe ZendeskAPI::DataResource do
-  context "ZendeskAPI.get_class" do
-    it "should create a new class if there is none" do
-      ZendeskAPI.const_defined?("Blergh").should be_false
-      ZendeskAPI.get_class(:blergh).should == ZendeskAPI::Blergh
-    end
-
-    it "should find the class if it exists" do
-      ZendeskAPI.get_class(:tickets).should == ZendeskAPI::Tickets
-    end
-
-    it "should handle 'nil' be passed in" do
-      ZendeskAPI.get_class(nil).should be_false
-    end
-  end
-
   specify "singular resource name" do
     ZendeskAPI::Ticket.singular_resource_name.should == "ticket"
     ZendeskAPI::TicketField.singular_resource_name.should == "ticket_field"
@@ -72,106 +57,104 @@ describe ZendeskAPI::DataResource do
   end
 
   context "has" do
-    before(:each) { ZendeskAPI::TestResource.has :foo }
+    before(:each) { ZendeskAPI::TestResource.has ZendeskAPI::TestResource }
 
     context "class methods" do
       subject { ZendeskAPI::TestResource }
-      it "should define a method with the same name" do
-        subject.instance_methods.map(&:to_s).should include("foo")
-      end
 
-      it "should create a class if none exists" do
-        ZendeskAPI.const_defined?("Foo").should be_true
+      it "should define a method with the same name" do
+        subject.instance_methods.map(&:to_s).should include("test_resource")
       end
 
       context "with explicit class name" do
-        before(:all) { ZendeskAPI::TestResource.has :baz, :class => :foo }
+        before(:all) { ZendeskAPI::TestResource.has :baz, :class => ZendeskAPI::TestResource }
 
-        it "should not create a baz class" do
-          ZendeskAPI.const_defined?("Baz").should be_false
+        it "should define a method with the same name" do
+          subject.instance_methods.map(&:to_s).should include("baz")
         end
       end
     end
 
     context "instance method" do
       context "with no side-loading" do
-        subject { ZendeskAPI::TestResource.new(client, :id => 1) }
-        before(:each) { stub_json_request(:get, %r{test_resources/\d+/foo}, json(:foo => {})) }
+        subject { ZendeskAPI::TestResource.new(client, :id => 1, :test_resource_id => 1) }
+        before(:each) { stub_json_request(:get, %r{test_resources/\d+}, json(:test_resource => {})) }
 
         it "should attempt to grab the resource from the host" do
-          subject.foo.should be_instance_of(ZendeskAPI::Foo)
+          subject.test_resource.should be_instance_of(ZendeskAPI::TestResource)
         end
 
         it "should pass the path on to the resource" do
-          subject.foo.path.should == "foos"
+          subject.test_resource.path.should == "test_resources"
         end
 
         context "with a client error" do
-          before(:each) { stub_request(:get, %r{test_resources/\d+/foo}).to_return(:status => 500) }
+          before(:each) { stub_request(:get, %r{test_resources/\d+}).to_return(:status => 500) }
 
           it "should handle it properly" do
-            expect { silence_logger{ subject.foo.should be_nil } }.to_not raise_error
+            expect { silence_logger{ subject.test_resource.should be_nil } }.to_not raise_error
           end
         end
-        
+
         context "with an explicit path set" do
           before(:each) do
-            ZendeskAPI::TestResource.has :foo, :path => "blergh"
-            stub_json_request(:get, %r{test_resources/\d+/blergh}, json(:foo => {}))
+            ZendeskAPI::TestResource.has ZendeskAPI::TestResource, :path => "blergh"
+            stub_json_request(:get, %r{blergh/\d+}, json(:test_resource => {}))
           end
 
           it "should call the right path" do
-            subject.foo.should be_instance_of(ZendeskAPI::Foo)
+            subject.test_resource.should be_instance_of(ZendeskAPI::TestResource)
           end
         end
       end
 
       context "with side-loading of resource" do
-        let(:foo) { { :message => "FOO_OBJ" } }
-        subject { ZendeskAPI::TestResource.new(client, :foo => foo) }
+        let(:test_resource) { { :message => "FOO_OBJ" } }
+        subject { ZendeskAPI::TestResource.new(client, :test_resource => test_resource).test_resource }
+
+        it "should load the correct instance" do
+          subject.should be_instance_of(ZendeskAPI::TestResource)
+        end
 
         it "should load foo from the hash" do
-          subject.foo.should be_instance_of(ZendeskAPI::Foo)
+          subject.message.should == "FOO_OBJ"
         end
       end
 
       context "with side-loading of id" do
-        subject { ZendeskAPI::TestResource.new(client, :foo_id => 1) }
+        subject { ZendeskAPI::TestResource.new(client, :test_resource_id => 1) }
         before(:each) do
-          stub_json_request(:get, %r{foos/1}, json("foo" => {}))
+          stub_json_request(:get, %r{test_resources/1}, json("test_resource" => {}))
         end
 
         it "should find foo_id and load it from the api" do
-          subject.foo
+          subject.test_resource
         end
 
         it "should handle nil response from find api" do
-          ZendeskAPI::Foo.should_receive(:find).twice.and_return(nil)
-          subject.foo.should be_nil
-          subject.foo
+          ZendeskAPI::TestResource.should_receive(:find).twice.and_return(nil)
+          subject.test_resource.should be_nil
+          subject.test_resource
         end
       end
     end
   end
 
   context "has_many" do
-    before(:each) { ZendeskAPI::TestResource.has_many :bars }
+    before(:each) { ZendeskAPI::TestResource.has_many ZendeskAPI::TestResource }
 
     context "class methods" do
       subject { ZendeskAPI::TestResource }
-      it "should define a method with the same name" do
-        subject.instance_methods.map(&:to_s).should include("bars")
-      end
 
-      it "should create a class if none exists" do
-        ZendeskAPI.const_defined?("Bar").should be_true
+      it "should define a method with the same name" do
+        subject.instance_methods.map(&:to_s).should include("test_resources")
       end
 
       context "with explicit class name" do
-        before(:each) { ZendeskAPI::TestResource.has_many :cats, :class => :foo }
+        before(:each) { ZendeskAPI::TestResource.has_many :cats, :class => ZendeskAPI::TestResource }
 
-        it "should not create a baz class" do
-          ZendeskAPI.const_defined?("Cat").should be_false
+        it "should define a method with the same name" do
+          subject.instance_methods.map(&:to_s).should include("cats")
         end
       end
     end
@@ -181,46 +164,50 @@ describe ZendeskAPI::DataResource do
         subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
         it "should not attempt to grab the resource from the host" do
-          subject.bars.should be_instance_of(ZendeskAPI::Collection)
+          subject.test_resources.should be_instance_of(ZendeskAPI::Collection)
         end
 
         it "should pass the path on to the resource" do
-          subject.bars.path.should == "test_resources/1/bars"
+          subject.test_resources.path.should == "test_resources/1/test_resources"
         end
 
         context "with an explicit path set" do
           before(:each) do
-            ZendeskAPI::TestResource.has_many :bars, :path => "blargh"
+            ZendeskAPI::TestResource.has_many ZendeskAPI::TestResource, :path => "blargh"
           end
 
           it "should call the right path" do
-            subject.bars.path.should == "test_resources/1/blargh"
+            subject.test_resources.path.should == "test_resources/1/blargh"
           end
         end
       end
 
       context "with side-loading of resource" do
-        let(:bars) { [{ :message => "FOO_OBJ" }] }
-        subject { ZendeskAPI::TestResource.new(client, :bars => bars) }
+        let(:test_resources) { [{ :message => "FOO_OBJ" }] }
+        subject { ZendeskAPI::TestResource.new(client, :test_resources => test_resources).test_resources.first }
 
-        it "should map bars onto Bar class" do
-          subject.bars.first.should be_instance_of(ZendeskAPI::Bar)
+        it "should properly create instance" do
+          subject.message.should == "FOO_OBJ"
+        end
+
+        it "should map bars onto TestResource class" do
+          subject.should be_instance_of(ZendeskAPI::TestResource)
         end
       end
 
       context "with side-loading of id" do
-        let(:bars) { [1, 2, 3] }
-        subject { ZendeskAPI::TestResource.new(client, :bar_ids => bars) }
+        let(:test_resource_ids) { [1, 2, 3] }
+        subject { ZendeskAPI::TestResource.new(client, :test_resource_ids => test_resource_ids) }
 
         it "should find foo_id and load it from the api" do
-          ZendeskAPI::Bar.should_receive(:find).with(client, kind_of(Hash)).exactly(bars.length).times
-          subject.bars
+          ZendeskAPI::TestResource.should_receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times
+          subject.test_resources
         end
 
         it "should handle nil response from find api" do
-          ZendeskAPI::Bar.should_receive(:find).with(client, kind_of(Hash)).exactly(bars.length).times.and_return(nil)
-          subject.bars.should be_empty
-          subject.bars # Test expectations
+          ZendeskAPI::TestResource.should_receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times.and_return(nil)
+          subject.test_resources.should be_empty
+          subject.test_resources # Test expectations
         end
       end
     end

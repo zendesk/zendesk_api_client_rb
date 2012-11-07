@@ -1,8 +1,5 @@
 require 'zendesk_api/resource'
-require 'zendesk_api/resources/misc'
-require 'zendesk_api/resources/ticket'
-require 'zendesk_api/resources/user'
-require 'zendesk_api/resources/playlist'
+require 'zendesk_api/resources'
 
 module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
@@ -10,6 +7,7 @@ module ZendeskAPI
   class Collection
     include ZendeskAPI::Sideloading
 
+    # Options passed in that are automatically converted from an array to a comma-separated list.
     SPECIALLY_JOINED_PARAMS = [:ids, :only]
 
     include Rescue
@@ -19,6 +17,9 @@ module ZendeskAPI
 
     # @return [Faraday::Response] The last response
     attr_reader :response
+
+    # @return [Hash] query options
+    attr_reader :options
 
     # Creates a new Collection instance. Does not fetch resources.
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
@@ -49,7 +50,7 @@ module ZendeskAPI
       @includes = Array(@options.delete(:include))
 
       # Used for Attachments, TicketComment
-      if @resource_class.superclass == ZendeskAPI::Data
+      if @resource_class.is_a?(Class) && @resource_class.superclass == ZendeskAPI::Data
         @resources = []
         @fetchable = false
       end
@@ -126,10 +127,15 @@ module ZendeskAPI
       self
     end
 
+    # Adds an item (or items) to the list of side-loaded resources to request
+    # @option sideloads [Symbol or String] The item(s) to sideload
     def include(*sideloads)
       self.tap { @includes.concat(sideloads.map(&:to_s)) }
     end
 
+    # Adds an item to this collection
+    # @option item [ZendeskAPI::Data] the resource to add
+    # @raise [ArgumentError] if the resource doesn't belong in this collection
     def <<(item)
       fetch
       if item.is_a?(Resource)
@@ -144,6 +150,7 @@ module ZendeskAPI
       end
     end
 
+    # The API path to this collection
     def path
       @association.generate_path(:with_parent => true)
     end
@@ -187,18 +194,6 @@ module ZendeskAPI
       @resources
     end
 
-    def set_page_and_count(body)
-      @count = (body["count"] || @resources.size).to_i
-      @next_page, @prev_page = body["next_page"], body["previous_page"]
-
-      if @next_page =~ /page=(\d+)/
-        @options["page"] = $1.to_i - 1
-      elsif @prev_page =~ /page=(\d+)/
-        @options["page"] = $1.to_i + 1
-      end
-    end
-
-
     rescue_client_error :fetch, :with => lambda { Array.new }
 
     # Alias for fetch(false)
@@ -227,12 +222,15 @@ module ZendeskAPI
       end
     end
 
+    # Replaces the current (loaded or not) resources with the passed in collection
+    # @option collection [Array] The collection to replace this one with
+    # @raise [ArgumentError] if any resources passed in don't belong in this collection
     def replace(collection)
       raise "this collection is for #{@resource_class}" if collection.any?{|r| !r.is_a?(@resource_class) }
       @resources = collection
     end
 
-    # Find the next page. Does one of three things: 
+    # Find the next page. Does one of three things:
     # * If there is already a page number in the options hash, it increases it and invalidates the cache, returning the new page number.
     # * If there is a next_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
@@ -274,6 +272,7 @@ module ZendeskAPI
       @prev_page = nil
     end
 
+    # @private
     def to_ary; nil; end
 
     # Sends methods to underlying array of resources.
@@ -291,6 +290,7 @@ module ZendeskAPI
       end
     end
 
+    # @private
     def to_s
       if @resources
         @resources.inspect
@@ -303,5 +303,18 @@ module ZendeskAPI
     end
 
     alias :to_str :to_s
+
+    private
+
+    def set_page_and_count(body)
+      @count = (body["count"] || @resources.size).to_i
+      @next_page, @prev_page = body["next_page"], body["previous_page"]
+
+      if @next_page =~ /page=(\d+)/
+        @options["page"] = $1.to_i - 1
+      elsif @prev_page =~ /page=(\d+)/
+        @options["page"] = $1.to_i + 1
+      end
+    end
   end
 end

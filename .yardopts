@@ -1,1 +1,1 @@
---no-private --protected lib/**/*.rb - Readme.md
+--tag internal --hide-tag internal --no-private --protected lib/**/*.rb -e util/resource_handler.rb -e util/verb_handler.rb - Readme.md

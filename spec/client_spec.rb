@@ -87,7 +87,7 @@ describe ZendeskAPI::Client do
         subject { true }
 
         it "should log in faraday" do
-          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
+          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
         end
 
         context "with a request" do
@@ -102,7 +102,7 @@ describe ZendeskAPI::Client do
         subject { false }
 
         it "should not log" do
-          @client.connection.builder.handlers.should_not include(Faraday::Response::Logger)
+          @client.connection.builder.handlers.should_not include(ZendeskAPI::Middleware::Response::Logger)
         end
       end
 
@@ -110,16 +110,16 @@ describe ZendeskAPI::Client do
         subject { nil }
 
         it "should log" do
-          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
+          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
         end
       end
 
       context "with a logger" do
         let(:out){ StringIO.new }
         subject { Logger.new(out) }
-        
+
         it "should log" do
-          @client.connection.builder.handlers.should include(Faraday::Response::Logger)
+          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
         end
 
         context "with a request" do
@@ -154,21 +154,19 @@ describe ZendeskAPI::Client do
 
   context "resources" do
     it "should return an instance of ZendeskAPI::Collection if there is no method" do
+      subject.instance_variable_get(:@resource_cache)["tickets"].should be_nil
+
       subject.tickets.should be_instance_of(ZendeskAPI::Collection)
-      subject.instance_variable_defined?(:@tickets).should be_true
-    end
-  end
 
-  context "#play" do
-    # TODO may be able to be replaced by VCR
-    before(:each) do 
-      stub_request(:get, %r{play}).to_return do
-        { :status => 302 }
-      end
+      subject.instance_variable_get(:@resource_cache)["tickets"].should_not be_empty
     end
 
-    it "should return an instance of ZendeskAPI::Playlist" do
-      subject.play(1).should be_instance_of(ZendeskAPI::Playlist)
+    it "should not cache calls with different options" do
+      subject.search(:query => 'abc').should_not == subject.search(:query => '123')
+    end
+
+    it "should cache calls with the same options" do
+      subject.search(:query => 'abc').should == subject.search(:query => 'abc')
     end
   end
 

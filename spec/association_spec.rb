@@ -8,7 +8,12 @@ describe ZendeskAPI::Association do
     context "has" do
       before do
         ZendeskAPI::TestResource.associations.clear
-        ZendeskAPI::TestResource.has :child, :class => :test_child
+        ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
+      end
+
+      it "should not try and fetch nil child" do
+        instance.child_id = nil
+        instance.child.should be_nil
       end
 
       it "should cache an set object" do
@@ -22,11 +27,6 @@ describe ZendeskAPI::Association do
         instance.child_id.should == child.id
       end
 
-      it "should not set id on set if it was not there" do
-        instance.child = child
-        instance.child_id.should == nil
-      end
-
       it "should build a object set via hash" do
         instance.child = {:id => 2}
         instance.child.id.should == 2
@@ -37,9 +37,8 @@ describe ZendeskAPI::Association do
         instance.child.id.should == 2
       end
 
-      it "should fetch a unknown object" do
-        stub_json_request(:get, %r{test_resources/1/child}, json(:test_child => {:id => 2}))
-        instance.child.id.should == 2
+      it "should not fetch an unknown object" do
+       instance.child.should be_nil
       end
 
       it "should fetch an object known by id" do

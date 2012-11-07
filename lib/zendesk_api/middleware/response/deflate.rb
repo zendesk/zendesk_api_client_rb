@@ -4,6 +4,7 @@ module ZendeskAPI
   module Middleware
     module Response
       # Faraday middleware to handle content-encoding = inflate
+      # @private
       class Deflate < FaradayMiddleware::ResponseMiddleware
         define_parser do |body|
           Zlib::Inflate.inflate(body)
