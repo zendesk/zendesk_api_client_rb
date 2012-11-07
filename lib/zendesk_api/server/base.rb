@@ -13,7 +13,9 @@ require 'coderay_bash'
 require 'json'
 require 'redcarpet'
 
-require 'debugger'
+if ZendeskAPI::Server::App.development?
+  require 'debugger'
+end
 
 module ZendeskAPI
   module Server

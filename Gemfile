@@ -5,22 +5,26 @@ gem "jruby-openssl", :platforms => :jruby
 gem "hashie", :git => "git://github.com/intridea/hashie.git"
 gem "multipart-post", :git => "git://github.com/steved555/multipart-post.git"
 
-gem "rack-secure_only"
+group :server do
+  gem "rack-secure_only"
 
-gem "sinatra"
-gem "sinatra-contrib"
+  gem "sinatra"
+  gem "sinatra-contrib"
 
-gem "haml"
+  gem "haml"
 
-gem "compass"
-gem "bootstrap-sass"
+  gem "compass"
+  gem "bootstrap-sass"
 
-gem "coderay"
-gem "coderay_bash"
+  gem "coderay"
+  gem "coderay_bash"
 
-gem "redcarpet"
+  gem "redcarpet"
+end
 
-gem "ripl"
+group :console do
+  gem "ripl"
+end
 
 group :development do
   gem "debugger"

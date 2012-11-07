@@ -6,8 +6,12 @@ require 'zendesk_api'
 
 ARGV[0] ||= "console"
 if %w(s server).include?(ARGV[0])
+  Bundler.setup(:server)
+
   require 'zendesk_api/server/base'
   ZendeskAPI::Server::App.run!
 else
+  Bundler.setup(:console)
+
   require 'zendesk_api/console/base'
 end
