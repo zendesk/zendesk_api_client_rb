@@ -3,111 +3,31 @@ require 'sinatra/content_for'
 require 'sinatra/reloader'
 
 require 'optparse'
+
 require 'compass'
 require 'haml'
+
 require 'coderay'
+require 'coderay_bash'
+
 require 'json'
 require 'redcarpet'
 
 require 'zendesk_api'
-require 'zendesk_api/console/extensions'
 
 require 'debugger'
 
-class HtmlRenderer
-  def self.render(text)
-    markdown = Redcarpet::Markdown.new(RedcarpetRenderer, :fenced_code_blocks => true, :no_intra_emphasis => true, :tables => true)
-    markdown.render(text)
-  end
-
-  def self.generate_id(text)
-    text.strip.downcase.gsub(/[\s,]+/, '-')
-  end
-
-  class RedcarpetRenderer < Redcarpet::Render::HTML
-    def header(text, level)
-      icons = <<-END
-        <i class=\"header-icon icon-plus\"></i>
-        <i class=\"header-icon icon-minus hide\"></i>
-      END
-
-      "<h#{level} id=\"#{HtmlRenderer.generate_id(text)}\">
-        #{icons if level == 3}
-        #{text}
-      </h#{level}>"
-    end
-
-    def block_code(code, language)
-      if language
-        code = CodeRay.scan(code, language).html(:wrap => nil)
-      end
-
-      "<pre>#{code}</pre>"
-    end
-  end
-end
-
-
 module ZendeskAPI
   module Server
-    module Helpers
-      def help
-        <<-END
-### Searching
-### Routing
-        END
-      end
-
-      def map_headers(headers)
-        headers.map do |k,v|
-          name = k.split("-").map(&:capitalize).join("-")
-          "#{name}: #{v}"
-        end.join("\n")
-      end
-
-      def set_request(request)
-        @html_request = <<-END
-HTTP/1.1 #{@method.to_s.upcase} #{request[:url]}
-#{map_headers(request[:request_headers])}
-        END
-
-        if @method != :get && @json && !@json.empty?
-          @json = CodeRay.scan(@json, :json).span
-          @html_request << "\n\n#{@json}"
-        end
-      end
-
-      def set_response(response)
-        @html_response =<<-END
-HTTP/1.1 #{response[:status]}
-#{map_headers(response[:headers])}
-
-
-#{CodeRay.scan(JSON.pretty_generate(response[:body]), :json).span}
-        END
-      end
-
-      def client(params = params)
-        ZendeskAPI::Client.new do |c|
-          params.each do |key, value|
-            value = "https://#{value}.zendesk.com/api/v2/" if key == 'url'
-            c.send("#{key}=", value)
-          end
-
-          # require 'logger'
-          # c.logger = Logger.new(STDOUT)
-
-          c.allow_http = true if App.development?
-        end
-      end
-    end
+    require 'zendesk_api/server/helper'
+    require 'zendesk_api/server/html_renderer'
 
     class App < Sinatra::Base
       enable :sessions
       enable :method_override
 
       helpers Sinatra::ContentFor
-      helpers Helpers
+      helpers Helper
 
       configure do
         set :public_folder, File.join(File.dirname(__FILE__), 'public')
@@ -124,6 +44,7 @@ HTTP/1.1 #{response[:status]}
       end
 
       post '/search' do
+        # TODO needs protection
         file = "/Users/stevendavidovitz/src/zendesk.github.com/tmp/#{params[:query]}.md"
 
         if File.exists?(file)

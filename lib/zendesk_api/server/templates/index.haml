@@ -1,13 +1,3 @@
-:css
-  #json {
-    margin-bottom: 10px;
-  }
-
-  #method_select {
-    width: 6em;
-    margin-right: 10px;
-  }
-
 %form.form.well{:method => :post}
   .form-inline
     %input.input-xlarge{:id => "username", :name => "username", :placeholder => "username", :value => params["username"]}
@@ -32,17 +22,17 @@
       \.json
 
   #input
-    %textarea#json.hide{:name => "json"}
-      { "": "" }
-
-    %p.error
-
     #params
       - @get_params.each do |param|
         = haml :param, :locals => { :param => param }
 
     %button.btn#add-param
       Add URL Parameter
+
+    %textarea#json.hide{:name => "json"}
+      { "": "" }
+
+    %p.error
 
   %button.btn.btn-primary{:type => :submit}
     Submit
@@ -68,3 +58,9 @@
   - if @html_response
     #response_tab.code.tab.hide
       %pre= @html_response
+
+:javascript
+  $("#add-param").click(function(event) {
+    event.preventDefault();
+    $("#params").append(#{haml(:param, :locals => { :param => {} }).to_json});
+  });
