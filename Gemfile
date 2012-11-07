@@ -14,7 +14,7 @@ group :server do
   gem "haml"
 
   gem "compass"
-  gem "bootstrap-sass"
+  gem "bootstrap-sass", :git => "https://github.com/trisweb/bootstrap-sass.git"
 
   gem "coderay"
   gem "coderay_bash"

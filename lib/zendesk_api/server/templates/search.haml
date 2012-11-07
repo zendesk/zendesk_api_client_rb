@@ -1,5 +1,7 @@
 #search
-  %span#query
-    %input{:name => "query", :placeholder => "try: users"}
+  .input-append
+    %input{:type => "text", :placeholder => "try: users", :name => "query"}
+    %button.btn#clear-search
+      %i.icon-remove
 
-    #search-results= ZendeskAPI::Server::HtmlRenderer.render(help)
+  #search-results= ZendeskAPI::Server::HtmlRenderer.render(help)
