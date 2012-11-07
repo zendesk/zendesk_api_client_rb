@@ -92,7 +92,7 @@
     try {
       JSON.parse(value);
     } catch(e) {
-      $('#error').html("There was an error with your JSON syntax. " + e.message);
+      $('#error').html("There was an error with your JSON syntax: " + e.message);
     }
   });
 
@@ -102,26 +102,6 @@
   }
 
   $("#method_select").change(toggle_json);
-
-  function toggle_sub_resource(selected) {
-    var sub_resource = $('select#sub_resource_' + selected.val());
-
-    if(sub_resource.length > 0) {
-      $('#sub_resource').show();
-      $('.sub_resource').hide();
-      sub_resource.show();
-    } else {
-      $('#sub_resource').hide();
-    }
-  }
-
-  function toggle_readable(selected) {
-    if(selected.hasClass("readable")) {
-      $('#resource_id').show();
-    } else {
-      $('#resource_id').hide();
-    }
-  }
 
   var param_html = #{haml(:param, :locals => { :param => {} }).to_json}
 
@@ -136,15 +116,5 @@
   });
 
   $(document).ready(function() {
-    var selected = $('#resource option:selected');
-    toggle_sub_resource(selected);
-    toggle_readable(selected);
-
     toggle_json();
-  });
-
-  $('#resource').change(function() {
-    var selected = $('#resource option:selected');
-    toggle_sub_resource(selected);
-    toggle_readable(selected);
   });

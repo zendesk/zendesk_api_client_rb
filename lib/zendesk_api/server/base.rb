@@ -42,65 +42,6 @@ HTTP/1.1 #{response.env[:status]}
         END
       end
 
-      def url_for(overwrite = {})
-        new_url = url
-        new_params = params.merge(overwrite).map {|k,v| "#{k}=#{v}"}
-        new_url += "?#{new_params.join("&")}"
-      end
-
-      def sort_by
-        (params[:sort_by] || 'id').downcase.to_sym
-      end
-
-      def sort_order
-        if !params[:sort_order] || params[:sort_order] =~ /asc/i
-          :asc
-        else
-          :desc
-        end
-      end
-
-      def format_headers
-        @collection.format_headers
-      end
-
-      def format(resource)
-        resource.format
-      end
-
-      def page
-        page = params[:page].to_i
-        page > 0 ? page : 1
-      end
-
-      def page_params(page = page)
-        str = "page=#{page}"
-        str += "&per_page=#{params[:per_page]}" if params[:per_page]
-        str
-      end
-
-      def readable_resources
-        ZendeskAPI::Client.resources.select do |resource|
-          (resource.ancestors & [ZendeskAPI::Resource, ZendeskAPI::ReadResource]).any?
-        end
-      end
-
-      def sub_resource_hash
-        readable_resources.inject({}) do |map, resource|
-          associations = resource.associations.select do |association|
-            !association[:singular] || (false)
-          end.map do |association|
-            association[:path] || association[:name]
-          end
-
-          unless associations.empty?
-            map[resource.resource_name] = associations
-          end
-
-          map
-        end
-      end
-
       def client(params = params)
         ZendeskAPI::Client.new do |c|
           params.each do |key, value|
@@ -108,8 +49,8 @@ HTTP/1.1 #{response.env[:status]}
             c.send("#{key}=", value)
           end
 
-          require 'logger'
-          c.logger = Logger.new(STDOUT)
+          # require 'logger'
+          # c.logger = Logger.new(STDOUT)
 
           c.allow_http = true if App.development?
         end
@@ -145,11 +86,9 @@ HTTP/1.1 #{response.env[:status]}
         @method = (params.delete("method") || "get").downcase.to_sym
         @path = params.delete("path")
         @json = params.delete("json")
-        @get_params = params.delete("params").delete_if do |param|
+        @get_params = (params.delete("params") || {}).delete_if do |param|
           !param["name"] || !param["value"] || (param["name"].empty? && param["value"].empty?)
         end
-
-        puts params.inspect
 
         begin
           response = client.connection.send(@method, @path) do |request|
@@ -167,6 +106,7 @@ HTTP/1.1 #{response.env[:status]}
         rescue Faraday::Error::ConnectionFailed => e
           @error = "The connection failed"
         rescue Faraday::Error::ClientError => e
+          # set_response(e.response) if e.response
           @error = e.message
         rescue JSON::ParserError => e
           @error = "JSON was invalid"
