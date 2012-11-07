@@ -12,6 +12,27 @@
 
 body {
   padding-top: 60px;
+  background: url(http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-home/green-tile.jpg);
+}
+
+.help .nav {
+  margin: 0px;
+}
+
+.help.well {
+  padding: 5px;
+}
+
+#params, #params div {
+  margin-bottom: 10px;
+}
+
+.remove-param {
+  cursor: pointer;
+}
+
+#input {
+  margin-bottom: 10px;
 }
 
 // Include responsive Bootstrap styles

@@ -1,43 +1,84 @@
-%h1 Make an API Request
+:css
+  #json {
+    margin-bottom: 10px;
+  }
 
-%form.form{:method => :post}
-  %input.input-xlarge{:id => "username", :name => "username", :placeholder => "username"}
-  %input.input-xlarge{:id => "password", :name => "password", :placeholder => "password / token", :type => "password"}
+  #method_select {
+    width: 6em;
+    margin-right: 10px;
+  }
 
-  %br
-
-  https://
-  %input{:name => "url", :type => "text"}
-  \.zendesk.com/api/v2/
-  %select{:name => "resource"}
-    - readable_resources.each do |resource|
-      %option{:value => resource.resource_name}= resource.resource_name
-
-  %br
-
-  %select{:id => "method", :name => "method"}
-    %option{:value => "GET"} GET
-    %option{:value => "POST"} POST
-    %option{:value => "PUT"} PUT
-    %option{:value => "DELETE"} DELETE
+%form.form.well{:method => :post}
+  .form-inline
+    %input.input-xlarge{:id => "username", :name => "username", :placeholder => "username", :value => params["username"]}
+    %input.input-xlarge{:id => "password", :name => "password", :placeholder => "password / token", :type => "password", :value => params["password"]}
 
   %br
 
-  %p#error
-  %textarea#json.hide{:name => "json"}
-    { "": "" }
+  #path.inline
+    %select#method_select{:name => "method"}
+      - %w{GET POST PUT DELETE}.each do |method|
+        %option{:value => method, :selected => @method == method.downcase.to_sym}= method
 
-  %input{:type => :submit}
+    %span.bold
+      https://
+    %input{:name => "url", :type => "text", :value => params["url"], :placeholder => "subdomain"}
+    %span.bold
+      \.zendesk.com/api/v2/
 
-- if @html_request
-  %div.code
-    %pre= @html_request
+    %input{:name => "path", :type => "text", :value => @path, :placeholder => "path"}
 
-- if @html_response
-  %div.code
-    %pre= @html_response
+    %span.bold
+      \.json
+
+    %p#error
+
+  #input
+    %textarea#json.hide{:name => "json"}
+      { "": "" }
+    #params
+      - @get_params.each do |param|
+        = haml :param, :locals => { :param => param }
+
+    %button.btn#add-param
+      Add URL Parameter
+
+  %button.btn.btn-primary{:type => :submit}
+    Submit
+
+- if @error
+  .error
+    %p= @error
+
+.response
+  - if @html_request && @html_response
+    %ul.nav.nav-pills.well
+      %li.active
+        %a.tab_link#request{:href => "#"}
+          Request
+      %li
+        %a.tab_link#response{:href => "#"}
+          Response
+
+  - if @html_request
+    #request_tab.code.tab
+      %pre= @html_request
+
+  - if @html_response
+    #response_tab.code.tab.hide
+      %pre= @html_response
 
 :javascript
+  $('.tab_link').click(function() {
+    var elem = $(this);
+
+    $('.tab').hide();
+    $('ul.nav-pills li').removeClass('active');
+
+    $('#' + this.id + '_tab').show();
+    elem.parent('li').addClass('active');
+  });
+
   $('#json').keydown(function() {
     $('#error').html('');
   });
@@ -55,12 +96,55 @@
     }
   });
 
-  $('#method').change(function() {
-    var method = $(this).val();
+  function toggle_json() {
+    var method = $("#method_select option:selected").val();
+    $("#json").toggle(method == "POST" || method == "PUT");
+  }
 
-    if(method == "POST" || method == "PUT") {
-      $('#json').show();
+  $("#method_select").change(toggle_json);
+
+  function toggle_sub_resource(selected) {
+    var sub_resource = $('select#sub_resource_' + selected.val());
+
+    if(sub_resource.length > 0) {
+      $('#sub_resource').show();
+      $('.sub_resource').hide();
+      sub_resource.show();
     } else {
-      $('#json').hide();
+      $('#sub_resource').hide();
     }
+  }
+
+  function toggle_readable(selected) {
+    if(selected.hasClass("readable")) {
+      $('#resource_id').show();
+    } else {
+      $('#resource_id').hide();
+    }
+  }
+
+  var param_html = #{haml(:param, :locals => { :param => {} }).to_json}
+
+  $("#add-param").click(function(event) {
+    event.preventDefault();
+    $("#params").append(param_html);
+  });
+
+  $(".remove-param").live("click", function(event) {
+    event.preventDefault();
+    $(this).parent("div").remove();
+  });
+
+  $(document).ready(function() {
+    var selected = $('#resource option:selected');
+    toggle_sub_resource(selected);
+    toggle_readable(selected);
+
+    toggle_json();
+  });
+
+  $('#resource').change(function() {
+    var selected = $('#resource option:selected');
+    toggle_sub_resource(selected);
+    toggle_readable(selected);
   });

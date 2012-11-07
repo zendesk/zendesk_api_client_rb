@@ -1,3 +1,3 @@
 require './base'
 
-use ZendeskAPI::App
+run ZendeskAPI::Server::App

@@ -20,6 +20,12 @@ class ZendeskAPI::Collection
     end
   end
 
+  alias :orig_log_error :log_error
+
+  def log_error(e, _)
+    raise e
+  end
+
   def loaded?
     @resources && @resources.any?
   end

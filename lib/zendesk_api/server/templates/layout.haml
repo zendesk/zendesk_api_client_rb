@@ -10,11 +10,10 @@
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
-          %a.brand{:href => url('/')} Zendesk API Client
+          %a.brand{:href => url('/')} Zendesk API
 
-    .container-fluid
-      .row-fluid
-        .span2
-          = haml :sidebar
-        .span10
-          = yield
+
+    .container
+      = yield
+      .help.well
+        = haml :sidebar
