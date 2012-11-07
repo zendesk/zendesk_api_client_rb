@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 require 'bundler'
-Bundler.setup(:default, :console)
+Bundler.setup(:default, :console, :development, :server)
 
 require 'zendesk_api'
 
 ARGV[0] ||= "console"
 if %w(s server).include?(ARGV[0])
   require 'zendesk_api/server/base'
+  ZendeskAPI::Server::App.run!
 else
   require 'zendesk_api/console/base'
 end
