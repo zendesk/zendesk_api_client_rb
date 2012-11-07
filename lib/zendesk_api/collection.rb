@@ -298,7 +298,7 @@ module ZendeskAPI
         inspect = []
         inspect << "options=#{@options.inspect}" if @options.any?
         inspect << "path=#{path}"
-        "#{@resource.singular} collection [#{inspect.join(",")}]"
+        "#{Inflection.singular(@resource)} collection [#{inspect.join(",")}]"
       end
     end
 
