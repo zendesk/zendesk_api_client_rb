@@ -3,7 +3,7 @@ require 'logger'
 
 begin
   OptionParser.new do |opts|
-    opts.banner = "Usage: zendesk_console.rb [options]"
+    opts.banner = "Usage: zendesk c[onsole] [options]"
 
     opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
       config["logger.level"] = v ? Logger::INFO : Logger::WARN

@@ -9,6 +9,15 @@ if %w(s server).include?(ARGV[0])
   Bundler.setup(:server)
 
   require 'zendesk_api/server/base'
+
+  OptionParser.new do |op|
+    op.banner = "Usage: zendesk s[erver] [options]"
+
+    op.on('-e env', 'Set the environment') {|val| ZendeskAPI::Server::App.set(:environment, val.to_sym)}
+    op.on('-p port', 'Bind to a port') {|val| ZendeskAPI::Server::App.set(:port, val.to_i)}
+    op.on('-o addr', 'Bind to a location') {|val| ZendeskAPI::Server::App.set(:bind, val)}
+  end.parse!(ARGV.dup)
+
   ZendeskAPI::Server::App.run!
 else
   Bundler.setup(:console)

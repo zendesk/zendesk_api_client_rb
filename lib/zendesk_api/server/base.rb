@@ -2,8 +2,6 @@ require 'sinatra/base'
 require 'sinatra/content_for'
 require 'sinatra/reloader'
 
-require 'optparse'
-
 require 'compass'
 require 'haml'
 
@@ -20,7 +18,6 @@ module ZendeskAPI
 
     class App < Sinatra::Base
       enable :sessions
-      enable :method_override
 
       helpers Sinatra::ContentFor
       helpers Helper
@@ -31,8 +28,6 @@ module ZendeskAPI
       end
 
       configure :development do
-        require 'debugger'
-
         register Sinatra::Reloader
       end
 
@@ -87,16 +82,6 @@ module ZendeskAPI
         end
 
         haml :index, :format => :html5
-      end
-
-      if $0 == __FILE__
-        OptionParser.new {|op|
-          op.on('-e env', 'Set the environment') {|val| set(:environment, val.to_sym)}
-          op.on('-p port', 'Bind to a port') {|val| set(:port, val.to_i)}
-          op.on('-o addr', 'Bind to a location') {|val| set(:bind, val)}
-        }.parse!(ARGV.dup)
-
-        run!
       end
     end
   end

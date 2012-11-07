@@ -26,8 +26,4 @@ group :console do
   gem "ripl"
 end
 
-group :development do
-  gem "debugger"
-end
-
 gemspec
