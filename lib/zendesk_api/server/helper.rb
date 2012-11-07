@@ -21,8 +21,8 @@ HTTP/1.1 #{@method.to_s.upcase} #{request[:url]}
       END
 
       if @method != :get && @json && !@json.empty?
-        @json = CodeRay.scan(@json, :json).span
-        @html_request << "\n\n#{@json}"
+        parsed_json = CodeRay.scan(@json, :json).span
+        @html_request << "\n\n#{parsed_json}"
       end
     end
 

@@ -29,8 +29,7 @@
     %button.btn#add-param
       Add URL Parameter
 
-    %textarea#json.hide{:name => "json"}
-      { "": "" }
+    %textarea#json.hide{:name => "json"}= @json ? @json : '{ "": "" }'
 
     %p.error
 
