@@ -13,10 +13,6 @@ require 'coderay_bash'
 require 'json'
 require 'redcarpet'
 
-if ZendeskAPI::Server::App.development?
-  require 'debugger'
-end
-
 module ZendeskAPI
   module Server
     require 'zendesk_api/server/helper'
@@ -35,6 +31,8 @@ module ZendeskAPI
       end
 
       configure :development do
+        require 'debugger'
+
         register Sinatra::Reloader
       end
 
