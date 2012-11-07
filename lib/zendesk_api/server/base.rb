@@ -42,8 +42,8 @@ module ZendeskAPI
       end
 
       post '/search' do
-        # TODO needs protection
-        file = "/Users/stevendavidovitz/src/zendesk.github.com/tmp/#{params[:query]}.md"
+        # TODO  need to find a better way
+        file = File.join(File.absolute_path(__FILE__), "docs", "#{params[:query]}.md")
 
         if File.exists?(file)
           md = File.open(file) {|f| f.read}
