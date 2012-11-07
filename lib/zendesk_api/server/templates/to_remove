@@ -1,0 +1,20 @@
+    %select{:name => "resource", :id => "resource"}
+      - readable_resources.each do |resource|
+        %option{:class => resource.respond_to?(:find) && "readable", :selected => @resource == resource.resource_name, :value => resource.resource_name}= resource.resource_name
+    %div#resource_id.optional
+      %span.bold
+        \/
+      %input.input-mini{:name => "sub[id]", :type => "text", :value => @sub["id"], :placeholder => "optional"}
+      %div#sub_resource.optional
+        %span.bold
+          \/
+        - sub_resource_hash.each do |resource, sub_resources|
+          %select.sub_resource.hide{:name => "sub[resource]", :id => "sub_resource_#{resource}"}
+            %option (optional)
+            - sub_resources.each do |sub_resource|
+              %option{:value => sub_resource, :selected => sub_resource == @sub["resource"]}= sub_resource
+        %span.bold
+          \/
+        %input.input-mini{:name => "sub[id]", :type => "text", :value => @sub["id"], :placeholder => "optional"}
+
+
