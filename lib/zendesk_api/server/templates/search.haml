@@ -1,0 +1,5 @@
+#search
+  %span#query
+    %input{:name => "query", :placeholder => "try: users"}
+
+    #search-results= ZendeskAPI::Server::HtmlRenderer.render(help)
