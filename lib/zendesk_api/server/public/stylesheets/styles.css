@@ -6498,44 +6498,50 @@ body {
 }
 
 /* line 35, ../sass/styles.scss */
+#json {
+  width: 65%;
+  height: 100px;
+}
+
+/* line 40, ../sass/styles.scss */
 #search {
   padding: 10px 10px 0 10px;
 }
 
-/* line 39, ../sass/styles.scss */
+/* line 44, ../sass/styles.scss */
 #search .input-append {
   display: block;
 }
-/* line 41, ../sass/styles.scss */
+/* line 46, ../sass/styles.scss */
 #search .input-append input {
   width: 90%;
 }
 
-/* line 44, ../sass/styles.scss */
+/* line 49, ../sass/styles.scss */
 #add-param {
   display: block;
   margin-bottom: 10px;
 }
 
-/* line 49, ../sass/styles.scss */
+/* line 54, ../sass/styles.scss */
 #method_select {
   width: 6em;
   margin-right: 10px;
 }
 
-/* line 54, ../sass/styles.scss */
+/* line 59, ../sass/styles.scss */
 #search-results {
   margin-top: 10px;
 }
-/* line 57, ../sass/styles.scss */
+/* line 62, ../sass/styles.scss */
 #search-results p, #search-results table, #search-results h2, #search-results h4, #search-results pre, #search-results ul {
   display: none;
 }
-/* line 61, ../sass/styles.scss */
+/* line 66, ../sass/styles.scss */
 #search-results h3 {
   cursor: pointer;
 }
-/* line 65, ../sass/styles.scss */
+/* line 70, ../sass/styles.scss */
 #search-results .header-icon {
   float: left;
   margin-right: 10px;
