@@ -14,6 +14,7 @@ group :console do
   gem "compass"
   gem "debugger"
   gem "coderay"
+  gem "redcarpet"
 end
 
 

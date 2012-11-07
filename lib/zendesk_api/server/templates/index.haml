@@ -31,11 +31,12 @@
     %span.bold
       \.json
 
-    %p#error
-
   #input
     %textarea#json.hide{:name => "json"}
       { "": "" }
+
+    %p.error
+
     #params
       - @get_params.each do |param|
         = haml :param, :locals => { :param => param }
@@ -45,10 +46,6 @@
 
   %button.btn.btn-primary{:type => :submit}
     Submit
-
-- if @error
-  .error
-    %p= @error
 
 .response
   - if @html_request && @html_response
@@ -60,6 +57,10 @@
         %a.tab_link#response{:href => "#"}
           Response
 
+  - if @error
+    .error.code.tab
+      %pre= "Error: #{@error}"
+
   - if @html_request
     #request_tab.code.tab
       %pre= @html_request
@@ -67,54 +68,3 @@
   - if @html_response
     #response_tab.code.tab.hide
       %pre= @html_response
-
-:javascript
-  $('.tab_link').click(function() {
-    var elem = $(this);
-
-    $('.tab').hide();
-    $('ul.nav-pills li').removeClass('active');
-
-    $('#' + this.id + '_tab').show();
-    elem.parent('li').addClass('active');
-  });
-
-  $('#json').keydown(function() {
-    $('#error').html('');
-  });
-
-  $('#json').keyup(function() {
-    var value = $('#json').val();
-
-    if(value == '')
-      return;
-
-    try {
-      JSON.parse(value);
-    } catch(e) {
-      $('#error').html("There was an error with your JSON syntax: " + e.message);
-    }
-  });
-
-  function toggle_json() {
-    var method = $("#method_select option:selected").val();
-    $("#json").toggle(method == "POST" || method == "PUT");
-  }
-
-  $("#method_select").change(toggle_json);
-
-  var param_html = #{haml(:param, :locals => { :param => {} }).to_json}
-
-  $("#add-param").click(function(event) {
-    event.preventDefault();
-    $("#params").append(param_html);
-  });
-
-  $(".remove-param").live("click", function(event) {
-    event.preventDefault();
-    $(this).parent("div").remove();
-  });
-
-  $(document).ready(function() {
-    toggle_json();
-  });

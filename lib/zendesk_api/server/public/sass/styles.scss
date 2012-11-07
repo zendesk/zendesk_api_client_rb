@@ -10,16 +10,26 @@
   color: red;
 }
 
+  #json {
+    margin-bottom: 10px;
+  }
+
+  #method_select {
+    width: 6em;
+    margin-right: 10px;
+  }
+
+
 body {
   padding-top: 60px;
   background: url(http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-home/green-tile.jpg);
 }
 
-.help .nav {
+#help .nav {
   margin: 0px;
 }
 
-.help.well {
+#help.well {
   padding: 5px;
 }
 
@@ -33,6 +43,72 @@ body {
 
 #input {
   margin-bottom: 10px;
+}
+
+.error pre {
+  color: red;
+}
+
+.error p {
+  color: red;
+}
+
+#search {
+  padding: 10px 10px 0 10px;
+}
+
+#query {
+  display: block;
+}
+
+#query input {
+  width: 100%;
+}
+
+#search-results {
+  margin-top: 10px;
+}
+
+#search-results {
+  margin-top: 10px;
+
+  p, table, h4, pre, ul {
+    display: none;
+  }
+}
+
+#search-results p {
+  display: none;
+}
+
+#search-results table {
+  display: none;
+}
+
+#search-results h4 {
+  display: none;
+}
+
+#search-results h3 {
+  cursor: pointer;
+}
+
+#search-results h3 i {
+  float: left;
+  margin-right: 10px;
+  margin-top: 13px;
+}
+
+#search-results pre {
+  display: none;
+}
+
+#search-results ul {
+  display: none;
+}
+
+#search-results h2 {
+  display: none;
 }
 
 // Include responsive Bootstrap styles

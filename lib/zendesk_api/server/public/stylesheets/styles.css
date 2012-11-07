@@ -6219,32 +6219,124 @@ a.label:hover, a.badge:hover {
 }
 
 /* line 13, ../sass/styles.scss */
+#json {
+  margin-bottom: 10px;
+}
+
+/* line 17, ../sass/styles.scss */
+#method_select {
+  width: 6em;
+  margin-right: 10px;
+}
+
+/* line 23, ../sass/styles.scss */
 body {
   padding-top: 60px;
   background: url(http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-home/green-tile.jpg);
 }
 
-/* line 18, ../sass/styles.scss */
-.help .nav {
+/* line 28, ../sass/styles.scss */
+#help .nav {
   margin: 0px;
 }
 
-/* line 22, ../sass/styles.scss */
-.help.well {
+/* line 32, ../sass/styles.scss */
+#help.well {
   padding: 5px;
 }
 
-/* line 26, ../sass/styles.scss */
+/* line 36, ../sass/styles.scss */
 #params div {
   margin-bottom: 10px;
 }
 
-/* line 30, ../sass/styles.scss */
+/* line 40, ../sass/styles.scss */
 .remove-param {
   cursor: pointer;
 }
 
-/* line 34, ../sass/styles.scss */
+/* line 44, ../sass/styles.scss */
 #input {
   margin-bottom: 10px;
+}
+
+/* line 48, ../sass/styles.scss */
+.error pre {
+  color: red;
+}
+
+/* line 52, ../sass/styles.scss */
+.error p {
+  color: red;
+}
+
+/* line 56, ../sass/styles.scss */
+#search {
+  padding: 10px 10px 0 10px;
+}
+
+/* line 60, ../sass/styles.scss */
+#query {
+  display: block;
+}
+
+/* line 64, ../sass/styles.scss */
+#query input {
+  width: 100%;
+}
+
+/* line 68, ../sass/styles.scss */
+#search-results {
+  margin-top: 10px;
+}
+
+/* line 72, ../sass/styles.scss */
+#search-results {
+  margin-top: 10px;
+}
+/* line 75, ../sass/styles.scss */
+#search-results p, #search-results table, #search-results h4, #search-results pre, #search-results ul {
+  display: none;
+}
+
+/* line 80, ../sass/styles.scss */
+#search-results p {
+  display: none;
+}
+
+/* line 84, ../sass/styles.scss */
+#search-results table {
+  display: none;
+}
+
+/* line 88, ../sass/styles.scss */
+#search-results h4 {
+  display: none;
+}
+
+/* line 92, ../sass/styles.scss */
+#search-results h3 {
+  cursor: pointer;
+}
+
+/* line 96, ../sass/styles.scss */
+#search-results h3 i {
+  float: left;
+  margin-right: 10px;
+  margin-top: 13px;
+}
+
+/* line 102, ../sass/styles.scss */
+#search-results pre {
+  display: none;
+}
+
+/* line 106, ../sass/styles.scss */
+#search-results ul {
+  display: none;
+}
+
+/* line 110, ../sass/styles.scss */
+#search-results h2 {
+  display: none;
 }

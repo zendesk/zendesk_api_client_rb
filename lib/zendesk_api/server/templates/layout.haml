@@ -15,5 +15,7 @@
 
     .container
       = yield
-      .help.well
+      #help.well
+        = haml :search
+        %hr
         = haml :sidebar
