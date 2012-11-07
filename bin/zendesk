@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'bundler'
-Bundler.setup(:default, :console, :development, :server)
+Bundler.setup(:default)
 
 require 'zendesk_api'
 
