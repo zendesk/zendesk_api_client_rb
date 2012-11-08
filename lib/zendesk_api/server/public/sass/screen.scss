@@ -1,0 +1,73 @@
+#params div {
+  margin-bottom: 10px;
+}
+
+.remove-param {
+  cursor: pointer;
+}
+
+#input {
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+
+  * { color: red; }
+}
+
+#json {
+  width: 65%;
+  height: 100px;
+}
+
+#search .input-append {
+  margin-right: 43px;
+}
+
+#add-param {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#method_select {
+  width: 6em;
+  margin-right: 10px;
+}
+
+#search-results {
+  margin-top: 10px;
+
+  h2, h3 {
+    font-size: 18px;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  .header-icon {
+    float: left;
+    margin-right: 10px;
+    margin-top: 3px;
+  }
+}
+
+#navigation {
+  padding: 5px 5px 5px 20px;
+
+  ul {
+    margin: 0;
+  }
+}
+
+.navbar-search .search-query {
+  padding: 4px 9px;
+  height: 15px;
+}
+
+#usage span {
+  display: block;
+}
+
+.alert .close {
+  top: -5px;
+}

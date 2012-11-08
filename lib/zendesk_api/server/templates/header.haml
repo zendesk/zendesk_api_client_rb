@@ -1,0 +1,20 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      %a{:href => url("/")}
+        %img.logo-lotus{:src => url("/images/zendesk_developers_header.png")}
+
+      %ul.nav.pull-right
+        %li
+          %a{:href => "https://developer.zendesk.com/documentation/rest_api/introduction.html"} REST API
+        %li
+          %a{:href => "https://developer.zendesk.com/documentation/apps"} Apps
+        %li
+          %a{:href => "https://developer.zendesk.com/documentation/blog/index.html"} Blog
+        %li
+          %a{:href => "https://support.zendesk.com/forums/20636018-zendesk-api"} Community
+        %li
+          %a{:href => "https://support.zendesk.com"} Support
+
+      %form.navbar-search.pull-left{:action => "http://developer.zendesk.com/search", :method => "get"}
+        %input.search-query.span2{:type => "text", :name => "q", :placeholder => "Search"}
