@@ -25,6 +25,14 @@ module ZendeskAPI
       configure do
         set :public_folder, File.join(File.dirname(__FILE__), 'public')
         set :views, File.join(File.dirname(__FILE__), 'templates')
+
+        set :documentation_dir, File.join(File.dirname(__FILE__), "docs")
+
+        documentation = Dir.glob(File.join(settings.documentation_dir, "*.md")).inject({}) do |docs, entry|
+          docs.merge(File.basename(entry, ".md") => HtmlRenderer.render(File.open(entry) {|f| f.read}))
+        end
+
+        set :documentation, documentation
       end
 
       configure :development do
@@ -37,16 +45,11 @@ module ZendeskAPI
       end
 
       post '/search' do
-        # TODO  need to find a better way
-        file = File.join(File.dirname(__FILE__), "docs", "#{params[:query]}.md")
-
-        if File.exists?(file)
-          md = File.open(file) {|f| f.read}
+        if md = settings.documentation[params[:query]]
+          md
         else
-          md = help
+          settings.help
         end
-
-        HtmlRenderer.render(md)
       end
 
       post '/' do

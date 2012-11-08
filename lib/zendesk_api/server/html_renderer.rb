@@ -19,7 +19,7 @@ module ZendeskAPI::Server
         END
 
         "<h#{level} id=\"#{HtmlRenderer.generate_id(text)}\">
-          #{icons if level == 3}
+          #{icons if [2, 3].include?(level)}
           #{text}
         </h#{level}>"
       end

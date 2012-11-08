@@ -1,7 +1,23 @@
 #search
   .input-append
-    %input{:type => "text", :placeholder => "try: users", :name => "query"}
+    %input.input-block-level{:type => "text", :placeholder => "try: users", :name => "query"}
     %button.btn#clear-search
       %i.icon-remove
 
+  .alert.alert-info
+    %button.close{:type => "button", "data-dismiss" => "alert"} x
+    %p#usage
+      %span Begin typing and you should be able to see a list of available resources to view
+      %span To go to a specific action you can do something like: users#list-users
+
+
   #search-results= ZendeskAPI::Server::HtmlRenderer.render(help)
+
+:javascript
+  $("#search input").autocomplete({
+    source: #{(settings.documentation + ["help"]).to_json},
+    minLength: 2,
+    select: function(event, ui) {
+      search(ui.item.value);
+    }
+  });

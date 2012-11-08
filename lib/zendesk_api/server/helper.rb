@@ -1,10 +1,11 @@
 module ZendeskAPI::Server
   module Helper
+    def get_documentation(file)
+      File.join(settings.documentation_dir, "#{file}.md")
+    end
+
     def help
-      <<-END
-### Searching
-### Routing
-      END
+      File.open(get_documentation("introduction")) {|f| f.read}
     end
 
     def map_headers(headers)

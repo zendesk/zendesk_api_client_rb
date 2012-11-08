@@ -1,6 +1,6 @@
-%form.form.well{:method => :post}
+%form.form{:method => :post}
   .form-inline
-    %input.input-xlarge{:id => "username", :name => "username", :placeholder => "username", :value => params["username"]}
+    %input.input-xlarge{:id => "username", :name => "username", :placeholder => "username", :type => "text", :value => params["username"]}
     %input.input-xlarge{:id => "password", :name => "password", :placeholder => "password / token", :type => "password", :value => params["password"]}
 
   %br
@@ -26,7 +26,7 @@
       - @get_params.each do |param|
         = haml :param, :locals => { :param => param }
 
-    %button.btn#add-param
+    %button.btn#add-param{:type => "button"}
       Add URL Parameter
 
     %textarea#json.hide{:name => "json"}= @json ? @json : '{ "": "" }'
@@ -36,26 +36,27 @@
   %button.btn.btn-primary{:type => :submit}
     Submit
 
-.response
+#response
   - if @html_request && @html_response
-    %ul.nav.nav-pills.well
+    %ul.nav.nav-pills
       %li.active
-        %a.tab_link#request{:href => "#"}
+        %a.tab_link#request-tab-link{:href => "#"}
           Request
       %li
-        %a.tab_link#response{:href => "#"}
+        %a.tab_link#response-tab-link{:href => "#"}
           Response
 
   - if @error
-    .error.code.tab
-      %pre= "Error: #{@error}"
+    .alert.alert-error
+      %button.close{:type => "button", "data-dismiss" => "alert"} x
+      %span= "Error: #{@error}"
 
   - if @html_request
-    #request_tab.code.tab
+    #request-tab.code.tab
       %pre= @html_request
 
   - if @html_response
-    #response_tab.code.tab.hide
+    #response-tab.code.tab.hide
       %pre= @html_response
 
 :javascript
