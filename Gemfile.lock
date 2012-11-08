@@ -115,6 +115,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass
   bump
+  bundler (~> 1.2.0.rc)
   coderay
   coderay_bash
   compass
