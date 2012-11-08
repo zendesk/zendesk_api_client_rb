@@ -1,7 +1,6 @@
-require 'rack-secure_only'
-
+require 'rack/ssl-enforcer'
 require 'zendesk_api'
 require 'zendesk_api/server/base'
 
-use Rack::SecureOnly, :if => ZendeskAPI::Server::App.production?
+use Rack::SslEnforcer if ZendeskAPI::Server::App.production?
 run ZendeskAPI::Server::App

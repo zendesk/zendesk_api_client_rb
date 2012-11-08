@@ -6,7 +6,7 @@ gem "hashie", :git => "git://github.com/intridea/hashie.git"
 gem "multipart-post", :git => "git://github.com/steved555/multipart-post.git"
 
 group :server do
-  gem "rack-secure_only"
+  gem "rack-ssl-enforcer"
 
   gem "sinatra"
   gem "sinatra-contrib"
