@@ -80,7 +80,7 @@ module ZendeskAPI
         rescue JSON::ParserError => e
           @error = "The JSON you attempted to send was invalid"
         rescue URI::InvalidURIError => e
-          @error = "Please enter a subdomain or path"
+          @error = "Please enter a subdomain"
         else
           set_response(:body => response.body,
             :headers => response.env[:response_headers],
