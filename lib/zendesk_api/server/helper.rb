@@ -1,13 +1,5 @@
 module ZendeskAPI::Server
   module Helper
-    def autocomplete_documentation
-      settings.documentation.inject([]) do |accum, (resource, content)|
-        accum.push(resource)
-        accum.concat(content[:headers].map {|header| "#{resource}##{header}"})
-        accum
-      end + ["help"]
-    end
-
     def map_headers(headers)
       headers.map do |k,v|
         name = k.split("-").map(&:capitalize).join("-")
