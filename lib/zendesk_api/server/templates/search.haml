@@ -15,8 +15,8 @@
 
 :javascript
   $("#search input").autocomplete({
-    source: #{(settings.documentation.keys + ["help"]).to_json},
-    minLength: 2,
+    source: #{(autocomplete_documentation).to_json},
+    minLength: 3,
     select: function(event, ui) {
       search(ui.item.value);
     }

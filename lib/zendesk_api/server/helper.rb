@@ -1,11 +1,11 @@
 module ZendeskAPI::Server
   module Helper
-    def get_documentation(file)
-      File.join(settings.documentation_dir, "#{file}.md")
-    end
-
-    def help
-      File.open(get_documentation("introduction")) {|f| f.read}
+    def autocomplete_documentation
+      settings.documentation.inject([]) do |accum, (resource, content)|
+        accum.push(resource)
+        accum.concat(content[:headers].map {|header| "#{resource}##{header}"})
+        accum
+      end + ["help"]
     end
 
     def map_headers(headers)

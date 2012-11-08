@@ -2,8 +2,11 @@
 # https://github.com/staugaard/double_doc/blob/master/lib/double_doc/html_renderer.rb
 module ZendeskAPI::Server
   class HtmlRenderer
+    def self.markdown
+      @markdown ||= Redcarpet::Markdown.new(RedcarpetRenderer, :fenced_code_blocks => true, :no_intra_emphasis => true, :tables => true)
+    end
+
     def self.render(text)
-      markdown = Redcarpet::Markdown.new(RedcarpetRenderer, :fenced_code_blocks => true, :no_intra_emphasis => true, :tables => true)
       markdown.render(text)
     end
 
@@ -12,14 +15,24 @@ module ZendeskAPI::Server
     end
 
     class RedcarpetRenderer < Redcarpet::Render::HTML
-      def header(text, level)
-        icons = <<-END
+      attr_reader :headers
+
+      def icons
+        <<-END
           <i class=\"header-icon icon-plus\"></i>
           <i class=\"header-icon icon-minus hide\"></i>
         END
+      end
 
-        "<h#{level} id=\"#{HtmlRenderer.generate_id(text)}\">
-          #{icons if [2, 3].include?(level)}
+      def header(text, level)
+        top_level = [2, 3].include?(level)
+        id = HtmlRenderer.generate_id(text)
+
+        @headers ||= []
+        @headers << id if top_level
+
+        "<h#{level} id=\"#{id}\">
+          #{icons if top_level}
           #{text}
         </h#{level}>"
       end
