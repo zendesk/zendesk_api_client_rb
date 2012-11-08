@@ -70,9 +70,8 @@ module ZendeskAPI
 
         if @user_request
           params["username"] = @user_request.username
-          params["url"] = @user_request.subdomain
+          params["url"] = @user_request.url
 
-          @path = @user_request.path
           @method = @user_request.method
           @json = @user_request.json
           @url_params = @user_request.url_params
@@ -102,10 +101,9 @@ module ZendeskAPI
         execute
 
         @user_request = UserRequest.create(
-          :username => params[:username],
+          :username => params["username"],
           :method => @method,
-          :subdomain => params[:url],
-          :path => @path,
+          :url => params["url"],
           :json => @json,
           :url_params => @url_params,
           :request => @html_request,

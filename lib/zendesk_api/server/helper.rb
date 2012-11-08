@@ -61,7 +61,6 @@ HTTP/1.1 #{response[:status]}
     def client(params = params)
       ZendeskAPI::Client.new do |c|
         params.each do |key, value|
-          value = "https://#{value}.zendesk.com/api/v2/" if key == 'url'
           c.send("#{key}=", value)
         end
       end

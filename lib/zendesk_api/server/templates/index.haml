@@ -3,23 +3,7 @@
     %input.input-xlarge{:id => "username", :name => "username", :placeholder => "username", :type => "text", :value => params["username"]}
     %input.input-xlarge{:id => "password", :name => "password", :placeholder => "password / token", :type => "password", :value => params["password"]}
 
-  %br
-
-  #path.inline
-    %select#method_select{:name => "method"}
-      - %w{GET POST PUT DELETE}.each do |method|
-        %option{:value => method, :selected => @method == method.downcase.to_sym}= method
-
-    %span.bold
-      https://
-    %input{:name => "url", :type => "text", :value => params["url"], :placeholder => "subdomain"}
-    %span.bold
-      \.zendesk.com/api/v2/
-
-    %input{:name => "path", :type => "text", :value => @path, :placeholder => "path"}
-
-    %span.bold
-      \.json
+  %input#path{:name => "url", :type => "text", :value => params["url"], :placeholder => "url e.g. https://{subdomain}.zendesk.com/api/v2/{path}"}
 
   #input
     #params
@@ -30,6 +14,10 @@
       Add URL Parameter
 
     %textarea#json.hide{:name => "json"}= @json ? @json : '{ "": "" }'
+
+  %select#method_select{:name => "method"}
+    - %w{GET POST PUT DELETE}.each do |method|
+      %option{:value => method, :selected => @method == method.downcase.to_sym}= method
 
   %button.btn.btn-primary{:type => :submit}
     Submit

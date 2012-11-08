@@ -5,8 +5,7 @@ module ZendeskAPI::Server
     field :username, :type => String
     # field :password, :type => String
     field :method, :type => Symbol
-    field :subdomain, :type => String
-    field :path, :type => String
+    field :url, :type => String
     field :json, :type => String
     field :url_params, :type => Array
 

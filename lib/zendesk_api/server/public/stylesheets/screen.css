@@ -52,7 +52,7 @@
 /* line 41, ../sass/screen.scss */
 #method_select {
   width: 6em;
-  margin-right: 10px;
+  margin: 0;
 }
 
 /* line 46, ../sass/screen.scss */
@@ -95,4 +95,15 @@
 /* line 79, ../sass/screen.scss */
 .alert .close {
   top: -5px;
+}
+
+/* line 83, ../sass/screen.scss */
+#path {
+  margin-top: 10px;
+  width: 98%;
+}
+
+/* line 88, ../sass/screen.scss */
+.form-inline input {
+  width: 48%;
 }

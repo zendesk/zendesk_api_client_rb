@@ -40,7 +40,7 @@
 
 #method_select {
   width: 6em;
-  margin-right: 10px;
+  margin: 0;
 }
 
 #search-results {
@@ -78,4 +78,13 @@
 
 .alert .close {
   top: -5px;
+}
+
+#path {
+  margin-top: 10px;
+  width: 98%;
+}
+
+.form-inline input {
+  width: 48%;
 }
