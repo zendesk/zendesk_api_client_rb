@@ -127,14 +127,14 @@ a.archives:active {text-decoration:none;}
 }
 
 #dev-form button:hover {
-  background: url(http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-contact/btn_sprite.png) 0 -30px no-repeat;
+  background: url(https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-contact/btn_sprite.png) 0 -30px no-repeat;
 }
 
 #dev-form #mktFrmSubmit {
   display:none;
 }
 #dev-form button:active {
-  background: url(http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-contact/btn_sprite.png) 0 -59px no-repeat;
+  background: url(https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-contact/btn_sprite.png) 0 -59px no-repeat;
 }
 
 /*#dev-form button {
@@ -143,7 +143,7 @@ a.archives:active {text-decoration:none;}
   width: 157px;
   text-indent: -999999em;
   cursor: pointer;
-  background: url(http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-contact/btn_sprite.png) 0 0 no-repeat;
+  background: url(https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/img/p-contact/btn_sprite.png) 0 0 no-repeat;
   border:none;
   margin:7px 3px 3px 15px;
 
@@ -810,27 +810,27 @@ color: #08C!important;
 /* PF Din Text Pro */
 @font-face {
   font-family: 'DNLTR';
-  src: url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.eot');
-  src: url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.eot?#iefix') format('embedded-opentype'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.woff') format('woff'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.ttf') format('truetype'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.svg#wf') format('svg');
+  src: url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.eot');
+  src: url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.eot?#iefix') format('embedded-opentype'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.woff') format('woff'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.ttf') format('truetype'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/226cca47a6a41d745725a674072efac9.svg#wf') format('svg');
 }
 
 @font-face {
   font-family: 'DNLTM';
-  src: url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.eot');
-  src: url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.eot?#iefix') format('embedded-opentype'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.woff') format('woff'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.ttf') format('truetype'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.svg#wf') format('svg');
+  src: url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.eot');
+  src: url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.eot?#iefix') format('embedded-opentype'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.woff') format('woff'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.ttf') format('truetype'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/50e4987ced5d5ab91dbd851dd3ed00ce.svg#wf') format('svg');
 }
 
 @font-face {
   font-family: 'DNLTB';
-  src: url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.eot');
-  src: url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.eot?#iefix') format('embedded-opentype'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.woff') format('woff'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.ttf') format('truetype'),
-     url('http://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.svg#wf') format('svg');
+  src: url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.eot');
+  src: url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.eot?#iefix') format('embedded-opentype'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.woff') format('woff'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.ttf') format('truetype'),
+     url('https://www.zendesk.com/wp-content/themes/zendesk-twentyeleven/fonts/4595fdd135f25b7a9da20957ba413fed.svg#wf') format('svg');
 }
