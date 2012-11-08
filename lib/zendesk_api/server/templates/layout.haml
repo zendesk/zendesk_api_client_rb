@@ -25,19 +25,20 @@
     = haml :header
 
     .container
-      .container-fluid
-        .row-fluid
-          .span12.frame.well#navigation
-            %ul.nav.nav-pills
-              %li.active
-                %a.tab_link#throw-tab-link{:href => "#"}
-                  Try the API
-              %li
-                %a.tab_link#help-tab-link{:href => "#documentation"}
-                  Documentation
-        .row-fluid
-          .span12.frame.well.tab#throw-tab
-            = yield
-        .row-fluid
-          .span12.frame.well.hide.tab#help-tab
-            = haml :search
+      .row-fluid
+        .span12.frame.well#navigation
+          %ul.nav.nav-pills
+            %li.active
+              %a.tab_link#throw-tab-link{:href => "#"}
+                Try the API
+            %li
+              %a.tab_link#help-tab-link{:href => "#documentation"}
+                Documentation
+      .row-fluid
+        .span12.frame.well.tab#throw-tab
+          = yield
+      .row-fluid
+        .span12.frame.well.hide.tab#help-tab
+          = haml :search
+
+    = haml :footer
