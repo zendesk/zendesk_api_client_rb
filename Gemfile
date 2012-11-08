@@ -20,6 +20,9 @@ group :server do
   gem "coderay_bash"
 
   gem "redcarpet"
+
+  gem "mongoid"
+  gem "database_cleaner"
 end
 
 group :console do

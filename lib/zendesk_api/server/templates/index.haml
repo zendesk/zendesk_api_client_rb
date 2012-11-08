@@ -23,15 +23,13 @@
 
   #input
     #params
-      - @get_params.each do |param|
+      - @url_params.each do |param|
         = haml :param, :locals => { :param => param }
 
     %button.btn#add-param{:type => "button"}
       Add URL Parameter
 
     %textarea#json.hide{:name => "json"}= @json ? @json : '{ "": "" }'
-
-    %p.error
 
   %button.btn.btn-primary{:type => :submit}
     Submit
@@ -58,6 +56,13 @@
   - if @html_response
     #response-tab.code.tab.hide
       %pre= @html_response
+
+- if @user_request
+  - url = url("/#{@user_request._id}")
+
+  You can access this request again at
+  %a{:href => url}= url
+  %small.inline (your password isn't stored)
 
 :javascript
   $("#add-param").click(function(event) {

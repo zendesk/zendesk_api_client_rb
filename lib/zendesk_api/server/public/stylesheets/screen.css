@@ -29,60 +29,70 @@
 }
 
 /* line 24, ../sass/screen.scss */
+#json.valid {
+  border: 1px solid green;
+}
+
+/* line 28, ../sass/screen.scss */
+#json.invalid {
+  border: 1px solid red;
+}
+
+/* line 32, ../sass/screen.scss */
 #search .input-append {
   margin-right: 43px;
 }
 
-/* line 28, ../sass/screen.scss */
+/* line 36, ../sass/screen.scss */
 #add-param {
   display: block;
   margin-bottom: 10px;
 }
 
-/* line 33, ../sass/screen.scss */
+/* line 41, ../sass/screen.scss */
 #method_select {
   width: 6em;
   margin-right: 10px;
 }
 
-/* line 38, ../sass/screen.scss */
+/* line 46, ../sass/screen.scss */
 #search-results {
   margin-top: 10px;
 }
-/* line 41, ../sass/screen.scss */
+/* line 49, ../sass/screen.scss */
 #search-results h2, #search-results h3 {
   font-size: 18px;
   line-height: 20px;
   cursor: pointer;
 }
-/* line 47, ../sass/screen.scss */
+/* line 55, ../sass/screen.scss */
 #search-results .header-icon {
   float: left;
   margin-right: 10px;
   margin-top: 3px;
 }
 
-/* line 54, ../sass/screen.scss */
+/* line 62, ../sass/screen.scss */
 #navigation {
   padding: 5px 5px 5px 20px;
 }
-/* line 57, ../sass/screen.scss */
+/* line 65, ../sass/screen.scss */
 #navigation ul {
   margin: 0;
 }
 
-/* line 62, ../sass/screen.scss */
+/* line 70, ../sass/screen.scss */
 .navbar-search .search-query {
   padding: 4px 9px;
   height: 15px;
 }
 
-/* line 67, ../sass/screen.scss */
+/* line 75, ../sass/screen.scss */
 #usage span {
   display: block;
 }
 
-/* line 71, ../sass/screen.scss */
+/* line 79, ../sass/screen.scss */
 .alert .close {
   top: -5px;
 }

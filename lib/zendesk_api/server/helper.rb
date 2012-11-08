@@ -1,5 +1,34 @@
 module ZendeskAPI::Server
   module Helper
+
+    def execute
+      begin
+        response = client.connection.send(@method, @path) do |request|
+          request.params = @url_params.inject({}) do |accum, h|
+            accum.merge(h["name"] => h["value"])
+          end
+
+          if @method != :get && !@json.empty?
+            request.body = JSON.parse(@json)
+          end
+
+          set_request(request.to_env(client.connection))
+        end
+      rescue Faraday::Error::ConnectionFailed => e
+        @error = "The connection failed"
+      rescue Faraday::Error::ClientError => e
+        set_response(e.response) if e.response
+      rescue JSON::ParserError => e
+        @error = "The JSON you attempted to send was invalid"
+      rescue URI::InvalidURIError => e
+        @error = "Please enter a subdomain"
+      else
+        set_response(:body => response.body,
+          :headers => response.env[:response_headers],
+          :status => response.env[:status])
+      end
+    end
+
     def map_headers(headers)
       headers.map do |k,v|
         name = k.split("-").map(&:capitalize).join("-")

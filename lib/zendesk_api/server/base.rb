@@ -11,6 +11,13 @@ require 'coderay_bash'
 require 'json'
 require 'redcarpet'
 
+require 'digest/md5'
+
+require 'mongoid'
+
+require 'zendesk_api/server/models/user_request'
+Mongoid.load!(File.join(File.dirname(__FILE__), '..', '..', '..', 'config', 'mongoid.yml'))
+
 module ZendeskAPI
   module Server
     require 'zendesk_api/server/helper'
@@ -54,8 +61,26 @@ module ZendeskAPI
       end
 
       get '/' do
-        @get_params = {}
+        @url_params = {}
         haml :index, :format => :html5
+      end
+
+      get '/:object_id' do
+        @user_request = UserRequest.where(:_id => Moped::BSON::ObjectId(params[:object_id])).first
+
+        if @user_request
+          params["username"] = @user_request.username
+          params["url"] = @user_request.subdomain
+
+          @path = @user_request.path
+          @method = @user_request.method
+          @json = @user_request.json
+          @url_params = @user_request.url_params
+          @html_request = @user_request.request
+          @html_response = @user_request.response
+        end
+
+        haml :index, :foramt => :html5
       end
 
       post '/search' do
@@ -70,35 +95,22 @@ module ZendeskAPI
         @method = (params.delete("method") || "get").downcase.to_sym
         @path = params.delete("path")
         @json = params.delete("json")
-        @get_params = (params.delete("params") || {}).delete_if do |param|
+        @url_params = (params.delete("params") || {}).delete_if do |param|
           !param["name"] || !param["value"] || (param["name"].empty? && param["value"].empty?)
         end
 
-        begin
-          response = client.connection.send(@method, @path) do |request|
-            request.params = @get_params.inject({}) do |accum, h|
-              accum.merge(h["name"] => h["value"])
-            end
+        execute
 
-            if @method != :get && !@json.empty?
-              request.body = JSON.parse(@json)
-            end
-
-            set_request(request.to_env(client.connection))
-          end
-        rescue Faraday::Error::ConnectionFailed => e
-          @error = "The connection failed"
-        rescue Faraday::Error::ClientError => e
-          set_response(e.response) if e.response
-        rescue JSON::ParserError => e
-          @error = "The JSON you attempted to send was invalid"
-        rescue URI::InvalidURIError => e
-          @error = "Please enter a subdomain"
-        else
-          set_response(:body => response.body,
-            :headers => response.env[:response_headers],
-            :status => response.env[:status])
-        end
+        @user_request = UserRequest.create(
+          :username => params[:username],
+          :method => @method,
+          :subdomain => params[:url],
+          :path => @path,
+          :json => @json,
+          :url_params => @url_params,
+          :request => @html_request,
+          :response => @html_response
+        )
 
         haml :index, :format => :html5
       end

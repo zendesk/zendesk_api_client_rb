@@ -21,6 +21,14 @@
   height: 100px;
 }
 
+#json.valid {
+  border: 1px solid green;
+}
+
+#json.invalid {
+  border: 1px solid red;
+}
+
 #search .input-append {
   margin-right: 43px;
 }

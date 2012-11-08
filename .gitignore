@@ -8,3 +8,4 @@ coverage
 example.rb
 bin/*.yml
 .sass-cache
+config/mongod
