@@ -11,11 +11,11 @@
       %span To go to a specific action you can do something like: users#list-users
 
 
-  #search-results= ZendeskAPI::Server::HtmlRenderer.render(help)
+  #search-results= settings.help
 
 :javascript
   $("#search input").autocomplete({
-    source: #{(settings.documentation + ["help"]).to_json},
+    source: #{(settings.documentation.keys + ["help"]).to_json},
     minLength: 2,
     select: function(event, ui) {
       search(ui.item.value);

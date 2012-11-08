@@ -33,6 +33,7 @@ module ZendeskAPI
         end
 
         set :documentation, documentation
+        set :help, documentation["introduction"]
       end
 
       configure :development do
