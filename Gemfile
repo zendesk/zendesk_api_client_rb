@@ -5,8 +5,6 @@ gem "jruby-openssl", :platforms => :jruby
 gem "hashie", :git => "git://github.com/intridea/hashie.git"
 gem "multipart-post", :git => "git://github.com/steved555/multipart-post.git"
 
-gem "debugger"
-
 group :server do
   gem "bundler", "~> 1.2.0.rc"
 
