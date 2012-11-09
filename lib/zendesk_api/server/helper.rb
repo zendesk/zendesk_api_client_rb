@@ -22,10 +22,10 @@ module ZendeskAPI::Server
         @error = "The connection failed"
       rescue Faraday::Error::ClientError => e
         set_response(e.response) if e.response
-      rescue JSON::ParserError => e
+      rescue JSON::ParserError
         @error = "The JSON you attempted to send was invalid"
-      rescue URI::InvalidURIError => e
-        @error = "Please enter a subdomain"
+      rescue URI::InvalidURIError, ArugmentError
+        @error = "Please enter a valid URL"
       else
         set_response(:body => response.body,
           :headers => response.env[:response_headers],
