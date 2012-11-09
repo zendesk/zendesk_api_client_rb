@@ -1,4 +1,4 @@
-%form.form{:method => :post}
+%form.form{:method => :post, :action => url("/")}
   .form-inline
     %input.input-xlarge{:id => "username", :name => "username", :placeholder => "username", :type => "text", :value => params["username"]}
     %input.input-xlarge{:id => "password", :name => "password", :placeholder => "password / token", :type => "password", :value => params["password"]}
@@ -7,7 +7,7 @@
 
   #input
     #params
-      - @url_params.each do |param|
+      - (@url_params || {}).each do |param|
         = haml :param, :locals => { :param => param }
 
     %button.btn#add-param{:type => "button"}

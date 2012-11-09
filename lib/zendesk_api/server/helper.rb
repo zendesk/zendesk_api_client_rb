@@ -1,7 +1,11 @@
 module ZendeskAPI::Server
   module Helper
+    def execute_request
+      unless @method && client.connection.respond_to?(@method)
+        @error = "The input you entered was invalid"
+        return
+      end
 
-    def execute
       begin
         response = client.connection.send(@method, @path) do |request|
           request.params = @url_params.inject({}) do |accum, h|
@@ -42,6 +46,8 @@ HTTP/1.1 #{@method.to_s.upcase} #{request[:url]}
 #{map_headers(request[:request_headers])}
       END
 
+      @user_request_hash = { :url => request[:url].to_s, :request_headers => request[:request_headers] }
+
       if @method != :get && @json && !@json.empty?
         parsed_json = CodeRay.scan(@json, :json).span
         @html_request << "\n\n#{parsed_json}"
@@ -56,13 +62,17 @@ HTTP/1.1 #{response[:status]}
 
 #{CodeRay.scan(JSON.pretty_generate(response[:body]), :json).span}
       END
+
+      @user_response_hash = { :status => response[:status], :headers => response[:headers], :body => response[:body] }
     end
 
     def client(params = params)
-      ZendeskAPI::Client.new do |c|
+      @client ||= ZendeskAPI::Client.new do |c|
         params.each do |key, value|
           c.send("#{key}=", value)
         end
+
+        c.allow_http = App.development? || App.test?
       end
     end
   end

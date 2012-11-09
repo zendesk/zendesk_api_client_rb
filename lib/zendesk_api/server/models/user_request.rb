@@ -9,7 +9,7 @@ module ZendeskAPI::Server
     field :json, :type => String
     field :url_params, :type => Array
 
-    field :request, :type => String
-    field :response, :type => String
+    field :request, :type => Hash
+    field :response, :type => Hash
   end
 end

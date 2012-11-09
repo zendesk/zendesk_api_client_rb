@@ -44,7 +44,7 @@ module ZendeskAPI::Server
 
         if language
           if code.start_with?("curl")
-            if code =~ %r{(https://\{subdomain\}.zendesk.com/api/v2/.*.json)}
+            if code =~ %r[(https://{subdomain}.zendesk.com/api/v2/.*.json(\?(\w+={.+})+ )?)]
               example = true
 
               mod["class"] = "example"

@@ -18,8 +18,6 @@ require 'mongoid'
 require 'zendesk_api/server/models/user_request'
 Mongoid.load!(File.join(File.dirname(__FILE__), '..', '..', '..', 'config', 'mongoid.yml'))
 
-require 'debugger'
-
 module ZendeskAPI
   module Server
     require 'zendesk_api/server/helper'
@@ -63,12 +61,13 @@ module ZendeskAPI
       end
 
       get '/' do
-        @url_params = {}
         haml :index, :format => :html5
       end
 
       get '/:object_id' do
-        @user_request = UserRequest.where(:_id => Moped::BSON::ObjectId(params[:object_id])).first
+        begin
+          @user_request = UserRequest.where(:_id => Moped::BSON::ObjectId(params[:object_id])).first
+        rescue Moped::Errors::InvalidObjectId; end
 
         if @user_request
           params["username"] = @user_request.username
@@ -77,8 +76,12 @@ module ZendeskAPI
           @method = @user_request.method
           @json = @user_request.json
           @url_params = @user_request.url_params
-          @html_request = @user_request.request
-          @html_response = @user_request.response
+
+          request = @user_request.request.symbolize_keys
+          set_request(request) unless request.empty?
+
+          response = @user_request.response.symbolize_keys
+          set_response(response) unless response.empty?
         end
 
         haml :index, :foramt => :html5
@@ -100,7 +103,7 @@ module ZendeskAPI
           !param["name"] || !param["value"] || (param["name"].empty? && param["value"].empty?)
         end
 
-        execute
+        execute_request
 
         @user_request = UserRequest.create(
           :username => params["username"],
@@ -108,8 +111,8 @@ module ZendeskAPI
           :url => params["url"],
           :json => @json,
           :url_params => @url_params,
-          :request => @html_request,
-          :response => @html_response
+          :request => @user_request_hash,
+          :response => @user_response_hash
         )
 
         haml :index, :format => :html5
