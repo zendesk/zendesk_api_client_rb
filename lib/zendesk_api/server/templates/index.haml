@@ -22,7 +22,7 @@
       per_page, page, includes, sort_order
       %small.inline (these may not be honored for all requests)
 
-    %textarea#json.hide{:name => "json"}= @json ? @json : '{ "": "" }'
+    %textarea#json.hide{:name => "json", :placeholder => '{ "": "" }'}= @json
 
   %select#method-select{:name => "method"}
     - %w{GET POST PUT DELETE}.each do |method|
