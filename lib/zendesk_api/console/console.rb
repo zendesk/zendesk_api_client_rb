@@ -15,7 +15,7 @@ module ZendeskAPI::Console
       end
       split = split.join('/')
       split += '/' if str[-1] == '/'
-      puts ZendeskAPI::Console::ZD_DIRUP
+      # puts ZendeskAPI::Console::ZD_DIRUP
       split.gsub!(/\.\./, "ZendeskAPI::Console::ZD_DIRUP")
       super(split)
     end

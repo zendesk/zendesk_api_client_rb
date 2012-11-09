@@ -122,3 +122,8 @@
 button.example {
   float: right;
 }
+
+/* line 104, ../sass/screen.scss */
+.footer_links {
+  margin: 0;
+}

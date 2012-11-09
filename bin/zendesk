@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
 require 'bundler'
-Bundler.setup(:default)
-
-require 'zendesk_api'
 
 ARGV[0] ||= "console"
-if %w(s server).include?(ARGV[0])
-  Bundler.setup(:server)
 
+if %w(s server).include?(ARGV[0])
+  Bundler.setup(:default, :server)
+
+  require 'zendesk_api'
   require 'zendesk_api/server/base'
 
   OptionParser.new do |op|
@@ -20,7 +19,8 @@ if %w(s server).include?(ARGV[0])
 
   ZendeskAPI::Server::App.run!
 else
-  Bundler.setup(:console)
+  Bundler.setup(:default, :console)
 
+  require 'zendesk_api'
   require 'zendesk_api/console/base'
 end

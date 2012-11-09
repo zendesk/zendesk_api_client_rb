@@ -70,7 +70,6 @@ module ZendeskAPI
         rescue Moped::Errors::InvalidObjectId; end
 
         if @user_request
-          params["username"] = @user_request.username
           params["url"] = @user_request.url
 
           @method = @user_request.method
@@ -106,7 +105,6 @@ module ZendeskAPI
         execute_request
 
         @user_request = UserRequest.create(
-          :username => params["username"],
           :method => @method,
           :url => params["url"],
           :json => @json,

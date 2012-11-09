@@ -34,11 +34,11 @@
 #response
   - if @html_request && @html_response
     %ul.nav.nav-pills
-      %li.active
-        %a.tab-link#request-tab-link{:href => "#"}
-          Request
       %li
-        %a.tab-link#response-tab-link{:href => "#"}
+        %a.tab-link#request-tab-link{:href => "#request"}
+          Request
+      %li.active
+        %a.tab-link#response-tab-link{:href => "#response"}
           Response
 
   - if @error
@@ -47,11 +47,11 @@
       %span= "Error: #{@error}"
 
   - if @html_request
-    #request-tab.code.tab
+    #request-tab.code.tab.hide
       %pre= @html_request
 
   - if @html_response
-    #response-tab.code.tab.hide
+    #response-tab.code.tab
       %pre= @html_response
 
 - if @user_request
