@@ -41,20 +41,12 @@ GEM
     coderay (1.0.8)
     coderay_bash (1.0.4)
       coderay (>= 1.0)
-    columnize (0.3.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
     crack (0.3.1)
     database_cleaner (0.9.1)
-    debugger (1.2.1)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.1.1)
-      debugger-ruby_core_source (~> 1.1.4)
-    debugger-linecache (1.1.2)
-      debugger-ruby_core_source (>= 1.1.1)
-    debugger-ruby_core_source (1.1.4)
     diff-lcs (1.1.3)
     eventmachine (1.0.0)
     faraday (0.8.4)
@@ -128,7 +120,6 @@ DEPENDENCIES
   coderay_bash
   compass
   database_cleaner
-  debugger
   haml
   hashie!
   jruby-openssl
