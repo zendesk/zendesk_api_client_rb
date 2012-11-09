@@ -13,7 +13,7 @@ GIT
 PATH
   remote: .
   specs:
-    zendesk_api (0.1.10)
+    zendesk_api (0.1.11)
       faraday (>= 0.8.0)
       faraday_middleware (>= 0.8.7)
       hashie
@@ -31,7 +31,7 @@ GEM
     diff-lcs (1.1.3)
     faraday (0.8.4)
       multipart-post (~> 1.1)
-    faraday_middleware (0.8.8)
+    faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
     inflection (1.0.0)
     json (1.7.5)
