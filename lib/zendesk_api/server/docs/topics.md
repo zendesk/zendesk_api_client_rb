@@ -205,7 +205,7 @@ Location: https://{subdomain}.zendesk.com/api/v2/topics/{id}.json
 ```
 
 ### Show Multiple Topics
-`POST /api/v2/topics/show_many?ids={ids}.json`
+`POST /api/v2/topics/show_many.json?ids={ids}`
 
 Accepts a comma separated list of topic ids to return.
 
@@ -217,7 +217,7 @@ Accepts a comma separated list of topic ids to return.
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/topics/show_many?ids={id,id,id}.json \
+curl https://{subdomain}.zendesk.com/api/v2/topics/show_many.json?ids={id,id,id} \
   -v -u {email_address}:{password} -X POST
 ```
 
