@@ -7,11 +7,11 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_json_request(:put, %r{test_resources/#{id}})
+        stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({ :test_resource => { :test => :hello } }))
       end
 
       it "should return instance of resource" do
-        subject.update(client, :id => id).should be_true
+        subject.update(client, :id => id, :test => :hello).should be_true
       end
 
       context "with client error" do
