@@ -9,11 +9,18 @@ end
 
 if defined?(RSpec)
   desc "Run specs"
-  RSpec::Core::RakeTask.new(:spec)
+  RSpec::Core::RakeTask.new("spec") do |t|
+    t.pattern = "spec/core/**/*_spec.rb"
+  end
+
+  desc "Run server specs"
+  RSpec::Core::RakeTask.new("spec:server") do |t|
+    t.pattern = "spec/server/**/*_spec.rb"
+  end
 
   desc "Run live specs"
   RSpec::Core::RakeTask.new("spec:live") do |t|
-    t.pattern = "live/*_spec.rb"
+    t.pattern = "spec/live/**/*_spec.rb"
   end
 
   task :clean_live do
@@ -29,7 +36,7 @@ if defined?(RSpec)
   end
 
   desc 'Default: run specs.'
-  task :default => :spec
+  task :default => ["spec", "spec:server"]
 end
 
 # extracted from https://github.com/grosser/project_template

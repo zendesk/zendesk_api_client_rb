@@ -8,7 +8,7 @@ describe ZendeskAPI::Server::Helper do
     end.new
   end
 
-  describe "execute request" do
+  context "execute request" do
     before do
       subject.params.merge!(:username => "me", :password => "2", :url => "https://somewhere.com")
     end
@@ -20,18 +20,18 @@ describe ZendeskAPI::Server::Helper do
       subject.instance_variable_get(:@error).should_not be_nil
     end
 
-    describe "valid request" do
+    context "valid request" do
     end
   end
 
-  describe "map headers" do
+  context "map headers" do
     it "should combine headers" do
       subject.map_headers("accept-encoding" => "true", "hello" => "123").should ==
         "Accept-Encoding: true\nHello: 123"
     end
   end
 
-  describe "client" do
+  context "client" do
     it "should set configuration options" do
       subject.client(:username => "me", :password => "2", :url => "somewhere").should_not be_nil
     end

@@ -1,14 +1,14 @@
 require 'server/spec_helper'
 
 describe ZendeskAPI::Server::HtmlRenderer do
-  describe "header" do
+  context "header" do
     subject { described_class.render(markdown) }
 
     before(:each) do
       described_class.instance_variable_set(:@markdown, nil)
     end
 
-    describe "h2" do
+    context "h2" do
       let(:markdown) { "## Hello" }
       let(:id) { described_class.generate_id("Hello") }
 
@@ -28,7 +28,7 @@ describe ZendeskAPI::Server::HtmlRenderer do
       end
     end
 
-    describe "h3" do
+    context "h3" do
       let(:markdown) { "### Hello" }
       let(:id) { described_class.generate_id("Hello") }
 
@@ -48,7 +48,7 @@ describe ZendeskAPI::Server::HtmlRenderer do
       end
     end
 
-    describe "h1" do
+    context "h1" do
       let(:markdown) { "# Hello" }
       let(:id) { described_class.generate_id("Hello") }
 
@@ -69,10 +69,10 @@ describe ZendeskAPI::Server::HtmlRenderer do
     end
   end
 
-  describe "code" do
+  context "code" do
     subject { described_class.render(markdown) }
 
-    describe "curl" do
+    context "curl" do
       let(:markdown) do
         <<-END
 ```bash
@@ -113,7 +113,7 @@ curl -v -u someone@something.com https://{subdomain}.zendesk.com/api/v2/my_path.
       end
     end
 
-    describe "other" do
+    context "other" do
       let(:markdown) do
         <<-END
 ```json

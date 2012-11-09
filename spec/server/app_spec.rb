@@ -1,15 +1,15 @@
 require 'server/spec_helper'
 
 describe ZendeskAPI::Server::App do
-  describe "configuration" do
+  context "configuration" do
     subject { described_class.settings }
 
-    describe "documentation" do
+    context "documentation" do
       # TODO
     end
   end
 
-  describe "a GET to /" do
+  context "a GET to /" do
     before { get '/' }
 
     it "should respond ok" do
@@ -17,8 +17,8 @@ describe ZendeskAPI::Server::App do
     end
   end
 
-  describe "a GET to /:object_id" do
-    describe "with a stored object" do
+  context "a GET to /:object_id" do
+    context "with a stored object" do
       subject do
         ZendeskAPI::Server::UserRequest.create(
           :username => "test",
@@ -55,7 +55,7 @@ describe ZendeskAPI::Server::App do
       end
     end
 
-    describe "with no object" do
+    context "with no object" do
       before { get '/1234567876543' }
 
       it "should respond ok" do
@@ -64,8 +64,8 @@ describe ZendeskAPI::Server::App do
     end
   end
 
-  describe "a POST to /" do
-    describe "valid" do
+  context "a POST to /" do
+    context "valid" do
       before do
         stub_json_request(:put, "https://me:2@smersh.zendesk.com/api/v2/users.json?id=1").with(:body => '{"hello":1}')
 
@@ -79,7 +79,7 @@ describe ZendeskAPI::Server::App do
       end
     end
 
-    describe "invalid" do
+    context "invalid" do
       before do
         post '/', :method => "OMG", :url => "https://nowheresville.com",
           :params => [{ "name" => "", "value" => "11243" }, {}], :json => '{"hello":1}',
@@ -92,13 +92,13 @@ describe ZendeskAPI::Server::App do
     end
   end
 
-  describe "a POST to /search" do
+  context "a POST to /search" do
     subject do
       post '/search', :query => query
       last_response.body
     end
 
-    describe "valid documentation" do
+    context "valid documentation" do
       let(:query) { "users" }
 
       it "should return the correct documentation" do
@@ -106,7 +106,7 @@ describe ZendeskAPI::Server::App do
       end
     end
 
-    describe "invalid query" do
+    context "invalid query" do
       let(:query) { "omgnotreal" }
 
       it "should return the introduction" do
