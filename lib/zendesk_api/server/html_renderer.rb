@@ -38,6 +38,9 @@ module ZendeskAPI::Server
       end
 
       def block_code(code, language)
+        # CodeRay doesn't know HTTP
+        language = "json" if language == "http"
+
         mod = {}
 
         json = nil
