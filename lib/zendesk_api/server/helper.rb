@@ -24,13 +24,16 @@ module ZendeskAPI::Server
         set_response(e.response) if e.response
       rescue JSON::ParserError
         @error = "The JSON you attempted to send was invalid"
-      rescue URI::InvalidURIError, ArugmentError
+      rescue URI::InvalidURIError, ArgumentError
         @error = "Please enter a valid URL"
       else
         set_response(:body => response.body,
           :headers => response.env[:response_headers],
           :status => response.env[:status])
       end
+    rescue ArgumentError
+      # Raised by Client when allow_http is OFF
+      @error = "Please enter a valid URL"
     end
 
     def map_headers(headers)
