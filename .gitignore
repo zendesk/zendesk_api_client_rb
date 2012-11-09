@@ -9,4 +9,3 @@ example.rb
 bin/*.yml
 .sass-cache
 config/mongod
-lib/zendesk_api/server/docs
