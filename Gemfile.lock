@@ -13,7 +13,7 @@ GIT
 PATH
   remote: .
   specs:
-    zendesk_api (0.1.10)
+    zendesk_api (0.1.11)
       faraday (>= 0.8.0)
       faraday_middleware (>= 0.8.7)
       hashie

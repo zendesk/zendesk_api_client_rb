@@ -192,7 +192,8 @@ module ZendeskAPI
       # @param [Hash] attributes The attributes to update. Default to {} 
       def update(client, attributes = {})
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        resource = new(client, attributes)
+        resource = new(client, :id => attributes.delete(:id))
+        resource.attributes.merge!(attributes)
         resource.save
       end
 
