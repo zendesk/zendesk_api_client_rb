@@ -90,7 +90,7 @@ Stop paging when the `next_page` attribute is `null`.
 
 Some collections can be ordered by transmitting a `sort_order=desc` or `sort_order=asc` parameter to the end point. Whether a specific collection can be ordered, is specified in the documentation for that specific resource.
 
-### Side-loading
+### Side-loading (BETA)
 
 Side-loading is an experimental feature that allows you to fetch associated data along with a resource (or resources) in a single request.
 
@@ -133,50 +133,18 @@ The response receieved will then include a top-level array of associated data un
 }
 ```
 
-<table>
-  <tr>
-    <th>Resource</th>
-    <th>Available associations</th>
-  </tr>
-  <tr>
-    <td><a href="tickets.html">Tickets</a></td>
-    <td>users, groups, organizations, last_audits, metric_sets, sharing_agreements</td>
-  </tr>
-  <tr>
-    <td><a href="audits.html">Audits</a></td>
-    <td>users, organizations, groups, tickets</td>
-  </tr>
-  <tr>
-    <td><a href="users.html">Users</a></td>
-    <td>organizations, abilities, roles, identities, groups</td>
-  </tr>
-  <tr>
-    <td><a href="group_memberships.html">Group Memberships</a></td>
-    <td>users, groups</td>
-  </tr>
-  <tr>
-    <td><a href="organizations.html">Organizations</a></td>
-    <td>abilities</td>
-  </tr>
-  <!-- tr>
-    <td><a href="views.html#view-counts-and-caching">View Counts</a></td>
-    <td>suspended_tickets_count</td>
-  </tr -->
-  <tr>
-    <td><a href="views.html#executing-views">View Execution / Previewing</a></td>
-    <td>The following are automatically side-loaded if applicable: group, organization, users</td>
-  </tr>
-  <tr>
-    <td><a href="topics.html">Topics</a></td>
-    <td>users, forums</td>
-  </tr>
-  <tr>
-    <td><a href="topic_comments.html">Topic Comments</a></td>
-    <td>users</td>
-  </tr>
-</table>
+| Resource                                                  | Available associations
+| --------------------------------------------------------- | ---------------------------------------------------------------------------
+| [Tickets](tickets.html)                                   | users, groups, organizations, last_audits, metric_sets, sharing_agreements
+| [Audits](audits.html)                                     | users, organizations, groups, tickets
+| [Users](users.html)                                       | organizations, abilities, roles, identities, groups
+| [Group Memberships](group_memberships.html)               | users, groups
+| [Organizations](organizations.html)                       | abilities
+| [View Execution / Previewing](views.html#executing-views) | The following are automatically side-loaded if applicable: group, organization, users
+| [Topics](topics.html)                                     | users, forums
+| [Topic Comments](topic_comments.html)                     | users
 
-**Warning: this is still experimental and there may be issues that come up. Please contact <a href="mailto:support@zendesk.com">support@zendesk.com</a> if you encounter any. Please do not abuse this feature.**
+**Warning: this is still experimental. If you encounter any issues, please contact <a href="mailto:support@zendesk.com">support@zendesk.com</a>. Please do not abuse this feature.**
 
 ### Official Zendesk API Clients and Guides
 

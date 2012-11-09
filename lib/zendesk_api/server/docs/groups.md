@@ -141,7 +141,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/groups.json \
-  -H "Content-Type: application/json" -d '{"group": {"name": "My Group"}'
+  -H "Content-Type: application/json" -d '{"group": {"name": "My Group"}}'
   -v -u {email_address}:{password} -X POST
 ```
 
@@ -201,7 +201,7 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/groups/{id} \
+curl https://{subdomain}.zendesk.com/api/v2/groups/{id}.json \
   -v -u {email_address}:{password}
 ```
 

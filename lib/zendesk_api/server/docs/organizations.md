@@ -87,7 +87,7 @@ in the `name` parameter. The name must be at least 2 characters in length.
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/organizations/autocomplete.json \
-  -X POST -d '{ "name": "imp" }' -H "Accept: application/json" \
+  -X POST -d '{"name": "imp"}' -H "Content-Type: application/json" \
   -u {email_address}:{password}
 ```
 
@@ -154,7 +154,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/organizations.json \
-  -H "Content-Type: application/json" -d "{\"organization\":{\"name\":\"My Organization\"}}" \
+  -H "Content-Type: application/json" -d '{"organization": {"name": "My Organization"}}' \
   -v -u {email_address}:{password}
 ```
 
@@ -194,7 +194,7 @@ Location: https://{subdomain}.zendesk.com/api/v2/organizations/{id}.json
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/organizations/{id}.json \
-  -d "{\"organization\":{\"notes\":\"Something interesting\"}}" \
+  -d '{"organization": {"notes": "Something interesting"}}' \
   -v -u {email_address}:{password} -H "Content-Type: application/json"
 ```
 
@@ -235,31 +235,19 @@ Status: 200 OK
 ```
 
 ### Search Organizations
-`GET /api/v2/organizations/search.json?query={search term}`
-
 `GET /api/v2/organizations/search.json?external_id={external_id}`
-
-#### Available parameters
-
-| Name                  | Type                | Required  | Comments
-| --------------------- | --------------------| --------- | -------------------
-| query                 | string              | yes       | The search text to be matched. Examples: "carrot potato", "'carrot potato'"
-| sort_by               | string              | no        | Possible values are 'updated_at', 'created_at', 'priority', 'status', and 'ticket_type'
-| sort_order            | string              | no        | One of 'relevance', 'asc', 'desc'. Defaults to 'relevance' when no 'order' criteria is requested.
 
 #### Allowed For:
 
- * Logged in users
+ * Agents
 
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/search.json?query={search term} \
+curl https://{subdomain}.zendesk.com/api/v2/search.json?external_id={search term} \
   -v -u {email_address}:{password}
 ```
 
 #### Example Response
 
-When searching by external_id, see [Getting Organizations](#getting-organizations)
-
-When searching by query, see [Listing Organizations](#listing-organizations)
+See [Listing Organizations](#listing-organizations)

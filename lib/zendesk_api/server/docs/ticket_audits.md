@@ -52,7 +52,7 @@ Audits are represented as JSON objects which have the following keys:
 ```
 
 ### Listing Audits
-`GET /api/v2/tickets/{id}/audits.json`
+`GET /api/v2/tickets/{ticket_id}/audits.json`
 
 #### Allowed For
 
@@ -61,8 +61,8 @@ Audits are represented as JSON objects which have the following keys:
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/tickets/123/audits.json \
-  -v -u {email_address}:{token}
+curl https://{subdomain}.zendesk.com/api/v2/tickets/{ticket_id}/audits.json \
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -131,7 +131,7 @@ Status: 200 OK
 ```
 
 ### Show Audit
-`GET /api/v2/tickets/{ticket_id}/audits/{audit_id}.json`
+`GET /api/v2/tickets/{ticket_id}/audits/{id}.json`
 
 #### Allowed For
 
@@ -140,8 +140,8 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/tickets/123/audits/123.json \
-  -v -u {email_address}:{token}
+curl https://{subdomain}.zendesk.com/api/v2/tickets/{ticket_id}/audits/{id}.json \
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -197,7 +197,7 @@ Status: 200 OK
 ```
 
 ### Marking an Audit as trusted
-`PUT /api/v2/tickets/{id}/audits/{id}/trust.json`
+`PUT /api/v2/tickets/{ticket_id}/audits/{id}/trust.json`
 
 #### Allowed For
 
@@ -206,8 +206,27 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/tickets/123/audits/123/trust.json \
-  -v -u {email_address}:{token}
+curl https://{subdomain}.zendesk.com/api/v2/tickets/{ticket_id}/audits/{id}/trust.json \
+  -v -u {email_address}:{password} -X PUT
+```
+
+#### Example Response
+```http
+Status: 200 OK
+```
+
+### Change a comment from public to private
+`PUT /api/v2/tickets/{ticket_id}/audits/{id}/make_private.json`
+
+#### Allowed For
+
+ * Agents
+
+#### Using curl
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/tickets/{ticket_id}/audits/{id}/make_private.json \
+  -v -u {email_address}:{password} -X PUT
 ```
 
 #### Example Response

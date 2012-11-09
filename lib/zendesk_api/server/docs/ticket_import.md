@@ -44,7 +44,7 @@ tickets were added to Zendesk using bulk import.
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/imports/tickets.json \
   -v -u {email_address}:{password} -X POST
-  -d '{"ticket": {"subject": "Help", "comments": [{ "author_id": 19, "value": "This is a comment" }] }}'
+  -d '{"ticket": {"subject": "Help", "comments": [{ "author_id": 19, "value": "This is a comment" }]}}'
 ```
 
 #### Example Response

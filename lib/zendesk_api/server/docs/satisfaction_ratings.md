@@ -45,8 +45,8 @@ the satisfaction ratings submitted by your customers, use the "received" end poi
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/satisfaction_ratings \
-  -H "Accept: application/json" -v -u {email_address}:{password}
+curl https://{subdomain}.zendesk.com/api/v2/satisfaction_ratings.json \
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -92,7 +92,7 @@ Lists ratings provided by customers.
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/satisfaction_ratings/received.json \
-  -H "Accept: application/json" -v -u {email_address}:{password}
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response

@@ -129,7 +129,7 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/topic_subscriptions/{id} \
+curl https://{subdomain}.zendesk.com/api/v2/topic_subscriptions/{id}.json \
   -v -u {email_address}:{password} -X DELETE
 ```
 

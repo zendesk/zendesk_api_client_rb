@@ -109,8 +109,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/suspended_tickets/{id}/recover.json \
-  -H "Content-Type: application/json" -X PUT \
-  -v -u {email_address}:{password}
+  -X PUT -v -u {email_address}:{password}
 ```
 
 #### Example Response

@@ -116,7 +116,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/categories.json \
-  -H "Content-Type: application/json" -d '{"category": {"name": "My Category"}' \
+  -H "Content-Type: application/json" -d '{"category": {"name": "My Category"}}' \
   -v -u {email_address}:{password} -X POST
 ```
 

@@ -14,7 +14,7 @@ The name must be at least 2 characters in length.
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/autocomplete/tags.json \
-  -X POST -d '{ "name": "att" }' -H "Accept: application/json" \
+  -X POST -d '{"name": "att"}' -H "Accept: application/json" \
   -u {email_address}:{password}
 ```
 

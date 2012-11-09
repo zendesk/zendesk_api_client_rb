@@ -136,7 +136,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/topics/{id}/comments.json \
-  -H "Content-Type: application/json" -d '{"topic_comment": {"body": "A man walks into a bar"}' \
+  -H "Content-Type: application/json" -d '{"topic_comment": {"body": "A man walks into a bar"}}' \
   -v -u {email_address}:{password} -X POST
 ```
 

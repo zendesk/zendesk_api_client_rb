@@ -18,6 +18,8 @@ require 'mongoid'
 require 'zendesk_api/server/models/user_request'
 Mongoid.load!(File.join(File.dirname(__FILE__), '..', '..', '..', 'config', 'mongoid.yml'))
 
+require 'debugger'
+
 module ZendeskAPI
   module Server
     require 'zendesk_api/server/helper'

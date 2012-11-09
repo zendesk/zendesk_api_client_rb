@@ -176,7 +176,7 @@ Status: 200 OK
 
 ```bash
 curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/macros.json \
-  -H "Content-Type: application/json" -X POST -d '{"macro":{"title":"Roger Wilco", "actions": [{ "field": "status", "value": "open" }]}}'
+  -H "Content-Type: application/json" -X POST -d '{"macro": {"title": "Roger Wilco", "actions": [{ "field": "status", "value": "open" }]}}'
 ```
 
 #### Example Response
@@ -205,7 +205,7 @@ Location: /api/v2/macros/{new-macro-id}.json
 
 ```bash
 curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/macros/{id}.json \
-  -H "Content-Type: application/json" -X PUT -d '{"macro":{"title":"Roger Wilco II"}}'
+  -H "Content-Type: application/json" -X PUT -d '{"macro": {"title": "Roger Wilco II"}}'
 ```
 
 #### Example Response

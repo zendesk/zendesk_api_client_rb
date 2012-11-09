@@ -10,13 +10,26 @@
   margin-bottom: 10px;
 }
 
+#possible-params {
+  cursor: pointer;
+  display: inline;
+
+  i {
+    margin: 0;
+  }
+}
+
+#possible-params-text {
+  margin: 10px 0 0 0;
+}
+
 .error {
   color: red;
-
   * { color: red; }
 }
 
 #json {
+  margin: 10px 0 0 0;
   width: 98%;
   height: 100px;
 }
@@ -33,12 +46,7 @@
   margin-right: 43px;
 }
 
-#add-param {
-  display: block;
-  margin-bottom: 10px;
-}
-
-#method_select {
+#method-select {
   width: 6em;
   margin: 0;
 }
@@ -87,4 +95,8 @@
 
 .form-inline input {
   width: 48%;
+}
+
+button.example {
+  float: right;
 }

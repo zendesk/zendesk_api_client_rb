@@ -196,7 +196,7 @@ Accepts a comma separated list of ticket ids to return.
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/tickets/show_many?ids={id,id,id}.json \
+curl https://{subdomain}.zendesk.com/api/v2/tickets/show_many.json?ids={id,id,id} \
   -v -u {email_address}:{password} -X POST
 ```
 
@@ -604,7 +604,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/problems/autocomplete.json \
-  -X POST -d '{ "text": "att" }' -H "Accept: application/json" \
+  -X POST -d '{"text": "att"}' -H "Content-Type: application/json" \
   -u {email_address}:{password}
 ```
 

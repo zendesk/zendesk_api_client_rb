@@ -16,7 +16,7 @@ Zendesk enterprise accounts have the option of providing a more granular access 
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/custom_roles \
+curl https://{subdomain}.zendesk.com/api/v2/custom_roles.json \
   -v -u {email_address}:{password}
 ```
 

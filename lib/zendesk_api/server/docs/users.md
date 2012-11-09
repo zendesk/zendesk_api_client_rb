@@ -49,7 +49,7 @@ Users are represented as JSON objects which have the following keys:
 | moderator             | boolean                      | no        | no        | Designates whether this user has forum moderation capabilities
 | ticket_restriction    | string                       | no        | no        | Specified which tickets this user has access to. Possible values are: `"organization"`, `"groups"`, `"assigned"`, `"requested"`, `null`
 | only_private_comments | boolean                      | no        | no        | `true` if this user only can create private comments
-| tags                  | array                        | no        | no        | The tags of the organization. Only present if you have user tagging enabled
+| tags                  | array                        | no        | no        | The tags of the user. Only present if your account has user tagging enabled
 | suspended             | boolean                      | no        | no        | Tickets from suspended users are also suspended, and these users cannot log in to the end-user portal
 | photo                 | [Attachment](attachments.md) | no        | no        | The user's profile picture represented as an [Attachment](attachments.md) object
 
@@ -102,6 +102,7 @@ Users are represented as JSON objects which have the following keys:
 ```
 
 ### List Users
+
 `GET /api/v2/users.json`
 
 `GET /api/v2/groups/{id}/users.json`
@@ -115,7 +116,8 @@ Users are represented as JSON objects which have the following keys:
 #### Using curl
 
 ```bash
-curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/users.json
+curl https://{subdomain}.zendesk.com/api/v2/users.json \
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -147,6 +149,13 @@ Status: 200
 
  * Agents
 
+#### Using curl:
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/users/{id}.json \
+  -v -u {email_address}:{password}
+```
+
 #### Example Response
 
 ```http
@@ -172,7 +181,7 @@ Status: 200
 
 ```bash
 curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/users.json \
-  -H "Content-Type: application/json" -X POST -d '{"user":{"name":"Roger Wilco", "email":"roge@example.org"}}'
+  -H "Content-Type: application/json" -X POST -d '{"user": {"name": "Roger Wilco", "email": "roge@example.org"}}'
 ```
 
 If you need to create users without sending out a verification email, pass a `"verified": true` parameter.
@@ -203,7 +212,7 @@ Location: /api/v2/users/{new-user-id}.json
 
 ```bash
 curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/users/create_many.json \
-  -H "Content-Type: application/json" -X POST -d "{\"users\":[{\"name\":\"Roger Wilco\", \"email\":\"roge@example.org\", \"role\":\"Agent\"}, {\"name\":\"Woger Rilco\", \"email\":\"woge@example.org\",\"role\":\"Admin\"}]}"
+  -H "Content-Type: application/json" -X POST -d '{"users": [{"name": "Roger Wilco", "email": "roge@example.org", "role": "agent"}, {"name": "Woger Rilco", "email": "woge@example.org", "role": "admin"}]}'
 ```
 
 #### Example Response
@@ -220,8 +229,8 @@ See [Job Status](job_statuses.md#show-job-status)
 #### Using curl
 
 ```bash
-curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/users/{id}.json \
-  -H "Content-Type: application/json" -X PUT -d "{\"user\":{\"name\":\"Roger Wilco II\"}"
+curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/users/{id}.json \
+  -H "Content-Type: application/json" -X PUT -d '{"user": {"name": "Roger Wilco II"}}'
 ```
 
 #### Example Response
@@ -249,7 +258,7 @@ all further tickes are suspended.
 
 ```bash
 curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/users/{id}.json \
-  -H "Content-Type: application/json" -X PUT -d "{\"user\":{\"suspended\":true}"
+  -H "Content-Type: application/json" -X PUT -d '{"user": {"suspended":true}}'
 ```
 
 #### Example Response
@@ -330,7 +339,7 @@ Status: 200
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/users/autocomplete.json \
-  -X POST -d '{ "name": "att" }' -H "Accept: application/json" \
+  -X POST -d '{"name": "att"}' -H "Accept: application/json" \
   -u {email_address}:{password}
 ```
 
@@ -365,7 +374,7 @@ Setting a remote image URL.
 
 ```bash
 curl -v -u {email_address}:{password} -X PUT -H "Content-Type: application/json" \
-  -d "{\"user\": {\"remote_photo_url\": \"http://link.to/profile/image.png\"}}" \
+  -d '{"user": {"remote_photo_url": "http://link.to/profile/image.png"}}' \
   http://{subdomain}.zendesk.com/api/v2/users/{id}.json
 ```
 

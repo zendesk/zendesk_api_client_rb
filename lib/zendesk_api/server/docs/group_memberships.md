@@ -163,7 +163,7 @@ Creating a membership means assigning an agent to a given group
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/group_memberships.json \
-  -X POST -d '{"group_membership": {"user_id": 72, "group_id": 88 }}' \
+  -X POST -d '{"group_membership": {"user_id": 72, "group_id": 88}}' \
   -H "Content-Type: application/json" -v -u {email_address}:{password}
 ```
 
@@ -200,7 +200,7 @@ that are assigned to the given user and group combination
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/group_memberships/{id} \
+curl https://{subdomain}.zendesk.com/api/v2/group_memberships/{id}.json \
   -v -u {email_address}:{password} -X DELETE
 ```
 

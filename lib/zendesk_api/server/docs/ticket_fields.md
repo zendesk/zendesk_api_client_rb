@@ -65,7 +65,7 @@ Ticket fields have the following attributes
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/ticket_fields.json \
-  -H "Accept: application/json" -v -u {email_address}:{password}
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -110,7 +110,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/ticket_fields/{id}.json \
-  -H "Accept: application/json" -v -u {email_address}:{password}
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -162,10 +162,10 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/ticket_fields \
-  -H "Content-Type: application/json" -H "Accept: application/json" \
-  -d '{ "ticket_field": { "type": "text", "title": "Age" }}' \
-  -v -u {email_address}:{password} -X POST
+curl https://{subdomain}.zendesk.com/api/v2/ticket_fields.json \
+  -H "Content-Type: application/json" -X POST \
+  -d '{"ticket_field": {"type": "text", "title": "Age"}}' \
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -208,9 +208,9 @@ Location: https://{subdomain}.zendesk.com/api/v2/ticket_fields/{id}.json
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/ticket_fields/{id}.json \
-  -H "Content-Type: application/json" -H "Accept: application/json" \
+  -H "Content-Type: application/json" -X PUT \
   -d '{ "ticket_field": { "title": "Your age" }}' \
-  -v -u {email_address}:{password} -X PUT
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -250,9 +250,9 @@ Updating a custom dropdown field replaces the ticket field options.  Pass all op
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/ticket_fields/{id}.json \
-  -H "Content-Type: application/json" -H "Accept: application/json" \
-  -d '{ "ticket_field": { "custom_field_options": [{"name": "Option 1", "value": "option_1"}, {"name": "Option 2","value": "option_2"}] } }' \
-  -v -u {email_address}:{password} -X PUT
+  -H "Content-Type: application/json" -X PUT \
+  -d '{"ticket_field": {"custom_field_options": [{"name": "Option 1", "value": "option_1"}, {"name": "Option 2","value": "option_2"}]}}' \
+  -v -u {email_address}:{password}
 ```
 
 
@@ -266,8 +266,8 @@ curl https://{subdomain}.zendesk.com/api/v2/ticket_fields/{id}.json \
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v1/ticket_fields/{id} \
-  -H "Accept: application/json" -v -u {email_address}:{password} -X DELETE
+curl https://{subdomain}.zendesk.com/api/v1/ticket_fields/{id}.json \
+  -v -u {email_address}:{password} -X DELETE
 ```
 
 #### Example Response

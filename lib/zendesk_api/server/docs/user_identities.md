@@ -45,7 +45,7 @@ User identities have the following keys:
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities.json \
-  -H "Accept: application/json" -v -u {email_address}:{password}
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response:
@@ -91,8 +91,8 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id} \
-  -H "Accept: application/json" -v -u {email_address}:{password}
+curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}.json \
+  -v -u {email_address}:{password}
 ```
 
 #### Example Response:
@@ -132,8 +132,8 @@ If you need to create an identity without sending out a verification email, pass
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities.json \
-  -H "Content-Type: application/json" -H "Accept: application/json" -X POST \
-  -d "{\"identity\":{\"type\": \"email\", \"value\": \"foo@bar.com\"}}" -v -u {email_address}:{password}
+  -H "Content-Type: application/json" -X POST \
+  -d '{"identity": {"type": "email", "value": "foo@bar.com"}}' -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -168,9 +168,9 @@ Location: https://{subdomain}.zendesk.com/api/v2/users/135/identities/78138.json
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id} \
-  -H "Content-Type: application/json" -H "Accept: application/json" -X PUT \
-  -d "{\"identity\":{\"verified\": true}}" -v -u {email_address}:{password}
+curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}.json \
+  -H "Content-Type: application/json" -X PUT \
+  -d '{"identity": {"verified": true}}' -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -204,8 +204,8 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}/make_primary \
-  -H "Accept: application/json" -X PUT -v -u {email_address}:{password}
+curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}/make_primary.json \
+  -X PUT -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -225,8 +225,8 @@ Same as List User Identities
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}/verify \
-  -H "Accept: application/json" -X PUT -v -u {email_address}:{password}
+curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}/verify.json \
+  -X PUT -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -246,8 +246,8 @@ Same as Show a User Identity
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}/request_verification \
-  -H "Accept: application/json" -X PUT -v -u {email_address}:{password}
+curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}/request_verification.json \
+  -X PUT -v -u {email_address}:{password}
 ```
 
 #### Example Response
@@ -268,8 +268,8 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id} \
-  -H "Accept: application/json" -X DELETE -v -u {email_address}:{password}
+curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/identities/{id}.json \
+  -X DELETE -v -u {email_address}:{password}
 ```
 
 #### Example Response

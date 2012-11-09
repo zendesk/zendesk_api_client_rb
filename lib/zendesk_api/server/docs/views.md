@@ -395,7 +395,7 @@ The output can also be controlled by passing in any of the following parameters 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/views/preview.json \
   -v -u {email_address}:{password} -X POST -H "Content-Type: application/json" \
-  -d '{ "view": { "all": [{ "operator": "is", "value": "open", "field": "status" }], "output": { "columns": ["subject"] } } }'
+  -d '{"view": {"all": [{"operator": "is", "value": "open", "field": "status"}], "output": {"columns": ["subject"]}}}'
 ```
 
 #### Example Response

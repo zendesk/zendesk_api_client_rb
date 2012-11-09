@@ -12,6 +12,7 @@ Requests are represented as JSON objects which have the following keys:
 | subject          | string                                   | no        | no        | The value of the subject field for this request
 | description      | string                                   | yes       | no        | The first comment on the request
 | status           | string                                   | no        | no        | The state of the request, "new", "open", "pending", "hold", "solved", "closed"
+| custom_fields    | Array                                    | no        | no        | The fields and entries for this request
 | organization_id  | integer                                  | yes       | no        | The organization of the requester
 | via              | [Via](ticket_audits.html#the-via-object) | yes       | no        | This object explains how the request was created
 | created_at       | date                                     | yes       | no        | When this record was created
@@ -148,7 +149,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/requests.json \
-  -d '{ "request": { "subject": "Help!", "comment": { "body": "My printer is on fire!", "uploads": [...] } } }' \
+  -d '{"request": {"subject": "Help!", "comment": {"body": "My printer is on fire!", "uploads": [...]}}}' \
   -v -u {email_address}:{password} -X POST -H "Content-Type: application/json"
 ```
 
@@ -179,7 +180,7 @@ Location: https://{subdomain}.zendesk.com/api/v2/requests/{id}.json
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/requests/{id}.json \
-  -d '{ "request": { "comment": { "body": "Thanks!" } } }' \
+  -d '{"request": {"comment": {"body": "Thanks!"}}}' \
   -v -u {email_address}:{password} -X PUT -H "Content-Type: application/json"
 ```
 
