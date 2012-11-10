@@ -1,4 +1,4 @@
-require 'zlib_json_serializer'
+require 'zendesk_api/server/models/zlib_json'
 
 module ZendeskAPI::Server
   class UserRequest
@@ -9,7 +9,7 @@ module ZendeskAPI::Server
     field :json, :type => String
     field :url_params, :type => Array
 
-    field :request, :type => Mongoid::ZlibJsonSerializer
-    field :response, :type => Mongoid::ZlibJsonSerializer
+    field :request, :type => ZlibJSON
+    field :response, :type => ZlibJSON
   end
 end

@@ -76,11 +76,8 @@ module ZendeskAPI
           @json = @user_request.json
           @url_params = @user_request.url_params
 
-          request = JSON.parse(Zlib.inflate(@user_request.request.to_s), :symbolize_keys => true)
-          set_request(request) unless request.empty?
-
-          response = JSON.parse(Zlib.inflate(@user_request.response.to_s), :symbolize_keys => true)
-          set_response(response) unless response.empty?
+          set_request(@user_request.request) unless @user_request.request.empty?
+          set_response(@user_request.response) unless @user_request.response.empty?
         end
 
         haml :index, :foramt => :html5
@@ -109,8 +106,8 @@ module ZendeskAPI
           :url => params["url"],
           :json => @json,
           :url_params => @url_params,
-          :request => Moped::BSON::Binary.new(:generic, Zlib.deflate(@user_request_hash.to_json)),
-          :response => Moped::BSON::Binary.new(:generic, Zlib.deflate(@user_response_hash.to_json))
+          :request => @user_request_hash,
+          :response => @user_response_hash
         )
 
         haml :index, :format => :html5
