@@ -49,7 +49,10 @@ HTTP/1.1 #{@method.to_s.upcase} #{request[:url]}
 #{map_headers(request[:request_headers])}
       END
 
-      @user_request_hash = { :url => request[:url].to_s, :request_headers => request[:request_headers] }
+      request_headers = request[:request_headers].dup
+      request_headers["Authorization"] = "scrubbed"
+
+      @user_request_hash = { :url => request[:url].to_s, :request_headers => request_headers }
 
       if @method != :get && @json && !@json.empty?
         parsed_json = CodeRay.scan(@json, :json).span

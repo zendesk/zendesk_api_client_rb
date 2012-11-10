@@ -26,8 +26,8 @@ describe ZendeskAPI::Server::App do
           :url => "http://my.url.com",
           :json => '{"hello": "goodbye"}',
           :url_params => [{ :name => :a, :value => :b }],
-          :request => {}, # TODO
-          :response => {}
+          :request => Moped::BSON::Binary.new(:generic, Zlib.deflate("{}")), # TODO
+          :response => Moped::BSON::Binary.new(:generic, Zlib.deflate("{}"))
         )
       end
 
@@ -76,6 +76,13 @@ describe ZendeskAPI::Server::App do
 
       it "should return ok" do
         last_response.status.should == 200
+      end
+
+      context "user request" do
+        it "should not save authorization data" do
+          user_request = ZendeskAPI::Server::UserRequest.last
+          user_request.request[:headers]["Authorization"].should == "scrubbed"
+        end
       end
     end
 
