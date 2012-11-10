@@ -50,7 +50,7 @@ HTTP/1.1 #{@method.to_s.upcase} #{request[:url]}
       END
 
       request_headers = request[:request_headers].dup
-      request_headers["Authorization"] = "scrubbed"
+      request_headers.delete("Authorization")
 
       @user_request_hash = { :url => request[:url].to_s, :request_headers => request_headers }
 
