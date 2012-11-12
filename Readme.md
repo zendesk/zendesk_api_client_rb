@@ -1,15 +1,3 @@
-# Zendesk Server
-
-```sh
-ruby lib/zendesk_api/server/base.rb --help
-```
-
-# Zendesk Console
-
-```sh
-bin/zendesk --help
-```
-
 # Zendesk API Client
 
 ## API version support
@@ -240,6 +228,24 @@ ticket = ZendeskAPI::Ticket.new(client, :comment => { :value => "attachments" })
 ticket.comment.uploads << "img.jpg"
 ticket.comment.uploads << File.new("img.jpg")
 ticket.save
+```
+
+## Extras
+
+### Zendesk API Test Server
+
+Included in this repository is the code for the [Zendesk API Tester](https://zendesk-api.herokuapp.com/) website.
+
+```sh
+bin/zendesk server --help
+```
+
+### Zendesk Console
+
+WIP
+
+```sh
+bin/zendesk console --help
 ```
 
 ## Note on Patches/Pull Requests
