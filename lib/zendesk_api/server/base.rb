@@ -60,6 +60,10 @@ module ZendeskAPI
         register Sinatra::Reloader
       end
 
+      configure :production do
+        require 'newrelic_rpm'
+      end
+
       get '/' do
         haml :index, :format => :html5
       end

@@ -26,6 +26,8 @@ group :server do
 
   gem "mongoid"
   gem "database_cleaner"
+
+  gem "newrelic_rpm"
 end
 
 group :console do
