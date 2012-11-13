@@ -12,7 +12,7 @@ module ZendeskAPI::Server
             accum.merge(h["name"] => h["value"])
           end
 
-          if @method != :get && !@json.empty?
+          if @method != :get && @json && !@json.empty?
             request.body = JSON.parse(@json)
           end
 
@@ -33,7 +33,7 @@ module ZendeskAPI::Server
       end
     rescue ArgumentError
       # Raised by Client when allow_http is OFF
-      @error = "Please enter a valid URL"
+      @error = "Please enter a valid https URL"
     end
 
     def map_headers(headers)
@@ -78,7 +78,7 @@ HTTP/1.1 #{response[:status]}
           c.send("#{key}=", value)
         end
 
-        c.allow_http = App.development? || App.test?
+        c.allow_http = App.development?
       end
     end
   end

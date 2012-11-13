@@ -33,11 +33,11 @@ describe ZendeskAPI::Server::Helper do
 
   context "client" do
     it "should set configuration options" do
-      subject.client(:username => "me", :password => "2", :url => "somewhere").should_not be_nil
+      subject.client(:username => "me", :password => "2", :url => "https://somewhere").should_not be_nil
     end
 
     it "should not allow http in production" do
-      app.stub(:development? => false, :test? => false)
+      app.stub(:development? => false)
 
       expect do
         subject.client(:url => "somewhere")

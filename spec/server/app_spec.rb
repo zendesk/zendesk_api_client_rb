@@ -46,7 +46,7 @@ describe ZendeskAPI::Server::App do
       end
 
       it "should select the proper method" do
-        last_response.body.should include "selected='selected' value='POST'"
+        last_response.body.should include "selected value='POST'"
       end
 
       it "should add url param" do
@@ -81,16 +81,32 @@ describe ZendeskAPI::Server::App do
       context "user request" do
         it "should not save authorization data" do
           user_request = ZendeskAPI::Server::UserRequest.last
-          user_request.request[:request_headers]["Authorization"].should == "scrubbed"
+          user_request.request[:request_headers]["Authorization"].should be_nil
         end
+      end
+    end
+
+    context "invalid url" do
+      before do
+        post '/', :url => "http://nowheresville.com", :method => "PUT"
+      end
+
+      it "should set the error" do
+        last_response.body.should =~ /valid https URL/
       end
     end
 
     context "invalid" do
       before do
+        @user_requests = ZendeskAPI::Server::UserRequest.count
+
         post '/', :method => "OMG", :url => "https://nowheresville.com",
           :params => [{ "name" => "", "value" => "11243" }, {}], :json => '{"hello":1}',
           :username => "me", :password => "2"
+      end
+
+      it "should not save user request" do
+        ZendeskAPI::Server::UserRequest.count.should == @user_requests
       end
 
       it "should return ok" do
