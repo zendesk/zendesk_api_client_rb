@@ -232,6 +232,9 @@ ticket.save
 
 ## Extras
 
+The following projects are still works in progress and require checking out the repository,
+using ruby 1.9.3, and running `bundle install`.
+
 ### Zendesk API Test Server
 
 Included in this repository is the code for the [Zendesk API Tester](https://zendesk-api.herokuapp.com/) website.
@@ -240,6 +243,17 @@ Included in this repository is the code for the [Zendesk API Tester](https://zen
 bin/zendesk server --help
 ```
 
+Additional Dependencies:
+
+* sinatra
+* sinatra-contrib
+* haml
+* compass
+* coderay
+* coderay_bash
+* redcarpet
+* mongoid (and a working MongoDB instance)
+
 ### Zendesk Console
 
 WIP
@@ -247,6 +261,10 @@ WIP
 ```sh
 bin/zendesk console --help
 ```
+
+Additional Dependencies:
+
+* ripl
 
 ## Note on Patches/Pull Requests
 1. Fork the project.

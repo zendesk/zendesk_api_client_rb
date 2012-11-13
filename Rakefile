@@ -36,7 +36,7 @@ if defined?(RSpec)
   end
 
   desc 'Default: run specs.'
-  task :default => ["spec", "spec:server"]
+  task :default => "spec"
 end
 
 # extracted from https://github.com/grosser/project_template

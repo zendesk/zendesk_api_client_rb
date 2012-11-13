@@ -80,7 +80,7 @@ module ZendeskAPI
           set_response(@user_request.response) unless @user_request.response.empty?
         end
 
-        haml :index, :foramt => :html5
+        haml :index, :format => :html5
       end
 
       post '/search' do
