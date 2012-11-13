@@ -108,7 +108,7 @@ module ZendeskAPI
           :url_params => @url_params,
           :request => @user_request_hash,
           :response => @user_response_hash
-        )
+        ) unless @error
 
         haml :index, :format => :html5
       end
