@@ -92,7 +92,7 @@ describe ZendeskAPI::Server::App do
       end
 
       it "should set the error" do
-        last_response.body.should =~ /valid https URL/
+        last_response.body.should =~ /valid URL/
       end
     end
 
