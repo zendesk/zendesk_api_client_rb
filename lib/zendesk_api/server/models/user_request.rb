@@ -6,6 +6,7 @@ module ZendeskAPI::Server
 
     field :method, :type => Symbol
     field :url, :type => String
+    field :path, :type => String
     field :json, :type => String
     field :url_params, :type => Array
 
