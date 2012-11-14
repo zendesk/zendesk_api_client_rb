@@ -1,5 +1,22 @@
 module ZendeskAPI::Server
   module Helper
+    def coerce_path(path)
+      if path =~ %r{(https?://)?(\w+)(\.zendesk\.com)?(/api/v2)?/(.*)}
+        if $1 == "http://"
+          @error = "Please enter a valid https URL"
+          path
+        elsif !$2 || $2.empty?
+          @error = "Please enter a valid subdomain"
+          path
+        else
+          params["url"] = "https://#{$2}.zendesk.com/api/v2"
+          $5
+        end
+      else
+        @error = "Please enter a valid URL"
+      end
+    end
+
     def execute_request
       unless @method && client.connection.respond_to?(@method)
         @error = "The input you entered was invalid"
@@ -31,9 +48,6 @@ module ZendeskAPI::Server
           :headers => response.env[:response_headers],
           :status => response.env[:status])
       end
-    rescue ArgumentError
-      # Raised by Client when allow_http is OFF
-      @error = "Please enter a valid https URL"
     end
 
     def map_headers(headers)

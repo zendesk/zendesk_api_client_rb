@@ -4,15 +4,65 @@ describe ZendeskAPI::Server::Helper do
   subject do
     Class.new do
       include ZendeskAPI::Server::Helper
-      def params; {}; end
+      def params; @params ||= {}; end
     end.new
+  end
+
+  context "coerce path" do
+    let(:coerced) do
+      subject.coerce_path(path)
+    end
+
+    context "with no protocol" do
+      let(:path) { "smersh.zendesk.com/api/v2/users" }
+
+      it "should be assumed as https" do
+        coerced.should == "users"
+        subject.params["url"].should == "https://smersh.zendesk.com/api/v2"
+      end
+    end
+
+    context "with no .zendesk.com" do
+      let(:path) { "smersh/api/v2/users" }
+
+      it "should fill in https and .zendesk.com" do
+        coerced.should == "users"
+        subject.params["url"].should == "https://smersh.zendesk.com/api/v2"
+      end
+    end
+
+    context "with no .zendesk.com and no /api/v2" do
+      let(:path) { "smersh/users" }
+
+      it "should fill in https and .zendesk.com" do
+        coerced.should == "users"
+        subject.params["url"].should == "https://smersh.zendesk.com/api/v2"
+      end
+    end
+
+    context "with an https url" do
+      let(:path) { "https://smersh.zendesk.com/api/v2/users" }
+
+      it "should not change anything" do
+        coerced.should == "users"
+        subject.params["url"].should == "https://smersh.zendesk.com/api/v2"
+      end
+    end
+
+    context "with an http url" do
+      let(:path) { "http://smersh.zendesk.com/api/v2/users" }
+
+      it "should set the error" do
+        coerced.should == path
+        subject.instance_variable_get(:@error).should_not be_nil
+      end
+    end
   end
 
   context "execute request" do
     before do
       subject.params.merge!(:username => "me", :password => "2", :url => "https://somewhere.com")
     end
-
 
     it "should return error if invalid method" do
       subject.instance_variable_set(:@method, "BLARGHL")

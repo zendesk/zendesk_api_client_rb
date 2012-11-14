@@ -97,13 +97,13 @@ module ZendeskAPI
 
       post '/' do
         @method = (params.delete("method") || "get").downcase.to_sym
-        @path = params.delete("path")
+        @path = coerce_path(params.delete("url"))
         @json = params.delete("json")
         @url_params = (params.delete("params") || {}).delete_if do |param|
           !param["name"] || !param["value"] || (param["name"].empty? && param["value"].empty?)
         end
 
-        execute_request
+        execute_request unless @error
 
         @user_request = UserRequest.create(
           :method => @method,
