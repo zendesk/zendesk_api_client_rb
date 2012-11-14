@@ -84,7 +84,7 @@ HTTP/1.1 #{response[:status]}
 #{map_headers(response[:headers])}
 
 
-#{CodeRay.scan(JSON.pretty_generate(response[:body].force_encoding('UTF-8')), :json).span}
+#{CodeRay.scan(JSON.pretty_generate(response[:body]), :json).span}
       END
 
       @user_response_hash = { :status => response[:status], :headers => response[:headers], :body => response[:body] }
