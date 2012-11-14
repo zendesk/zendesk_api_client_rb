@@ -1,5 +1,9 @@
 module ZendeskAPI::Server
   module Helper
+    def full_url
+      [params["url"], @path].compact.join("/")
+    end
+
     def coerce_path(path)
       if path =~ %r{(https?://)?(\w+)(\.zendesk\.com)?(/api/v2)?/(.*)}
         if $1 == "http://"

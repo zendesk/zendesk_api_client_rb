@@ -71,6 +71,7 @@ module ZendeskAPI
 
         if @user_request
           params["url"] = @user_request.url
+          @path = @user_request.path
 
           @method = @user_request.method
           @json = @user_request.json
@@ -104,6 +105,7 @@ module ZendeskAPI
         @user_request = UserRequest.create(
           :method => @method,
           :url => params["url"],
+          :path => @path,
           :json => @json,
           :url_params => @url_params,
           :request => @user_request_hash,
