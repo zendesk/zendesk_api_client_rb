@@ -18,6 +18,7 @@ module ZendeskAPI::Server
         end
       else
         @error = "Please enter a valid URL"
+        path
       end
     end
 
