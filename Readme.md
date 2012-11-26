@@ -119,8 +119,6 @@ zendesk_api_client_rb $ bundle console
  => true
 ```
 
-(relevant issue: #56)
-
 ### Pagination
 
 ZendeskAPI::Collections can be paginated:
