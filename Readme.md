@@ -99,6 +99,28 @@ The methods under ZendeskAPI::Client (such as .tickets) return an instance of Ze
 Actual requests may not be sent until an explicit ZendeskAPI::Collection#fetch, ZendeskAPI::Collection#to_a, or an applicable methods such
 as #each.
 
+### Caveats
+
+Resource updating is implemented by sending only the `changed?` attributes to the server (see `ZendeskAPI::TrackChanges`).
+Unfortunately, this module only hooks into `Hash` meaning any changes to an `Array`not resulting in a new instance will not be tracked and sent.
+
+```irb
+zendesk_api_client_rb $ bundle console
+> a = ZendeskAPI::Trackie.new(:tags => []).tap(&:clear_changes)
+> a.changed?(:tags)
+ => false
+> a.tags << "my_new_tag"
+ => ["my_new_tag"]
+> a.changed?(:tags)
+ => false
+> a.tags += %w{my_other_tag}
+ => ["my_new_tag", "my_other_tag"]
+> a.changed?(:tags)
+ => true
+```
+
+(relevant issue: #56)
+
 ### Pagination
 
 ZendeskAPI::Collections can be paginated:
