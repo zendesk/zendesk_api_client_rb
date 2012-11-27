@@ -94,11 +94,19 @@ module ZendeskAPI
     has User
   end
 
+  class TopicComment < Data
+    has Topic
+    has User
+    has_many Attachment
+  end
+
   class Topic < Resource
-    class TopicComment < Resource
-      has Topic
-      has User
-      has_many Attachment
+    class TopicComment < TopicComment
+      extend Read
+
+      include Create
+      include Update
+      include Destroy
     end
 
     class TopicVote < SingularResource
@@ -200,7 +208,7 @@ module ZendeskAPI
   end
 
   class TicketMetric < DataResource
-    include Read
+    extend Read
   end
 
   class Ticket < Resource
@@ -285,6 +293,10 @@ module ZendeskAPI
   end
 
   class User < Resource
+    class TopicComment < TopicComment
+      extend Read
+    end
+
     class Identity < Resource
       # Makes this identity the primary one bumping all other identities down one
       put :make_primary
@@ -321,7 +333,7 @@ module ZendeskAPI
 
     has_many ForumSubscription
     has_many TopicSubscription
-    has_many :topic_comments, :class => Topic::TopicComment
+    has_many :topic_comments, :class => TopicComment
     has_many :topic_votes, :class => Topic::TopicVote
 
     has CRMData

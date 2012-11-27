@@ -149,7 +149,7 @@ module ResourceMacros
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           options = default_options
           options.merge!(:id => object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-          described_class.find(client, options).should_not be_nil 
+          described_class.find(client, options).should_not be_nil
         end
       end
     end
