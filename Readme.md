@@ -209,6 +209,15 @@ ticket.requester # => #<ZendeskAPI::User id=...>
 Currently, this feature is limited to only a few resources and their associations.
 They are documented on [developer.zendesk.com](http://developer.zendesk.com/documentation/rest_api/introduction.html#side-loading-\(beta\)).
 
+### Search
+
+Searching is done through the client. Returned is an instance of ZendeskAPI::Collection:
+
+```ruby
+client.search(:query => "my search query") # /api/v2/search.json?query=...
+client.users.search(:query => "my new query")  # /api/v2/users/search.json?query=...
+```
+
 ### Special case: Custom resources paths
 
 API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
