@@ -276,16 +276,18 @@ module ZendeskAPI
     has_many :custom_fields, :class => TicketField
   end
 
+  class ViewCount < DataResource; end
+
   class View < ReadResource
     has_many :tickets, :class => Ticket
     has_many :rows, :class => ViewRow, :path => "execute"
     has :execution, :class => ViewExecution
+    has ViewCount, :path => "count"
 
     def self.preview(client, options = {})
       Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
     end
   end
-
 
   class GroupMembership < Resource
     has User
