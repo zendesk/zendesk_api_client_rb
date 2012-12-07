@@ -185,6 +185,7 @@ module ZendeskAPI
   class Request < Resource
     class Comment < ReadResource
       has_many Attachment, :inline => true
+      has :author, :class => User
     end
 
     has_many Comment
