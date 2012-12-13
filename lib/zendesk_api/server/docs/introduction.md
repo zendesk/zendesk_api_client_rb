@@ -9,7 +9,7 @@ When documenting a resource, we use curly braces for identifiers, like `{subdoma
 
 ### Change Policy
 
-We reserves the right to add new attributes and resources to the API without advance notice. Breaking changes such as removing or renaming an attribute, may happen on an existing version of the API with two weeks notice. Major structural changes will only happen within the context of a version update.
+We reserves the right to add new attributes and resources to the API without advance notice. Breaking changes such as removing or renaming an attribute, may happen on an existing version of the API with two weeks notice and deprecation of attributes are tracked in our [Changes Roadmap](changes_roadmap.html). Major structural changes will only happen within the context of a version update.
 
 ### Security and Authentication
 
@@ -66,6 +66,8 @@ We respond to unsuccessful requests with HTTP status codes in the 400 range. The
   "error": "RecordInvalid"
 }
 ```
+
+If you see a response from a known endpoint that looks like plain text, you've probably made a syntax error in your REST call. This is a common response if you try to make a request to a nonexistent Zendesk instance.
 
 If you ever experience responses with status codes in the 500 range, Zendesk may be experiencing internal issues or having a scheduled maintenance (during which we send a `503 Service Unavailable` status code).
 
@@ -143,6 +145,7 @@ The response receieved will then include a top-level array of associated data un
 | [View Execution / Previewing](views.html#executing-views) | The following are automatically side-loaded if applicable: group, organization, users
 | [Topics](topics.html)                                     | users, forums
 | [Topic Comments](topic_comments.html)                     | users
+| [Requests](requests.html)                                 | The following are automatically side-loaded: users, organizations
 
 **Warning: this is still experimental. If you encounter any issues, please contact <a href="mailto:support@zendesk.com">support@zendesk.com</a>. Please do not abuse this feature.**
 
@@ -153,6 +156,7 @@ The response receieved will then include a top-level array of associated data un
 
 ### API Clients from the Zendesk Developer Community
 
+* [.NET Client Library by Eric Neifert](https://github.com/eneifert/ZendeskApi_v2)
 * [zendeskR by Basho Technologies (R)](https://github.com/tcash21/zendeskR)
 * [node-zendesk by Farrin Reid (node.js)](https://github.com/blakmatrix/node-zendesk)
 

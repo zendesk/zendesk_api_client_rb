@@ -1,7 +1,7 @@
 ## Views
 
 ### JSON Format
-Views are read-only and represented as simple flat JSON objects which have the following keys.
+Views are represented as simple flat JSON objects which have the following keys.
 
 | Name            | Type                       | Comment
 | --------------- | ---------------------------| -------------------
@@ -36,34 +36,32 @@ View Execution is a read-only object that describes how to display a collection 
 
 | Name            | Type    | Comment
 | --------------- | ------- | -------
-| fields          | Array   | The ticket fields to display. System fields have a string id.
-| custom_fields   | Array   | The custom ticket fields to display. Custom fields have an id and url referencing the [Ticket Field](ticket_fields.md)
-| group_by        | String  | When present, the field by which the tickets are grouped
-| group_order     | String  | The direction the tickets are grouped. May be one of 'asc' or 'desc'
-| sort_order      | String  | The direction the tickets are sorted. May be one of 'asc' or 'desc'
-| sort_by         | String  | The ticket field used for sorting. This will either be a title or a custom field id.
+| columns         | Array   | The ticket fields to display. Custom fields have an id, title, type and url referencing the [Ticket Field](ticket_fields.md)
+| group           | Object  | When present, the structure indicating how the tickets are grouped
+| sort            | Object  | The column structure of the field used for sorting.
 
 #### Example
 ```js
 {
    "execution":{
-     "fields": [
+     "columns": [
        { "id": "status",  "title": "Status" },
-       { "id": "updated", "title": "Updated" }
-     ],
-     "custom_fields": [
+       { "id": "updated", "title": "Updated" },
        {
-         "id": 5, "title": "Account",
+         "id": 5, "title": "Account", "type": "text",
          "url": "https://example.zendesk.com/api/v2/ticket_fields/5.json"
        },
        ...
      ]
-     "group_by":null,
-     "sort_order":"desc",
-     "sort_by":"updated"
+     "group": { "id": "status", "title": "Status", "order": "desc" },
+     "sort": { "id": "updated", "title": "Updated", "order": "desc" }
    }
 }
 ```
+
+# Deprecated
+
+#
 
 ### Conditions
 The conditions under which a ticket is selected.
@@ -313,6 +311,63 @@ Status: 200 OK
 }
 ```
 
+### Create View
+`POST /api/v2/views.json`
+
+#### Allowed For
+
+ * Agents
+
+#### Using curl
+
+```bash
+curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/views.json \
+  -H "Content-Type: application/json" -X POST -d '{"view":{"title":"Roger Wilco", "all": [{ "field": "status", "operator": "is", "value": "open" }]}}'
+```
+
+#### Example Response
+
+```http
+Status: 201 Created
+Location: /api/v2/view/{new-view-id}.json
+
+{
+  "view": {
+    "id":   9873843,
+    "title": "Roger Wilco",
+    ...
+  }
+}
+```
+
+### Update View
+`PUT /api/v2/view/{id}.json`
+
+#### Allowed For
+
+ * Agents
+
+#### Using curl
+
+```bash
+curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/view/{id}.json \
+  -H "Content-Type: application/json" -X PUT -d '{"view":{"title":"Roger Wilco II"}}'
+```
+
+#### Example Response
+
+```http
+Status: 200 OK
+
+{
+  "view": {
+    "id":   9873843,
+    "title": "Roger Wilco II",
+    ...
+  }
+}
+```
+
 ### Executing Views
 `GET /api/v2/views/{id}/execute.json`
 
@@ -369,6 +424,41 @@ Status: 200 OK
     ...
   ],
  "groups": [ ... ]
+}
+```
+
+### Getting Tickets from a view
+`GET /api/v2/views/{id}/tickets.json`
+
+#### Allowed For
+
+ * Agents
+
+#### Using curl:
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/views/{id}/tickets.json \
+  -v -u {email_address}:{password}
+```
+
+#### Example Responses
+
+```http
+Status: 200 OK
+
+{
+  "tickets": [
+    {
+      "id":      35436,
+      "subject": "Help I need somebody!",
+      ...
+    },
+    {
+      "id":      20057623,
+      "subject": "Not just anybody!",
+      ...
+    },
+  ]
 }
 ```
 

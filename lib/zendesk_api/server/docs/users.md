@@ -40,6 +40,7 @@ Users are represented as JSON objects which have the following keys:
 | last_login_at         | date                         | yes       | no        | A time-stamp of the last time this user logged in to Zendesk
 | email                 | string                       | no        | yes       | The primary email address of this user
 | phone                 | string                       | no        | no        | The primary phone number of this user
+| identities            | Array                        | no        | no        | Array of user identities (e.g. email and Twitter) associated with this user. See [User Identities](user_identities.html)
 | signature             | string                       | no        | no        | The signature of this user. Only agents and admins can have signatures
 | details               | string                       | no        | no        | In this field you can store any details obout the user. e.g. the address
 | notes                 | string                       | no        | no        | In this field you can store any notes you have about the user
@@ -199,6 +200,16 @@ Location: /api/v2/users/{new-user-id}.json
     ...
   }
 }
+```
+
+### Create User with Multiple Identities
+
+If you have a user with multiple identities, such as email addresses and Twitter accounts, you can also include
+these values at creation time. This is especially useful when importing users from another system.
+
+```bash
+curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/users.json \
+  -H "Content-Type: application/json" -X POST -d '{"user": {"name": "Roger Wilco", "identities": [{ "type": "email", "value": "test@user.com"}, {"type": "twitter", "value": "tester84" }]}}'
 ```
 
 ### Create Many Users
