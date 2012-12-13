@@ -23,9 +23,7 @@ module ZendeskAPI
   class Topic < Resource; end
   class Bookmark < Resource; end
   class Ability < DataResource; end
-  class Macro < Resource; end
   class Group < Resource; end
-  class Trigger < ReadResource; end
   class SharingAgreement < ReadResource; end
   class JobStatus < ReadResource; end
 
@@ -185,27 +183,16 @@ module ZendeskAPI
   class Request < Resource
     class Comment < ReadResource
       has_many Attachment, :inline => true
+      has :author, :class => User
     end
 
     has_many Comment
+
     has Organization
+    has :requester, :class => User
   end
 
   class TicketField < Resource; end
-
-  class TicketComment < Data
-    include Save
-
-    has_many :uploads, :class => Attachment, :inline => true
-    has :author, :class => User
-
-    def save
-      save_associations
-      true
-    end
-
-    alias :save! :save
-  end
 
   class TicketMetric < DataResource
     extend Read
@@ -215,6 +202,22 @@ module ZendeskAPI
     class Audit < DataResource
       # need this to support SideLoading
       has :author, :class => User
+    end
+
+    class Tag < Resource; end
+
+    class Comment < Data
+      include Save
+
+      has_many :uploads, :class => Attachment, :inline => true
+      has :author, :class => User
+
+      def save
+        save_associations
+        true
+      end
+
+      alias :save! :save
     end
 
     has :requester, :class => User, :inline => :create
@@ -227,8 +230,9 @@ module ZendeskAPI
     has :forum_topic, :class => Topic
     has Organization
 
-    has :comment, :class => TicketComment, :inline => true
-    has :last_comment, :class => TicketComment, :inline => true
+    has :comment, :class => Comment, :inline => true
+    has :last_comment, :class => Comment, :inline => true
+    has_many :last_comments, :class => Comment, :inline => true
 
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used
@@ -272,21 +276,35 @@ module ZendeskAPI
     end
   end
 
-  class ViewExecution < Data
+  class RuleExecution < Data
     has_many :custom_fields, :class => TicketField
   end
 
   class ViewCount < DataResource; end
 
-  class View < ReadResource
+  class View < Resource
     has_many :tickets, :class => Ticket
+    has_many :feed, :class => Ticket, :path => "feed"
+
     has_many :rows, :class => ViewRow, :path => "execute"
-    has :execution, :class => ViewExecution
+    has :execution, :class => RuleExecution
     has ViewCount, :path => "count"
 
     def self.preview(client, options = {})
       Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
     end
+  end
+
+  class Trigger < Resource
+    has :execution, :class => RuleExecution
+  end
+
+  class Automation < Resource
+    has :execution, :class => RuleExecution
+  end
+
+  class Macro < Resource
+    has :execution, :class => RuleExecution
   end
 
   class GroupMembership < Resource
