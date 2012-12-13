@@ -314,6 +314,8 @@ Voice Comments have the following keys:
 | type            | string  | yes       | Has the value `VoiceComment`
 | data            | string  | yes       | A hash of properties about the call
 | public          | boolean | yes       | If true, the ticket requester can see this comment
+| formatted_from  | string  | yes       | A formatted version of the phone number which dialed the call
+| formatted_to    | string  | yes       | A formatted version of the phone number which answered the call
 
 #### Example
 ```js
@@ -321,9 +323,24 @@ Voice Comments have the following keys:
   "id":                    1274,
   "type":                  "VoiceComment"
   "body":                  "Thanks for your help!",
-  "data":                  TODO
-  "formatted_from":        TODO
-  "transcription_visible": TODO
+  "data":                  {
+                             "from":                 "+14156973270",
+                             "to":                   "+14129996294",
+                             "recording_url":        "http//api.twilio.com/2010-04-01/Accounts/accountsid/Recordings/recording_sid",
+                             "recording_duration":   "7",
+                             "call_duration":        60,
+                             "call_id":              171,
+                             "answered_by_id":       6,            # not present for voicemails
+                             "transcription_text":   "Hello",      # only present for voicemails with transcription enabled
+                             "transcription_status": "completed",  # only present for voicemails with transcription enabled
+                             "started_at":           2012-11-16 223622 UTC,
+                             "location":             "San Francisco, California, United States",
+                             "voice_transcription":  true,
+                             "outbound":             false
+                           },
+  "formatted_from":        "+1 (123) 654-7890",
+  "formatted_to":          "+1 (123) 325-7890",
+  "transcription_visible": true,
   "public":                true,
   "attachments":           []
 }

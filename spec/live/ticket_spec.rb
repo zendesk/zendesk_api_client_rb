@@ -97,4 +97,27 @@ describe ZendeskAPI::Ticket do
       ticket.attributes[:comment].should == {"value" => "My comment", "public" => false}
     end
   end
+
+  describe "import race condition" do
+    it "should handle it" do
+      email = "test+#{rand(100000)}@test.com"
+
+      VCR.use_cassette("ticket_import_race") do
+        threads = []
+
+        5.times do
+          threads << Thread.new do
+            Thread.current[:ticket] = ZendeskAPI::Ticket.import(client, :requester => { :email => email, :name => "Hello" }, :subject => "Test", :description => "Test")
+          end
+        end
+
+        threads.map! do |thread|
+          thread.join(3)
+          thread[:ticket]
+        end
+
+        threads.all?.should be_true
+      end
+    end
+  end
 end

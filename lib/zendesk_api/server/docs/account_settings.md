@@ -32,6 +32,7 @@ Account Settings are read-only. They contain settings for the various aspects of
 | list_empty_views                   | boolean | Clients should display Views with no matching Tickets in menus
 | maximum_personal_views_to_list     | number  | Maximum number of personal Views clients should display in menus
 | tagging                            | boolean | Tickets may be tagged
+| markdown_ticket_comments           | boolean | Whether agent comments should be processed with Markdown
 
 ### Chat
 
@@ -69,6 +70,12 @@ Account Settings are read-only. They contain settings for the various aspects of
 | host                               | string  | The Screenr domain used when recording and playing Screencasts.
 | tickets_recorder_id                | string  | The Screenr Recorder id used when recording Screencasts.
 
+### GooddataAdvancedAnalytics
+
+| Name                               | Type    | Comment
+| ---------------------------------- | ------- | -------
+| enabled                            | boolean | GoodData Advanced Analytics is enabled
+
 
 #### Example
 
@@ -93,7 +100,8 @@ Account Settings are read-only. They contain settings for the various aspects of
     "agent_collision":                true
     "list_empty_views":               true,
     "maximum_personal_views_to_list": 12,
-    "tagging":                        true
+    "tagging":                        true,
+    "markdown_ticket_comments":       false
   },
   "chat": {
     "maximum_request_count": 5,
@@ -127,6 +135,36 @@ This shows the settings that are available for the account.
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/account/settings.json \
+  -v -u {email_address}:{password}
+```
+
+#### Example Response
+
+```http
+Status: 200 OK
+
+"settings": {
+  "apps": {.. },
+  "tickets": { ...  },
+  "chat": { ... },
+  "twitter": { ... },
+  "users": { ... }
+}
+```
+
+### Update Account Settings
+`PUT /api/v2/account/settings.json`
+
+#### Allowed For
+
+ * Admins
+
+#### Using curl
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/account/settings.json \
+  -H "Content-Type: application/json" -X PUT \
+  -d '{ "settings": { "lotus": { "prefer_lotus": false }}}' \
   -v -u {email_address}:{password}
 ```
 

@@ -9,11 +9,12 @@ Requests are represented as JSON objects which have the following keys:
 | ---------------- | ---------------------------------------- | --------- | --------- | -------
 | id               | integer                                  | yes       | no        | Automatically assigned when creating requests
 | url              | string                                   | yes       | no        | The API url of this request
-| subject          | string                                   | no        | no        | The value of the subject field for this request
-| description      | string                                   | yes       | no        | The first comment on the request
+| subject          | string                                   | no        | yes       | The value of the subject field for this request
+| description      | string                                   | yes       | yes       | The first comment on the request
 | status           | string                                   | no        | no        | The state of the request, "new", "open", "pending", "hold", "solved", "closed"
 | custom_fields    | Array                                    | no        | no        | The fields and entries for this request
 | organization_id  | integer                                  | yes       | no        | The organization of the requester
+| requester_id     | integer                                  | yes       | no        | The id of the requester
 | via              | [Via](ticket_audits.html#the-via-object) | yes       | no        | This object explains how the request was created
 | created_at       | date                                     | yes       | no        | When this record was created
 | updated_at       | date                                     | yes       | no        | When this record last got updated
@@ -29,6 +30,7 @@ Requests are represented as JSON objects which have the following keys:
   "description":      "The fire is very colorful.",
   "status":           "open",
   "organization_id":  509974,
+  "requester_id":     1462,
   "via": {
     "channel": "web"
   }
@@ -44,14 +46,16 @@ Ticket comments have the following keys:
 | --------------- | ------- | --------- | -------
 | id              | integer | yes       | Automatically assigned when creating events
 | body            | string  | yes       | The actual comment made by the author
+| author_id       | integer | yes       | The id of the author
 | attachments     | array   | yes       | The attachments on this comment as [Attachment](attachments.md) objects
 | created_at      | date    | yes       | When this comment was created
 
 #### Example
 ```js
 {
-  "id":     1274,
-  "body":   "Thanks for your help!",
+  "id": 1274,
+  "body": "Thanks for your help!",
+  "author_id": 1,
   "attachments": [
     {
       "id":           498483,

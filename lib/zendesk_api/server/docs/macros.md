@@ -1,7 +1,7 @@
 ## Macros
 
 ### JSON Format
-Macros are read-only and represented as simple flat JSON objects which have the following keys.
+Macros are represented as simple flat JSON objects which have the following keys.
 
 | Name            | Type                       | Comment
 | --------------- | ---------------------------| -------------------

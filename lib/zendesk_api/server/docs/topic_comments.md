@@ -47,7 +47,7 @@ TopicComments are represented as simple flat JSON objects which have the followi
 #### Allowed For:
 
 * Admins on non-enterprise accounts
-* Admins and agents will full forum access on enterprise accounts
+* Admins and agents with full forum access on enterprise accounts
 * Users in general as permitted by the forum the topic is in
 
 #### Using curl
@@ -96,7 +96,7 @@ Status: 200 OK
 #### Allowed For
 
 * Admins on non-enterprise accounts
-* Admins and agents will full forum access on enterprise accounts
+* Admins and agents with full forum access on enterprise accounts
 * Users in general as permitted by the forum the topic is in
 
 #### Using curl
@@ -168,7 +168,7 @@ Location: https://{subdomain}.zendesk.com/api/v2/topics/{topic_id}/comments/{id}
 These are subject to the current permission settings on the enclosing account
 
 * Admins on non-enterprise accounts
-* Admins and agents will full forum access on enterprise accounts
+* Admins and agents with full forum access on enterprise accounts
 * The user who created the original comment
 
 #### Using curl
@@ -204,7 +204,7 @@ Status: 200 OK
 #### Allowed For
 
 * Admins on non-enterprise accounts
-* Admins and agents will full forum access on enterprise accounts
+* Admins and agents with full forum access on enterprise accounts
 * The user who created the original comment
 
 #### Using curl

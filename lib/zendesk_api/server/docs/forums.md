@@ -133,7 +133,7 @@ Status: 200 OK
 #### Allowed For
 
  * Admins on non-enterprise accounts
- * Admins and agents will full forum access on enterprise accounts
+ * Admins and agents with full forum access on enterprise accounts
 
 #### Using curl
 
@@ -169,12 +169,12 @@ Location: https://{subdomain}.zendesk.com/api/v2/forums/{id}.json
 ```
 
 ### Update Forum
-`PUT /api/v2/forum/{id}.json`
+`PUT /api/v2/forums/{id}.json`
 
 #### Allowed For
 
  * Admins on non-enterprise accounts
- * Admins and agents will full forum access on enterprise accounts
+ * Admins and agents with full forum access on enterprise accounts
 
 #### Using curl
 
@@ -213,7 +213,7 @@ Status: 200 OK
 #### Allowed For
 
  * Admins on non-enterprise accounts
- * Admins and agents will full forum access on enterprise accounts
+ * Admins and agents with full forum access on enterprise accounts
 
 #### Using curl
 

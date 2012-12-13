@@ -115,8 +115,6 @@ Tickets are ordered chronologically by created date, from oldest to newest.
 
 `GET /api/v2/organizations/{organization_id}/tickets.json`
 
-`GET /api/v2/views/{view_id}/tickets.json`
-
 `GET /api/v2/users/{user_id}/tickets/requested.json`
 
 `GET /api/v2/users/{user_id}/tickets/ccd.json`
@@ -306,6 +304,26 @@ curl https://{subdomain}.zendesk.com/api/v2/tickets/update_many.json?ids=1,2,3 \
 #### Example Response
 
 See [Job Status](job_statuses.md#show-job-status)
+
+### Mark a ticket as spam and suspend the requester
+`PUT /api/v2/tickets/{id}/mark_as_spam.json`
+
+#### Allowed For
+
+ * Agents
+
+#### Using curl
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/tickets/{id}/mark_as_spam.json\
+  -v -u {email_address}:{password} -X PUT
+```
+
+#### Example Response
+
+```http
+Status: 200 OK
+```
 
 ### Setting Collaborators
 

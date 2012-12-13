@@ -10,7 +10,7 @@ User identities have the following keys:
 | id              | integer | yes       | no        | Automatically assigned upon creation
 | url             | string  | yes       | no        | The API url of this identity
 | user_id         | integer | yes       | yes       | The id of the user
-| type            | string  | yes       | yes       | One of "email", "twitter", "facebook" or "google"
+| type            | string  | yes       | yes       | One of "email", "twitter", "facebook", "google", or "phone_number"
 | value           | string  | yes       | yes       | The identifier for this identity, e.g. an email address
 | verified        | boolean | no        | no        | Is true of the identity has gone through verification
 | primary         | boolean | no        | no        | Is true of the primary identity of the user

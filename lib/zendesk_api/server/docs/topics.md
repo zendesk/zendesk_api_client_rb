@@ -54,7 +54,7 @@ Topics are represented in JSON with the below attributes
 #### Allowed For:
 
  * Admins on non-enterprise accounts
- * Admins and agents will full forum access on enterprise accounts
+ * Admins and agents with full forum access on enterprise accounts
 
 #### Using curl
 

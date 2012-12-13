@@ -175,6 +175,25 @@ Location: https://{subdomain}.zendesk.com/api/v2/organizations/{id}.json
 }
 ```
 
+### Create Many Organizations
+`POST /api/v2/organizations/create_many.json`
+
+#### Allowed For
+
+ * Admins
+
+#### Using curl
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/organizations/create_many.json \
+  -H "Content-Type: application/json" -X POST -d "{\"organizations\":[{\"name\":\"My Org 1\"}, {\"name\":\"My Org 2\"}]}"
+  -v -u {email_address}:{password}
+```
+
+#### Example Response
+
+See [Job Status](job_statuses.md#show-job-status)
+
 ### Updating Organizations
 `PUT /api/v2/organizations/{id}.json`
 

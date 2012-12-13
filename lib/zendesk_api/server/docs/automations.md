@@ -1,7 +1,7 @@
-## Triggers
+## Automations
 
 ### JSON Format
-Triggers are represented as simple flat JSON objects which have the following keys.
+Automations are represented as simple flat JSON objects which have the following keys.
 
 | Name            | Type                       | Comment
 | --------------- | ---------------------------| -------------------
@@ -16,7 +16,7 @@ Triggers are represented as simple flat JSON objects which have the following ke
 #### Example
 ```js
 {
-  "trigger": {
+  "automation": {
     "id": 25,
     "title": "Notify requester of comment update",
     "active": true,
@@ -68,10 +68,10 @@ The actions that will be applied to the ticket.
 }
 ```
 
-### List Triggers
-`GET /api/v2/triggers.json`
+### List Automations
+`GET /api/v2/automations.json`
 
-Lists all triggers for the current account
+Lists all automations for the current account
 
 #### Allowed For:
 
@@ -80,7 +80,7 @@ Lists all triggers for the current account
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/triggers.json \
+curl https://{subdomain}.zendesk.com/api/v2/automations.json \
   -v -u {email_address}:{password}
 ```
 
@@ -90,26 +90,22 @@ curl https://{subdomain}.zendesk.com/api/v2/triggers.json \
 Status: 200 OK
 
 {
-  "triggers": [
+  "automations": [
      {
-      "url"=>"http://{subdomain}.zendesk.com/api/v2/triggers/25.json",
       "id": 25,
       "title": "Close and Save",
       "active": true
       "conditions": [ ... ],
       "actions": [ ... ],
-      "updated_at": "2012-09-25T22:50:26Z",
-      "created_at": "2012-09-25T22:50:26Z"
+      ...
     },
     {
-      "url"=>"http://{subdomain}.zendesk.com/api/v2/triggers/26.json",
       "id": 26,
       "title": "Assign priority tag",
       "active": false
       "conditions": [ ... ],
       "actions": [ ... ],
-      "updated_at": "2012-09-25T22:50:26Z",
-      "created_at": "2012-09-25T22:50:26Z"
+      ...
     }
   ],
   "count": 2,
@@ -118,8 +114,8 @@ Status: 200 OK
 }
 ```
 
-### Getting Triggers
-`GET /api/v2/triggers/{id}.json`
+### Getting Automations
+`GET /api/v2/automations/{id}.json`
 
 #### Allowed For:
 
@@ -128,7 +124,7 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/triggers/{id}.json \
+curl https://{subdomain}.zendesk.com/api/v2/automations/{id}.json \
   -v -u {email_address}:{password}
 ```
 
@@ -138,22 +134,21 @@ curl https://{subdomain}.zendesk.com/api/v2/triggers/{id}.json \
 Status: 200 OK
 
 {
-  "trigger": {
+  "automation": {
     "id": 25,
     "title": "Tickets updated <12 Hours",
     "active": true
     "conditions": [ ... ],
     "actions": [ ... ],
-    "updated_at": "2012-09-25T22:50:26Z",
-    "created_at": "2012-09-25T22:50:26Z"
+    ...
   }
 }
 ```
 
-### List active Triggers
-`GET /api/v2/triggers/active.json`
+### List active Automations
+`GET /api/v2/automations/active.json`
 
-Lists all active triggers
+Lists all active automations
 
 #### Allowed For:
 
@@ -162,7 +157,7 @@ Lists all active triggers
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/triggers/active.json \
+curl https://{subdomain}.zendesk.com/api/v2/automations/active.json \
   -v -u {email_address}:{password}
 ```
 
@@ -172,15 +167,14 @@ curl https://{subdomain}.zendesk.com/api/v2/triggers/active.json \
 Status: 200 OK
 
 {
-  "triggers": [
+  "automations": [
      {
       "id": 25,
       "title": "Close and Save",
       "active": true
       "conditions": [ ... ],
       "actions": [ ... ],
-      "updated_at": "2012-09-25T22:50:26Z",
-      "created_at": "2012-09-25T22:50:26Z"
+      ...
     },
     {
       "id": 28,
@@ -188,8 +182,7 @@ Status: 200 OK
       "active": true
       "conditions": [ ... ],
       "actions": [ ... ],
-      "updated_at": "2012-09-25T22:50:26Z",
-      "created_at": "2012-09-25T22:50:26Z"
+      ...
     }
   ],
   "count": 2,
@@ -198,8 +191,8 @@ Status: 200 OK
 }
 ```
 
-### Create Trigger
-`POST /api/v2/triggers.json`
+### Create Automation
+`POST /api/v2/automations.json`
 
 #### Allowed For
 
@@ -208,19 +201,19 @@ Status: 200 OK
 #### Using curl
 
 ```bash
-curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/triggers.json \
+curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/automations.json \
   -H "Content-Type: application/json" -X POST -d \
-  '{"trigger":{"title":"Roger Wilco", "all": [{ "field": "status", "operator": "is", "value": "open" }], "actions": [{ "field": "status", "value": "closed" }]}}'
+  '{"automation":{"title":"Roger Wilco", "all": [{ "field": "status", "operator": "is", "value": "open" }], "actions": [{ "field": "status", "value": "closed" }]}}'
 ```
 
 #### Example Response
 
 ```http
 Status: 201 Created
-Location: /api/v2/trigger/{new-trigger-id}.json
+Location: /api/v2/automation/{new-automation-id}.json
 
 {
-  "trigger": {
+  "automation": {
     "id":   9873843,
     "title": "Roger Wilco",
     ...
@@ -228,8 +221,8 @@ Location: /api/v2/trigger/{new-trigger-id}.json
 }
 ```
 
-### Update Trigger
-`PUT /api/v2/triggers/{id}.json`
+### Update Automation
+`PUT /api/v2/automations/{id}.json`
 
 #### Allowed For
 
@@ -238,8 +231,8 @@ Location: /api/v2/trigger/{new-trigger-id}.json
 #### Using curl
 
 ```bash
-curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/triggers/{id}.json \
-  -H "Content-Type: application/json" -X PUT -d '{"trigger":{"title":"Roger Wilco II"}}'
+curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/automations/{id}.json \
+  -H "Content-Type: application/json" -X PUT -d '{"automation":{"title":"Roger Wilco II"}}'
 ```
 
 #### Example Response
@@ -248,7 +241,7 @@ curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/triggers/{
 Status: 200 OK
 
 {
-  "trigger": {
+  "automation": {
     "id":   9873843,
     "title": "Roger Wilco II",
     ...
