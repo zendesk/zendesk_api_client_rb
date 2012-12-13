@@ -105,7 +105,7 @@ describe ZendeskAPI::Ticket do
       VCR.use_cassette("ticket_import_race") do
         threads = []
 
-        5.times do
+        3.times do
           threads << Thread.new do
             Thread.current[:ticket] = ZendeskAPI::Ticket.import(client, :requester => { :email => email, :name => "Hello" }, :subject => "Test", :description => "Test")
           end
