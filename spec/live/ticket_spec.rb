@@ -107,16 +107,20 @@ describe ZendeskAPI::Ticket do
 
         3.times do
           threads << Thread.new do
-            Thread.current[:ticket] = ZendeskAPI::Ticket.import(client, :requester => { :email => email, :name => "Hello" }, :subject => "Test", :description => "Test")
+            client.insert_callback do |response|
+              Thread.current[:response] = response
+            end
+
+            ZendeskAPI::Ticket.import(client, :requester => { :email => email, :name => "Hello" }, :subject => "Test", :description => "Test")
           end
         end
 
         threads.map! do |thread|
           thread.join(3)
-          thread[:ticket]
+          thread[:response][:status]
         end
 
-        threads.all?.should be_true
+        threads.all? {|st| [201, 422].include?(st)}.should be_true
       end
     end
   end
