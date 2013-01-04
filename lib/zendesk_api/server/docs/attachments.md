@@ -71,3 +71,72 @@ Status: 201 Created
   }
 }
 ```
+
+### Deleting Uploads
+`DELETE /api/v2/uploads/{token}.json`
+
+#### Allowed For
+
+ * Agents
+
+#### Using curl
+
+```bash
+ curl -u username:password -X DELETE https://helpdesk.zendesk.com/api/v2/uploads/{token}.json
+```
+
+#### Example Response
+
+```http
+200 OK
+```
+
+### Getting Attachments
+`GET /api/v2/attachments/{id}.json`
+
+#### Allowed For
+
+ * Admins
+
+#### Using curl
+
+```bash
+ curl -u username:password https://helpdesk.zendesk.com/api/v2/attachments/{id}.json
+```
+
+#### Example Response
+
+```http
+{
+  "attachment": {
+    "id":           498483,
+    "name":         "crash.log",
+    "content_url":  "https://company.zendesk.com/attachments/crash.log",
+    "content_type": "text/plain",
+    "size":         2532,
+    "thumbnails":   [],
+    "url":          "https://company.zendesk.com/api/v2/attachments/498483.json",
+  }
+}
+```
+
+### Deleting Attachments
+`DELETE /api/v2/attachments/{id}.json`
+
+Currently, only attachments on forum posts are allowed to be deleted.
+
+#### Allowed For
+
+ * Admins
+
+#### Using curl
+
+```bash
+ curl -u username:password -X DELETE https://helpdesk.zendesk.com/api/v2/attachments/{id}.json
+```
+
+#### Example Response
+
+```http
+200 OK
+```

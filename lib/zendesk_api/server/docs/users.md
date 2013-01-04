@@ -409,3 +409,47 @@ Status: 200
   }
 }
 ```
+
+### Set a User's Password
+
+`POST /api/v2/users/{user_id}/password.json`
+
+#### Allowed For
+
+ * Agents
+
+#### Using curl
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/password.json \
+  -X POST -d '{"password": "newpassword"}' \
+  -v -u {email_address}:{password}
+```
+
+#### Example Response
+
+```http
+Status: 200
+```
+
+### Change a User's Password
+
+`PUT /api/v2/users/{user_id}/password.json`
+
+#### Allowed For
+
+ * Agents
+
+#### Using curl
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/password.json \
+  -X POST -d '{"previous_password": "oldpassword", "password": "newpassword"}' \
+  -v -u {email_address}:{password}
+```
+
+#### Example Response
+
+```http
+Status: 200
+```

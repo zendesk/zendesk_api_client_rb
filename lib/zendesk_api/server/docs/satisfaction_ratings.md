@@ -134,3 +134,39 @@ Status: 200 OK
   }
 }
 ```
+
+### Create a Satisfaction Rating
+`POST /api/v2/tickets/{ticket_id}/satisfaction_rating.json`
+
+#### Allowed For:
+
+ * Requester of the ticket
+
+#### Using curl
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/tickets/{ticket_id}/satisfaction_rating.json \
+  -X POST -d '{"satisfaction_rating": {"score": "good", "comment": "Awesome support."}}' \
+  -v -u {email_address}:{password} -H "Content-Type: application/json"
+```
+
+#### Example Response
+
+```http
+Status: 200 OK
+
+{
+  "satisfaction_rating": {
+    "id":              35436,
+    "url":             "https://company.zendesk.com/api/v2/satisfaction_ratings/35436.json",
+    "assignee_id":     135,
+    "group_id":        44,
+    "requester_id":    7881,
+    "ticket_id":       208,
+    "score":           "good",
+    "updated_at":      "2011-07-20T22:55:29Z",
+    "created_at":      "2011-07-20T22:55:29Z",
+    "comment":         { ... }
+  }
+}
+```
