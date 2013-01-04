@@ -316,6 +316,12 @@ Voice Comments have the following keys:
 | public          | boolean | yes       | If true, the ticket requester can see this comment
 | formatted_from  | string  | yes       | A formatted version of the phone number which dialed the call
 | formatted_to    | string  | yes       | A formatted version of the phone number which answered the call
+| body            | string  | yes       | The actual comment made by the author
+| html_body       | string  | yes       | The actual comment made by the author formatted to HTML
+| public          | boolean | yes       | If this is a public comment or an internal agents only note
+| trusted         | boolean | yes       | If this comment is trusted or marked as being potentially fraudulent
+| author_id       | integer | yes       | The id of the author of this comment
+| attachments     | array   | yes       | The attachments on this comment as [Attachment](attachments.md) objects
 
 #### Example
 ```js
@@ -342,6 +348,10 @@ Voice Comments have the following keys:
   "formatted_to":          "+1 (123) 325-7890",
   "transcription_visible": true,
   "public":                true,
+  "author_id":             1,
+  "body":                  "Request #219 "request" was closed and merged into this request.",
+  "html_body":             "<p>Request <a target="_blank" href="/tickets/219">#219</a> &quot;aa&quot; was closed and merged into this request.</p>",
+  "trusted":               true,
   "attachments":           []
 }
 ```
@@ -373,12 +383,14 @@ Each property that is set on a newly created Ticket is tracked with a Create eve
 
 Create events have the following keys:
 
-| Name       | Type    | Read-only | Comment
-| ---------- | ------- | --------- | -------
-| id         | integer | yes       | Automatically assigned when creating events
-| type       | string  | yes       | Has the value `Create`
-| field_name | string  | yes       | The name of the field that was set
-| value      | string  | yes       | The value of the field that was set
+| Name       | Type            | Read-only | Comment
+| ---------- | --------------- | --------- | -------
+| id         | integer         | yes       | Automatically assigned when creating events
+| type       | string          | yes       | Has the value `Create`
+| field_name | string          | yes       | The name of the field that was set
+| value      | string / array  | yes       | The value of the field that was set
+
+`value` will always be a string, except when when the `field_name` is `tags`
 
 #### Example
 ```js
@@ -395,13 +407,15 @@ When a ticket is updated, Change events track the previous and newly updated val
 
 Change events have the following keys:
 
-| Name           | Type    | Read-only | Comment
-| -------------- | ------- | --------- | -------
-| id             | integer | yes       | Automatically assigned when creating events
-| type           | string  | yes       | Has the value `Change`
-| field_name     | string  | yes       | The name of the field that was changed
-| value          | string  | yes       | The value of the field that was changed
-| previous_value | string  | yes       | The previous value of the field that was changed
+| Name           | Type            | Read-only | Comment
+| -------------- | --------------- | --------- | -------
+| id             | integer         | yes       | Automatically assigned when creating events
+| type           | string          | yes       | Has the value `Change`
+| field_name     | string          | yes       | The name of the field that was changed
+| value          | string / array  | yes       | The value of the field that was changed
+| previous_value | string / array  | yes       | The previous value of the field that was changed
+
+`value` and `previous_value` will always be strings, except when when the `field_name` is `tags`
 
 #### Example
 ```js
