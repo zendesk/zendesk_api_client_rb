@@ -120,7 +120,7 @@ describe ZendeskAPI::Ticket do
           thread[:response][:status]
         end
 
-        threads.all? {|st| [201, 422].include?(st)}.should be_true
+        threads.all? {|st| [201, 422, 409].include?(st)}.should be_true
       end
     end
   end
