@@ -114,6 +114,7 @@ module ZendeskAPI
 
   # Indexable resource
   class DataResource < Data
+    attr_accessor :error, :error_message
     extend Verbs
   end
 
