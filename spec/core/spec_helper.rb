@@ -105,7 +105,6 @@ RSpec.configure do |c|
     end
   end
 
-  c.extend VCR::RSpec::Macros
   c.extend ResourceMacros
   c.extend ZendeskAPI::Fixtures
   c.include ZendeskAPI::Fixtures
