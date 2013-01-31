@@ -21,10 +21,12 @@ module ZendeskAPI
         return unless e.response
 
         if error = e.response[:body]
-          error = Hashie::Mash.new(error)
+          if error.is_a?(Hash)
+            error = Hashie::Mash.new(error)
+            self.error_message = (error.error || error.description) if respond_to?("error_message=")
+          end
 
           self.error = error if respond_to?("error=")
-          self.error_message = (error.error || error.description) if respond_to?("error_message=")
         end
       end
 
