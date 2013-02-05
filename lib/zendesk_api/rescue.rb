@@ -20,9 +20,13 @@ module ZendeskAPI
       def attach_error(e)
         return unless e.response
 
-        if (error = e.response[:body]) && error.is_a?(Hash)
-          error = Hashie::Mash.new(error)
-          self.error_message = (error.error || error.description) if respond_to?("error_message=")
+        if respond_to?("error_message=")
+          self.error_message = nil
+
+          if (error = e.response[:body]) && error.is_a?(Hash)
+            error = Hashie::Mash.new(error)
+            self.error_message = (error.error || error.description)
+          end
         end
 
         self.error = e if respond_to?("error=")
