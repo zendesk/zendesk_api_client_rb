@@ -29,17 +29,7 @@ module ZendeskAPI::Server
       end
 
       begin
-        response = client.connection.send(@method, @path) do |request|
-          request.params = @url_params.inject({}) do |accum, h|
-            accum.merge(h["name"] => h["value"])
-          end
-
-          if @method != :get && @json && !@json.empty?
-            request.body = JSON.parse(@json)
-          end
-
-          set_request(request.to_env(client.connection))
-        end
+        response = get_response
       rescue Faraday::Error::ConnectionFailed => e
         @error = "The connection failed"
       rescue Faraday::Error::ClientError => e
@@ -52,6 +42,20 @@ module ZendeskAPI::Server
         set_response(:body => response.body,
           :headers => response.env[:response_headers],
           :status => response.env[:status])
+      end
+    end
+
+    def get_response
+      client.connection.send(@method, @path) do |request|
+        request.params = @url_params.inject({}) do |accum, h|
+          accum.merge(h["name"] => h["value"])
+        end
+
+        if @method != :get && @json && !@json.empty?
+          request.body = JSON.parse(@json)
+        end
+
+        set_request(request.to_env(client.connection))
       end
     end
 
