@@ -6,7 +6,7 @@ This client **only** supports Zendesk's v2 API.  Please see our [API documentati
 
 ## Additional Documentation
 
-Additional documentation can be found on [rubydoc.info](http://rubydoc.info/gems/zendesk_api/frames)
+Additional documentation can be found on our [documentation site](https://zendesk-api.herokuapp.com/doc/index.html) and [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki).
 
 ## Important Notice
 
