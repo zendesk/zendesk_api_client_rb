@@ -1,0 +1,508 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: ZendeskAPI::Server::HtmlRenderer::RedcarpetRenderer
+  
+    &mdash; Documentation by YARD 0.8.4.1
+  
+</title>
+
+  <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../../';
+  framesUrl = "../../../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../../_index.html">Index (R)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../Server.html" title="ZendeskAPI::Server (module)">Server</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../HtmlRenderer.html" title="ZendeskAPI::Server::HtmlRenderer (class)">HtmlRenderer</a></span></span>
+     &raquo; 
+    <span class="title">RedcarpetRenderer</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: ZendeskAPI::Server::HtmlRenderer::RedcarpetRenderer
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Redcarpet::Render::HTML</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Redcarpet::Render::HTML</li>
+          
+            <li class="next">ZendeskAPI::Server::HtmlRenderer::RedcarpetRenderer</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/zendesk_api/server/html_renderer.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#headers-instance_method" title="#headers (instance method)">- (Object) <strong>headers</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute headers.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#block_code-instance_method" title="#block_code (instance method)">- (Object) <strong>block_code</strong>(code, language) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#header-instance_method" title="#header (instance method)">- (Object) <strong>header</strong>(text, level) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#icons-instance_method" title="#icons (instance method)">- (Object) <strong>icons</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="headers-instance_method">
+  
+    - (<tt>Object</tt>) <strong>headers</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute headers</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+18
+19
+20</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/server/html_renderer.rb', line 18</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_headers'>headers</span>
+  <span class='ivar'>@headers</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="block_code-instance_method">
+  
+    - (<tt>Object</tt>) <strong>block_code</strong>(code, language) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/server/html_renderer.rb', line 40</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_block_code'>block_code</span><span class='lparen'>(</span><span class='id identifier rubyid_code'>code</span><span class='comma'>,</span> <span class='id identifier rubyid_language'>language</span><span class='rparen'>)</span>
+  <span class='comment'># CodeRay doesn't know HTTP
+</span>  <span class='id identifier rubyid_language'>language</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_language'>language</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='id identifier rubyid_mod'>mod</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_json'>json</span> <span class='op'>=</span> <span class='kw'>nil</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_language'>language</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>curl</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_code'>code</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>%r[</span><span class='tstring_content'>(https://{subdomain}.zendesk.com/api/v2/.*.json(\?(\w+={.+})+ )?)</span><span class='regexp_end'>]</span></span>
+        <span class='id identifier rubyid_example'>example</span> <span class='op'>=</span> <span class='kw'>true</span>
+
+        <span class='id identifier rubyid_mod'>mod</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>class</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>example</span><span class='tstring_end'>&quot;</span></span>
+        <span class='id identifier rubyid_mod'>mod</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>data-url</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='backref'>$1</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span>
+
+        <span class='comment'># This grabs the -d parameter
+</span>        <span class='comment'># ...
+</span>        <span class='kw'>if</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> -d </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_str_begin'>str_begin</span> <span class='op'>=</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_index'>index</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>['&quot;]</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_index'>index</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> -d </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+
+          <span class='id identifier rubyid_chars'>chars</span> <span class='op'>=</span> <span class='id identifier rubyid_code'>code</span><span class='lbracket'>[</span><span class='id identifier rubyid_str_begin'>str_begin</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_chars'>chars</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span>
+          <span class='id identifier rubyid_str_end'>str_end</span> <span class='op'>=</span> <span class='kw'>nil</span>
+
+          <span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_char'>char</span><span class='comma'>,</span> <span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+            <span class='kw'>if</span> <span class='id identifier rubyid_char'>char</span> <span class='op'>==</span> <span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_chars'>chars</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\\</span><span class='tstring_end'>&quot;</span></span>
+              <span class='id identifier rubyid_str_end'>str_end</span> <span class='op'>=</span> <span class='id identifier rubyid_i'>i</span>
+              <span class='kw'>break</span>
+            <span class='kw'>end</span>
+          <span class='kw'>end</span>
+
+          <span class='id identifier rubyid_mod'>mod</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>data-json</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_slice'>slice</span><span class='lparen'>(</span><span class='id identifier rubyid_str_begin'>str_begin</span> <span class='op'>+</span> <span class='int'>1</span><span class='op'>..</span><span class='lparen'>(</span><span class='id identifier rubyid_str_begin'>str_begin</span> <span class='op'>+</span> <span class='id identifier rubyid_str_end'>str_end</span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_str_end'>str_end</span>
+        <span class='kw'>end</span>
+
+        <span class='kw'>if</span> <span class='id identifier rubyid_code'>code</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>-X (PUT|POST|GET|DELETE)</span><span class='regexp_end'>/</span></span>
+          <span class='id identifier rubyid_mod'>mod</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>data-method</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='backref'>$1</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_code'>code</span> <span class='op'>=</span> <span class='const'>CodeRay</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='id identifier rubyid_code'>code</span><span class='comma'>,</span> <span class='id identifier rubyid_language'>language</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_html'>html</span><span class='lparen'>(</span><span class='symbol'>:wrap</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_mod'>mod</span> <span class='op'>=</span> <span class='id identifier rubyid_mod'>mod</span><span class='period'>.</span><span class='id identifier rubyid_inject'>inject</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_str'>str</span><span class='comma'>,</span><span class='lparen'>(</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span><span class='op'>|</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_k'>k</span><span class='rbrace'>}</span><span class='tstring_content'>='</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_v'>v</span><span class='rbrace'>}</span><span class='tstring_content'>'</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_example'>example</span>
+    <span class='heredoc_beg'>&lt;&lt;-END</span>
+<span class='tstring_content'>      &lt;button class=&quot;btn example&quot; title=&quot;Fill in the form with this example&quot;&gt;
+        &lt;i class=&quot;icon icon-pencil&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+      &lt;pre </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_mod'>mod</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_code'>code</span><span class='rbrace'>}</span><span class='tstring_content'>&lt;/pre&gt;
+</span><span class='heredoc_end'>    END
+</span>  <span class='kw'>else</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;pre&gt;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_code'>code</span><span class='rbrace'>}</span><span class='tstring_content'>&lt;/pre&gt;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="header-instance_method">
+  
+    - (<tt>Object</tt>) <strong>header</strong>(text, level) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/server/html_renderer.rb', line 27</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_header'>header</span><span class='lparen'>(</span><span class='id identifier rubyid_text'>text</span><span class='comma'>,</span> <span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_top_level'>top_level</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='int'>2</span><span class='comma'>,</span> <span class='int'>3</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_id'>id</span> <span class='op'>=</span> <span class='const'>HtmlRenderer</span><span class='period'>.</span><span class='id identifier rubyid_generate_id'>generate_id</span><span class='lparen'>(</span><span class='id identifier rubyid_text'>text</span><span class='rparen'>)</span>
+
+  <span class='ivar'>@headers</span> <span class='op'>||=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='ivar'>@headers</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_id'>id</span> <span class='kw'>if</span> <span class='id identifier rubyid_top_level'>top_level</span>
+
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;h</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_level'>level</span><span class='rbrace'>}</span><span class='tstring_content'> id=\&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_id'>id</span><span class='rbrace'>}</span><span class='tstring_content'>\&quot;&gt;
+    </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_icons'>icons</span> <span class='kw'>if</span> <span class='id identifier rubyid_top_level'>top_level</span><span class='rbrace'>}</span><span class='tstring_content'>
+    </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_text'>text</span><span class='rbrace'>}</span><span class='tstring_content'>
+  &lt;/h</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_level'>level</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="icons-instance_method">
+  
+    - (<tt>Object</tt>) <strong>icons</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+20
+21
+22
+23
+24
+25</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/server/html_renderer.rb', line 20</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_icons'>icons</span>
+  <span class='heredoc_beg'>&lt;&lt;-END</span>
+<span class='tstring_content'>    &lt;i class=\&quot;header-icon icon-plus\&quot;&gt;&lt;/i&gt;
+    &lt;i class=\&quot;header-icon icon-minus hide\&quot;&gt;&lt;/i&gt;
+</span><span class='heredoc_end'>  END
+</span><span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon Feb 11 17:45:41 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.4.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

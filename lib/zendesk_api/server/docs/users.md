@@ -422,8 +422,8 @@ Status: 200
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/password.json \
-  -X POST -d '{"password": "newpassword"}' \
-  -v -u {email_address}:{password}
+  -d '{"password": "newpassword"}' \
+  -v -u {email_address}:{password} -X POST -H "Content-Type: application/json"
 ```
 
 #### Example Response
@@ -444,8 +444,8 @@ Status: 200
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/users/{user_id}/password.json \
-  -X POST -d '{"previous_password": "oldpassword", "password": "newpassword"}' \
-  -v -u {email_address}:{password}
+  -d '{"previous_password": "oldpassword", "password": "newpassword"}' \
+  -v -u {email_address}:{password} -X PUT -H "Content-Type: application/json"
 ```
 
 #### Example Response

@@ -180,14 +180,13 @@ Location: https://{subdomain}.zendesk.com/api/v2/organizations/{id}.json
 
 #### Allowed For
 
- * Admins
+ * Agents, restrictions apply on certain actions
 
 #### Using curl
 
 ```bash
-curl https://{subdomain}.zendesk.com/api/v2/organizations/create_many.json \
-  -H "Content-Type: application/json" -X POST -d "{\"organizations\":[{\"name\":\"My Org 1\"}, {\"name\":\"My Org 2\"}]}"
-  -v -u {email_address}:{password}
+curl -v -u {email_address}:{password} https://{subdomain}.zendesk.com/api/v2/organizations/create_many.json \
+  -H "Content-Type: application/json" -X POST -d '{"organizations": [{"name": "Org1"}, {"name": "Org2"}]}'
 ```
 
 #### Example Response

@@ -99,8 +99,8 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/forum_subscriptions.json \
-  -d '{"user_id": 772, "forum_id": 881}' \
-  -v -u {email_address}:{password} -X POST
+  -d '{"forum_subscription": {"user_id": 772, "forum_id": 881}}' \
+  -v -u {email_address}:{password} -H "Content-Type: application/json" -X POST
 ```
 
 #### Example Response

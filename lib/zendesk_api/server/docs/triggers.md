@@ -1,5 +1,12 @@
 ## Triggers
 
+A trigger consists of one or more actions performed when a ticket is created or updated. The actions are performed only if certain conditions are met. For example, a trigger can notify the customer when an agent changes the status of a ticket to Solved.
+
+All your triggers are checked from first to last each time a ticket is created or updated. The order of triggers is important because the actions of one trigger may affect another trigger. New triggers are added in last place by default.
+
+For more information, see [Streamlining workflow with ticket updates and triggers](https://support.zendesk.com/entries/20011606).
+
+
 ### JSON Format
 Triggers are represented as simple flat JSON objects which have the following keys.
 

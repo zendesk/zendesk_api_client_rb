@@ -1,5 +1,6 @@
 pkg
-doc
+./doc/*
+./doc/**/*
 *swp
 spec/fixtures/cassettes
 spec/fixtures/credentials.yml

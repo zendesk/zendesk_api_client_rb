@@ -234,20 +234,45 @@ Location: https://{subdomain}.zendesk.com/api/v2/tickets/{id}.json
 }
 ```
 
+#### Request parameters
+
+The POST request takes one parameter, a `ticket` object that lists the values to set when the ticket is created.
+
+| Name                   | Description                                          |
+| --------               | ---------------------------------------------------- |
+| subject                | Required. The subject of the ticket. |
+| comment                | Required. A comment object that describes the problem, incident, question, or task. See [Ticket comments](http://developer.zendesk.com/documentation/rest_api/ticket_audits.html#audit-events) in Audit Events. |
+| requester\_id          | The numeric ID of the user asking for support through the ticket. |
+| submitter\_id          | The numeric ID of the user submitting the ticket. |
+| assignee\_id           | The numeric ID of the agent to assign the ticket to. |
+| group\_id              | The numeric ID of the group to assign the ticket to. |
+| collaborator\_ids      | An array of the numeric IDs of agents or end-users to CC on the ticket. An email notification is sent to them when the ticket is created. |
+| type                   | Allowed values are `problem`, `incident`, `question`, or `task`. |
+| priority               | Allowed values are `urgent`, `high`, `normal`, or `low`. |
+| status                 | Allowed values are `new`, `open`, `pending`, `hold`, `solved` or `closed`. Is set to `open` if status is not specified. |
+| tags                   | An array of tags to add to the ticket. |
+| external\_id           | A unique external ID to link Zendesk tickets to local records. |
+| forum\_topic\_id       | The numeric ID of the topic the ticket originated from, if any. |
+| problem\_id            | For tickets of type "incident", the numeric ID of the problem the incident is linked to, if any. |
+| due\_at                | For tickets of type "task", the due date of the task. Accepts the ISO 8601 date format (yyyy-mm-dd). |
+| custom\_fields         | An array of the custom fields of the ticket. |
+
+#### Example request
+
+```js
+"ticket":{
+ "subject":"My printer is on fire!",
+ "comment": { "body": "The smoke is very colorful." },
+ "priority": "urgent"
+}
+```
+
 ### Updating Tickets
 `PUT /api/v2/tickets/{id}.json`
 
 #### Allowed For
 
  * Agents
-
-#### Example Request
-
-```js
-"ticket": {
-  "status": "solved"
-}
-```
 
 #### Using curl
 
@@ -275,6 +300,37 @@ Status: 200 OK
      "events": [...],
      ...
   }
+}
+```
+
+#### Request parameters
+
+The PUT request takes one parameter, a `ticket` object that lists the values to update. All properties are optional.
+
+| Name                   | Description                                          |
+| --------               | ---------------------------------------------------- |
+| subject                | The subject of the ticket. |
+| comment                | An object that adds a comment to the ticket. See [Ticket comments](http://developer.zendesk.com/documentation/rest_api/ticket_audits.html#audit-events) in Audit Events. |
+| requester\_id          | The numeric ID of the user asking for support through the ticket. |
+| assignee\_id           | The numeric ID of the agent to assign the ticket to. |
+| group\_id              | The numeric ID of the group to assign the ticket to. |
+| collaborator\_ids      | An array of the numeric IDs of agents or end-users to CC. Note that this replaces any existing collaborators. An email notification is sent to them when the ticket is created. |
+| type                   | Allowed values are `problem`, `incident`, `question`, or `task`. |
+| priority               | Allowed values are `urgent`, `high`, `normal`, or `low`. |
+| status                 | Allowed values are `open`, `pending`, `hold`, `solved` or `closed`. |
+| tags                   | An array of tags to add to the ticket. Note that the tags replace any existing tags. |
+| external\_id           | A unique external ID to link Zendesk tickets to local records. |
+| forum\_topic\_id       | The numeric ID of the topic the ticket originated from, if any. |
+| problem\_id            | For tickets of type "incident", the numeric ID of the problem the incident is linked to, if any. |
+| due\_at                | For tickets of type "task", the due date of the task. Accepts the ISO 8601 date format (yyyy-mm-dd). |
+| custom\_fields         | An array of the custom field objects consisting of ids and values. Any tags defined with the custom field replace existing tags.  |
+
+#### Example request
+
+```js
+"ticket": {
+ "comment":{ "body": "Thanks for choosing Acme Jet Motors.", "public":"true" },
+ "status": "solved"
 }
 ```
 

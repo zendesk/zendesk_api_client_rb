@@ -1,0 +1,3611 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: ZendeskAPI::User
+  
+    &mdash; Documentation by YARD 0.8.4.1
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (U)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span>
+     &raquo; 
+    <span class="title">User</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: ZendeskAPI::User
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="Resource.html" title="ZendeskAPI::Resource (class)">Resource</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="Data.html" title="ZendeskAPI::Data (class)">Data</a></span></li>
+          
+            <li class="next"><span class='object_link'><a href="DataResource.html" title="ZendeskAPI::DataResource (class)">DataResource</a></span></li>
+          
+            <li class="next"><span class='object_link'><a href="Resource.html" title="ZendeskAPI::Resource (class)">Resource</a></span></li>
+          
+            <li class="next">ZendeskAPI::User</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/zendesk_api/resources.rb<span class="defines">,<br />
+  lib/zendesk_api/resources.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="User/Identity.html" title="ZendeskAPI::User::Identity (class)">Identity</a></span>, <span class='object_link'><a href="User/TopicComment.html" title="ZendeskAPI::User::TopicComment (class)">TopicComment</a></span>
+    
+  
+</p>
+
+
+
+
+
+
+  <h2>Instance Attribute Summary</h2>
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="DataResource.html" title="ZendeskAPI::DataResource (class)">DataResource</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="DataResource.html#error-instance_method" title="ZendeskAPI::DataResource#error (method)">#error</a></span>, <span class='object_link'><a href="DataResource.html#error_message-instance_method" title="ZendeskAPI::DataResource#error_message (method)">#error_message</a></span></p>
+
+  
+  
+  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="Data.html" title="ZendeskAPI::Data (class)">Data</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Data.html#association-instance_method" title="ZendeskAPI::Data#association (method)">#association</a></span>, <span class='object_link'><a href="Data.html#attributes-instance_method" title="ZendeskAPI::Data#attributes (method)">#attributes</a></span>, <span class='object_link'><a href="Data.html#response-instance_method" title="ZendeskAPI::Data#response (method)">#response</a></span></p>
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ability-instance_method" title="#ability (instance method)">- (ZendeskAPI::Ability) <strong>ability</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ability%3D-instance_method" title="#ability= (instance method)">- (ZendeskAPI::Ability) <strong>ability=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ccd_tickets-instance_method" title="#ccd_tickets (instance method)">- (ZendeskAPI::Ticket) <strong>ccd_tickets</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ccd_tickets%3D-instance_method" title="#ccd_tickets= (instance method)">- (ZendeskAPI::Ticket) <strong>ccd_tickets=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#crm_data-instance_method" title="#crm_data (instance method)">- (ZendeskAPI::CRMData) <strong>crm_data</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#crm_data%3D-instance_method" title="#crm_data= (instance method)">- (ZendeskAPI::CRMData) <strong>crm_data=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#crm_data_status-instance_method" title="#crm_data_status (instance method)">- (ZendeskAPI::CRMDataStatus) <strong>crm_data_status</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#crm_data_status%3D-instance_method" title="#crm_data_status= (instance method)">- (ZendeskAPI::CRMDataStatus) <strong>crm_data_status=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#custom_role-instance_method" title="#custom_role (instance method)">- (ZendeskAPI::CustomRole) <strong>custom_role</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#custom_role%3D-instance_method" title="#custom_role= (instance method)">- (ZendeskAPI::CustomRole) <strong>custom_role=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#forum_subscriptions-instance_method" title="#forum_subscriptions (instance method)">- (ZendeskAPI::ForumSubscription) <strong>forum_subscriptions</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#forum_subscriptions%3D-instance_method" title="#forum_subscriptions= (instance method)">- (ZendeskAPI::ForumSubscription) <strong>forum_subscriptions=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#group_memberships-instance_method" title="#group_memberships (instance method)">- (ZendeskAPI::GroupMembership) <strong>group_memberships</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#group_memberships%3D-instance_method" title="#group_memberships= (instance method)">- (ZendeskAPI::GroupMembership) <strong>group_memberships=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#groups-instance_method" title="#groups (instance method)">- (ZendeskAPI::Group) <strong>groups</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#groups%3D-instance_method" title="#groups= (instance method)">- (ZendeskAPI::Group) <strong>groups=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#identities-instance_method" title="#identities (instance method)">- (ZendeskAPI::User::Identity) <strong>identities</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#identities%3D-instance_method" title="#identities= (instance method)">- (ZendeskAPI::User::Identity) <strong>identities=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (User) <strong>initialize</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>A new instance of User.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#organization-instance_method" title="#organization (instance method)">- (ZendeskAPI::Organization) <strong>organization</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#organization%3D-instance_method" title="#organization= (instance method)">- (ZendeskAPI::Organization) <strong>organization=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#requested_tickets-instance_method" title="#requested_tickets (instance method)">- (ZendeskAPI::Ticket) <strong>requested_tickets</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#requested_tickets%3D-instance_method" title="#requested_tickets= (instance method)">- (ZendeskAPI::Ticket) <strong>requested_tickets=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#requests-instance_method" title="#requests (instance method)">- (ZendeskAPI::Request) <strong>requests</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#requests%3D-instance_method" title="#requests= (instance method)">- (ZendeskAPI::Request) <strong>requests=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#role-instance_method" title="#role (instance method)">- (ZendeskAPI::Role) <strong>role</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#role%3D-instance_method" title="#role= (instance method)">- (ZendeskAPI::Role) <strong>role=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topic_comments-instance_method" title="#topic_comments (instance method)">- (ZendeskAPI::TopicComment) <strong>topic_comments</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topic_comments%3D-instance_method" title="#topic_comments= (instance method)">- (ZendeskAPI::TopicComment) <strong>topic_comments=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topic_subscriptions-instance_method" title="#topic_subscriptions (instance method)">- (ZendeskAPI::TopicSubscription) <strong>topic_subscriptions</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topic_subscriptions%3D-instance_method" title="#topic_subscriptions= (instance method)">- (ZendeskAPI::TopicSubscription) <strong>topic_subscriptions=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topic_votes-instance_method" title="#topic_votes (instance method)">- (ZendeskAPI::Topic::TopicVote) <strong>topic_votes</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topic_votes%3D-instance_method" title="#topic_votes= (instance method)">- (ZendeskAPI::Topic::TopicVote) <strong>topic_votes=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topics-instance_method" title="#topics (instance method)">- (ZendeskAPI::Topic) <strong>topics</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#topics%3D-instance_method" title="#topics= (instance method)">- (ZendeskAPI::Topic) <strong>topics=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The associated object.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Read.html" title="ZendeskAPI::Read (module)">Read</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Read.html#find-instance_method" title="ZendeskAPI::Read#find (method)">#find</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Destroy.html" title="ZendeskAPI::Destroy (module)">Destroy</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Destroy.html#destroy-instance_method" title="ZendeskAPI::Destroy#destroy (method)">#destroy</a></span>, <span class='object_link'><a href="Destroy.html#destroyed%3F-instance_method" title="ZendeskAPI::Destroy#destroyed? (method)">#destroyed?</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Save.html" title="ZendeskAPI::Save (module)">Save</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Save.html#clear_associations-instance_method" title="ZendeskAPI::Save#clear_associations (method)">#clear_associations</a></span>, <span class='object_link'><a href="Save.html#save-instance_method" title="ZendeskAPI::Save#save (method)">#save</a></span>, <span class='object_link'><a href="Save.html#save%21-instance_method" title="ZendeskAPI::Save#save! (method)">#save!</a></span>, <span class='object_link'><a href="Save.html#save_associations-instance_method" title="ZendeskAPI::Save#save_associations (method)">#save_associations</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Verbs.html" title="ZendeskAPI::Verbs (module)">Verbs</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Verbs.html#delete-instance_method" title="ZendeskAPI::Verbs#delete (method)">#delete</a></span>, <span class='object_link'><a href="Verbs.html#post-instance_method" title="ZendeskAPI::Verbs#post (method)">#post</a></span>, <span class='object_link'><a href="Verbs.html#put-instance_method" title="ZendeskAPI::Verbs#put (method)">#put</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Data.html" title="ZendeskAPI::Data (class)">Data</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Data.html#%2F-instance_method" title="ZendeskAPI::Data#/ (method)">#/</a></span>, <span class='object_link'><a href="Data.html#%3D%3D-instance_method" title="ZendeskAPI::Data#== (method)">#==</a></span>, <span class='object_link'><a href="Data.html#format-class_method" title="ZendeskAPI::Data.format (method)">format</a></span>, <span class='object_link'><a href="Data.html#id-instance_method" title="ZendeskAPI::Data#id (method)">#id</a></span>, <span class='object_link'><a href="Data.html#method_missing-instance_method" title="ZendeskAPI::Data#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="Data.html#new_record%3F-instance_method" title="ZendeskAPI::Data#new_record? (method)">#new_record?</a></span>, <span class='object_link'><a href="Data.html#path-instance_method" title="ZendeskAPI::Data#path (method)">#path</a></span>, <span class='object_link'><a href="Data.html#resource_name-class_method" title="ZendeskAPI::Data.resource_name (method)">resource_name</a></span>, <span class='object_link'><a href="Data.html#singular_resource_name-class_method" title="ZendeskAPI::Data.singular_resource_name (method)">singular_resource_name</a></span>, <span class='object_link'><a href="Data.html#subclasses-class_method" title="ZendeskAPI::Data.subclasses (method)">subclasses</a></span>, <span class='object_link'><a href="Data.html#to_json-instance_method" title="ZendeskAPI::Data#to_json (method)">#to_json</a></span></p>
+
+  
+  
+  
+  
+  
+  <div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="ZendeskAPI::User (class)">User</a></span></tt>) <strong>initialize</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>A new instance of User</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+331
+332
+333
+334
+335
+336</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 331</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>*</span><span class='rparen'>)</span>
+  <span class='kw'>super</span>
+
+  <span class='comment'># Needed for side-loading to work
+</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_role_id'>role_id</span> <span class='op'>=</span> <span class='id identifier rubyid_role'>role</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span> <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='symbol'>:role</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+<div id="method_missing_details" class="method_details_list">
+  <h2>Dynamic Method Handling</h2>
+  <p class="notice super">
+    This class handles dynamic methods through the <tt>method_missing</tt> method
+    
+      in the class <span class='object_link'><a href="Data.html#method_missing-instance_method" title="ZendeskAPI::Data#method_missing (method)">ZendeskAPI::Data</a></span>
+    
+  </p>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="ability-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Ability.html" title="ZendeskAPI::Ability (class)">ZendeskAPI::Ability</a></span></tt>) <strong>ability</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Ability.html" title="ZendeskAPI::Ability (class)">ZendeskAPI::Ability</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+342</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 342</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>Ability</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="ability=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Ability.html" title="ZendeskAPI::Ability (class)">ZendeskAPI::Ability</a></span></tt>) <strong>ability=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Ability.html" title="ZendeskAPI::Ability (class)">ZendeskAPI::Ability</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Ability.html" title="ZendeskAPI::Ability (class)">ZendeskAPI::Ability</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+342</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 342</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>Ability</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="ccd_tickets-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>) <strong>ccd_tickets</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+348</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 348</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:ccd_tickets</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>tickets/ccd</span><span class='tstring_end'>'</span></span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="ccd_tickets=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>) <strong>ccd_tickets=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+348</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 348</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:ccd_tickets</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>tickets/ccd</span><span class='tstring_end'>'</span></span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="crm_data-instance_method">
+  
+    - (<tt><span class='object_link'><a href="CRMData.html" title="ZendeskAPI::CRMData (class)">ZendeskAPI::CRMData</a></span></tt>) <strong>crm_data</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CRMData.html" title="ZendeskAPI::CRMData (class)">ZendeskAPI::CRMData</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+359</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 359</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>CRMData</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="crm_data=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="CRMData.html" title="ZendeskAPI::CRMData (class)">ZendeskAPI::CRMData</a></span></tt>) <strong>crm_data=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="CRMData.html" title="ZendeskAPI::CRMData (class)">ZendeskAPI::CRMData</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CRMData.html" title="ZendeskAPI::CRMData (class)">ZendeskAPI::CRMData</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+359</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 359</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>CRMData</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="crm_data_status-instance_method">
+  
+    - (<tt><span class='object_link'><a href="CRMDataStatus.html" title="ZendeskAPI::CRMDataStatus (class)">ZendeskAPI::CRMDataStatus</a></span></tt>) <strong>crm_data_status</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CRMDataStatus.html" title="ZendeskAPI::CRMDataStatus (class)">ZendeskAPI::CRMDataStatus</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+360</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 360</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>CRMDataStatus</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>crm_data/status</span><span class='tstring_end'>'</span></span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="crm_data_status=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="CRMDataStatus.html" title="ZendeskAPI::CRMDataStatus (class)">ZendeskAPI::CRMDataStatus</a></span></tt>) <strong>crm_data_status=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="CRMDataStatus.html" title="ZendeskAPI::CRMDataStatus (class)">ZendeskAPI::CRMDataStatus</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CRMDataStatus.html" title="ZendeskAPI::CRMDataStatus (class)">ZendeskAPI::CRMDataStatus</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+360</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 360</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>CRMDataStatus</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>crm_data/status</span><span class='tstring_end'>'</span></span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="custom_role-instance_method">
+  
+    - (<tt><span class='object_link'><a href="CustomRole.html" title="ZendeskAPI::CustomRole (class)">ZendeskAPI::CustomRole</a></span></tt>) <strong>custom_role</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CustomRole.html" title="ZendeskAPI::CustomRole (class)">ZendeskAPI::CustomRole</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+340</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 340</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>CustomRole</span><span class='comma'>,</span> <span class='symbol'>:include</span> <span class='op'>=&gt;</span> <span class='symbol'>:roles</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="custom_role=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="CustomRole.html" title="ZendeskAPI::CustomRole (class)">ZendeskAPI::CustomRole</a></span></tt>) <strong>custom_role=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="CustomRole.html" title="ZendeskAPI::CustomRole (class)">ZendeskAPI::CustomRole</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CustomRole.html" title="ZendeskAPI::CustomRole (class)">ZendeskAPI::CustomRole</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+340</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 340</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>CustomRole</span><span class='comma'>,</span> <span class='symbol'>:include</span> <span class='op'>=&gt;</span> <span class='symbol'>:roles</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="forum_subscriptions-instance_method">
+  
+    - (<tt><span class='object_link'><a href="ForumSubscription.html" title="ZendeskAPI::ForumSubscription (class)">ZendeskAPI::ForumSubscription</a></span></tt>) <strong>forum_subscriptions</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="ForumSubscription.html" title="ZendeskAPI::ForumSubscription (class)">ZendeskAPI::ForumSubscription</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+354</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 354</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>ForumSubscription</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="forum_subscriptions=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="ForumSubscription.html" title="ZendeskAPI::ForumSubscription (class)">ZendeskAPI::ForumSubscription</a></span></tt>) <strong>forum_subscriptions=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="ForumSubscription.html" title="ZendeskAPI::ForumSubscription (class)">ZendeskAPI::ForumSubscription</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="ForumSubscription.html" title="ZendeskAPI::ForumSubscription (class)">ZendeskAPI::ForumSubscription</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+354</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 354</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>ForumSubscription</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="group_memberships-instance_method">
+  
+    - (<tt><span class='object_link'><a href="GroupMembership.html" title="ZendeskAPI::GroupMembership (class)">ZendeskAPI::GroupMembership</a></span></tt>) <strong>group_memberships</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="GroupMembership.html" title="ZendeskAPI::GroupMembership (class)">ZendeskAPI::GroupMembership</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+351</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 351</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>GroupMembership</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="group_memberships=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="GroupMembership.html" title="ZendeskAPI::GroupMembership (class)">ZendeskAPI::GroupMembership</a></span></tt>) <strong>group_memberships=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="GroupMembership.html" title="ZendeskAPI::GroupMembership (class)">ZendeskAPI::GroupMembership</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="GroupMembership.html" title="ZendeskAPI::GroupMembership (class)">ZendeskAPI::GroupMembership</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+351</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 351</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>GroupMembership</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="groups-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt>) <strong>groups</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+350</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 350</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Group</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="groups=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt>) <strong>groups=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+350</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 350</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Group</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="identities-instance_method">
+  
+    - (<tt><span class='object_link'><a href="User/Identity.html" title="ZendeskAPI::User::Identity (class)">ZendeskAPI::User::Identity</a></span></tt>) <strong>identities</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User/Identity.html" title="ZendeskAPI::User::Identity (class)">ZendeskAPI::User::Identity</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+344</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 344</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Identity</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="identities=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="User/Identity.html" title="ZendeskAPI::User::Identity (class)">ZendeskAPI::User::Identity</a></span></tt>) <strong>identities=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="User/Identity.html" title="ZendeskAPI::User::Identity (class)">ZendeskAPI::User::Identity</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User/Identity.html" title="ZendeskAPI::User::Identity (class)">ZendeskAPI::User::Identity</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+344</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 344</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Identity</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="organization-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt>) <strong>organization</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+338</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 338</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>Organization</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="organization=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt>) <strong>organization=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+338</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 338</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>Organization</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="requested_tickets-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>) <strong>requested_tickets</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+347</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 347</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:requested_tickets</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>tickets/requested</span><span class='tstring_end'>'</span></span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="requested_tickets=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>) <strong>requested_tickets=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Ticket.html" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+347</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 347</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:requested_tickets</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>tickets/requested</span><span class='tstring_end'>'</span></span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="requests-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Request.html" title="ZendeskAPI::Request (class)">ZendeskAPI::Request</a></span></tt>) <strong>requests</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Request.html" title="ZendeskAPI::Request (class)">ZendeskAPI::Request</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+346</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 346</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Request</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="requests=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Request.html" title="ZendeskAPI::Request (class)">ZendeskAPI::Request</a></span></tt>) <strong>requests=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Request.html" title="ZendeskAPI::Request (class)">ZendeskAPI::Request</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Request.html" title="ZendeskAPI::Request (class)">ZendeskAPI::Request</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+346</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 346</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Request</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="role-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Role.html" title="ZendeskAPI::Role (class)">ZendeskAPI::Role</a></span></tt>) <strong>role</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Role.html" title="ZendeskAPI::Role (class)">ZendeskAPI::Role</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+341</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 341</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>Role</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:include_key</span> <span class='op'>=&gt;</span> <span class='symbol'>:name</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="role=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Role.html" title="ZendeskAPI::Role (class)">ZendeskAPI::Role</a></span></tt>) <strong>role=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Role.html" title="ZendeskAPI::Role (class)">ZendeskAPI::Role</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Role.html" title="ZendeskAPI::Role (class)">ZendeskAPI::Role</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+341</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 341</span>
+
+<span class='id identifier rubyid_has'>has</span> <span class='const'>Role</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:include_key</span> <span class='op'>=&gt;</span> <span class='symbol'>:name</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="topic_comments-instance_method">
+  
+    - (<tt><span class='object_link'><a href="TopicComment.html" title="ZendeskAPI::TopicComment (class)">ZendeskAPI::TopicComment</a></span></tt>) <strong>topic_comments</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="TopicComment.html" title="ZendeskAPI::TopicComment (class)">ZendeskAPI::TopicComment</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+356</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 356</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:topic_comments</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>TopicComment</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="topic_comments=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="TopicComment.html" title="ZendeskAPI::TopicComment (class)">ZendeskAPI::TopicComment</a></span></tt>) <strong>topic_comments=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="TopicComment.html" title="ZendeskAPI::TopicComment (class)">ZendeskAPI::TopicComment</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="TopicComment.html" title="ZendeskAPI::TopicComment (class)">ZendeskAPI::TopicComment</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+356</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 356</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:topic_comments</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>TopicComment</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="topic_subscriptions-instance_method">
+  
+    - (<tt><span class='object_link'><a href="TopicSubscription.html" title="ZendeskAPI::TopicSubscription (class)">ZendeskAPI::TopicSubscription</a></span></tt>) <strong>topic_subscriptions</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="TopicSubscription.html" title="ZendeskAPI::TopicSubscription (class)">ZendeskAPI::TopicSubscription</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+355</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 355</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>TopicSubscription</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="topic_subscriptions=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="TopicSubscription.html" title="ZendeskAPI::TopicSubscription (class)">ZendeskAPI::TopicSubscription</a></span></tt>) <strong>topic_subscriptions=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="TopicSubscription.html" title="ZendeskAPI::TopicSubscription (class)">ZendeskAPI::TopicSubscription</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="TopicSubscription.html" title="ZendeskAPI::TopicSubscription (class)">ZendeskAPI::TopicSubscription</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+355</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 355</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>TopicSubscription</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="topic_votes-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Topic/TopicVote.html" title="ZendeskAPI::Topic::TopicVote (class)">ZendeskAPI::Topic::TopicVote</a></span></tt>) <strong>topic_votes</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Topic/TopicVote.html" title="ZendeskAPI::Topic::TopicVote (class)">ZendeskAPI::Topic::TopicVote</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+357</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 357</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:topic_votes</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Topic</span><span class='op'>::</span><span class='const'>TopicVote</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="topic_votes=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Topic/TopicVote.html" title="ZendeskAPI::Topic::TopicVote (class)">ZendeskAPI::Topic::TopicVote</a></span></tt>) <strong>topic_votes=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Topic/TopicVote.html" title="ZendeskAPI::Topic::TopicVote (class)">ZendeskAPI::Topic::TopicVote</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Topic/TopicVote.html" title="ZendeskAPI::Topic::TopicVote (class)">ZendeskAPI::Topic::TopicVote</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+357</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 357</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:topic_votes</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Topic</span><span class='op'>::</span><span class='const'>TopicVote</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="topics-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt>) <strong>topics</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Options to pass to the collection object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+352</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 352</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Topic</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="topics=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt>) <strong>topics=</strong>(value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The associated object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Hash or <span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object or its attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The associated object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+352</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 352</span>
+
+<span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Topic</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon Feb 11 17:45:38 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.4.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

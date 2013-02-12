@@ -1,6 +1,20 @@
 ## Requests
 
-A request is an end-users perspective on a ticket, this API end point is thus for end-users to view, update and create tickets they have access to. End-users can only see public comments and certain fields of a ticket, and you should use the API token to impersonate an end-user when using this end point.
+A _request_ is an end-user's perspective on a ticket. End-users can only see public comments and certain fields of a ticket. Use this API to let end-users view, update, and create tickets they have access to.
+
+####Authentication
+
+You must use the following authentication credentials with this API:
+* Use the end-user's email address, _not_ an agent's email address as is the case with all other API end-points.
+* Use your API token as the password, and append `/token` to the email address.
+
+To get your API token, go to Manage > Channels in Zendesk, and then click the Edit link in the API channel.
+
+__Example__
+
+```js
+-u joe_enduser@zendesk.com/token:{YOUR_API_TOKEN}
+```
 
 ### JSON Format
 Requests are represented as JSON objects which have the following keys:
@@ -89,7 +103,7 @@ Ticket comments have the following keys:
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/requests.json \
-  -v -u {email_address}:{password}
+  -v -u {email_address}/token:{api_token}
 ```
 
 #### Example Response
@@ -125,7 +139,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/requests/{id}.json \
-  -v -u {email_address}:{password}
+  -v -u {email_address}/token:{api_token}
 ```
 
 #### Example Response
@@ -154,7 +168,7 @@ Status: 200 OK
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/requests.json \
   -d '{"request": {"subject": "Help!", "comment": {"body": "My printer is on fire!", "uploads": [...]}}}' \
-  -v -u {email_address}:{password} -X POST -H "Content-Type: application/json"
+  -v -u {email_address}/token:{api_token} -X POST -H "Content-Type: application/json"
 ```
 
 #### Example Response
@@ -185,7 +199,7 @@ Location: https://{subdomain}.zendesk.com/api/v2/requests/{id}.json
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/requests/{id}.json \
   -d '{"request": {"comment": {"body": "Thanks!"}}}' \
-  -v -u {email_address}:{password} -X PUT -H "Content-Type: application/json"
+  -v -u {email_address}/token:{api_token} -X PUT -H "Content-Type: application/json"
 ```
 
 #### Example Response
@@ -213,7 +227,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/requests/{id}/comments.json \
-  -v -u {email_address}:{password}
+  -v -u {email_address}/token:{api_token}
 ```
 
 #### Example Response
@@ -243,7 +257,7 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/requests/{request_id}/comments/{id}.json \
-  -v -u {email_address}:{password}
+  -v -u {email_address}/token:{api_token}
 ```
 
 #### Example Response

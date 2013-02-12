@@ -1,5 +1,11 @@
 ## Automations
 
+An automation consists of one or more actions that are performed if certain conditions are met after a period of time. The conditions are checked every hour. For example, an automation can notify an agent when a ticket remains unresolved after 24 hours.
+
+Even if the actions are performed once, they'll be performed again later if the conditions still apply. To ensure the actions are performed only once, include an action in the automation that cancels one of the conditions.
+
+For more information, see [Streamlining workflow with time-based events and automations](https://support.zendesk.com/entries/20012032).
+
 ### JSON Format
 Automations are represented as simple flat JSON objects which have the following keys.
 

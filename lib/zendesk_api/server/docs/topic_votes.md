@@ -64,7 +64,6 @@ Status: 200 OK
 
 Agents can pass a `user_id={user_id}` to all actions below to control voting for specific users.
 
-
 ### Check for Vote
 `GET /api/v2/topics/{id}/vote.json`
 

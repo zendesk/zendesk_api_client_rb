@@ -76,6 +76,11 @@ Account Settings are read-only. They contain settings for the various aspects of
 | ---------------------------------- | ------- | -------
 | enabled                            | boolean | GoodData Advanced Analytics is enabled
 
+### Billing
+
+| Name                               | Type    | Comment
+| ---------------------------------- | ------- | -------
+| backend                            | string  | Backend Billing system either 'internal' or 'zuora'
 
 #### Example
 
@@ -119,6 +124,9 @@ Account Settings are read-only. They contain settings for the various aspects of
   "users": {
     "tagging":true
   }
+  "billing" :{
+     "backend": 'internal'
+   }
 }
 ```
 

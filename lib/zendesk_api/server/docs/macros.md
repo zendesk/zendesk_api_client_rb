@@ -1,5 +1,7 @@
 ## Macros
 
+A macro consists of one or more actions that modify the values of a ticket's fields. Macros are applied to tickets manually by agents. For example, you can create macros for support requests that agents can answer with a single, standard response. For more information, see [Using macros to update and add comments to tickets](https://support.zendesk.com/entries/20011363).
+
 ### JSON Format
 Macros are represented as simple flat JSON objects which have the following keys.
 

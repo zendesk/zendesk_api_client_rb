@@ -1,5 +1,10 @@
 ## Views
 
+A view consists of one or more conditions that define a collection of tickets to display. If the conditions are met, the ticket is included in the view. For example, a view can display all open tickets that were last updated more than 24 hours ago.
+
+For more information, see [Using views to manage ticket workflow](https://support.zendesk.com/entries/20103667).
+
+
 ### JSON Format
 Views are represented as simple flat JSON objects which have the following keys.
 
@@ -58,10 +63,6 @@ View Execution is a read-only object that describes how to display a collection 
    }
 }
 ```
-
-# Deprecated
-
-#
 
 ### Conditions
 The conditions under which a ticket is selected.
@@ -244,7 +245,7 @@ Status: 200 OK
 ### List Views - Compact
 `GET /api/v2/views/compact.json`
 
-A compacted shared and personal Views available to the current user
+A compacted list of shared and personal views available to the current user
 
 #### Allowed For:
 
@@ -370,6 +371,16 @@ Status: 200 OK
 
 ### Executing Views
 `GET /api/v2/views/{id}/execute.json`
+
+You execute a view in order to get the tickets that fulfill the conditions of the view.
+
+The view execution system is designed for periodic rather than high-frequency API usage. In particular, views that are called very
+frequently by an API client (more often than once every 5 minutes on average) may be cached by our software. This means
+that the API client will still receive a result however that result may have been computed at any time within the last 10
+minutes.
+
+If you are looking for a method to get the latest changes to your Zendesk via the API we recommend the ticket export API
+which can be called as often as once a minute, and will return all the tickets changed since last poll.
 
 View output sorting can be controlled by passing the sort_by and sort_order parameters in the
 format described in the table under [view previewing](#previewing-views).
@@ -548,14 +559,14 @@ Status: 200 OK
 {
   "view_counts": [{
     "view_id": 25,
-    "url":     "https://company.zendesk.com/api/v2/rules/views/25/count.json",
+    "url":     "https://company.zendesk.com/api/v2/views/25/count.json",
     "value":   719,
     "pretty":  "~700",
     "fresh":   true
   },
   {
     "view_id": 78,
-    "url":     "https://company.zendesk.com/api/v2/rules/views/78/count.json",
+    "url":     "https://company.zendesk.com/api/v2/views/78/count.json",
     "value":   null,
     "pretty":  "...",
     "fresh":   false
@@ -586,10 +597,48 @@ Status: 200 OK
 {
   "view_count": {
     "view_id": 25,
-    "url":     "https://company.zendesk.com/api/v2/rules/views/25/count.json",
+    "url":     "https://company.zendesk.com/api/v2/views/25/count.json",
     "value":   719,
     "pretty":  "~700",
     "fresh":   true
+  }
+}
+```
+
+### Exporting Views
+`GET /api/v2/views/{id}/export.json`
+
+Returns the csv attachment of the current view if possible.
+Enqueues a job to produce the csv if needed.
+
+#### Allowed For:
+
+ * Agents
+
+#### Using curl
+
+```bash
+curl https://{subdomain}.zendesk.com/api/v2/views/{id}/export.json \
+  -v -u {email_address}:{password}
+```
+
+#### Example Responses
+
+##### With available data
+```http
+Status: 200
+Content-Disposition: Attachment
+[CSV data]
+```
+
+##### Starting a CSV job
+```http
+Status: 201
+
+{
+  "export": {
+    "view_id": 25,
+    "status": "starting"
   }
 }
 ```

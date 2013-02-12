@@ -13,7 +13,7 @@ We reserves the right to add new attributes and resources to the API without adv
 
 ### Security and Authentication
 
-This API is an SSL-only API, regardless of how you may have your account configured. You can authorize against the API using either basic authentication with your username and password credentials or your username and API token.  This token is configurable in your Zendesk account under **Settings** > **Channels** > **API**.
+This API is an SSL-only API, regardless of how you may have your account configured. You can authorize against the API using either basic authentication with your username and password credentials, or with a username and API token.  This token is configurable in your Zendesk account under **Settings** > **Channels** > **API**.
 
 ### Rate Limiting
 
@@ -84,7 +84,7 @@ Collections return a maximum of 100 records per page, and by default return 100 
   "users": [ ... ],
   "count": 1234,
   "next_page": "https://account.zendesk.com/api/v2/users.json?page=2",
-  "prev_page": null
+  "previous_page": null
 }
 ```
 
@@ -140,6 +140,7 @@ The response receieved will then include a top-level array of associated data un
 | [Tickets](tickets.html)                                   | users, groups, organizations, last_audits, metric_sets, sharing_agreements
 | [Audits](audits.html)                                     | users, organizations, groups, tickets
 | [Users](users.html)                                       | organizations, abilities, roles, identities, groups
+| [Groups](groups.html)                                     | users
 | [Group Memberships](group_memberships.html)               | users, groups
 | [Organizations](organizations.html)                       | abilities
 | [View Execution / Previewing](views.html#executing-views) | The following are automatically side-loaded if applicable: group, organization, users
@@ -156,6 +157,7 @@ The response receieved will then include a top-level array of associated data un
 
 ### API Clients from the Zendesk Developer Community
 
+* [Python Client Library by Eventbrite](https://github.com/eventbrite/zendesk)
 * [.NET Client Library by Eric Neifert](https://github.com/eneifert/ZendeskApi_v2)
 * [zendeskR by Basho Technologies (R)](https://github.com/tcash21/zendeskR)
 * [node-zendesk by Farrin Reid (node.js)](https://github.com/blakmatrix/node-zendesk)

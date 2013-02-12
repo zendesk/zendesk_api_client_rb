@@ -22,7 +22,7 @@ Topic subscriptions are links between users and topics they subscribe to
 ```
 
 ### List Topic Subscriptions
-`GET /api/v2/topic/{topic_id}/subscriptions.json`
+`GET /api/v2/topics/{topic_id}/subscriptions.json`
 
 `GET /api/v2/topic_subscriptions.json`
 
@@ -100,8 +100,8 @@ Status: 200 OK
 
 ```bash
 curl https://{subdomain}.zendesk.com/api/v2/topic_subscriptions.json \
-  -d '{"user_id": 772, "topic_id": 881}' \
-  -v -u {email_address}:{password} -X POST
+  -d '{"topic_subscription": {"user_id": 772, "topic_id": 881}}' \
+  -v -u {email_address}:{password} -H "Content-Type: application/json" -X POST
 ```
 
 #### Example Response

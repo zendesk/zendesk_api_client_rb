@@ -161,7 +161,7 @@ Furthermore, we have consolidated the grouping and sorting definitions of each V
         {
           "id": 336767,
           "title": "About"
-    	}
+        }
       ]
     }
     ...
@@ -207,5 +207,80 @@ will be changed to
     }
     ...
   }
+}
+```
+
+### April 24, 2013
+
+The following changes will go into effect on April 24, 2013:
+
+#### Moving miscellaneous side-loads into the resource itself
+
+##### Affected endpoints
+
+* ``GET /api/v2/tickets.json``
+* ``GET /api/v2/tickets/{id}.json``
+* ``GET /api/v2/organizations.json``
+* ``GET /api/v2/organizations/{id}.json``
+* ``GET /api/v2/users.json``
+* ``GET /api/v2/users/{id}.json``
+
+##### Deprecation
+
+On January 28, 2012, in the above endpoints, the following side-loaded resources were added
+to the actual model and the root-level side-load was deprecated.
+
+Tickets: last_audits, metric_sets
+Organizations: abilities
+Users: abilities
+
+##### What's changing
+
+To improve consistencies in our API, we are moving some side-loads that are unbounded and never
+duplicated into the actual model instead of at the root level.
+
+##### Example
+
+```
+GET /api/v2/users.json?include=abilities
+
+{
+  "users": [{
+    "id": 1,
+    ...
+  },
+  {
+    "id": 2,
+    ...
+  }],
+  "abilities": [{
+    "user_id": 1,
+    ...
+  },
+  {
+    "user_id": 2,
+    ...
+  }]
+}
+```
+
+will now return
+
+```
+{
+  "users": [{
+    "id": 1,
+    "abilities": {
+      "user_id": 1,
+      ...
+    }
+  },
+  {
+    "id": 2,
+    "abilities": {
+      "user_id": 2,
+      ...
+    }
+  }]
 }
 ```
