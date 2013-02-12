@@ -27,32 +27,21 @@ module ZendeskAPI
     # @param [String] resource The resource being collected.
     # @param [Hash] options Any additional options to be passed in.
     def initialize(client, resource, options = {})
-      @client, @resource = client, resource.resource_name
+      @client, @resource_class, @resource = client, resource, resource.resource_name
       @options = Hashie::Mash.new(options)
 
+      set_association_from_options
+      join_special_params
+
       @verb = @options.delete(:verb)
-      @collection_path = @options.delete(:collection_path)
-
-      association_options = { :path => @options.delete(:path) }
-      association_options[:path] ||= @collection_path.join("/") if @collection_path
-      @association = @options.delete(:association) || Association.new(association_options.merge(:class => resource))
-
-      # some params use comma-joined strings instead of query-based arrays for multiple values
-      @options.each do |k, v|
-        if SPECIALLY_JOINED_PARAMS.include?(k.to_sym) && v.is_a?(Array)
-          @options[k] = v.join(',')
-        end
-      end
-
-      @collection_path ||= [@resource]
-      @resource_class = resource
-      @fetchable = true
       @includes = Array(@options.delete(:include))
 
       # Used for Attachments, TicketComment
       if @resource_class.is_a?(Class) && @resource_class.superclass == ZendeskAPI::Data
         @resources = []
         @fetchable = false
+      else
+        @fetchable = true
       end
     end
 
@@ -158,39 +147,16 @@ module ZendeskAPI
     # Executes actual GET from API and loads resources into proper class.
     # @param [Boolean] reload Whether to disregard cache
     def fetch(reload = false)
-      return @resources if @resources && (!@fetchable || !reload)
-
-      if association && association.options.parent && association.options.parent.new_record?
+      if @resources && (!@fetchable || !reload)
+        return @resources
+      elsif association && association.options.parent && association.options.parent.new_record?
         return @resources = []
       end
 
-      if @query
-        path = @query
-        @query = nil
-      else
-        path = self.path
-      end
+      @response = get_response(@query || self.path)
+      handle_response(@response.body.dup)
 
-      @response = @client.connection.send(@verb || "get", path) do |req|
-        opts = @options.delete_if {|k, v| v.nil?}
-
-        req.params.merge!(:include => @includes.join(",")) if @includes.any?
-
-        if %w{put post}.include?(@verb.to_s)
-          req.body = opts
-        else
-          req.params.merge!(opts)
-        end
-      end
-
-      body = @response.body.dup
-
-      results = body.delete(@resource_class.model_key) || body.delete("results")
-      @resources = results.map {|res| @resource_class.new(@client, res)}
-
-      set_page_and_count(body)
-      set_includes(@resources, @includes, body)
-
+      @query = nil
       @resources
     end
 
@@ -315,6 +281,47 @@ module ZendeskAPI
       elsif @prev_page =~ /page=(\d+)/
         @options["page"] = $1.to_i + 1
       end
+    end
+
+    def join_special_params
+      # some params use comma-joined strings instead of query-based arrays for multiple values
+      @options.each do |k, v|
+        if SPECIALLY_JOINED_PARAMS.include?(k.to_sym) && v.is_a?(Array)
+          @options[k] = v.join(',')
+        end
+      end
+    end
+
+    def set_association_from_options
+      @collection_path = @options.delete(:collection_path)
+
+      association_options = { :path => @options.delete(:path) }
+      association_options[:path] ||= @collection_path.join("/") if @collection_path
+      @association = @options.delete(:association) || Association.new(association_options.merge(:class => @resource_class))
+
+      @collection_path ||= [@resource]
+    end
+
+    def get_response(path)
+      @response = @client.connection.send(@verb || "get", path) do |req|
+        opts = @options.delete_if {|_, v| v.nil?}
+
+        req.params.merge!(:include => @includes.join(",")) if @includes.any?
+
+        if %w{put post}.include?(@verb.to_s)
+          req.body = opts
+        else
+          req.params.merge!(opts)
+        end
+      end
+    end
+
+    def handle_response(body)
+      results = body.delete(@resource_class.model_key) || body.delete("results")
+      @resources = results.map {|res| @resource_class.new(@client, res)}
+
+      set_page_and_count(body)
+      set_includes(@resources, @includes, body)
     end
   end
 end
