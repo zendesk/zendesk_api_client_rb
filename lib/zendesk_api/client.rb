@@ -78,34 +78,16 @@ module ZendeskAPI
       @config = ZendeskAPI::Configuration.new
       yield config
 
-      if !config.allow_http && config.url !~ /^https/
-        raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
-      end
+      @callbacks = []
+      @resource_cache = {}
+
+      check_url
 
       config.retry = !!config.retry # nil -> false
 
-      if config.token && !config.password
-        config.password = config.token
-        config.username += "/token" unless config.username.end_with?("/token")
-      end
-
-      if config.logger.nil? || config.logger == true
-        require 'logger'
-        config.logger = Logger.new($stderr)
-        config.logger.level = Logger::WARN
-      end
-
-      @callbacks = []
-
-      @resource_cache = {}
-
-      if logger = config.logger
-        insert_callback do |env|
-          if warning = env[:response_headers]["X-Zendesk-API-Warn"]
-            logger.warn "WARNING: #{warning}"
-          end
-        end
-      end
+      set_token_auth
+      set_default_logger
+      add_warning_callback
     end
 
     # Creates a connection if there is none, otherwise returns the existing connection.
@@ -160,6 +142,43 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
 
         builder.adapter *config.adapter || Faraday.default_adapter
+      end
+    end
+
+    private
+
+    def check_url
+      if !config.allow_http && config.url !~ /^https/
+        raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
+      end
+
+      if config.url !~ %r{api/v2}
+        warn "this gem doesn't support the v1 api"
+      end
+    end
+
+    def set_token_auth
+      if config.token && !config.password
+        config.password = config.token
+        config.username += "/token" unless config.username.end_with?("/token")
+      end
+    end
+
+    def set_default_logger
+      if config.logger.nil? || config.logger == true
+        require 'logger'
+        config.logger = Logger.new($stderr)
+        config.logger.level = Logger::WARN
+      end
+    end
+
+    def add_warning_callback
+      return unless logger = config.logger
+
+      insert_callback do |env|
+        if warning = env[:response_headers]["X-Zendesk-API-Warn"]
+          logger.warn "WARNING: #{warning}"
+        end
       end
     end
   end

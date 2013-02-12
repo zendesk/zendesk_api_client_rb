@@ -1,6 +1,10 @@
 class ZendeskAPI::FormatError < ArgumentError; end
 
-class ZendeskAPI::Collection
+module Console
+  def self.included(klass)
+    klass.instance_eval { alias :orig_log_error :log_error }
+  end
+
   def /(id)
     if id == ZendeskAPI::Console::ZD_DIRUP
       if @collection_path.length == 1
@@ -20,8 +24,6 @@ class ZendeskAPI::Collection
     end
   end
 
-  alias :orig_log_error :log_error
-
   def log_error(e, _)
     raise e
   end
@@ -39,7 +41,13 @@ class ZendeskAPI::Collection
   end
 end
 
-class ZendeskAPI::Client
+ZendeskAPI::Collection.send(:include, Console)
+
+module Subclasses
+  def self.included(klass)
+    klass.extend ClassMethods
+  end
+
   GET_SUBCLASSES = lambda do |ary|
     ary.map! do |klass|
       if klass.name =~ /Resource$/
@@ -56,16 +64,6 @@ class ZendeskAPI::Client
     "/"
   end
 
-  def self.resources
-    @resources ||= begin
-      subclasses = GET_SUBCLASSES.call(ZendeskAPI::Data.subclasses)
-      subclasses.delete_if do |resource|
-        resource.name =~ /ZendeskAPI(::.*){2,}/
-      end
-      subclasses.sort_by(&:resource_name)
-    end
-  end
-
   def to_a
     self.class.resources
   end
@@ -73,9 +71,23 @@ class ZendeskAPI::Client
   def format_headers
     ["resource name"]
   end
+
+  module ClassMethods
+    def resources
+      @resources ||= begin
+        subclasses = GET_SUBCLASSES.call(ZendeskAPI::Data.subclasses)
+        subclasses.delete_if do |resource|
+          resource.name =~ /ZendeskAPI(::.*){2,}/
+        end
+        subclasses.sort_by(&:resource_name)
+      end
+    end
+  end
 end
 
-class ZendeskAPI::Data
+ZendeskAPI::Client.send(:include, Subclasses)
+
+module Path
   def /(method)
     if method == ZendeskAPI::Console::ZD_DIRUP
       if association.options.parent
@@ -89,27 +101,34 @@ class ZendeskAPI::Data
       send(method)
     end
   end
+end
 
-  class << self
-    attr_accessor :format_headers
+module Format
+  def self.extended(klass)
+    class << klass
+      attr_accessor :format_headers
+    end
+  end
 
-    def format(client = nil, &block)
-      if block_given?
-        class_eval do
-          define_method :format do
-            instance_eval &block
-          end
+  def format(client = nil, &block)
+    if block_given?
+      class_eval do
+        define_method :format do
+          instance_eval &block
         end
-      elsif client && client.send(resource_name).loaded?
-        ["@#{resource_name}"]
-      else
-        [resource_name]
       end
+    elsif client && client.send(resource_name).loaded?
+      ["@#{resource_name}"]
+    else
+      [resource_name]
     end
   end
 end
 
-class ZendeskAPI::DataResource
+ZendeskAPI::Data.send(:include, Path)
+ZendeskAPI::Data.extend Format
+
+ZendeskAPI::DataResource.instance_eval do
   format_headers = %w{id created_at}
 
   format do
