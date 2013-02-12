@@ -204,8 +204,7 @@ module ZendeskAPI
       if @options["page"]
         clear_cache
         @options["page"] += 1
-      elsif @next_page
-        @query = @next_page
+      elsif @query = @next_page
         fetch(true)
       else
         clear_cache
@@ -221,8 +220,7 @@ module ZendeskAPI
       if @options["page"] && @options["page"] > 1
         clear_cache
         @options["page"] -= 1
-      elsif @prev_page
-        @query = @prev_page
+      elsif @query = @prev_page
         fetch(true)
       else
         clear_cache
@@ -243,16 +241,12 @@ module ZendeskAPI
 
     # Sends methods to underlying array of resources.
     def method_missing(name, *args, &block)
-      methods = @resource_class.singleton_methods(false).map(&:to_sym)
-
-      if methods.include?(name)
-        @resource_class.send(name, @client, *args, &block)
+      if resource_methods.include?(name)
+        collection_method(name, *args, &block)
       elsif Array.new.respond_to?(name)
-        to_a.send(name, *args, &block)
+        array_method(name, *args, &block)
       else
-        opts = args.last.is_a?(Hash) ? args.last : {}
-        opts.merge!(:collection_path => @collection_path.dup.push(name))
-        self.class.new(@client, @resource_class, @options.merge(opts))
+        next_collection(name, *args, &block)
       end
     end
 
@@ -283,6 +277,8 @@ module ZendeskAPI
       end
     end
 
+    ## Initialize
+
     def join_special_params
       # some params use comma-joined strings instead of query-based arrays for multiple values
       @options.each do |k, v|
@@ -301,6 +297,8 @@ module ZendeskAPI
 
       @collection_path ||= [@resource]
     end
+
+    ## Fetch
 
     def get_response(path)
       @response = @client.connection.send(@verb || "get", path) do |req|
@@ -322,6 +320,26 @@ module ZendeskAPI
 
       set_page_and_count(body)
       set_includes(@resources, @includes, body)
+    end
+
+    ## Method missing
+
+    def array_method(name, *args, &block)
+      to_a.send(name, *args, &block)
+    end
+
+    def next_collection(name, *args, &block)
+      opts = args.last.is_a?(Hash) ? args.last : {}
+      opts.merge!(:collection_path => @collection_path.dup.push(name))
+      self.class.new(@client, @resource_class, @options.merge(opts))
+    end
+
+    def collection_method(name, *args, &block)
+      @resource_class.send(name, @client, *args, &block)
+    end
+
+    def resource_methods
+      @resource_methods ||= @resource_class.singleton_methods(false).map(&:to_sym)
     end
   end
 end
