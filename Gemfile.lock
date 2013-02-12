@@ -13,7 +13,7 @@ GIT
 PATH
   remote: .
   specs:
-    zendesk_api (0.2.5)
+    zendesk_api (0.2.6)
       faraday (>= 0.8.0)
       faraday_middleware (>= 0.8.7)
       hashie
@@ -63,7 +63,7 @@ GEM
     inflection (1.0.0)
     jruby-openssl (0.8.2)
       bouncy-castle-java (>= 1.5.0146.1)
-    json (1.7.6)
+    json (1.7.7)
     mime-types (1.20.1)
     mongoid (3.0.21)
       activemodel (~> 3.1)
