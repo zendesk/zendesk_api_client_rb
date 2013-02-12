@@ -7,8 +7,7 @@ module ResourceMacros
   end
 
   def it_should_be_creatable(options={})
-    context "creation" do
-      use_vcr_cassette
+    context "creation", :vcr do
       subject { described_class }
 
       before(:all) do
@@ -37,9 +36,7 @@ module ResourceMacros
   end
 
   def it_should_be_updatable(attribute, value = "TESTDATA")
-    context "update" do
-      use_vcr_cassette
-
+    context "update", :vcr do
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_update_create") do
           @object = described_class.create(client, valid_attributes.merge(default_options))
@@ -79,9 +76,7 @@ module ResourceMacros
   end
 
   def it_should_be_deletable(options = {})
-    context "deletion" do
-      use_vcr_cassette
-
+    context "deletion", :vcr do
       before(:all) do
         if options[:object]
           @object = options.delete(:object)
@@ -117,9 +112,7 @@ module ResourceMacros
     klass = args.first.is_a?(ZendeskAPI::DataResource) ? args.shift : client
     context_name = "read_#{klass.class}_#{args.join("_")}"
 
-    context context_name do
-      use_vcr_cassette
-
+    context context_name, :vcr do
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_#{context_name}_create") do
           @object = described_class.create!(client, valid_attributes.merge(default_options))

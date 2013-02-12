@@ -105,7 +105,6 @@ RSpec.configure do |c|
     end
   end
 
-  c.extend VCR::RSpec::Macros
   c.extend ResourceMacros
   c.extend ZendeskAPI::Fixtures
   c.include ZendeskAPI::Fixtures
@@ -116,6 +115,7 @@ VCR.configure do |c|
   c.cassette_library_dir = File.join(File.dirname(__FILE__), '..', 'fixtures', 'cassettes')
   c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true, :serialize_with => :json, :preserve_exact_body_bytes => true }
   c.hook_into :webmock
+  c.configure_rspec_metadata!
 end
 
 include WebMock::API

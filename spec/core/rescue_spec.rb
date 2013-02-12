@@ -12,7 +12,11 @@ describe ZendeskAPI::Rescue do
     end
 
     def puff(error)
-      raise error, "Puff"
+      if error.is_a?(Class)
+        raise error, "Puff"
+      else
+        raise error
+      end
     end
 
     def boom(error)
@@ -54,6 +58,59 @@ describe ZendeskAPI::Rescue do
       config.url = "https://idontcare.com"
     end
     Boom.new(client).puff(Faraday::Error::ClientError)
+  end
+
+  context "when class has error attributes", :silence_logger do
+    let(:instance) { Boom.new(client) }
+
+    let(:exception) do
+      exception = Exception.new("message")
+      exception.set_backtrace([])
+      exception
+    end
+
+    let(:error) do
+      Faraday::Error::ClientError.new(exception, response)
+    end
+
+    before do
+      Boom.send(:attr_accessor, :error, :error_message)
+      instance.puff(error)
+    end
+
+    context "with no response" do
+      let(:response) {{}}
+
+      it "should attach the error" do
+        instance.error.should_not be_nil
+      end
+
+      it "should not attach the message" do
+        instance.error_message.should be_nil
+      end
+    end
+
+    context "with a response" do
+      let(:response) {{ :body => { :error => { :description => "hello" } } }}
+
+      it "should attach the error" do
+        instance.error.should_not be_nil
+      end
+
+      it "should attach the error message" do
+        instance.error_message.should_not be_nil
+      end
+
+      context "and again with no response" do
+        before do
+          instance.puff(Faraday::Error::ClientError.new(exception, {}))
+        end
+
+        it "should clear the error message" do
+          instance.error_message.should be_nil
+        end
+      end
+    end
   end
 
   context "passing a block" do

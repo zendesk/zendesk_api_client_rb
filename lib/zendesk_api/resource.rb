@@ -2,6 +2,7 @@ require 'zendesk_api/helpers'
 require 'zendesk_api/trackie'
 require 'zendesk_api/actions'
 require 'zendesk_api/association'
+require 'zendesk_api/associations'
 require 'zendesk_api/verbs'
 
 module ZendeskAPI
@@ -125,6 +126,7 @@ module ZendeskAPI
 
   # Indexable resource
   class DataResource < Data
+    attr_accessor :error, :error_message
     extend Verbs
   end
 

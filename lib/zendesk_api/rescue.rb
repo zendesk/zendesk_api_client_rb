@@ -17,6 +17,21 @@ module ZendeskAPI
         end
       end
 
+      def attach_error(e)
+        return unless e.response
+
+        if respond_to?("error_message=")
+          self.error_message = nil
+
+          if (error = e.response[:body]) && error.is_a?(Hash)
+            error = Hashie::Mash.new(error)
+            self.error_message = (error.error || error.description)
+          end
+        end
+
+        self.error = e if respond_to?("error=")
+      end
+
       def rescue_client_error(*args)
         opts = args.last.is_a?(Hash) ? args.pop : {}
 
@@ -28,6 +43,7 @@ module ZendeskAPI
                 send("orig_#{method}", *args)
               rescue Faraday::Error::ClientError => e
                 log_error(e, method)
+                attach_error(e)
                 opts[:with].respond_to?(:call) ? opts[:with].call : opts[:with]
               end
             end
@@ -37,6 +53,7 @@ module ZendeskAPI
             yield
           rescue Faraday::Error::ClientError => e
             log_error(e)
+            attach_error(e)
             opts[:with].respond_to?(:call) ? opts[:with].call : opts[:with]
           end
         end

@@ -17,9 +17,7 @@ describe ZendeskAPI::Collection do
       end
     end
 
-    context "pagination with no options" do
-      use_vcr_cassette
-
+    context "pagination with no options", :vcr do
       before(:each) { subject.per_page(nil).page(nil) }
 
       it "should find the next page by calling fetch" do
@@ -39,9 +37,7 @@ describe ZendeskAPI::Collection do
       end
     end
 
-    context "pagination with options" do
-      use_vcr_cassette
-
+    context "pagination with options", :vcr do
       before(:each) { subject.per_page(1).page(2) }
 
       it "should increase page option and not call fetch" do
