@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem "bundler", "~> 1.2.0"
-ruby "1.9.3"
+# gem "bundler", "~> 1.2.0"
+# ruby "1.9.3"
 
 gem "simplecov", :platforms => :ruby_19, :group => :development
 gem "jruby-openssl", :platforms => :jruby
