@@ -71,7 +71,7 @@ module ZendeskAPI
 
     def _side_load(resource, side_loads)
       side_loads.map! do |side_load|
-        resource.send(:wrap_resource, side_load, options[:class], options)
+        resource.send(:wrap_resource, side_load, options)
       end
 
       ZendeskAPI::Collection.new(resource.client, options[:class]).tap do |collection|
