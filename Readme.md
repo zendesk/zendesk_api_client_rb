@@ -129,7 +129,7 @@ next_page = tickets.next
 previous_page = tickets.prev
 ```
 
-Iteration over all resources and pages is handled by Collection#page_page
+Iteration over all resources and pages is handled by Collection#each_page
 
 ```ruby
 client.tickets.each_page do |resource|
