@@ -5,5 +5,6 @@ describe ZendeskAPI::Upload, :not_findable do
     { :file => "spec/fixtures/Argentina.gif" }
   end
 
-  it_should_be_creatable :id => :token
+  it_should_be_creatable
+  it_should_be_deletable
 end

@@ -18,7 +18,7 @@ module ResourceMacros
 
       it "should have an id" do
         @object.should_not be_nil
-        @object.send(options[:id] || :id).should_not be_nil
+        @object.send(:id).should_not be_nil
       end
 
       it "should be findable", :unless => metadata[:not_findable] do

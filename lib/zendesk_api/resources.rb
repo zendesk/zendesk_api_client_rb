@@ -48,6 +48,9 @@ module ZendeskAPI
 
   class Upload < Data
     include Create
+    include Destroy
+
+    def id; token; end
 
     only_send_unnested_params
 
