@@ -166,49 +166,86 @@ describe ZendeskAPI::Collection do
   end
 
   context "each_page" do
-    before(:each) do
-      stub_json_request(:get, %r{test_resources$}, json(
-        :test_resources => [{:id => 1}],
-        :next_page => "/test_resources?page=2"
-      ))
+    context "Faraday errors" do
+      before(:each) do
+        stub_json_request(:get, %r{test_resources$}, json(
+          :test_resources => [{:id => 1}], :next_page => "/test_resources?page=2"
+        ))
 
-      stub_json_request(:get, %r{test_resources\?page=2}, json(
-        :test_resources => [{:id => 2}],
-        :next_page => "/test_resources?page=3"
-      ))
+        stub_request(:get, %r{test_resources\?page=2}).to_return(:status => 500).then.to_return(
+          :headers => { :content_type => "application/json" }, :status => 200,
+          :body => json(:test_resources => [{:id => 2}], :next_page => "/test_resources?page=3"))
 
-      stub_request(:get, %r{test_resources\?page=3}).to_return(:status => 404)
-    end
+        stub_request(:get, %r{test_resources\?page=3}).to_return(:status => 404)
+      end
 
-    it "should yield resource if arity == 1" do
-      expect do |block|
-        # Needed to make sure the arity == 1
-        block.instance_eval do
-          def to_proc
-            @used = true
+      it "should retry from the same page" do
+        class SearchError < Exception; end
 
-            probe = self
-            Proc.new do |arg|
-              probe.num_yields += 1
-              probe.yielded_args << [arg]
+        expect do |b|
+          client.insert_callback do |env|
+            if env[:status] == 500 && env[:url].request_uri =~ /test_resources/
+              raise SearchError
             end
           end
-        end
 
-        silence_logger { subject.each_page(&block) }
-      end.to yield_successive_args(
-        ZendeskAPI::TestResource.new(client, :id => 1),
-        ZendeskAPI::TestResource.new(client, :id => 2)
-      )
+          begin
+            silence_logger { subject.each_page(&b) }
+          rescue SearchError
+            retry
+          end
+        end.to yield_successive_args(
+          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
+          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+        )
+      end
     end
 
-    it "should yield resource and page" do
-      expect do |b|
-        silence_logger { subject.each_page(&b) }
-      end.to yield_successive_args(
-        [ZendeskAPI::TestResource.new(client, :id => 1), 1],
-        [ZendeskAPI::TestResource.new(client, :id => 2), 2]
-      )
+    context "successful requests" do
+      before(:each) do
+        stub_json_request(:get, %r{test_resources$}, json(
+          :test_resources => [{:id => 1}],
+          :next_page => "/test_resources?page=2"
+        ))
+
+        stub_json_request(:get, %r{test_resources\?page=2}, json(
+          :test_resources => [{:id => 2}],
+          :next_page => "/test_resources?page=3"
+        ))
+
+        stub_request(:get, %r{test_resources\?page=3}).to_return(:status => 404)
+      end
+
+      it "should yield resource if arity == 1" do
+        expect do |block|
+          # Needed to make sure the arity == 1
+          block.instance_eval do
+            def to_proc
+              @used = true
+
+              probe = self
+              Proc.new do |arg|
+                probe.num_yields += 1
+                probe.yielded_args << [arg]
+              end
+            end
+          end
+
+          silence_logger { subject.each_page(&block) }
+        end.to yield_successive_args(
+          ZendeskAPI::TestResource.new(client, :id => 1),
+          ZendeskAPI::TestResource.new(client, :id => 2)
+        )
+      end
+
+      it "should yield resource and page" do
+        expect do |b|
+          silence_logger { subject.each_page(&b) }
+        end.to yield_successive_args(
+          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
+          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+        )
+      end
     end
   end
 

@@ -169,8 +169,8 @@ module ZendeskAPI
 
     # Calls #each on every page with the passed in block
     # @param [Block] block Passed to #each
-    def each_page(&block)
-      page(nil)
+    def each_page(start_page = @options["page"], &block)
+      page(start_page)
       clear_cache
 
       while !empty?
