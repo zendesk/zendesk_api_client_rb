@@ -36,4 +36,14 @@ describe ZendeskAPI::Trackie do
       subject.changed?.should be_true
     end
   end
+
+  describe "#size" do
+    before do
+      subject[:size] = 42
+    end
+
+    it "returns the value corresponding to the :size key" do
+      subject.size.should == 42
+    end
+  end
 end
