@@ -9,7 +9,7 @@ describe ZendeskAPI::Trackie do
   end
 
   context "adding keys" do
-    before(:each) { subject[:key] = true } 
+    before(:each) { subject[:key] = true }
 
     it "should include key in changes" do
       subject.changes[:key].should be_true
@@ -18,6 +18,24 @@ describe ZendeskAPI::Trackie do
     specify "key should be changed" do
       subject.changed?(:key).should be_true
       subject.changed?.should be_true
+    end
+  end
+
+  context "adding identical keys" do
+    before(:each) do
+      subject[:key] = "foo"
+      subject.clear_changes
+
+      subject[:key] = "foo"
+    end
+
+    it "should not include key in changes" do
+      subject.changes[:key].should be_false
+    end
+
+    specify "key should not be changed" do
+      subject.changed?(:key).should be_false
+      subject.changed?.should be_false
     end
   end
 
