@@ -169,7 +169,7 @@ module ZendeskAPI
 
     # Calls #each on every page with the passed in block
     # @param [Block] block Passed to #each
-    def each_page(start_page = @options["page"], &block)
+    def all(start_page = @options["page"], &block)
       page(start_page)
       clear_cache
 
@@ -187,6 +187,8 @@ module ZendeskAPI
         self.next
       end
     end
+
+    alias :each_page :all
 
     # Replaces the current (loaded or not) resources with the passed in collection
     # @option collection [Array] The collection to replace this one with

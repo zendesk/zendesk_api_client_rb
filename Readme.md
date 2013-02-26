@@ -126,23 +126,25 @@ ZendeskAPI::Collections can be paginated:
 
 ```ruby
 tickets = client.tickets.page(2).per_page(3)
-next_page = tickets.next
-previous_page = tickets.prev
+next_page = tickets.next # => 3
+tickets.fetch # GET /api/v2/tickets?page=3&per_page=3
+previous_page = tickets.prev # => 2
+tickets.fetch # GET /api/v2/tickets?page=2&per_page=3
 ```
 
-Iteration over all resources and pages is handled by Collection#each_page
+Iteration over all resources and pages is handled by Collection#all
 
 ```ruby
-client.tickets.each_page do |resource|
-  # all resources will be yielded
+client.tickets.all do |resource|
+  # every resource, from all pages, will be yielded to this block
 end
 ```
 
-If given a block with two arguments, the page is also passed in.
+If given a block with two arguments, the page number is also passed in.
 
 ```ruby
-client.tickets.each_page do |resource, page|
-  # all resources will be yielded along with the page
+client.tickets.all do |resource, page_number|
+  # all resources will be yielded along with the page number
 end
 ```
 

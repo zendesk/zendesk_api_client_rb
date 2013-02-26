@@ -165,7 +165,7 @@ describe ZendeskAPI::Collection do
     end
   end
 
-  context "each_page" do
+  context "all" do
     context "Faraday errors" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
@@ -190,7 +190,7 @@ describe ZendeskAPI::Collection do
           end
 
           begin
-            silence_logger { subject.each_page(&b) }
+            silence_logger { subject.all(&b) }
           rescue SearchError
             retry
           end
@@ -231,7 +231,7 @@ describe ZendeskAPI::Collection do
             end
           end
 
-          silence_logger { subject.each_page(&block) }
+          silence_logger { subject.all(&block) }
         end.to yield_successive_args(
           ZendeskAPI::TestResource.new(client, :id => 1),
           ZendeskAPI::TestResource.new(client, :id => 2)
@@ -240,7 +240,7 @@ describe ZendeskAPI::Collection do
 
       it "should yield resource and page" do
         expect do |b|
-          silence_logger { subject.each_page(&b) }
+          silence_logger { subject.all(&b) }
         end.to yield_successive_args(
           [ZendeskAPI::TestResource.new(client, :id => 1), 1],
           [ZendeskAPI::TestResource.new(client, :id => 2), 2]
