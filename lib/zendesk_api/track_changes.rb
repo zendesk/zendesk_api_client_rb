@@ -41,8 +41,12 @@ module ZendeskAPI
       end
 
       def regular_writer(key, value)
-        changes[key] = value
-        defined?(_store) ? _store(key, value) : super(key, value)
+        if self.has_key?(key) && self[key] == value
+          value
+        else
+          changes[key] = value
+          defined?(_store) ? _store(key, value) : super(key, value)
+        end
       end
 
       def delete(key)
