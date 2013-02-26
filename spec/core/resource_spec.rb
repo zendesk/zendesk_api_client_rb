@@ -239,11 +239,19 @@ describe ZendeskAPI::Resource do
             ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => true
 
             subject.nil = { :abc => :def }
-            subject.save_associations
           end
 
           it "should save param data" do
+            subject.save_associations
+
             subject.attributes[:nil].should == "TESTDATA"
+          end
+
+          it "should not save param data when unchanged" do
+            subject.nil.clear_changes
+            subject.save_associations
+
+            subject.attributes[:nil].should be_nil
           end
         end
 
