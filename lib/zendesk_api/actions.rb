@@ -62,7 +62,9 @@ module ZendeskAPI
         end
 
         if association_data[:inline] == true || inline_creation
-          attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
+          if association.changed?
+            attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
+          end
         end
       end
     end
