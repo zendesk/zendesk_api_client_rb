@@ -335,7 +335,10 @@ module ZendeskAPI
       super
 
       # Needed for side-loading to work
-      self.role_id = role.id if self.key?(:role)
+      if self.key?(:role)
+        self.role_id = role.id
+        @attributes.clear_changes unless new_record?
+      end
     end
 
     has Organization
