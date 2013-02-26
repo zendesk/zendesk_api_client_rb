@@ -61,10 +61,8 @@ module ZendeskAPI
           self.send("#{association_name}=", association) # set id/ids columns
         end
 
-        if association_data[:inline] == true || inline_creation
-          if association.changed?
-            attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
-          end
+        if (association_data[:inline] == true || inline_creation) && association.changed?
+          attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
         end
       end
     end
