@@ -8,5 +8,5 @@ class ZendeskAPI::TestResource < ZendeskAPI::Resource
 end
 
 class ZendeskAPI::NilResource < ZendeskAPI::Data; end
-
+class ZendeskAPI::NilDataResource < ZendeskAPI::DataResource; end
 class ZendeskAPI::SingularTestResource < ZendeskAPI::SingularResource; end

@@ -12,6 +12,29 @@ describe ZendeskAPI::DataResource do
     ZendeskAPI::Category.resource_name.should == "categories"
   end
 
+  context "association" do
+    subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+    let(:options) {{}}
+
+    before(:each) do
+      ZendeskAPI::TestResource.has :nil, options.merge(:class => ZendeskAPI::NilDataResource)
+    end
+
+    it "should try and find non-existant object" do
+      stub_json_request(:get, %r{test_resources/1/nil}, json(:nil_data_resource => {}))
+
+      subject.nil.should be_instance_of(ZendeskAPI::NilDataResource)
+    end
+
+    context "inline => true" do
+      let(:options) {{ :inline => true }}
+
+      it "should not try and find non-existant object" do
+        subject.nil
+      end
+    end
+  end
+
   context "user" do
     context "with first order attributes" do
       subject { ZendeskAPI::TestResource.new(client) }
