@@ -8,6 +8,7 @@ module ZendeskAPI
       class Logger < Faraday::Response::Middleware
         def initialize(app, logger = nil)
           super(app)
+
           @logger = logger || begin
             require 'logger'
             ::Logger.new(STDOUT)
@@ -17,12 +18,11 @@ module ZendeskAPI
         def call(env)
           @logger.info "#{env[:method]} #{env[:url].to_s}"
           @logger.debug dump_debug(env, :request_headers)
-          super
-        end
 
-        def on_complete(env)
-          @logger.info("Status #{env[:status].to_s}")
-          @logger.debug dump_debug(env, :response_headers)
+          @app.call(env).on_complete do |env|
+            @logger.info("Status #{env[:status].to_s}")
+            @logger.debug dump_debug(env, :response_headers)
+          end
         end
 
         private

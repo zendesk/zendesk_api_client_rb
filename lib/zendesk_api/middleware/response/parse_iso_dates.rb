@@ -8,9 +8,9 @@ module ZendeskAPI
       # @private
       class ParseIsoDates < Faraday::Response::Middleware
         def call(env)
-          response = @app.call(env)
-          parse_dates! response.env[:body]
-          response
+          @app.call(env).on_complete do |env|
+            parse_dates!(env[:body])
+          end
         end
 
         private
