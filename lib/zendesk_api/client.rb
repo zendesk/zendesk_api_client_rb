@@ -131,8 +131,13 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.response :json, :content_type => 'application/json'
-        builder.use ZendeskAPI::Middleware::Response::Gzip
-        builder.use ZendeskAPI::Middleware::Response::Deflate
+
+        adapter = config.adapter || Faraday.default_adapter
+
+        unless [:em_http, Faraday::Adapter::EMHttp].include?(adapter)
+          builder.use ZendeskAPI::Middleware::Response::Gzip
+          builder.use ZendeskAPI::Middleware::Response::Deflate
+        end
 
         # request
         builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
@@ -141,7 +146,7 @@ module ZendeskAPI
         builder.request :json
         builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
 
-        builder.adapter *config.adapter || Faraday.default_adapter
+        builder.adapter *adapter
       end
     end
 
