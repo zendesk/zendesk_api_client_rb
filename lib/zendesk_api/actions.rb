@@ -23,7 +23,9 @@ module ZendeskAPI
         req.body = if self.class.unnested_params
           attributes.changes
         else
-          {self.class.singular_resource_name.to_sym => attributes.changes}
+          {
+            self.class.singular_resource_name.to_sym => attributes.changes
+          }.merge!(@global_params)
         end
       end
 
@@ -189,7 +191,7 @@ module ZendeskAPI
 
       # Updates  a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
-      # @param [Hash] attributes The attributes to update. Default to {} 
+      # @param [Hash] attributes The attributes to update. Default to {}
       def update(client, attributes = {})
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
         resource = new(client, :id => attributes.delete(:id))

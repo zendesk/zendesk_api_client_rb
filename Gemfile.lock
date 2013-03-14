@@ -65,6 +65,7 @@ GEM
     jruby-openssl (0.8.2)
       bouncy-castle-java (>= 1.5.0146.1)
     json (1.7.7)
+    json (1.7.7-java)
     mime-types (1.21)
     mongoid (3.0.21)
       activemodel (~> 3.1)

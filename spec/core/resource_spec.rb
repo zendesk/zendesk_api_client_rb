@@ -1,6 +1,15 @@
 require 'core/spec_helper'
 
 describe ZendeskAPI::Resource do
+  context "initialize" do
+    context "with :global as part of attributes" do
+      it "should set @global_params" do
+        resource = ZendeskAPI::TestResource.new(client, { :global => { :something => 'hey' }})
+        resource.instance_variable_get(:@global_params).should == { :something => 'hey' }
+      end
+    end
+  end
+
   context "#update" do
     context "class method" do
       let(:id) { 1 }
