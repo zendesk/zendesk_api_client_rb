@@ -36,7 +36,7 @@ module ZendeskAPI
 
       @resource_cache[method] ||= {}
 
-      if !options[:reload] && (cached = @resource_cache[method][options.hash])
+      if !options.delete(:reload) && (cached = @resource_cache[method][options.hash])
         cached
       else
         @resource_cache[method][options.hash] = ZendeskAPI::Collection.new(self, ZendeskAPI.const_get(ZendeskAPI::Helpers.modulize_string(Inflection.singular(method))), options)

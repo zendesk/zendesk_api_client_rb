@@ -165,6 +165,15 @@ describe ZendeskAPI::Client do
       subject.search(:query => 'abc').should_not == subject.search(:query => '123')
     end
 
+    it "should not cache calls with :reload => true options" do
+      subject.search(:query => 'abc').should_not == subject.search(:query => 'abc', :reload => true)
+    end
+
+    it "should not pass reload to the underlying collection" do
+      collection = subject.search(:query => 'abc', :reload => true)
+      collection.options.key?(:reload).should be_false
+    end
+
     it "should cache calls with the same options" do
       subject.search(:query => 'abc').should == subject.search(:query => 'abc')
     end
