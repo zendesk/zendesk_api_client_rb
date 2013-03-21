@@ -23,10 +23,10 @@ module ZendeskAPI
         req.body = if self.class.unnested_params
           attributes.changes
         else
-          {
-            self.class.singular_resource_name.to_sym => attributes.changes
-          }.merge!(@global_params)
+          {self.class.singular_resource_name.to_sym => attributes.changes}
         end
+
+        req.body.merge!(@global_params)
       end
 
       @attributes.replace @attributes.deep_merge(@response.body[self.class.singular_resource_name] || {})
@@ -91,7 +91,7 @@ module ZendeskAPI
       options[:include] = includes.join(",") if includes.any?
 
       response = client.connection.get(association.generate_path(options)) do |req|
-        req.params = options
+        req.params = options.merge!(@global_params)
       end
 
       new(client, response.body[singular_resource_name]).tap do |resource|
@@ -166,7 +166,7 @@ module ZendeskAPI
         association = opts.delete(:association) || Association.new(:class => self)
 
         client.connection.delete(association.generate_path(opts)) do |req|
-          req.params = opts
+          req.params = opts.merge!(@global_params)
         end
 
         true
