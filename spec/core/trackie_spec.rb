@@ -87,6 +87,16 @@ describe ZendeskAPI::Trackie do
     specify "subject should be changed" do
       subject.changed?.should be_true
     end
+
+    context "clearing" do
+      before(:each) do
+        subject.clear_changes
+      end
+
+      it "should not have any changes" do
+        subject.changes.should be_empty
+      end
+    end
   end
 
   describe "#size" do
