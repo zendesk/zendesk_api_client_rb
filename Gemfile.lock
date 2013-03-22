@@ -1,11 +1,11 @@
 GIT
-  remote: git://github.com/intridea/hashie.git
+  remote: https://github.com/intridea/hashie.git
   revision: f7adbf6b6e29bfcd3efbc33695fe0e018d62e66e
   specs:
     hashie (2.0.0.beta)
 
 GIT
-  remote: git://github.com/steved555/multipart-post.git
+  remote: https://github.com/steved555/multipart-post.git
   revision: 57c66998c05143a684c13694937c8adfd335cae1
   specs:
     multipart-post (1.1.5)
