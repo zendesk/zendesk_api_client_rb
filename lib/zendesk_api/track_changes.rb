@@ -59,6 +59,8 @@ module ZendeskAPI
           each do |k, v|
             if v.respond_to?(:changed?) && v.changed?
               changes[k] = v.changes
+            elsif v.is_a?(Array) && v.any? {|val| val.respond_to?(:changed?) && val.changed?}
+              changes[k] = v
             end
           end
         end
@@ -71,6 +73,7 @@ module ZendeskAPI
           changes.key?(key)
         end
       end
+
       alias :dirty? :changed?
     end
   end

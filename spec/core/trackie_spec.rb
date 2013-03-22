@@ -55,6 +55,40 @@ describe ZendeskAPI::Trackie do
     end
   end
 
+=begin TODO
+  context "nested arrays" do
+    before(:each) do
+      subject[:key] = []
+      subject.clear_changes
+      subject[:key] << :test
+    end
+
+    it "should include changes from nested array" do
+      subject.changes[:key].should == [:test]
+    end
+
+    specify "subject should be changed" do
+      subject.changed?.should be_true
+    end
+  end
+=end
+
+  context "nested hashes in arrays" do
+    before(:each) do
+      subject[:key] = [ZendeskAPI::Trackie.new]
+      subject.clear_changes
+      subject[:key].first[:test] = true
+    end
+
+    it "should include changes from nested array" do
+      subject.changes[:key].first[:test].should be_true
+    end
+
+    specify "subject should be changed" do
+      subject.changed?.should be_true
+    end
+  end
+
   describe "#size" do
     before do
       subject[:size] = 42
