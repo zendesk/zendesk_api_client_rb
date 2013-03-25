@@ -23,6 +23,16 @@ describe ZendeskAPI::Resource do
         subject.update(client, :id => id, :test => :hello).should be_true
       end
 
+      context "with global params" do
+        before(:each) do
+          stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({ :test_resource => { :test => :hello }, :something => "something"}))
+        end
+
+        it "should return instance of resource" do
+          subject.update(client, :id => id, :test => :hello, :global => {:something => "something"}).should be_true
+        end
+      end
+
       context "with client error" do
         before(:each) do
           stub_request(:put, %r{test_resources/#{id}}).to_return(:status => 500)

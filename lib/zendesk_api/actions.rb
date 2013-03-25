@@ -91,7 +91,7 @@ module ZendeskAPI
       options[:include] = includes.join(",") if includes.any?
 
       response = client.connection.get(association.generate_path(options)) do |req|
-        req.params = options.merge!(@global_params)
+        req.params = options
       end
 
       new(client, response.body[singular_resource_name]).tap do |resource|
@@ -166,7 +166,7 @@ module ZendeskAPI
         association = opts.delete(:association) || Association.new(:class => self)
 
         client.connection.delete(association.generate_path(opts)) do |req|
-          req.params = opts.merge!(@global_params)
+          req.params = opts
         end
 
         true
@@ -194,7 +194,7 @@ module ZendeskAPI
       # @param [Hash] attributes The attributes to update. Default to {}
       def update(client, attributes = {})
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        resource = new(client, :id => attributes.delete(:id))
+        resource = new(client, {:id => attributes.delete(:id), :global => attributes.delete(:global)})
         resource.attributes.merge!(attributes)
         resource.save
       end
