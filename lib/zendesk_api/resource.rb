@@ -57,6 +57,7 @@ module ZendeskAPI
     def initialize(client, attributes = {})
       raise "Expected a Hash for attributes, got #{attributes.inspect}" unless attributes.is_a?(Hash)
       @association = attributes.delete(:association) || Association.new(:class => self.class)
+      @global_params = attributes.delete(:global) || {}
       @client = client
       @attributes = ZendeskAPI::Trackie.new(attributes)
 
