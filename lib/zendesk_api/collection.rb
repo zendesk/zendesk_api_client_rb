@@ -43,34 +43,35 @@ module ZendeskAPI
       end
     end
 
-    # Passes arguments and the proper path to the resource class method.
-    # @param [Hash] attributes Attributes to pass to Create#create
-    def create(attributes = {})
-      attributes.merge!(:association => @association)
-      @resource_class.create(@client, @options.merge(attributes))
-    end
+    %w{create find update destroy}.each do |deferrable|
+      # Passes arguments and the proper path to the resource class method.
+      # @param [Hash] options Options or attributes to pass
+      define_method deferrable do |*args|
+        opts = args.last.is_a?(Hash) ? args.pop : {}
+        opts.merge!(:association => @association)
 
-    # (see #create)
-    def find(opts = {})
-      opts.merge!(:association => @association)
-      @resource_class.find(@client, @options.merge(opts))
-    end
+        @resource_class.send(deferrable, @client, @options.merge(opts))
+      end
 
-    # (see #create)
-    def update(opts = {})
-      opts.merge!(:association => @association)
-      @resource_class.update(@client, @options.merge(opts))
-    end
+      # Passes arguments and the proper path to the resource class method.
+      # @param [Hash] options Options or attributes to pass
+      define_method "#{deferrable}!" do |*args|
+        opts = args.last.is_a?(Hash) ? args.pop : {}
+        opts.merge!(:association => @association)
 
-    # (see #create)
-    def destroy(opts = {})
-      opts.merge!(:association => association)
-      @resource_class.destroy(@client, @options.merge(opts))
+        @resource_class.send("#{deferrable}!", @client, @options.merge(opts))
+      end
     end
 
     # @return [Number] The total number of resources server-side (disregarding pagination).
     def count
       fetch
+      @count || -1
+    end
+
+    # @return [Number] The total number of resources server-side (disregarding pagination).
+    def count!
+      fetch!
       @count || -1
     end
 
@@ -103,8 +104,24 @@ module ZendeskAPI
     def save
       if @resources
         @resources.map! do |item|
-          unless !item.respond_to?(:save) || item.changes.empty?
+          if item.respond_to?(:save) && !item.changes.empty?
             item.save
+          end
+
+          item
+        end
+      end
+
+      self
+    end
+
+    # Saves all newly created resources stored in this collection.
+    # @return [Collection] self
+    def save!
+      if @resources
+        @resources.map! do |item|
+          if item.respond_to?(:save!) && !item.changes.empty?
+            item.save!
           end
 
           item
@@ -167,6 +184,32 @@ module ZendeskAPI
     # Alias for fetch(false)
     def to_a
       fetch
+    end
+
+    # Alias for fetch!(false)
+    def to_a!
+      fetch!
+    end
+
+    # Calls #each on every page with the passed in block
+    # @param [Block] block Passed to #each
+    def each_page!(start_page = @options["page"], &block)
+      page(start_page)
+      clear_cache
+
+      while (fetch! && !empty?)
+        each do |resource|
+          arguments = [resource, @options["page"] || 1]
+
+          if block.arity >= 0
+            arguments = arguments.take(block.arity)
+          end
+
+          block.call(*arguments)
+        end
+
+        self.next
+      end
     end
 
     # Calls #each on every page with the passed in block
