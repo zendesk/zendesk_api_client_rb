@@ -25,6 +25,8 @@ module ZendeskAPI
         else
           {self.class.singular_resource_name.to_sym => attributes.changes}
         end
+
+        req.body.merge!(@global_params)
       end
 
       @attributes.replace @attributes.deep_merge(@response.body[self.class.singular_resource_name] || {})
@@ -189,10 +191,10 @@ module ZendeskAPI
 
       # Updates  a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
-      # @param [Hash] attributes The attributes to update. Default to {} 
+      # @param [Hash] attributes The attributes to update. Default to {}
       def update(client, attributes = {})
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        resource = new(client, :id => attributes.delete(:id))
+        resource = new(client, {:id => attributes.delete(:id), :global => attributes.delete(:global)})
         resource.attributes.merge!(attributes)
         resource.save
       end
