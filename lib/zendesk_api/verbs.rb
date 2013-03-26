@@ -1,8 +1,6 @@
 module ZendeskAPI
   # Creates put, post, delete class methods for custom resource methods.
   module Verbs
-    include Rescue
-
     class << self
       private
 
@@ -30,8 +28,6 @@ module ZendeskAPI
 
             true
           end
-
-          rescue_client_error method, :with => false
         end
       end
     end

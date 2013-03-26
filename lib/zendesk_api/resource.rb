@@ -9,7 +9,6 @@ module ZendeskAPI
   # Represents a resource that only holds data.
   class Data
     include Associations
-    include Rescue
 
     class << self
       def inherited(klass)
@@ -47,7 +46,8 @@ module ZendeskAPI
     attr_reader :attributes
     # @return [ZendeskAPI::Association] The association
     attr_accessor :association
-
+    # @return [Array] The last received errors
+    attr_accessor :errors
     # Place to dump the last response
     attr_accessor :response
 

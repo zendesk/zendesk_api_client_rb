@@ -10,8 +10,6 @@ module ZendeskAPI
     # Options passed in that are automatically converted from an array to a comma-separated list.
     SPECIALLY_JOINED_PARAMS = [:ids, :only]
 
-    include Rescue
-
     # @return [ZendeskAPI::Association] The class association
     attr_reader :association
 
@@ -146,7 +144,7 @@ module ZendeskAPI
 
     # Executes actual GET from API and loads resources into proper class.
     # @param [Boolean] reload Whether to disregard cache
-    def fetch(reload = false)
+    def fetch!(reload = false)
       if @resources && (!@fetchable || !reload)
         return @resources
       elsif association && association.options.parent && association.options.parent.new_record?
@@ -160,7 +158,11 @@ module ZendeskAPI
       @resources
     end
 
-    rescue_client_error :fetch, :with => lambda { Array.new }
+    def fetch(*args)
+      fetch!(*args)
+    rescue Faraday::Error::ClientError => e
+      []
+    end
 
     # Alias for fetch(false)
     def to_a

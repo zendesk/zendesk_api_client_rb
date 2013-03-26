@@ -40,13 +40,11 @@ describe ZendeskAPI::ReadResource do
     context "with client error" do
       it "should handle 500 properly" do
         stub_request(:get, %r{test_resources/#{id}}).to_return(:status => 500)
-        client.config.logger.should_receive(:warn).at_least(:once)
         subject.find(client, :id => id).should == nil
       end
 
       it "should handle 404 properly" do
         stub_request(:get, %r{test_resources/#{id}}).to_return(:status => 404)
-        client.config.logger.should_receive(:warn).at_least(:once)
         subject.find(client, :id => id).should == nil
       end
     end
