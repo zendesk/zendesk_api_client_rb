@@ -112,7 +112,7 @@ GEM
     tilt (1.3.6)
     tzinfo (0.3.37)
     vcr (2.4.0)
-    webmock (1.11.0)
+    webmock (1.9.3)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
     yard (0.8.5.2)
@@ -144,6 +144,6 @@ DEPENDENCIES
   sinatra-contrib
   thin
   vcr
-  webmock
+  webmock (~> 1.9.0)
   yard
   zendesk_api!

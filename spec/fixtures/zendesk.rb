@@ -82,10 +82,5 @@ module ZendeskAPI
         @organization ||= current_user.organization
       end
     end
-
-    # Global default options, overwritten if using under
-    def default_options
-      {}
-    end
   end
 end

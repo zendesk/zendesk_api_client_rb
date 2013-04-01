@@ -76,7 +76,7 @@ describe ZendeskAPI::Ticket do
 
   it "can upload while creating" do
     VCR.use_cassette("ticket_inline_uploads") do
-      ticket = ZendeskAPI::Ticket.new(client, valid_attributes.merge(default_options))
+      ticket = ZendeskAPI::Ticket.new(client, valid_attributes)
       ticket.comment.uploads << "spec/fixtures/Argentina.gif"
       ticket.comment.uploads << File.new("spec/fixtures/Argentina.gif")
 
@@ -88,7 +88,7 @@ describe ZendeskAPI::Ticket do
 
   it "can comment while creating" do
     VCR.use_cassette("ticket_inline_comments") do
-      ticket = ZendeskAPI::Ticket.new(client, valid_attributes.merge(default_options))
+      ticket = ZendeskAPI::Ticket.new(client, valid_attributes)
       ticket.comment = ZendeskAPI::Ticket::Comment.new(client, :value => "My comment", :public => false)
       ticket.save!
 

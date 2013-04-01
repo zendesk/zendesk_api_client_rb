@@ -14,7 +14,9 @@ describe ZendeskAPI::Group, :delete_after do
   context "with a membership" do
     before(:each) do
       VCR.use_cassette("read_ZendeskAPI::User_groups_create") do
-        @object = described_class.create!(client, valid_attributes.merge(default_options))
+        attrs = valid_attributes
+        attrs.merge!(@default_options) if @default_options
+        @object = described_class.create!(client, attrs)
         @membership = agent.group_memberships.create(:group_id => @object.id, :user_id => agent.id)
       end
     end

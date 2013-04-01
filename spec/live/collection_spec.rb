@@ -10,7 +10,7 @@ describe ZendeskAPI::Collection do
       ZendeskAPI::Collection.new(client, ZendeskAPI::User)
     end
 
-    before(:all) do
+    before(:each) do
       VCR.use_cassette('collection_fetch_users') do
         subject.per_page(1).page(2)
         subject.fetch(true)
@@ -41,15 +41,15 @@ describe ZendeskAPI::Collection do
       before(:each) { subject.per_page(1).page(2) }
 
       it "should increase page option and not call fetch" do
-        subject.next.should == 3 
+        subject.next.should == 3
       end
 
       it "should decrease page option and not call fetch" do
-        subject.prev.should == 1 
+        subject.prev.should == 1
       end
 
       context "with page == 1" do
-        before do 
+        before do
           subject.page(1)
           subject.clear_cache
           subject.should_not_receive(:fetch)
