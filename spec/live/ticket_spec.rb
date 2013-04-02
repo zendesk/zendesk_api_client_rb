@@ -34,14 +34,16 @@ describe ZendeskAPI::Ticket do
   end
 
   describe ".incremental_export" do
-    let(:results){ ZendeskAPI::Ticket.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
+    let(:results) { ZendeskAPI::Ticket.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
 
     around do |example|
       # 1 request every 5 minutes allowed <-> you can only test 1 call ...
       VCR.use_cassette("incremental_export") do
-        Timeout.timeout(5) do # fail if we get rate-limited
-          example.call
-        end
+        client.config.retry = false
+
+        example.call
+
+        client.config.retry = true
       end
     end
 
