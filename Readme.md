@@ -12,6 +12,7 @@ Additional documentation can be found on our [documentation site](https://zendes
 
 * Version 0.0.5 brings with it a change to the top-level namespace. All references to Zendesk should now use ZendeskAPI.
 * Version 0.3.0 changed the license from MIT to Apache Version 2.
+* Version 0.3.2 introduced a regression when side-loading roles on users. This was fixed in 0.3.4.
 
 ## Installation
 
