@@ -1,6 +1,6 @@
 module ResourceMacros
   def self.extended(klass)
-    klass.define_method(:default_options) {{}}
+    klass.send(:define_method, :default_options) {{}}
   end
 
   def under(object, &blk)
