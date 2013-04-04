@@ -331,6 +331,13 @@ module ZendeskAPI
       put :request_verification
     end
 
+    def initialize(*)
+      super
+
+      # Needed for proper Role sideloading
+      self.role_id = role.name if key?(:role)
+    end
+
     has Organization
 
     has CustomRole, :inline => true, :include => :roles

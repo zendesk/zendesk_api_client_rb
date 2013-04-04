@@ -16,4 +16,42 @@ describe ZendeskAPI::User, :delete_after do
       client.users.search(:query => current_user.email).to_a.should == [current_user]
     end
   end
+
+  context "side-loading" do
+    context "no permission set" do
+      subject do
+        VCR.use_cassette("user_admin_role") { client.users.find(:id => 20014182, :include => :roles) }
+      end
+
+      it "should include role" do
+        if subject
+          subject.role.should_not be_nil
+          subject.role.id.should be_nil
+          subject.role.name.should == "admin"
+          subject.role.configuration.should_not be_nil
+
+          subject.custom_role.should be_nil
+        end
+      end
+    end
+
+    context "permission set" do
+      subject do
+        VCR.use_cassette("user_permission_set") { client.users.find(:id => 20014327, :include => :roles) }
+      end
+
+      it "should include role" do
+        if subject
+          subject.role.should_not be_nil
+          subject.role.id.should be_nil
+          subject.role.name.should == "agent"
+
+          subject.custom_role.should_not be_nil
+          subject.custom_role.id.should == 3692
+          subject.custom_role.name.should == "Staff"
+          subject.custom_role.configuration.should_not be_nil
+        end
+      end
+    end
+  end
 end
