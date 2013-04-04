@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "faraday", ">= 0.8.0"
   s.add_runtime_dependency "faraday_middleware", ">= 0.8.7"
-  s.add_runtime_dependency "hashie", "~> 2.0.0"
+  s.add_runtime_dependency "hashie", ">= 1.2"
   s.add_runtime_dependency "inflection"
   s.add_runtime_dependency "json"
   s.add_runtime_dependency "mime-types"

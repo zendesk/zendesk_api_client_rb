@@ -10,7 +10,7 @@ PATH
     zendesk_api (0.3.4)
       faraday (>= 0.8.0)
       faraday_middleware (>= 0.8.7)
-      hashie (~> 2.0.0)
+      hashie (>= 1.2)
       inflection
       json
       mime-types
