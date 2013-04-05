@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "json"
   s.add_runtime_dependency "mime-types"
   s.add_runtime_dependency "multipart-post"
+  s.add_runtime_dependency "oauth2"
 
   s.files              = `git ls-files -x Gemfile.lock`.split("\n") rescue ''
   s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")
