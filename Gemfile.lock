@@ -15,6 +15,7 @@ PATH
       json
       mime-types
       multipart-post
+      oauth2
 
 GEM
   remote: https://rubygems.org/
@@ -56,11 +57,14 @@ GEM
     haml (4.0.1)
       tilt
     hashie (2.0.3)
+    httpauth (0.2.0)
     i18n (0.6.1)
     inflection (1.0.0)
     jruby-openssl (0.8.7)
       bouncy-castle-java (>= 1.5.0147)
     json (1.7.7)
+    jwt (0.1.8)
+      multi_json (>= 1.5)
     mime-types (1.22)
     mongoid (3.1.2)
       activemodel (~> 3.2)
@@ -69,7 +73,15 @@ GEM
       tzinfo (~> 0.3.22)
     moped (1.4.5)
     multi_json (1.7.2)
+    multi_xml (0.5.3)
     newrelic_rpm (3.6.0.78)
+    oauth2 (0.9.1)
+      faraday (~> 0.8)
+      httpauth (~> 0.1)
+      jwt (~> 0.1.4)
+      multi_json (~> 1.0)
+      multi_xml (~> 0.5)
+      rack (~> 1.2)
     origin (1.0.11)
     rack (1.5.2)
     rack-protection (1.5.0)
