@@ -374,5 +374,21 @@ module ZendeskAPI
 
   class UserField < Resource; end
   class OrganizationField < Resource; end
-end
 
+  class Client < Resource
+  end
+
+  class Token < ReadResource
+    include Create
+    include Destroy
+
+    def save
+      raise ArgumentError unless client_secret && client_id
+      super
+    end
+
+    def path
+      "/oauth/tokens"
+    end
+  end
+end

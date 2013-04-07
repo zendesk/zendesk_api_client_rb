@@ -81,7 +81,8 @@ module ZendeskAPI
 
       config.retry = !!config.retry # nil -> false
 
-      set_token_auth
+      set_token_auth unless config.access_token
+
       set_default_logger
       add_warning_callback
     end
@@ -120,8 +121,13 @@ module ZendeskAPI
     # Retry middleware if retry is true
     def build_connection
       Faraday.new(config.options) do |builder|
+        if config.access_token
+          builder.use FaradayMiddleware::OAuth2, config.access_token
+        else
+          builder.use Faraday::Request::BasicAuthentication, config.username, config.password
+        end
+
         # response
-        builder.use Faraday::Request::BasicAuthentication, config.username, config.password
         builder.use ZendeskAPI::Middleware::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
