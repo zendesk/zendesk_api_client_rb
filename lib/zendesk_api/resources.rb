@@ -362,5 +362,22 @@ module ZendeskAPI
     has CRMData
     has CRMDataStatus, :path => 'crm_data/status'
   end
+
+  class Client < Resource
+  end
+
+  class Token < ReadResource
+    include Create
+    include Destroy
+
+    def save
+      raise ArgumentError unless client_secret && client_id
+      super
+    end
+
+    def path
+      "/oauth/tokens"
+    end
+  end
 end
 
