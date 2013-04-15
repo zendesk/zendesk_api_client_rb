@@ -7,6 +7,7 @@ gem "simplecov", :platforms => :ruby_19, :group => :development
 gem "jruby-openssl", :platforms => :jruby
 gem "multipart-post", :git => "https://github.com/steved555/multipart-post.git"
 gem "multi_json", :group => :test
+gem "debugger"
 
 group :server do
   gem "thin"

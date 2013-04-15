@@ -41,7 +41,7 @@ module ZendeskAPI
         namespace[1..1] = parent_namespace if parent_namespace
         namespace[0] = parent_class.resource_name
       else
-        namespace[0] = @options.path || @options[:class].resource_name
+        namespace[0] = @options.path || @options[:class].resource_path
       end
 
       if id = extract_id(instance, options, original_options)

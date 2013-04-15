@@ -31,6 +31,9 @@ module ZendeskAPI
     # @return [String] OAuth2 access_token
     attr_accessor :access_token
 
+    # @return [Hash] OAuth2 client options
+    attr_accessor :oauth_options
+
     # Use this cache instead of default ZendeskAPI::LRUCache.new
     # - must respond to read/write/fetch e.g. ActiveSupport::Cache::MemoryStore.new)
     # - pass false to disable caching
@@ -39,6 +42,8 @@ module ZendeskAPI
 
     def initialize
       @client_options = {}
+      @oauth_options = {}
+
       self.cache = ZendeskAPI::LRUCache.new(1000)
     end
 

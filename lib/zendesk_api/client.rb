@@ -6,6 +6,7 @@ require 'zendesk_api/sideloading'
 require 'zendesk_api/configuration'
 require 'zendesk_api/collection'
 require 'zendesk_api/lru_cache'
+require 'zendesk_api/oauth'
 require 'zendesk_api/middleware/request/etag_cache'
 require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/upload'
@@ -20,6 +21,8 @@ module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
   # Can also be used as an accessor to resource collections.
   class Client
+    include OAuth
+
     # @return [Configuration] Config instance
     attr_reader :config
     # @return [Array] Custom response callbacks
@@ -142,6 +145,12 @@ module ZendeskAPI
         end
 
         # request
+        if config.access_token
+          builder.use Faraday::Request::TokenAuthentication, config.access_token
+        else
+          builder.use Faraday::Request::BasicAuthentication, config.username, config.password
+        end
+
         builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
         builder.use ZendeskAPI::Middleware::Request::Upload
         builder.request :multipart

@@ -39,6 +39,7 @@ GEM
     coderay (1.0.9)
     coderay_bash (1.0.5)
       coderay (>= 1.0)
+    columnize (0.3.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -46,6 +47,12 @@ GEM
     crack (0.3.2)
     daemons (1.1.9)
     database_cleaner (0.9.1)
+    debugger (1.5.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.0)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.0)
     diff-lcs (1.2.2)
     eventmachine (1.0.3)
     eventmachine (1.0.3-java)
@@ -140,6 +147,7 @@ DEPENDENCIES
   coderay_bash
   compass
   database_cleaner
+  debugger
   haml
   jruby-openssl
   mongoid

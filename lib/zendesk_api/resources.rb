@@ -162,6 +162,7 @@ module ZendeskAPI
       ZendeskAPI::Collection.new(client, self, options)
     end
 
+    # Quack like a Resource
     # Creates the correct resource class from the result_type passed in
     def self.new(client, attributes)
       result_type = attributes["result_type"]
@@ -174,12 +175,16 @@ module ZendeskAPI
       (klass || Result).new(client, attributes)
     end
 
-    def self.resource_name
-      "search"
-    end
+    class << self
+      def resource_name
+        "search"
+      end
 
-    def self.model_key
-      "results"
+      alias :resource_path :resource_name
+
+      def model_key
+        "results"
+      end
     end
   end
 
@@ -375,20 +380,31 @@ module ZendeskAPI
   class UserField < Resource; end
   class OrganizationField < Resource; end
 
-  class Client < Resource
+  class OAuthClient < Resource
+    namespace "oauth"
   end
 
-  class Token < ReadResource
-    include Create
+  class OAuthToken < ReadResource
     include Destroy
 
-    def save
-      raise ArgumentError unless client_secret && client_id
-      super
-    end
+    namespace "oauth"
 
-    def path
-      "/oauth/tokens"
+    def self.create(client, options = {})
+      token = new(client, :association => options.delete(:association))
+
+      response = client.connection.post("/oauth/tokens") do |request|
+        if client.config.client_secret && client.config.client_id
+          if options[:code] && options[:redirect_uri]
+          elsif options[:refresh_token]
+          else
+          end
+        elsif client.config.username && client.config.password
+        else
+          raise ArgumentError, "could not create token request"
+        end
+
+        request.body = { :scopes => options.delete(:scopes) || [] }
+      end
     end
   end
 end

@@ -29,6 +29,10 @@ module ZendeskAPI
         @resource_name ||= Inflection.plural(singular_resource_name)
       end
 
+      def resource_path
+        [@namespace, resource_name].compact.join("/")
+      end
+
       alias :model_key :resource_name
 
       # @private
@@ -39,6 +43,10 @@ module ZendeskAPI
       # @private
       def unnested_params
         @unnested_params ||= false
+      end
+
+      def namespace(namespace)
+        @namespace = namespace
       end
     end
 
