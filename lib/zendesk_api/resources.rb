@@ -362,5 +362,8 @@ module ZendeskAPI
     has CRMData
     has CRMDataStatus, :path => 'crm_data/status'
   end
+
+  class UserField < Resource; end
+  class OrganizationField < Resource; end
 end
 
