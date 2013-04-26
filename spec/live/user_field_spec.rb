@@ -6,7 +6,7 @@ describe ZendeskAPI::UserField, :delete_after do
   end
 
   it_should_be_creatable
-  it_should_be_updatable :title, :key
+  it_should_be_updatable :title, "key"
   it_should_be_deletable
-  it_should_be_readable :user_fields
+  it_should_be_readable :user_fields, :create => true
 end
