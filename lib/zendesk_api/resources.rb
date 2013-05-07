@@ -288,7 +288,7 @@ module ZendeskAPI
   class Rule < Resource
     private
 
-    def attributes_for_save(resource)
+    def attributes_for_save
       to_save = [:conditions, :all, :any, :output].inject({}) {|h,k| h.merge(k => resource.attributes[k])}
       { singular_resource_name.to_sym => to_save }
     end
