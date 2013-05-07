@@ -9,7 +9,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
     let(:status) { 404 }
 
     it "should raise RecordNotFound when status is 404" do
-      expect { client.connection.get "/non_existant" }.to raise_error(ZendeskAPI::Error::RecordNotFound)
+      expect { client.connection.get "/non_existent" }.to raise_error(ZendeskAPI::Error::RecordNotFound)
     end
   end
 
@@ -17,7 +17,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
     let(:status) { 500 }
 
     it "should raise NetworkError" do
-      expect { client.connection.get "/non_existant" }.to raise_error(ZendeskAPI::Error::NetworkError)
+      expect { client.connection.get "/non_existent" }.to raise_error(ZendeskAPI::Error::NetworkError)
     end
   end
 
@@ -25,7 +25,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
     let(:status) { 422 }
 
     it "should raise RecordInvalid" do
-      expect { client.connection.get "/non_existant" }.to raise_error(ZendeskAPI::Error::RecordInvalid)
+      expect { client.connection.get "/non_existent" }.to raise_error(ZendeskAPI::Error::RecordInvalid)
     end
   end
 

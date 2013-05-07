@@ -20,7 +20,7 @@ describe ZendeskAPI::DataResource do
       ZendeskAPI::TestResource.has :nil, options.merge(:class => ZendeskAPI::NilDataResource)
     end
 
-    it "should try and find non-existant object" do
+    it "should try and find non-existent object" do
       stub_json_request(:get, %r{test_resources/1/nil}, json(:nil_data_resource => {}))
 
       subject.nil.should be_instance_of(ZendeskAPI::NilDataResource)
@@ -29,7 +29,7 @@ describe ZendeskAPI::DataResource do
     context "inline => true" do
       let(:options) {{ :inline => true }}
 
-      it "should not try and find non-existant object" do
+      it "should not try and find non-existent object" do
         subject.nil
       end
     end
