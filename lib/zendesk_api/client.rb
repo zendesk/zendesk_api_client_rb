@@ -2,7 +2,6 @@ require 'faraday'
 require 'faraday_middleware'
 
 require 'zendesk_api/version'
-require 'zendesk_api/rescue'
 require 'zendesk_api/sideloading'
 require 'zendesk_api/configuration'
 require 'zendesk_api/collection'
@@ -14,14 +13,13 @@ require 'zendesk_api/middleware/response/callback'
 require 'zendesk_api/middleware/response/deflate'
 require 'zendesk_api/middleware/response/gzip'
 require 'zendesk_api/middleware/response/parse_iso_dates'
+require 'zendesk_api/middleware/response/raise_error'
 require 'zendesk_api/middleware/response/logger'
 
 module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
   # Can also be used as an accessor to resource collections.
   class Client
-    include Rescue
-
     # @return [Configuration] Config instance
     attr_reader :config
     # @return [Array] Custom response callbacks
@@ -56,8 +54,6 @@ module ZendeskAPI
       return @current_account if @current_account && !reload
       @current_account = Hashie::Mash.new(connection.get('account/resolve').body)
     end
-
-    rescue_client_error :current_account
 
     # Returns the current locale
     # @return [ZendeskAPI::Locale] Current locale or nil
@@ -126,7 +122,7 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use Faraday::Request::BasicAuthentication, config.username, config.password
-        builder.use Faraday::Response::RaiseError
+        builder.use ZendeskAPI::Middleware::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates

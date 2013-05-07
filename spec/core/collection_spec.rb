@@ -44,6 +44,20 @@ describe ZendeskAPI::Collection do
       subject.update(:id => 1)
     end
 
+    context "when class doesn't have method" do
+      subject do
+        ZendeskAPI::Collection.new(client, ZendeskAPI::NilDataResource)
+      end
+
+      it "should raise NoMethodError" do
+        expect { subject.create }.to raise_error(NoMethodError)
+      end
+
+      it "should raise NoMethodError" do
+        expect { subject.create! }.to raise_error(NoMethodError)
+      end
+    end
+
     context "with a class with a parent" do
       let(:association) do
         ZendeskAPI::Association.new(:class => ZendeskAPI::TestResource::TestChild,
@@ -193,6 +207,20 @@ describe ZendeskAPI::Collection do
             silence_logger { subject.each_page(&b) }
           rescue SearchError
             retry
+          end
+        end.to yield_successive_args(
+          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
+          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+        )
+      end
+
+      it "should retry from the same page!" do
+        expect do |b|
+          begin
+            subject.each_page!(&b)
+          rescue ZendeskAPI::Error::NetworkError
+            retry
+          rescue ZendeskAPI::Error::ClientError
           end
         end.to yield_successive_args(
           [ZendeskAPI::TestResource.new(client, :id => 1), 1],

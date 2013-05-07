@@ -8,7 +8,7 @@ describe ZendeskAPI::Search do
       end
     end
 
-    context "when given a nonexistant class" do
+    context "when given a nonexistent class" do
       it "should return an object of the type Search::Result" do
         ZendeskAPI::Search.new(nil, { "result_type" => "blah" }).should be_instance_of(ZendeskAPI::Search::Result)
       end

@@ -4,7 +4,7 @@ module ZendeskAPI
     # Executes a POST if it is a {Data#new_record?}, otherwise a PUT.
     # Merges returned attributes on success.
     # @return [Boolean] Success?
-    def save(options={})
+    def save!(options={})
       return false if respond_to?(:destroyed?) && destroyed?
 
       if new_record?
@@ -35,10 +35,14 @@ module ZendeskAPI
       true
     end
 
-    # Saves, raising an Argument error if it fails
-    # @raise [ArgumentError] if saving failed
-    def save!(options={})
-      save(options) || raise("Save failed")
+    # Saves, returning false if it fails and attaching the errors
+    def save(options={})
+      save!(options)
+    rescue ZendeskAPI::Error::RecordInvalid => e
+      @errors = e.errors
+      false
+    rescue ZendeskAPI::Error::ClientError
+      false
     end
 
     # Removes all cached associations
@@ -71,8 +75,6 @@ module ZendeskAPI
   end
 
   module Read
-    include Rescue
-
     def self.extended(klass)
       klass.send(:include, ZendeskAPI::Sideloading)
     end
@@ -81,7 +83,7 @@ module ZendeskAPI
     # A custom path to search at can be passed into opts. It defaults to the {Data.resource_name} of the class.
     # @param [Client] client The {Client} object to be used
     # @param [Hash] options Any additional GET parameters to be added
-    def find(client, options = {})
+    def find!(client, options = {})
       @client = client # so we can use client.logger in rescue
 
       raise ArgumentError, "No :id given" unless options[:id] || options["id"] || ancestors.include?(SingularResource)
@@ -99,7 +101,12 @@ module ZendeskAPI
       end
     end
 
-    rescue_client_error :find
+    # Finds, returning nil if it fails
+    def find(client, options = {})
+      find!(client, options)
+    rescue ZendeskAPI::Error::ClientError => e
+      nil
+    end
   end
 
   module Create
@@ -110,32 +117,23 @@ module ZendeskAPI
     end
 
     module ClassMethods
-      include Rescue
-
       # Create a resource given the attributes passed in.
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to create.
-      def create(client, attributes = {})
+      def create!(client, attributes = {})
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        resource = new(client, attributes)
-        return unless resource.save
-        resource
+        new(client, attributes).tap(&:save!)
       end
 
-      # Creates the resource, raising an ArgumentError if it fails
-      # @raise [ArgumentError] if the creation fails
-      def create!(client, attributes={})
-        c = create(client, attributes)
-        c || raise("Create failed #{self} #{attributes}")
+      def create(client, attributes = {})
+        create!(client, attributes)
+      rescue ZendeskAPI::Error::ClientError
+        nil
       end
-
-      rescue_client_error :create
     end
   end
 
   module Destroy
-    include Rescue
-
     def self.included(klass)
       klass.extend(ClassMethod)
     end
@@ -147,21 +145,23 @@ module ZendeskAPI
 
     # If this resource hasn't already been deleted, then do so.
     # @return [Boolean] Successful?
-    def destroy
+    def destroy!
       return false if destroyed? || new_record?
       @client.connection.delete(url || path)
       @destroyed = true
     end
 
-    rescue_client_error :destroy, :with => false
+    def destroy
+      destroy!
+    rescue ZendeskAPI::Error::ClientError
+      false
+    end
 
     module ClassMethod
-      include Rescue
-
       # Deletes a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
       # @param [Hash] opts The optional parameters to pass. Defaults to {}
-      def destroy(client, opts = {})
+      def destroy!(client, opts = {})
         @client = client # so we can use client.logger in rescue
         association = opts.delete(:association) || Association.new(:class => self)
 
@@ -172,34 +172,46 @@ module ZendeskAPI
         true
       end
 
-      rescue_client_error :destroy, :with => false
+      def destroy(client, attributes = {})
+        destroy!(client, attributes)
+      rescue ZendeskAPI::Error::ClientError
+        false
+      end
     end
   end
 
   module Update
-    include Rescue
     include Save
 
     def self.included(klass)
       klass.extend(ClassMethod)
     end
 
-    rescue_client_error :save, :with => false
-
     module ClassMethod
-      include Rescue
-
       # Updates  a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to update. Default to {}
       def update(client, attributes = {})
-        ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        resource = new(client, {:id => attributes.delete(:id), :global => attributes.delete(:global)})
-        resource.attributes.merge!(attributes)
-        resource.save
+        update!(client, attributes)
+      rescue ZendeskAPI::Error::ClientError
+        false
       end
 
-      rescue_client_error :update, :with => false
+      def update!(client, attributes = {})
+        ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
+        resource = new(client, { :id => attributes.delete(:id), :global => attributes.delete(:global) })
+        resource.attributes.merge!(attributes)
+        resource.tap(&:save!)
+      end
+
+      private
+
+      def _update(client, attributes = {})
+        ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
+        resource = new(client, { :id => attributes.delete(:id), :global => attributes.delete(:global) })
+        resource.attributes.merge!(attributes)
+        resource
+      end
     end
   end
 end
