@@ -382,8 +382,16 @@ describe ZendeskAPI::Resource do
       ZendeskAPI::TestResource.new(client, :id => 2).should_not == ZendeskAPI::TestResource.new(client, :id => 1)
     end
 
-    it "is different when class is different" do
-      ZendeskAPI::TestResource.new(client, :id => 2).should_not == ZendeskAPI::TestResource::TestChild.new(client, :id => 2)
+    it "is same when class is Data" do
+      ZendeskAPI::TestResource.new(client, :id => 2).should == ZendeskAPI::TestResource::TestChild.new(client, :id => 2)
+    end
+
+    it "is same when class is Integer" do
+      ZendeskAPI::TestResource.new(client, :id => 2).should == 2
+    end
+
+    it "is different when class is Integer" do
+      ZendeskAPI::TestResource.new(client, :id => 2).should_not == 3
     end
 
     it "is different when other is no resource" do
