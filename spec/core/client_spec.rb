@@ -39,15 +39,55 @@ describe ZendeskAPI::Client do
       end
     end
 
-    context "#token" do
-      context "with a username with /token" do
-        subject do
-          ZendeskAPI::Client.new do |config|
-            config.url = "https://example.zendesk.com"
-            config.username = "hello/token"
-            config.token = "token"
-          end.config
+    context "basic_auth" do
+      subject do
+        ZendeskAPI::Client.new do |config|
+          config.url = "https://example.zendesk.com"
+          config.username = "hello"
+          config.password = "token"
         end
+      end
+
+      it "should build basic auth middleware" do
+        subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication).should_not be_nil
+      end
+
+      it "should not build token middleware" do
+        subject.connection.builder.handlers.index(Faraday::Request::TokenAuthentication).should be_nil
+      end
+    end
+
+    context "access token" do
+      subject do
+        ZendeskAPI::Client.new do |config|
+          config.url = "https://example.zendesk.com"
+          config.access_token = "hello"
+        end
+      end
+
+      it "should not build basic auth middleware" do
+        subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication).should be_nil
+      end
+
+      it "should build token middleware" do
+        subject.connection.builder.handlers.index(Faraday::Request::TokenAuthentication).should_not be_nil
+      end
+    end
+
+    context "#token" do
+      let(:client) do
+        ZendeskAPI::Client.new do |config|
+          config.url = "https://example.zendesk.com"
+          config.username = username
+          config.token = "token"
+        end
+      end
+
+      subject { client.config }
+      let(:username) { "hello" }
+
+      context "with a username with /token" do
+        let(:username) { "hello/token" }
 
         it "should not add /token to the username" do
           subject.username.should == "hello/token"
@@ -55,12 +95,12 @@ describe ZendeskAPI::Client do
       end
 
       context "with no password" do
-        subject do
-          ZendeskAPI::Client.new do |config|
-            config.url = "https://example.zendesk.com"
-            config.username = "hello"
-            config.token = "token"
-          end.config
+        it "should build basic auth middleware" do
+          client.connection.builder.handlers.index(Faraday::Request::BasicAuthentication).should_not be_nil
+        end
+
+        it "should not build token middleware" do
+          client.connection.builder.handlers.index(Faraday::Request::TokenAuthentication).should be_nil
         end
 
         it "should copy token to password" do

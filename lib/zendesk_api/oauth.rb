@@ -9,10 +9,13 @@ module ZendeskAPI
 
     module Methods
       def oauth_client
-        @oauth_client ||= ::OAuth2::Client.new(options.fetch(:client_id), options.fetch(:client_secret),
+        @oauth_client ||= ::OAuth2::Client.new(
+          options.fetch(:client_id),
+          options.fetch(:client_secret),
           :site          => client.config.url,
           :authorize_url => '/oauth/grants',
-          :token_url     => '/oauth/tokens')
+          :token_url     => '/oauth/tokens'
+        )
       end
 
       def options
