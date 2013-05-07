@@ -30,8 +30,6 @@ module ZendeskAPI
 
     # @private
     module ClassMethods
-      include Rescue
-
       def self.extended(klass)
         klass.extend Has
         klass.extend HasMany
@@ -112,10 +110,8 @@ module ZendeskAPI
             elsif found = method_missing(association[:name].to_sym)
               wrap_resource(found, association, :include_key => association[:include_key])
             elsif klass.superclass == DataResource && !association[:inline]
-              rescue_client_error do
-                response = @client.connection.get(instance_association.generate_path(:with_parent => true))
-                klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
-              end
+              response = @client.connection.get(instance_association.generate_path(:with_parent => true))
+              klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
             end
 
             send("#{association[:id_column]}=", resource.id) if resource && has_key?(association[:id_column])

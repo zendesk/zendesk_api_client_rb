@@ -99,7 +99,7 @@ describe ZendeskAPI::Resource do
     subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
     before(:each) do
-      subject.should_receive(:save).and_return(false)
+      stub_request(:put, %r{test_resources/1}).to_return(:status => 422)
     end
 
     it "should raise if save fails" do
@@ -341,8 +341,8 @@ describe ZendeskAPI::Resource do
             stub_request(verb.to_sym, %r{test_resources/1/#{method}}).to_return(:status => 500)
           end
 
-          it "should return false" do
-            expect { silence_logger{ subject.send(method).should be_false } }.to_not raise_error
+          it "should raise" do
+            expect { silence_logger{ subject.send(method) } }.to raise_error(ZendeskAPI::Error::ClientError)
           end
         end
       end

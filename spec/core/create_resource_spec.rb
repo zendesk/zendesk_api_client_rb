@@ -28,7 +28,7 @@ describe ZendeskAPI::CreateResource do
     subject { ZendeskAPI::TestResource }
 
     before(:each) do
-      subject.should_receive(:create).and_return(nil)
+      stub_request(:post, %r{test_resources}).to_return(:status => 500)
     end
 
     it "should raise if save fails" do
