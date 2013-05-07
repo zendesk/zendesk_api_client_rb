@@ -170,14 +170,24 @@ module ZendeskAPI
 
     # Calls #each on every page with the passed in block
     # @param [Block] block Passed to #each
-    def each_page!(start_page = @options["page"], &block)
-      _each_page(start_page, :bang, &block)
+    def all!(start_page = @options["page"], &block)
+      _all(start_page, :bang, &block)
     end
 
     # Calls #each on every page with the passed in block
     # @param [Block] block Passed to #each
-    def each_page(start_page = @options["page"], &block)
-      _each_page(start_page, &block)
+    def all(start_page = @options["page"], &block)
+      _all(start_page, &block)
+    end
+
+    def each_page!(*args, &block)
+      warn "ZendeskAPI::Collection#each_page! is deprecated, please use ZendeskAPI::Collection#all!"
+      all!(*args, &block)
+    end
+
+    def each_page(*args, &block)
+      warn "ZendeskAPI::Collection#each_page is deprecated, please use ZendeskAPI::Collection#all"
+      all(*args, &block)
     end
 
     # Replaces the current (loaded or not) resources with the passed in collection
@@ -269,7 +279,7 @@ module ZendeskAPI
       end
     end
 
-    def _each_page(start_page = @options["page"], bang = false, &block)
+    def _all(start_page = @options["page"], bang = false, &block)
       page(start_page)
       clear_cache
 
