@@ -123,6 +123,16 @@ module ZendeskAPI
     end
 
     alias :to_param :attributes
+
+    private
+
+    def attributes_for_save
+      if self.class.unnested_params
+        attributes.changes
+      else
+        { self.class.singular_resource_name.to_sym => attributes.changes }
+      end
+    end
   end
 
   # Indexable resource

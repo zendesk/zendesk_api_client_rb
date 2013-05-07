@@ -20,12 +20,7 @@ module ZendeskAPI
       save_associations
 
       @response = @client.connection.send(method, req_path) do |req|
-        req.body = if self.class.unnested_params
-          attributes.changes
-        else
-          {self.class.singular_resource_name.to_sym => attributes.changes}
-        end
-
+        req.body = attributes_for_save
         req.body.merge!(@global_params)
       end
 

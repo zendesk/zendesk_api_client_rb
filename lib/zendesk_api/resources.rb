@@ -285,7 +285,16 @@ module ZendeskAPI
 
   class ViewCount < DataResource; end
 
-  class View < Resource
+  class Rule < Resource
+    private
+
+    def attributes_for_save(resource)
+      to_save = [:conditions, :all, :any, :output].inject({}) {|h,k| h.merge(k => resource.attributes[k])}
+      { singular_resource_name.to_sym => to_save }
+    end
+  end
+
+  class View < Rule
     has_many :tickets, :class => Ticket
     has_many :feed, :class => Ticket, :path => "feed"
 
@@ -298,15 +307,15 @@ module ZendeskAPI
     end
   end
 
-  class Trigger < Resource
+  class Trigger < Rule
     has :execution, :class => RuleExecution
   end
 
-  class Automation < Resource
+  class Automation < Rule
     has :execution, :class => RuleExecution
   end
 
-  class Macro < Resource
+  class Macro < Rule
     has :execution, :class => RuleExecution
   end
 
