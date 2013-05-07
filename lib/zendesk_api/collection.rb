@@ -43,23 +43,20 @@ module ZendeskAPI
       end
     end
 
-    %w{create find update destroy}.each do |deferrable|
+    methods = %w{create find update destroy}
+    methods += methods.map {|method| method + "!"}
+    methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
       # @param [Hash] options Options or attributes to pass
       define_method deferrable do |*args|
+        unless @resource_class.respond_to?(deferrable)
+          raise NoMethodError.new("undefined method \"#{deferrable}\" for #{@resource_class}", deferrable, args)
+        end
+
         opts = args.last.is_a?(Hash) ? args.pop : {}
         opts.merge!(:association => @association)
 
         @resource_class.send(deferrable, @client, @options.merge(opts))
-      end
-
-      # Passes arguments and the proper path to the resource class method.
-      # @param [Hash] options Options or attributes to pass
-      define_method "#{deferrable}!" do |*args|
-        opts = args.last.is_a?(Hash) ? args.pop : {}
-        opts.merge!(:association => @association)
-
-        @resource_class.send("#{deferrable}!", @client, @options.merge(opts))
       end
     end
 
@@ -102,33 +99,13 @@ module ZendeskAPI
     # Saves all newly created resources stored in this collection.
     # @return [Collection] self
     def save
-      if @resources
-        @resources.map! do |item|
-          if item.respond_to?(:save) && !item.changes.empty?
-            item.save
-          end
-
-          item
-        end
-      end
-
-      self
+      _save
     end
 
     # Saves all newly created resources stored in this collection.
     # @return [Collection] self
     def save!
-      if @resources
-        @resources.map! do |item|
-          if item.respond_to?(:save!) && !item.changes.empty?
-            item.save!
-          end
-
-          item
-        end
-      end
-
-      self
+      _save(:save!)
     end
 
     # Adds an item (or items) to the list of side-loaded resources to request
@@ -194,43 +171,13 @@ module ZendeskAPI
     # Calls #each on every page with the passed in block
     # @param [Block] block Passed to #each
     def each_page!(start_page = @options["page"], &block)
-      page(start_page)
-      clear_cache
-
-      while (fetch! && !empty?)
-        each do |resource|
-          arguments = [resource, @options["page"] || 1]
-
-          if block.arity >= 0
-            arguments = arguments.take(block.arity)
-          end
-
-          block.call(*arguments)
-        end
-
-        self.next
-      end
+      _each_page(start_page, :bang, &block)
     end
 
     # Calls #each on every page with the passed in block
     # @param [Block] block Passed to #each
     def each_page(start_page = @options["page"], &block)
-      page(start_page)
-      clear_cache
-
-      while !empty?
-        each do |resource|
-          arguments = [resource, @options["page"] || 1]
-
-          if block.arity >= 0
-            arguments = arguments.take(block.arity)
-          end
-
-          block.call(*arguments)
-        end
-
-        self.next
-      end
+      _each_page(start_page, &block)
     end
 
     # Replaces the current (loaded or not) resources with the passed in collection
@@ -320,6 +267,39 @@ module ZendeskAPI
       elsif @prev_page =~ /page=(\d+)/
         @options["page"] = $1.to_i + 1
       end
+    end
+
+    def _each_page(start_page = @options["page"], bang = false, &block)
+      page(start_page)
+      clear_cache
+
+      while (bang ? fetch! : fetch) && !empty?
+        each do |resource|
+          arguments = [resource, @options["page"] || 1]
+
+          if block.arity >= 0
+            arguments = arguments.take(block.arity)
+          end
+
+          block.call(*arguments)
+        end
+
+        self.next
+      end
+    end
+
+    def _save(method = :save)
+      if @resources
+        @resources.map! do |item|
+          if item.respond_to?(method) && !item.changes.empty?
+            item.send(method)
+          end
+
+          item
+        end
+      end
+
+      self
     end
 
     ## Initialize

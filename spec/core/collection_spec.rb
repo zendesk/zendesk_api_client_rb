@@ -44,6 +44,20 @@ describe ZendeskAPI::Collection do
       subject.update(:id => 1)
     end
 
+    context "when class doesn't have method" do
+      subject do
+        ZendeskAPI::Collection.new(client, ZendeskAPI::NilDataResource)
+      end
+
+      it "should raise NoMethodError" do
+        expect { subject.create }.to raise_error(NoMethodError)
+      end
+
+      it "should raise NoMethodError" do
+        expect { subject.create! }.to raise_error(NoMethodError)
+      end
+    end
+
     context "with a class with a parent" do
       let(:association) do
         ZendeskAPI::Association.new(:class => ZendeskAPI::TestResource::TestChild,
