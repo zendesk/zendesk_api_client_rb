@@ -39,7 +39,6 @@ module ZendeskAPI
 
     def initialize
       @client_options = {}
-      @oauth_options = {}
 
       self.cache = ZendeskAPI::LRUCache.new(1000)
     end

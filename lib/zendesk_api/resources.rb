@@ -386,25 +386,6 @@ module ZendeskAPI
 
   class OAuthToken < ReadResource
     include Destroy
-
     namespace "oauth"
-
-    def self.create(client, options = {})
-      token = new(client, :association => options.delete(:association))
-
-      response = client.connection.post("/oauth/tokens") do |request|
-        if client.config.client_secret && client.config.client_id
-          if options[:code] && options[:redirect_uri]
-          elsif options[:refresh_token]
-          else
-          end
-        elsif client.config.username && client.config.password
-        else
-          raise ArgumentError, "could not create token request"
-        end
-
-        request.body = { :scopes => options.delete(:scopes) || [] }
-      end
-    end
   end
 end
