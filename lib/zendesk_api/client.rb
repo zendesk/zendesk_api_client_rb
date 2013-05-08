@@ -21,8 +21,6 @@ module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
   # Can also be used as an accessor to resource collections.
   class Client
-    include OAuth
-
     # @return [Configuration] Config instance
     attr_reader :config
     # @return [Array] Custom response callbacks
