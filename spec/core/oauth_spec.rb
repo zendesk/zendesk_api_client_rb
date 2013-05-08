@@ -4,23 +4,19 @@ describe ZendeskAPI::OAuth do
   subject { client }
 
   context "with :client_id" do
-    before { subject.config.oauth_options[:client_id] = "id" }
-
-    it "should raise an error if no :client_secret" do
-      expect { subject.oauth }.to raise_error(ArgumentError)
+    it "should not raise an error if no :client_secret" do
+      expect { subject.oauth(:client_id => "id") }.to_not raise_error(ArgumentError)
     end
   end
 
   context "with :client_secret" do
-    before { subject.config.oauth_options[:client_secret] = "secret" }
-
     it "should raise an error if no :client_id" do
-      expect { subject.oauth }.to raise_error(ArgumentError)
+      expect { subject.oauth(:client_secret => "secret") }.to raise_error(ArgumentError)
     end
   end
 
   context "valid" do
-    before do
+    let(:options) do
       subject.config.oauth_options = {
         :client_id => "identifier",
         :client_secret => "secret"
