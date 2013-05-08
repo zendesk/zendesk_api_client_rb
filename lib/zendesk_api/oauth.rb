@@ -2,37 +2,28 @@ require 'oauth2'
 
 module ZendeskAPI
   module OAuth
-    OAuthProxy = Struct.new(:client)
     def oauth
-      @oauth ||= OAuthProxy.new(self).extend(Methods)
+      @oauth ||= ::OAuth2::Client.new(
+        config.oauth_options.fetch(:client_id),
+        config.oauth_options.fetch(:client_secret),
+        :site          => strip_path(config.url),
+        :authorize_url => '/oauth/grants',
+        :token_url     => '/oauth/tokens'
+      )
+    rescue KeyError => e
+      raise ArgumentError, "Required OAuth parameter missing: #{e.message}"
     end
 
-    module Methods
-      def oauth_client
-        @oauth_client ||= ::OAuth2::Client.new(
-          options.fetch(:client_id),
-          options.fetch(:client_secret),
-          :site          => client.config.url,
-          :authorize_url => '/oauth/grants',
-          :token_url     => '/oauth/tokens'
-        )
-      end
+    private
 
-      def options
-        client.config.oauth_options
-      end
+    def strip_path(url)
+      uri = URI.parse(url)
+      uri.path = ""
+      uri.fragment = uri.query = nil
 
-      # Grab the token
-      def get_token(url)
-      end
-
-      # Return a URL to redirect to
-      def authorize_url(options = {})
-      end
-
-      # Return current token's scopes
-      def scopes
-      end
+      return uri.to_s
+    rescue URI::Error => e
+      url
     end
   end
 end
