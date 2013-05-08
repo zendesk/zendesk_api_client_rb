@@ -34,7 +34,7 @@ module ZendeskAPI::Server
         @error = "The connection failed"
       rescue Faraday::Error::ClientError => e
         set_response(e.response) if e.response
-      rescue JSON::ParserError
+      rescue MultiJson::LoadError
         @error = "The JSON you attempted to send was invalid"
       rescue URI::InvalidURIError, ArgumentError
         @error = "Please enter a valid URL"
@@ -52,7 +52,7 @@ module ZendeskAPI::Server
         end
 
         if @method != :get && @json && !@json.empty?
-          request.body = JSON.parse(@json)
+          request.body = MultiJson.load(@json)
         end
 
         set_request(request.to_env(client.connection))
@@ -89,7 +89,7 @@ HTTP/1.1 #{response[:status]}
 #{map_headers(response[:headers])}
 
 
-#{CodeRay.scan(JSON.pretty_generate(response[:body]), :json).span}
+#{CodeRay.scan(MultiJson.dump(response[:body], :pretty => true), :json).span}
       END
 
       @user_response_hash = { :status => response[:status], :headers => response[:headers], :body => response[:body] }

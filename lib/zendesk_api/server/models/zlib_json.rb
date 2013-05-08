@@ -2,7 +2,7 @@ module ZendeskAPI::Server
   class ZlibJSON < Hash
     class << self
       def demongoize(serialized_object)
-        JSON.parse(Zlib.inflate(serialized_object.to_s)).symbolize_keys
+        MultiJson.load(Zlib.inflate(serialized_object.to_s), :symbolize_keys => true)
       end
 
       def mongoize(input_hash)

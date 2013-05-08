@@ -68,7 +68,7 @@ module TestHelper
   end
 
   def json(body = {})
-    JSON.dump(body)
+    MultiJson.dump(body)
   end
 
   def stub_json_request(verb, path_matcher, body = json, options = {})

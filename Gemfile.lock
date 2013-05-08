@@ -12,8 +12,8 @@ PATH
       faraday_middleware (>= 0.8.7)
       hashie (>= 1.2)
       inflection
-      json
       mime-types
+      multi_json
       multipart-post
       oauth2
 
@@ -39,7 +39,6 @@ GEM
     coderay (1.0.9)
     coderay_bash (1.0.5)
       coderay (>= 1.0)
-    columnize (0.3.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -47,12 +46,6 @@ GEM
     crack (0.3.2)
     daemons (1.1.9)
     database_cleaner (0.9.1)
-    debugger (1.5.0)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.2.0)
-    debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.2.0)
     diff-lcs (1.2.2)
     eventmachine (1.0.3)
     eventmachine (1.0.3-java)
@@ -63,16 +56,15 @@ GEM
     fssm (0.2.10)
     haml (4.0.1)
       tilt
-    hashie (2.0.3)
+    hashie (2.0.4)
     httpauth (0.2.0)
     i18n (0.6.1)
     inflection (1.0.0)
     jruby-openssl (0.8.7)
       bouncy-castle-java (>= 1.5.0147)
-    json (1.7.7)
     jwt (0.1.8)
       multi_json (>= 1.5)
-    mime-types (1.22)
+    mime-types (1.23)
     mongoid (3.1.2)
       activemodel (~> 3.2)
       moped (~> 1.4.2)
@@ -147,11 +139,9 @@ DEPENDENCIES
   coderay_bash
   compass
   database_cleaner
-  debugger
   haml
   jruby-openssl
   mongoid
-  multi_json
   multipart-post!
   newrelic_rpm
   rack-ssl-enforcer
