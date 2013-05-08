@@ -84,7 +84,7 @@ module ZendeskAPI
 
       config.retry = !!config.retry # nil -> false
 
-      set_token_auth unless config.access_token
+      set_token_auth
 
       set_default_logger
       add_warning_callback
