@@ -7,7 +7,7 @@ require 'zendesk_api/server/base'
 require 'database_cleaner'
 require 'rack/test'
 require 'webmock'
-require 'json'
+require 'multi_json'
 
 module TestHelper
   def app

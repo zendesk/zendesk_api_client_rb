@@ -8,7 +8,7 @@ require 'haml'
 require 'coderay'
 require 'coderay_bash'
 
-require 'json'
+require 'multi_json'
 require 'redcarpet'
 
 require 'digest/md5'

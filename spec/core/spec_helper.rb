@@ -13,7 +13,7 @@ require 'zendesk_api'
 require 'vcr'
 require 'logger'
 require 'stringio'
-require 'json'
+require 'multi_json'
 
 require File.join(File.dirname(__FILE__), '..', 'macros', 'resource_macros')
 require File.join(File.dirname(__FILE__), '..', 'fixtures', 'zendesk')
