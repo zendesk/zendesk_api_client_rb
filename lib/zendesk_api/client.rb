@@ -121,12 +121,6 @@ module ZendeskAPI
     # Retry middleware if retry is true
     def build_connection
       Faraday.new(config.options) do |builder|
-        if config.access_token
-          builder.use FaradayMiddleware::OAuth2, config.access_token
-        else
-          builder.use Faraday::Request::BasicAuthentication, config.username, config.password
-        end
-
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
