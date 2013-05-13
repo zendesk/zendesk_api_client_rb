@@ -137,7 +137,7 @@ module ZendeskAPI
 
         # request
         if config.access_token
-          builder.use Faraday::Request::TokenAuthentication, config.access_token
+          builder.authorization("Bearer", config.access_token)
         else
           builder.use Faraday::Request::BasicAuthentication, config.username, config.password
         end
