@@ -100,9 +100,9 @@ describe ZendeskAPI::Ticket do
   end
 
   describe "import race condition" do
-    it "should handle it" do
-      email = "test+#{rand(100000)}@test.com"
+    let(:email) { "test+#{rand(100000)}@test.com" }
 
+    it "should handle it" do
       VCR.use_cassette("ticket_import_race") do
         threads = []
 
@@ -120,6 +120,12 @@ describe ZendeskAPI::Ticket do
           thread.join(3)
           thread[:response][:status]
         end
+
+        user = client.users.detect {|user| user.email == email}
+        user.should_not be_nil
+
+        user.requested_tickets.each(&:destroy)
+        user.destroy
 
         threads.all? {|st| [201, 422, 409].include?(st)}.should be_true
       end
