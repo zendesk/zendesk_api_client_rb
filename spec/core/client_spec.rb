@@ -53,7 +53,7 @@ describe ZendeskAPI::Client do
       end
 
       it "should not build token middleware" do
-        subject.connection.headers["Authorization"].should_not match(/Bearer/)
+        subject.connection.headers["Authorization"].should be_nil
       end
     end
 
