@@ -53,7 +53,7 @@ describe ZendeskAPI::Client do
       end
 
       it "should not build token middleware" do
-        subject.connection.builder.handlers.index(Faraday::Request::TokenAuthentication).should be_nil
+        subject.connection.headers["Authorization"].should_not match(/Bearer/)
       end
     end
 
@@ -70,7 +70,7 @@ describe ZendeskAPI::Client do
       end
 
       it "should build token middleware" do
-        subject.connection.builder.handlers.index(Faraday::Request::TokenAuthentication).should_not be_nil
+        subject.connection.headers["Authorization"].should match(/Bearer/)
       end
     end
 
