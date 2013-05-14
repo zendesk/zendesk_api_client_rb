@@ -35,4 +35,6 @@ group :console do
   gem "ripl"
 end
 
+gem "json", :group => :test, :platform => :ruby_18
+
 gemspec
