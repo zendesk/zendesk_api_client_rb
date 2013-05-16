@@ -6,7 +6,7 @@
 <title>
   Class: ZendeskAPI::Configuration
   
-    &mdash; Documentation by YARD 0.8.4.1
+    &mdash; Documentation by YARD 0.8.5.2
   
 </title>
 
@@ -116,6 +116,33 @@
 
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#access_token-instance_method" title="#access_token (instance method)">- (String) <strong>access_token</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>OAuth2 access_token.</p>
+</div></span>
+  
+</li>
+
     
       <li class="public ">
   <span class="summary_signature">
@@ -485,16 +512,18 @@
       <pre class="lines">
 
 
-37
-38
-39
-40</pre>
+40
+41
+42
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/configuration.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/configuration.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@client_options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_cache'>cache</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>LRUCache</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>1000</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -508,9 +537,70 @@
     <h2>Instance Attribute Details</h2>
     
       
-      <span id="adapter=-instance_method"></span>
+      <span id="access_token=-instance_method"></span>
       <div class="method_details first">
-  <h3 class="signature first" id="adapter-instance_method">
+  <h3 class="signature first" id="access_token-instance_method">
+  
+    - (<tt>String</tt>) <strong>access_token</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>OAuth2 access_token</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>OAuth2 access_token</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/configuration.rb', line 32</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_access_token'>access_token</span>
+  <span class='ivar'>@access_token</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="adapter=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="adapter-instance_method">
   
     - (<tt>Symbol</tt>) <strong>adapter</strong> 
   
@@ -676,12 +766,12 @@ ActiveSupport::Cache::MemoryStore.new)</p>
       <pre class="lines">
 
 
-35
-36
-37</pre>
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/configuration.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/configuration.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_cache'>cache</span>
   <span class='ivar'>@cache</span>
@@ -1169,19 +1259,19 @@ ActiveSupport::Cache::MemoryStore.new)</p>
       <pre class="lines">
 
 
-45
-46
-47
-48
 49
 50
 51
 52
 53
-54</pre>
+54
+55
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/configuration.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/configuration.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_options'>options</span>
   <span class='lbrace'>{</span>
@@ -1203,9 +1293,9 @@ ActiveSupport::Cache::MemoryStore.new)</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Feb 11 17:45:41 2013 by
+  Generated on Wed May 15 18:59:36 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.4.1 (ruby-1.9.3).
+  0.8.5.2 (ruby-1.9.3).
 </div>
 
   </body>

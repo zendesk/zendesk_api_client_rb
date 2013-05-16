@@ -6,7 +6,7 @@
 <title>
   Module: ZendeskAPI::Update
   
-    &mdash; Documentation by YARD 0.8.4.1
+    &mdash; Documentation by YARD 0.8.5.2
   
 </title>
 
@@ -109,31 +109,283 @@
 
 
 
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#clear_associations-instance_method" title="#clear_associations (instance method)">- (Object) <strong>clear_associations</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Save.html#clear_associations-instance_method" title="ZendeskAPI::Save#clear_associations (method)">Save</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Removes all cached associations.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save-instance_method" title="#save (instance method)">- (Object) <strong>save</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Save.html#save-instance_method" title="ZendeskAPI::Save#save (method)">Save</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Saves, returning false if it fails and attaching the errors.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save%21-instance_method" title="#save! (instance method)">- (Boolean) <strong>save!</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Save.html#save%21-instance_method" title="ZendeskAPI::Save#save! (method)">Save</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>If this resource hasn't been deleted, then create or save it.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save_associations-instance_method" title="#save_associations (instance method)">- (Object) <strong>save_associations</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="Save.html#save_associations-instance_method" title="ZendeskAPI::Save#save_associations (method)">Save</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Saves associations Takes into account inlining, collections, and id setting
+on the parent resource.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
 
   
   
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="clear_associations-instance_method">
   
+    - (<tt>Object</tt>) <strong>clear_associations</strong> 
   
-  
-  
-  <h2>Method Summary</h2>
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="Save.html" title="ZendeskAPI::Save (module)">Save</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Save.html#clear_associations-instance_method" title="ZendeskAPI::Save#clear_associations (method)">#clear_associations</a></span>, <span class='object_link'><a href="Save.html#save-instance_method" title="ZendeskAPI::Save#save (method)">#save</a></span>, <span class='object_link'><a href="Save.html#save%21-instance_method" title="ZendeskAPI::Save#save! (method)">#save!</a></span>, <span class='object_link'><a href="Save.html#save_associations-instance_method" title="ZendeskAPI::Save#save_associations (method)">#save_associations</a></span></p>
 
   
+
   
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Save.html#clear_associations-instance_method" title="ZendeskAPI::Save#clear_associations (method)">Save</a></span>
+    </span>
   
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Removes all cached associations</p>
+
+
+  </div>
+</div>
+<div class="tags">
   
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="save-instance_method">
   
+    - (<tt>Object</tt>) <strong>save</strong>(options = {}) 
   
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Save.html#save-instance_method" title="ZendeskAPI::Save#save (method)">Save</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Saves, returning false if it fails and attaching the errors</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="save!-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>save!</strong>(options = {}) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Save.html#save%21-instance_method" title="ZendeskAPI::Save#save! (method)">Save</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>If this resource hasn't been deleted, then create or save it. Executes a
+POST if it is a <span class='object_link'><a href="Data.html#new_record%3F-instance_method" title="ZendeskAPI::Data#new_record? (method)">Data#new_record?</a></span>, otherwise a PUT. Merges returned
+attributes on success.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Success?</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="save_associations-instance_method">
+  
+    - (<tt>Object</tt>) <strong>save_associations</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Save.html#save_associations-instance_method" title="ZendeskAPI::Save#save_associations (method)">Save</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Saves associations Takes into account inlining, collections, and id setting
+on the parent resource.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+  </div>
 
 </div>
 
     <div id="footer">
-  Generated on Mon Feb 11 17:45:36 2013 by
+  Generated on Wed May 15 18:59:28 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.4.1 (ruby-1.9.3).
+  0.8.5.2 (ruby-1.9.3).
 </div>
 
   </body>

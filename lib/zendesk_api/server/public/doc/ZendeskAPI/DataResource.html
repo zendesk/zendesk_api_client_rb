@@ -6,7 +6,7 @@
 <title>
   Class: ZendeskAPI::DataResource
   
-    &mdash; Documentation by YARD 0.8.4.1
+    &mdash; Documentation by YARD 0.8.5.2
   
 </title>
 
@@ -100,9 +100,7 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/zendesk_api/resource.rb<span class="defines">,<br />
-  lib/zendesk_api/console/extensions.rb</span>
-</dd>
+    <dd class="r1 last">lib/zendesk_api/resource.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -128,6 +126,74 @@
 
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#association-instance_method" title="#association (instance method)">- (ZendeskAPI::Association) <strong>association</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="Data.html#association-instance_method" title="ZendeskAPI::Data#association (method)">Data</a></span>
+    </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The association.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#attributes-instance_method" title="#attributes (instance method)">- (Hash) <strong>attributes</strong> </a>
+    
+
+    
+      (also: #to_param)
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="Data.html#attributes-instance_method" title="ZendeskAPI::Data#attributes (method)">Data</a></span>
+    </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The resource's attributes.</p>
+</div></span>
+  
+</li>
+
     
       <li class="public ">
   <span class="summary_signature">
@@ -183,29 +249,125 @@
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#errors-instance_method" title="#errors (instance method)">- (Array) <strong>errors</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="Data.html#errors-instance_method" title="ZendeskAPI::Data#errors (method)">Data</a></span>
+    </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The last received errors.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#response-instance_method" title="#response (instance method)">- (Object) <strong>response</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="Data.html#response-instance_method" title="ZendeskAPI::Data#response (method)">Data</a></span>
+    </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Place to dump the last response.</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
 
-  
-  
-  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="Data.html" title="ZendeskAPI::Data (class)">Data</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Data.html#association-instance_method" title="ZendeskAPI::Data#association (method)">#association</a></span>, <span class='object_link'><a href="Data.html#attributes-instance_method" title="ZendeskAPI::Data#attributes (method)">#attributes</a></span>, <span class='object_link'><a href="Data.html#response-instance_method" title="ZendeskAPI::Data#response (method)">#response</a></span></p>
-
-
 
   
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#delete-class_method" title="#delete (class method)">+ (Object) <strong>delete</strong>(method) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      extended
+      from <span class='object_link'><a href="Verbs.html#delete-class_method" title="ZendeskAPI::Verbs#delete (method)">Verbs</a></span>
+    </span>
   
   
   
   
   
-  <h2>Method Summary</h2>
   
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="Verbs.html" title="ZendeskAPI::Verbs (module)">Verbs</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Verbs.html#delete-instance_method" title="ZendeskAPI::Verbs#delete (method)">delete</a></span>, <span class='object_link'><a href="Verbs.html#post-instance_method" title="ZendeskAPI::Verbs#post (method)">post</a></span>, <span class='object_link'><a href="Verbs.html#put-instance_method" title="ZendeskAPI::Verbs#put (method)">put</a></span></p>
+  
 
   
+    <span class="summary_desc"><div class='inline'>
+<p>Executes a delete using the passed in method as a path.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#post-class_method" title="#post (class method)">+ (Object) <strong>post</strong>(method) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      extended
+      from <span class='object_link'><a href="Verbs.html#post-class_method" title="ZendeskAPI::Verbs#post (method)">Verbs</a></span>
+    </span>
   
   
   
@@ -213,14 +375,47 @@
   
   
   
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Executes a post using the passed in method as a path.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#put-class_method" title="#put (class method)">+ (Object) <strong>put</strong>(method) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      extended
+      from <span class='object_link'><a href="Verbs.html#put-class_method" title="ZendeskAPI::Verbs#put (method)">Verbs</a></span>
+    </span>
   
   
   
   
   
   
-  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Data.html" title="ZendeskAPI::Data (class)">Data</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Data.html#%2F-instance_method" title="ZendeskAPI::Data#/ (method)">#/</a></span>, <span class='object_link'><a href="Data.html#%3D%3D-instance_method" title="ZendeskAPI::Data#== (method)">#==</a></span>, <span class='object_link'><a href="Data.html#format-class_method" title="ZendeskAPI::Data.format (method)">format</a></span>, <span class='object_link'><a href="Data.html#id-instance_method" title="ZendeskAPI::Data#id (method)">#id</a></span>, <span class='object_link'><a href="Data.html#initialize-instance_method" title="ZendeskAPI::Data#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="Data.html#method_missing-instance_method" title="ZendeskAPI::Data#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="Data.html#new_record%3F-instance_method" title="ZendeskAPI::Data#new_record? (method)">#new_record?</a></span>, <span class='object_link'><a href="Data.html#path-instance_method" title="ZendeskAPI::Data#path (method)">#path</a></span>, <span class='object_link'><a href="Data.html#resource_name-class_method" title="ZendeskAPI::Data.resource_name (method)">resource_name</a></span>, <span class='object_link'><a href="Data.html#singular_resource_name-class_method" title="ZendeskAPI::Data.singular_resource_name (method)">singular_resource_name</a></span>, <span class='object_link'><a href="Data.html#subclasses-class_method" title="ZendeskAPI::Data.subclasses (method)">subclasses</a></span>, <span class='object_link'><a href="Data.html#to_json-instance_method" title="ZendeskAPI::Data#to_json (method)">#to_json</a></span></p>
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Executes a put using the passed in method as a path.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
 
   
   
@@ -248,9 +443,109 @@
     <h2>Instance Attribute Details</h2>
     
       
-      <span id="error=-instance_method"></span>
+      <span id="association=-instance_method"></span>
       <div class="method_details first">
-  <h3 class="signature first" id="error-instance_method">
+  <h3 class="signature first" id="association-instance_method">
+  
+    - (<tt><span class='object_link'>ZendeskAPI::Association</span></tt>) <strong>association</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="Data.html#association-instance_method" title="ZendeskAPI::Data#association (method)">Data</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The association</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'>ZendeskAPI::Association</span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The association</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="attributes-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>attributes</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='to_param-instance_method'>to_param</span></span>
+    </span>
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="Data.html#attributes-instance_method" title="ZendeskAPI::Data#attributes (method)">Data</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The resource's attributes</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The resource's attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="error=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="error-instance_method">
   
     - (<tt>Object</tt>) <strong>error</strong> 
   
@@ -275,12 +570,12 @@
       <pre class="lines">
 
 
-129
-130
-131</pre>
+158
+159
+160</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resource.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resource.rb', line 158</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_error'>error</span>
   <span class='ivar'>@error</span>
@@ -318,12 +613,12 @@
       <pre class="lines">
 
 
-129
-130
-131</pre>
+158
+159
+160</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resource.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resource.rb', line 158</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_error_message'>error_message</span>
   <span class='ivar'>@error_message</span>
@@ -333,15 +628,195 @@
 </table>
 </div>
     
+      
+      <span id="errors=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="errors-instance_method">
+  
+    - (<tt>Array</tt>) <strong>errors</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="Data.html#errors-instance_method" title="ZendeskAPI::Data#errors (method)">Data</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The last received errors</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The last received errors</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="response=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="response-instance_method">
+  
+    - (<tt>Object</tt>) <strong>response</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="Data.html#response-instance_method" title="ZendeskAPI::Data#response (method)">Data</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Place to dump the last response</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
   </div>
 
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="delete-class_method">
+  
+    + (<tt>Object</tt>) <strong>delete</strong>(method) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Verbs.html#delete-class_method" title="ZendeskAPI::Verbs#delete (method)">Verbs</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Executes a delete using the passed in method as a path. Reloads the
+resource's attributes if any are in the response body.</p>
+
+<p>Created method takes an optional options hash. Valid options to be passed
+in to the created method: reload (for caching, default: false)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="post-class_method">
+  
+    + (<tt>Object</tt>) <strong>post</strong>(method) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Verbs.html#post-class_method" title="ZendeskAPI::Verbs#post (method)">Verbs</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Executes a post using the passed in method as a path. Reloads the
+resource's attributes if any are in the response body.</p>
+
+<p>Created method takes an optional options hash. Valid options to be passed
+in to the created method: reload (for caching, default: false)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="put-class_method">
+  
+    + (<tt>Object</tt>) <strong>put</strong>(method) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="Verbs.html#put-class_method" title="ZendeskAPI::Verbs#put (method)">Verbs</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Executes a put using the passed in method as a path. Reloads the resource's
+attributes if any are in the response body.</p>
+
+<p>Created method takes an optional options hash. Valid options to be passed
+in to the created method: reload (for caching, default: false)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+  </div>
 
 </div>
 
     <div id="footer">
-  Generated on Mon Feb 11 17:45:36 2013 by
+  Generated on Wed May 15 18:59:29 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.4.1 (ruby-1.9.3).
+  0.8.5.2 (ruby-1.9.3).
 </div>
 
   </body>

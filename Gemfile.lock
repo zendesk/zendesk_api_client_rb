@@ -60,6 +60,7 @@ GEM
     inflection (1.0.0)
     jruby-openssl (0.8.7)
       bouncy-castle-java (>= 1.5.0147)
+    json (1.8.0)
     mime-types (1.23)
     mongoid (3.1.2)
       activemodel (~> 3.2)
@@ -129,6 +130,7 @@ DEPENDENCIES
   database_cleaner
   haml
   jruby-openssl
+  json
   mongoid
   multipart-post!
   newrelic_rpm

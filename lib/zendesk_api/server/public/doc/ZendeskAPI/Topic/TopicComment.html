@@ -6,7 +6,7 @@
 <title>
   Class: ZendeskAPI::Topic::TopicComment
   
-    &mdash; Documentation by YARD 0.8.4.1
+    &mdash; Documentation by YARD 0.8.5.2
   
 </title>
 
@@ -115,44 +115,167 @@
 
 
 
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#association-instance_method" title="#association (instance method)">- (ZendeskAPI::Association) <strong>association</strong> </a>
+    
 
-
-  <h2>Instance Attribute Summary</h2>
+    
+  </span>
   
-  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="../Data.html" title="ZendeskAPI::Data (class)">Data</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Data.html#association-instance_method" title="ZendeskAPI::Data#association (method)">#association</a></span>, <span class='object_link'><a href="../Data.html#attributes-instance_method" title="ZendeskAPI::Data#attributes (method)">#attributes</a></span>, <span class='object_link'><a href="../Data.html#response-instance_method" title="ZendeskAPI::Data#response (method)">#response</a></span></p>
-
-
-
-  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="../Data.html#association-instance_method" title="ZendeskAPI::Data#association (method)">Data</a></span>
+    </span>
   
   
   
-  
-  
-  <h2>Method Summary</h2>
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Read.html" title="ZendeskAPI::Read (module)">Read</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Read.html#find-instance_method" title="ZendeskAPI::Read#find (method)">find</a></span></p>
-
+    
+    
   
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Destroy.html" title="ZendeskAPI::Destroy (module)">Destroy</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Destroy.html#destroy-instance_method" title="ZendeskAPI::Destroy#destroy (method)">#destroy</a></span>, <span class='object_link'><a href="../Destroy.html#destroyed%3F-instance_method" title="ZendeskAPI::Destroy#destroyed? (method)">#destroyed?</a></span></p>
 
   
+    <span class="summary_desc"><div class='inline'>
+<p>The association.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#attributes-instance_method" title="#attributes (instance method)">- (Hash) <strong>attributes</strong> </a>
+    
+
+    
+      (also: #to_param)
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="../Data.html#attributes-instance_method" title="ZendeskAPI::Data#attributes (method)">Data</a></span>
+    </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The resource's attributes.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#errors-instance_method" title="#errors (instance method)">- (Array) <strong>errors</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="../Data.html#errors-instance_method" title="ZendeskAPI::Data#errors (method)">Data</a></span>
+    </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The last received errors.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#response-instance_method" title="#response (instance method)">- (Object) <strong>response</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      inherited
+      from <span class='object_link'><a href="../Data.html#response-instance_method" title="ZendeskAPI::Data#response (method)">Data</a></span>
+    </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Place to dump the last response.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#find-class_method" title="#find (class method)">+ (Object) <strong>find</strong>(client, options = {}) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      extended
+      from <span class='object_link'><a href="../Read.html#find-class_method" title="ZendeskAPI::Read#find (method)">Read</a></span>
+    </span>
   
   
   
@@ -160,14 +283,258 @@
   
   
   
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Finds, returning nil if it fails.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#find%21-class_method" title="#find! (class method)">+ (Object) <strong>find!</strong>(client, options = {}) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      extended
+      from <span class='object_link'><a href="../Read.html#find%21-class_method" title="ZendeskAPI::Read#find! (method)">Read</a></span>
+    </span>
   
   
   
   
   
   
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Save.html" title="ZendeskAPI::Save (module)">Save</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Save.html#clear_associations-instance_method" title="ZendeskAPI::Save#clear_associations (method)">#clear_associations</a></span>, <span class='object_link'><a href="../Save.html#save-instance_method" title="ZendeskAPI::Save#save (method)">#save</a></span>, <span class='object_link'><a href="../Save.html#save%21-instance_method" title="ZendeskAPI::Save#save! (method)">#save!</a></span>, <span class='object_link'><a href="../Save.html#save_associations-instance_method" title="ZendeskAPI::Save#save_associations (method)">#save_associations</a></span></p>
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Finds a resource by an id and any options passed in.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#clear_associations-instance_method" title="#clear_associations (instance method)">- (Object) <strong>clear_associations</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="../Save.html#clear_associations-instance_method" title="ZendeskAPI::Save#clear_associations (method)">Save</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Removes all cached associations.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#destroy-instance_method" title="#destroy (instance method)">- (Object) <strong>destroy</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="../Destroy.html#destroy-instance_method" title="ZendeskAPI::Destroy#destroy (method)">Destroy</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#destroy%21-instance_method" title="#destroy! (instance method)">- (Boolean) <strong>destroy!</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="../Destroy.html#destroy%21-instance_method" title="ZendeskAPI::Destroy#destroy! (method)">Destroy</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>If this resource hasn't already been deleted, then do so.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#destroyed%3F-instance_method" title="#destroyed? (instance method)">- (Boolean) <strong>destroyed?</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="../Destroy.html#destroyed%3F-instance_method" title="ZendeskAPI::Destroy#destroyed? (method)">Destroy</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Has this object been deleted?.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save-instance_method" title="#save (instance method)">- (Object) <strong>save</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="../Save.html#save-instance_method" title="ZendeskAPI::Save#save (method)">Save</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Saves, returning false if it fails and attaching the errors.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save%21-instance_method" title="#save! (instance method)">- (Boolean) <strong>save!</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="../Save.html#save%21-instance_method" title="ZendeskAPI::Save#save! (method)">Save</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>If this resource hasn't been deleted, then create or save it.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save_associations-instance_method" title="#save_associations (instance method)">- (Object) <strong>save_associations</strong> </a>
+    
+
+    
+  </span>
+  
+    <span class="note title not_defined_here">
+      included
+      from <span class='object_link'><a href="../Save.html#save_associations-instance_method" title="ZendeskAPI::Save#save_associations (method)">Save</a></span>
+    </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Saves associations Takes into account inlining, collections, and id setting
+on the parent resource.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
 
   
   
@@ -179,24 +546,6 @@
   
   
   
-  
-  
-  
-  
-  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../TopicComment.html" title="ZendeskAPI::TopicComment (class)">ZendeskAPI::TopicComment</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../TopicComment.html#attachments-instance_method" title="ZendeskAPI::TopicComment#attachments (method)">#attachments</a></span>, <span class='object_link'><a href="../TopicComment.html#attachments%3D-instance_method" title="ZendeskAPI::TopicComment#attachments= (method)">#attachments=</a></span>, <span class='object_link'><a href="../TopicComment.html#topic-instance_method" title="ZendeskAPI::TopicComment#topic (method)">#topic</a></span>, <span class='object_link'><a href="../TopicComment.html#topic%3D-instance_method" title="ZendeskAPI::TopicComment#topic= (method)">#topic=</a></span>, <span class='object_link'><a href="../TopicComment.html#user-instance_method" title="ZendeskAPI::TopicComment#user (method)">#user</a></span>, <span class='object_link'><a href="../TopicComment.html#user%3D-instance_method" title="ZendeskAPI::TopicComment#user= (method)">#user=</a></span></p>
-
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../Data.html" title="ZendeskAPI::Data (class)">Data</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Data.html#%2F-instance_method" title="ZendeskAPI::Data#/ (method)">#/</a></span>, <span class='object_link'><a href="../Data.html#%3D%3D-instance_method" title="ZendeskAPI::Data#== (method)">#==</a></span>, <span class='object_link'><a href="../Data.html#format-class_method" title="ZendeskAPI::Data.format (method)">format</a></span>, <span class='object_link'><a href="../Data.html#id-instance_method" title="ZendeskAPI::Data#id (method)">#id</a></span>, <span class='object_link'><a href="../Data.html#initialize-instance_method" title="ZendeskAPI::Data#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="../Data.html#method_missing-instance_method" title="ZendeskAPI::Data#method_missing (method)">#method_missing</a></span>, <span class='object_link'><a href="../Data.html#new_record%3F-instance_method" title="ZendeskAPI::Data#new_record? (method)">#new_record?</a></span>, <span class='object_link'><a href="../Data.html#path-instance_method" title="ZendeskAPI::Data#path (method)">#path</a></span>, <span class='object_link'><a href="../Data.html#resource_name-class_method" title="ZendeskAPI::Data.resource_name (method)">resource_name</a></span>, <span class='object_link'><a href="../Data.html#singular_resource_name-class_method" title="ZendeskAPI::Data.singular_resource_name (method)">singular_resource_name</a></span>, <span class='object_link'><a href="../Data.html#subclasses-class_method" title="ZendeskAPI::Data.subclasses (method)">subclasses</a></span>, <span class='object_link'><a href="../Data.html#to_json-instance_method" title="ZendeskAPI::Data#to_json (method)">#to_json</a></span></p>
-
   
   
   
@@ -219,13 +568,554 @@
   
 </div>
 
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="association=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="association-instance_method">
+  
+    - (<tt><span class='object_link'>ZendeskAPI::Association</span></tt>) <strong>association</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="../Data.html#association-instance_method" title="ZendeskAPI::Data#association (method)">Data</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The association</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'>ZendeskAPI::Association</span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The association</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="attributes-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>attributes</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='to_param-instance_method'>to_param</span></span>
+    </span>
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="../Data.html#attributes-instance_method" title="ZendeskAPI::Data#attributes (method)">Data</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The resource's attributes</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The resource's attributes</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="errors=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="errors-instance_method">
+  
+    - (<tt>Array</tt>) <strong>errors</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="../Data.html#errors-instance_method" title="ZendeskAPI::Data#errors (method)">Data</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>The last received errors</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The last received errors</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="response=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="response-instance_method">
+  
+    - (<tt>Object</tt>) <strong>response</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in class
+        <span class='object_link'><a href="../Data.html#response-instance_method" title="ZendeskAPI::Data#response (method)">Data</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Place to dump the last response</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="find-class_method">
+  
+    + (<tt>Object</tt>) <strong>find</strong>(client, options = {}) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Read.html#find-class_method" title="ZendeskAPI::Read#find (method)">Read</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Finds, returning nil if it fails</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="find!-class_method">
+  
+    + (<tt>Object</tt>) <strong>find!</strong>(client, options = {}) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Read.html#find%21-class_method" title="ZendeskAPI::Read#find! (method)">Read</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Finds a resource by an id and any options passed in. A custom path to
+search at can be passed into opts. It defaults to the <span class='object_link'><a href="../Data.html#resource_name-class_method" title="ZendeskAPI::Data.resource_name (method)">Data.resource_name</a></span>
+of the class.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>client</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Client.html" title="ZendeskAPI::Client (class)">Client</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The <span class='object_link'><a href="../Client.html" title="ZendeskAPI::Client (class)">Client</a></span> object to be used</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Any additional GET parameters to be added</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="clear_associations-instance_method">
+  
+    - (<tt>Object</tt>) <strong>clear_associations</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Save.html#clear_associations-instance_method" title="ZendeskAPI::Save#clear_associations (method)">Save</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Removes all cached associations</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="destroy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>destroy</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Destroy.html#destroy-instance_method" title="ZendeskAPI::Destroy#destroy (method)">Destroy</a></span>
+    </span>
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="destroy!-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>destroy!</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Destroy.html#destroy%21-instance_method" title="ZendeskAPI::Destroy#destroy! (method)">Destroy</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>If this resource hasn't already been deleted, then do so.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Successful?</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="destroyed?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>destroyed?</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Destroy.html#destroyed%3F-instance_method" title="ZendeskAPI::Destroy#destroyed? (method)">Destroy</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Has this object been deleted?</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="save-instance_method">
+  
+    - (<tt>Object</tt>) <strong>save</strong>(options = {}) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Save.html#save-instance_method" title="ZendeskAPI::Save#save (method)">Save</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Saves, returning false if it fails and attaching the errors</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="save!-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>save!</strong>(options = {}) 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Save.html#save%21-instance_method" title="ZendeskAPI::Save#save! (method)">Save</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>If this resource hasn't been deleted, then create or save it. Executes a
+POST if it is a <span class='object_link'><a href="../Data.html#new_record%3F-instance_method" title="ZendeskAPI::Data#new_record? (method)">Data#new_record?</a></span>, otherwise a PUT. Merges returned
+attributes on success.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Success?</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="save_associations-instance_method">
+  
+    - (<tt>Object</tt>) <strong>save_associations</strong> 
+  
+
+  
+
+  
+    <span class="not_defined_here">
+      Originally defined in module
+        <span class='object_link'><a href="../Save.html#save_associations-instance_method" title="ZendeskAPI::Save#save_associations (method)">Save</a></span>
+    </span>
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Saves associations Takes into account inlining, collections, and id setting
+on the parent resource.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+</div>
+    
+  </div>
 
 </div>
 
     <div id="footer">
-  Generated on Mon Feb 11 17:45:39 2013 by
+  Generated on Wed May 15 18:59:32 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.4.1 (ruby-1.9.3).
+  0.8.5.2 (ruby-1.9.3).
 </div>
 
   </body>

@@ -6,7 +6,7 @@
 <title>
   Class: ZendeskAPI::Client
   
-    &mdash; Documentation by YARD 0.8.4.1
+    &mdash; Documentation by YARD 0.8.5.2
   
 </title>
 
@@ -94,9 +94,7 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/zendesk_api/client.rb<span class="defines">,<br />
-  lib/zendesk_api/console/extensions.rb</span>
-</dd>
+    <dd class="r2 last">lib/zendesk_api/client.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -114,28 +112,6 @@ Zendesk API. Can also be used as an accessor to resource collections.</p>
   
 
 </div>
-  <h2>Constant Summary</h2>
-  
-    <dl class="constants">
-      
-        <dt id="GET_SUBCLASSES-constant" class="">GET_SUBCLASSES =
-          
-        </dt>
-        <dd><pre class="code"><span class='id identifier rubyid_lambda'>lambda</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ary'>ary</span><span class='op'>|</span>
-  <span class='id identifier rubyid_ary'>ary</span><span class='period'>.</span><span class='id identifier rubyid_map!'>map!</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_klass'>klass</span><span class='op'>|</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_klass'>klass</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Resource$</span><span class='regexp_end'>/</span></span>
-      <span class='const'>GET_SUBCLASSES</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='period'>.</span><span class='id identifier rubyid_subclasses'>subclasses</span><span class='rparen'>)</span>
-    <span class='kw'>else</span>
-      <span class='id identifier rubyid_klass'>klass</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-
-  <span class='id identifier rubyid_ary'>ary</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:flatten!</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre></dd>
-      
-    </dl>
-  
-
 
 
 
@@ -233,28 +209,6 @@ Zendesk API. Can also be used as an accessor to resource collections.</p>
     <span class="summary_desc"><div class='inline'>
 <p>show a nice warning for people using the old style api.</p>
 </div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#resources-class_method" title="resources (class method)">+ (Object) <strong>resources</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -392,28 +346,6 @@ connection.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#format_headers-instance_method" title="#format_headers (instance method)">- (Object) <strong>format_headers</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (Client) <strong>initialize</strong> {|config| ... }</a>
     
 
@@ -485,60 +417,10 @@ connection.</p>
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#to_a-instance_method" title="#to_a (instance method)">- (Object) <strong>to_a</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#to_s-instance_method" title="#to_s (instance method)">- (Object) <strong>to_s</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
     </ul>
   
 
-
-  
-  
-  
-  
-  
-  <div id="constructor_details" class="method_details_list">
+<div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
@@ -600,6 +482,10 @@ connection.</p>
       <pre class="lines">
 
 
+71
+72
+73
+74
 75
 76
 77
@@ -613,31 +499,10 @@ connection.</p>
 85
 86
 87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109</pre>
+88</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 75</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>block not given</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -645,34 +510,17 @@ connection.</p>
   <span class='ivar'>@config</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Configuration</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='kw'>yield</span> <span class='id identifier rubyid_config'>config</span>
 
-  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_allow_http'>allow_http</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_url'>url</span> <span class='op'>!~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^https</span><span class='regexp_end'>/</span></span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>zendesk_api is ssl only; url must begin with https://</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>end</span>
+  <span class='ivar'>@callbacks</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='ivar'>@resource_cache</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_check_url'>check_url</span>
 
   <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_retry'>retry</span> <span class='op'>=</span> <span class='op'>!</span><span class='op'>!</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_retry'>retry</span> <span class='comment'># nil -&gt; false
 </span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_token'>token</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span>
-    <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_token'>token</span>
-    <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_username'>username</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/token</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_username'>username</span><span class='period'>.</span><span class='id identifier rubyid_end_with?'>end_with?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/token</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_set_token_auth'>set_token_auth</span>
 
-  <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span> <span class='op'>==</span> <span class='kw'>true</span>
-    <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>logger</span><span class='tstring_end'>'</span></span>
-    <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span> <span class='op'>=</span> <span class='const'>Logger</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='gvar'>$stderr</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>=</span> <span class='const'>Logger</span><span class='op'>::</span><span class='const'>WARN</span>
-  <span class='kw'>end</span>
-
-  <span class='ivar'>@callbacks</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-
-  <span class='ivar'>@resource_cache</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-
-  <span class='kw'>if</span> <span class='id identifier rubyid_logger'>logger</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span>
-    <span class='id identifier rubyid_insert_callback'>insert_callback</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_env'>env</span><span class='op'>|</span>
-      <span class='kw'>if</span> <span class='id identifier rubyid_warning'>warning</span> <span class='op'>=</span> <span class='id identifier rubyid_env'>env</span><span class='lbracket'>[</span><span class='symbol'>:response_headers</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>X-Zendesk-API-Warn</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-        <span class='id identifier rubyid_logger'>logger</span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WARNING: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_warning'>warning</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_set_default_logger'>set_default_logger</span>
+  <span class='id identifier rubyid_add_warning_callback'>add_warning_callback</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -733,6 +581,8 @@ creates a new Collection instance.</p>
       <pre class="lines">
 
 
+31
+32
 33
 34
 35
@@ -742,12 +592,10 @@ creates a new Collection instance.</p>
 39
 40
 41
-42
-43
-44</pre>
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_method_missing'>method_missing</span><span class='lparen'>(</span><span class='id identifier rubyid_method'>method</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_method'>method</span> <span class='op'>=</span> <span class='id identifier rubyid_method'>method</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -755,7 +603,7 @@ creates a new Collection instance.</p>
 
   <span class='ivar'>@resource_cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_method'>method</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
 
-  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:reload</span><span class='rbracket'>]</span> <span class='op'>&amp;&amp;</span> <span class='lparen'>(</span><span class='id identifier rubyid_cached'>cached</span> <span class='op'>=</span> <span class='ivar'>@resource_cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_method'>method</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_hash'>hash</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='op'>!</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:reload</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='lparen'>(</span><span class='id identifier rubyid_cached'>cached</span> <span class='op'>=</span> <span class='ivar'>@resource_cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_method'>method</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_hash'>hash</span><span class='rbracket'>]</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_cached'>cached</span>
   <span class='kw'>else</span>
     <span class='ivar'>@resource_cache</span><span class='lbracket'>[</span><span class='id identifier rubyid_method'>method</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_hash'>hash</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Collection</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='const'>ZendeskAPI</span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span><span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Helpers</span><span class='period'>.</span><span class='id identifier rubyid_modulize_string'>modulize_string</span><span class='lparen'>(</span><span class='const'>Inflection</span><span class='period'>.</span><span class='id identifier rubyid_singular'>singular</span><span class='lparen'>(</span><span class='id identifier rubyid_method'>method</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
@@ -817,12 +665,12 @@ creates a new Collection instance.</p>
       <pre class="lines">
 
 
-28
-29
-30</pre>
+26
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_callbacks'>callbacks</span>
   <span class='ivar'>@callbacks</span>
@@ -878,12 +726,12 @@ creates a new Collection instance.</p>
       <pre class="lines">
 
 
-26
-27
-28</pre>
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_config'>config</span>
   <span class='ivar'>@config</span>
@@ -926,60 +774,18 @@ creates a new Collection instance.</p>
       <pre class="lines">
 
 
-126
-127
-128
-129
-130</pre>
+105
+106
+107
+108
+109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 126</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_check_deprecated_namespace_usage'>check_deprecated_namespace_usage</span><span class='lparen'>(</span><span class='id identifier rubyid_attributes'>attributes</span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='id identifier rubyid_name'>name</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Hash</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>un-nest '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='rbrace'>}</span><span class='tstring_content'>' from the attributes</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="resources-class_method">
-  
-    + (<tt>Object</tt>) <strong>resources</strong> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-59
-60
-61
-62
-63
-64
-65
-66
-67</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/console/extensions.rb', line 59</span>
-
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_resources'>resources</span>
-  <span class='ivar'>@resources</span> <span class='op'>||=</span> <span class='kw'>begin</span>
-    <span class='id identifier rubyid_subclasses'>subclasses</span> <span class='op'>=</span> <span class='const'>GET_SUBCLASSES</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Data</span><span class='period'>.</span><span class='id identifier rubyid_subclasses'>subclasses</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_subclasses'>subclasses</span><span class='period'>.</span><span class='id identifier rubyid_delete_if'>delete_if</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_resource'>resource</span><span class='op'>|</span>
-      <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>ZendeskAPI(::.*){2,}</span><span class='regexp_end'>/</span></span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_subclasses'>subclasses</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:resource_name</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1026,6 +832,27 @@ subclass to add additional middleware and make other configuration changes.</p>
       <pre class="lines">
 
 
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
 143
 144
 145
@@ -1036,42 +863,41 @@ subclass to add additional middleware and make other configuration changes.</p>
 150
 151
 152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164</pre>
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 143</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 122</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_build_connection'>build_connection</span>
   <span class='const'>Faraday</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_builder'>builder</span><span class='op'>|</span>
     <span class='comment'># response
-</span>    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>Faraday</span><span class='op'>::</span><span class='const'>Request</span><span class='op'>::</span><span class='const'>BasicAuthentication</span><span class='comma'>,</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span>
-    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>Faraday</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>RaiseError</span>
+</span>    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>RaiseError</span>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>Callback</span><span class='comma'>,</span> <span class='kw'>self</span>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>Logger</span><span class='comma'>,</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span> <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>ParseIsoDates</span>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_response'>response</span> <span class='symbol'>:json</span><span class='comma'>,</span> <span class='symbol'>:content_type</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>application/json</span><span class='tstring_end'>'</span></span>
-    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>Gzip</span>
-    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>Deflate</span>
+
+    <span class='id identifier rubyid_adapter'>adapter</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_adapter'>adapter</span> <span class='op'>||</span> <span class='const'>Faraday</span><span class='period'>.</span><span class='id identifier rubyid_default_adapter'>default_adapter</span>
+
+    <span class='kw'>unless</span> <span class='lbracket'>[</span><span class='symbol'>:em_http</span><span class='comma'>,</span> <span class='const'>Faraday</span><span class='op'>::</span><span class='const'>Adapter</span><span class='op'>::</span><span class='const'>EMHttp</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_adapter'>adapter</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>Gzip</span>
+      <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>Deflate</span>
+    <span class='kw'>end</span>
 
     <span class='comment'># request
-</span>    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Request</span><span class='op'>::</span><span class='const'>EtagCache</span><span class='comma'>,</span> <span class='symbol'>:cache</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_cache'>cache</span>
+</span>    <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_access_token'>access_token</span>
+      <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_authorization'>authorization</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Bearer</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_access_token'>access_token</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>Faraday</span><span class='op'>::</span><span class='const'>Request</span><span class='op'>::</span><span class='const'>BasicAuthentication</span><span class='comma'>,</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Request</span><span class='op'>::</span><span class='const'>EtagCache</span><span class='comma'>,</span> <span class='symbol'>:cache</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_cache'>cache</span>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Request</span><span class='op'>::</span><span class='const'>Upload</span>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span> <span class='symbol'>:multipart</span>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span> <span class='symbol'>:json</span>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Request</span><span class='op'>::</span><span class='const'>Retry</span><span class='comma'>,</span> <span class='symbol'>:logger</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span> <span class='kw'>if</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_retry'>retry</span> <span class='comment'># Should always be first in the stack
 </span>
-    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_adapter'>adapter</span> <span class='op'>*</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_adapter'>adapter</span> <span class='op'>||</span> <span class='const'>Faraday</span><span class='period'>.</span><span class='id identifier rubyid_default_adapter'>default_adapter</span>
+    <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_adapter'>adapter</span> <span class='op'>*</span><span class='id identifier rubyid_adapter'>adapter</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1124,13 +950,13 @@ connection.</p>
       <pre class="lines">
 
 
-114
-115
-116
-117</pre>
+93
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 93</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_connection'>connection</span>
   <span class='ivar'>@connection</span> <span class='op'>||=</span> <span class='id identifier rubyid_build_connection'>build_connection</span>
@@ -1185,13 +1011,13 @@ connection.</p>
       <pre class="lines">
 
 
+53
+54
 55
-56
-57
-58</pre>
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_account'>current_account</span><span class='lparen'>(</span><span class='id identifier rubyid_reload'>reload</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='ivar'>@current_account</span> <span class='kw'>if</span> <span class='ivar'>@current_account</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_reload'>reload</span>
@@ -1246,13 +1072,13 @@ connection.</p>
       <pre class="lines">
 
 
-64
-65
-66
-67</pre>
+60
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_locale'>current_locale</span><span class='lparen'>(</span><span class='id identifier rubyid_reload'>reload</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='ivar'>@locale</span> <span class='kw'>if</span> <span class='ivar'>@locale</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_reload'>reload</span>
@@ -1307,47 +1133,17 @@ connection.</p>
       <pre class="lines">
 
 
+46
+47
 48
-49
-50
-51</pre>
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='lparen'>(</span><span class='id identifier rubyid_reload'>reload</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='ivar'>@current_user</span> <span class='kw'>if</span> <span class='ivar'>@current_user</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_reload'>reload</span>
   <span class='ivar'>@current_user</span> <span class='op'>=</span> <span class='id identifier rubyid_users'>users</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>me</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="format_headers-instance_method">
-  
-    - (<tt>Object</tt>) <strong>format_headers</strong> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-73
-74
-75</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/console/extensions.rb', line 73</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_format_headers'>format_headers</span>
-  <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>resource name</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1401,75 +1197,15 @@ in the Faraday middleware stack.</p>
       <pre class="lines">
 
 
-121
-122
-123</pre>
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 100</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_insert_callback'>insert_callback</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@callbacks</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_block'>block</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="to_a-instance_method">
-  
-    - (<tt>Object</tt>) <strong>to_a</strong> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-69
-70
-71</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/console/extensions.rb', line 69</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_to_a'>to_a</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_resources'>resources</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="to_s-instance_method">
-  
-    - (<tt>Object</tt>) <strong>to_s</strong> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-55
-56
-57</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/console/extensions.rb', line 55</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_to_s'>to_s</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1481,9 +1217,9 @@ in the Faraday middleware stack.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Feb 11 17:45:36 2013 by
+  Generated on Wed May 15 18:59:28 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.4.1 (ruby-1.9.3).
+  0.8.5.2 (ruby-1.9.3).
 </div>
 
   </body>
