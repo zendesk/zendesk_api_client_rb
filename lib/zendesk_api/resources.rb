@@ -294,8 +294,8 @@ module ZendeskAPI
     private
 
     def attributes_for_save
-      to_save = [:conditions, :all, :any, :output].inject({}) {|h,k| h.merge(k => send(k))}
-      { self.class.singular_resource_name.to_sym => to_save }
+      to_save = [:conditions, :actions, :output].inject({}) {|h,k| h.merge(k => send(k))}
+      { self.class.singular_resource_name.to_sym => attributes.changes.merge(to_save) }
     end
   end
 
