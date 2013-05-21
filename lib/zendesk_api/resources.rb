@@ -342,7 +342,7 @@ module ZendeskAPI
     def apply(ticket = nil)
       apply!(ticket)
     rescue Faraday::Error::ClientError => e
-      {}
+      Hashie::Mash.new
     end
   end
 
