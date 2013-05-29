@@ -11,7 +11,7 @@ module ZendeskAPI
     end
 
     def write(key, value)
-      @store[key] = value
+      @store[key] = value.dup
       set_lru(key)
       @store.delete(@lru.pop) if @lru.size > @size
       value

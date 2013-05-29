@@ -30,7 +30,7 @@ module ZendeskAPI
 
           @app.call(env).on_complete do
             if cached && env[:status] == 304 # not modified
-              env[:body] = cached[:body]
+              env.merge!(:body => cached[:body], :response_headers => cached[:response_headers])
             elsif env[:status] == 200 && env[:response_headers]["Etag"] # modified and cacheable
               @cache.write(cache_key(env), env)
             end
