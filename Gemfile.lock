@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    zendesk_api (0.3.7)
+    zendesk_api (0.3.8)
       faraday (>= 0.8.0)
       faraday_middleware (>= 0.8.7)
       hashie (>= 1.2)
@@ -55,7 +55,7 @@ GEM
     fssm (0.2.10)
     haml (4.0.1)
       tilt
-    hashie (2.0.4)
+    hashie (2.0.5)
     i18n (0.6.1)
     inflection (1.0.0)
     jruby-openssl (0.8.7)
