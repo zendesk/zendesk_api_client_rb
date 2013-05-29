@@ -14,7 +14,7 @@ describe ZendeskAPI::Middleware::Request::EtagCache do
     response.status.should == 304
     response.body.should == {"x"=>1}
 
-    %w{content_type content_length etag}.each do |header|
+    %w{content_encoding content_type content_length etag}.each do |header|
       response.headers[header].should == first_response.headers[header]
     end
   end
