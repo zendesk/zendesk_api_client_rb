@@ -52,9 +52,13 @@ module ZendeskAPI
 
     def id; token; end
 
-    only_send_unnested_params
-
     has_many Attachment
+
+    private
+
+    def attributes_for_save
+      attributes.changes
+    end
   end
 
   class MobileDevice < Resource
@@ -71,7 +75,6 @@ module ZendeskAPI
   end
 
   class ForumSubscription < Resource
-    only_send_unnested_params
     has Forum
     has User
   end
@@ -90,7 +93,6 @@ module ZendeskAPI
   end
 
   class TopicSubscription < Resource
-    only_send_unnested_params
     has Topic
     has User
   end
@@ -111,9 +113,14 @@ module ZendeskAPI
     end
 
     class TopicVote < SingularResource
-      only_send_unnested_params
       has Topic
       has User
+
+      private
+
+      def attributes_for_save
+        attributes.changes
+      end
     end
 
     has Forum

@@ -35,16 +35,6 @@ module ZendeskAPI
 
       alias :model_key :resource_name
 
-      # @private
-      def only_send_unnested_params
-        @unnested_params = true
-      end
-
-      # @private
-      def unnested_params
-        @unnested_params ||= false
-      end
-
       def namespace(namespace)
         @namespace = namespace
       end
@@ -145,11 +135,7 @@ module ZendeskAPI
     private
 
     def attributes_for_save
-      if self.class.unnested_params
-        attributes.changes
-      else
-        { self.class.singular_resource_name.to_sym => attributes.changes }
-      end
+      { self.class.singular_resource_name.to_sym => attributes.changes }
     end
   end
 
@@ -188,5 +174,9 @@ module ZendeskAPI
     include Destroy
   end
 
-  class SingularResource < Resource; end
+  class SingularResource < Resource
+    def attributes_for_save
+      { self.class.resource_name.to_sym => attributes.changes }
+    end
+  end
 end
