@@ -4,10 +4,10 @@ module ZendeskAPI
     # Executes a POST if it is a {Data#new_record?}, otherwise a PUT.
     # Merges returned attributes on success.
     # @return [Boolean] Success?
-    def save!(options={})
+    def save!(options = {})
       return false if respond_to?(:destroyed?) && destroyed?
 
-      if new_record?
+      if new_record? && !options[:force_update]
         method = :post
         req_path = path
       else
@@ -195,15 +195,7 @@ module ZendeskAPI
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
         resource = new(client, { :id => attributes.delete(:id), :global => attributes.delete(:global) })
         resource.attributes.merge!(attributes)
-        resource.tap(&:save!)
-      end
-
-      private
-
-      def _update(client, attributes = {})
-        ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        resource = new(client, { :id => attributes.delete(:id), :global => attributes.delete(:global) })
-        resource.attributes.merge!(attributes)
+        resource.save!(:force_update => resource.is_a?(SingularResource))
         resource
       end
     end

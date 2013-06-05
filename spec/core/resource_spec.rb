@@ -413,6 +413,16 @@ describe ZendeskAPI::Resource do
         end.to_not raise_error(ArgumentError)
       end
     end
+
+    context "#update" do
+      before do
+        stub_json_request(:put, %r{/singular_test_resource})
+      end
+
+      it "should always PUT" do
+        ZendeskAPI::SingularTestResource.update(client, :test => :test)
+      end
+    end
   end
 
   context "Ticket#assignee" do
