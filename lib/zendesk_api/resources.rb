@@ -11,13 +11,6 @@ module ZendeskAPI
 
   class Locale < ReadResource; end
 
-  class CRMData < DataResource
-    class << self
-      alias :resource_name :singular_resource_name
-    end
-  end
-
-  class CRMDataStatus < DataResource; end
   class CustomRole < DataResource; end
   class Role < DataResource; end
   class Topic < Resource; end
@@ -401,9 +394,6 @@ module ZendeskAPI
     has_many TopicSubscription
     has_many :topic_comments, :class => TopicComment
     has_many :topic_votes, :class => Topic::TopicVote
-
-    has CRMData
-    has CRMDataStatus, :path => 'crm_data/status'
   end
 
   class UserField < Resource; end
