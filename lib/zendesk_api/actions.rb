@@ -23,7 +23,10 @@ module ZendeskAPI
         req.body = attributes_for_save.merge(@global_params)
       end
 
-      @attributes.replace @attributes.deep_merge(@response.body[self.class.singular_resource_name] || {})
+      if @response.body && @response.body[self.class.singular_resource_name]
+        @attributes.replace @attributes.deep_merge(@response.body[self.class.singular_resource_name] || {})
+      end
+
       @attributes.clear_changes
       clear_associations
       true
