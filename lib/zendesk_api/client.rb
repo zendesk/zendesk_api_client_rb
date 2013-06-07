@@ -142,7 +142,10 @@ module ZendeskAPI
           builder.use Faraday::Request::BasicAuthentication, config.username, config.password
         end
 
-        builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+        if config.cache
+          builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+        end
+
         builder.use ZendeskAPI::Middleware::Request::Upload
         builder.request :multipart
         builder.request :json
