@@ -140,7 +140,10 @@ module ZendeskAPI
         end
 
         # request
-        builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+        if config.cache
+          builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+        end
+
         builder.use ZendeskAPI::Middleware::Request::Upload
         builder.request :multipart
         builder.request :json
