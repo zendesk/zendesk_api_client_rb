@@ -117,7 +117,8 @@ describe ZendeskAPI::Ticket do
         end
 
         threads.map! do |thread|
-          thread.join(3)
+          thread.join(5)
+          fail("could not get response in 5 seconds") unless thread[:response]
           thread[:response][:status]
         end
 
