@@ -96,6 +96,7 @@ module ZendeskAPI
 
       new(client, response.body[singular_resource_name]).tap do |resource|
         resource.set_includes(resource, includes, response.body)
+        resource.attributes.clear_changes
       end
     end
 
