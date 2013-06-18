@@ -59,7 +59,7 @@ module ZendeskAPI
           :path => options.delete(:path),
           :include => (options.delete(:include) || klass.resource_name).to_s,
           :include_key => (options.delete(:include_key) || :id).to_s,
-          :singular => options.delete(:singular)
+          :singular => options.delete(:singular),
         }
       end
 
@@ -171,15 +171,19 @@ module ZendeskAPI
                 klass.find(@client, :id => id, :association => instance_association)
               end.compact
             elsif (resources = method_missing(association[:name].to_sym)) && resources.any?
-              resources.map do |res|
-                klass.new(@client, res.merge(:association => instance_association))
-              end
+              resources.map {|res| wrap_resource(res, association)}
             else
-              ZendeskAPI::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
+              []
             end
 
-            send("#{association[:id_column]}=", resources.map(&:id)) if resource && has_key?(association[:id_column])
-            instance_variable_set("@#{association[:name]}", resources)
+            collection = ZendeskAPI::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
+
+            if resources.any?
+              collection.replace(resources)
+            end
+
+            send("#{association[:id_column]}=", resources.map(&:id)) if has_key?(association[:id_column])
+            instance_variable_set("@#{association[:name]}", collection)
           end
         end
 

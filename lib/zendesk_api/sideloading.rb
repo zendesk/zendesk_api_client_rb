@@ -14,7 +14,7 @@ module ZendeskAPI
         end
       end
 
-      resources = [resource_or_resources].flatten.compact
+      resources = to_array(resource_or_resources)
       resource_class = resources.first.class
 
       return if resources.empty?
@@ -43,8 +43,16 @@ module ZendeskAPI
         loaded_associations.each do |association|
           loaded = resource.send(association[:name])
           next unless loaded
-          _side_load(name, association[:class], [loaded].flatten)
+          _side_load(name, association[:class], to_array(loaded))
         end
+      end
+    end
+
+    def to_array(item)
+      if item.is_a?(Collection)
+        item
+      else
+        [item].flatten.compact
       end
     end
   end

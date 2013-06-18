@@ -73,27 +73,32 @@ describe ZendeskAPI::Association do
       it "should cache a set object" do
         instance.children = [child]
         instance.children.map(&:id).should == [1]
+        instance.children.should be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should set ids" do
         instance.children_ids = []
         instance.children = [child]
         instance.children_ids.should == [child.id]
+        instance.children.should be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should build and cache objects set via hash" do
         instance.children = [{:id => 2}]
         instance.children.map(&:id).should == [2]
+        instance.children.should be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should build a object set via id" do
         instance.children = [2]
         instance.children.map(&:id).should == [2]
+        instance.children.should be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should fetch unknown objects" do
         stub_json_request(:get, %r{test_resources/1/children}, json(:test_children => [{:id => 2}, {:id => 3}]))
         instance.children.map(&:id).should == [2,3]
+        instance.children.should be_instance_of(ZendeskAPI::Collection)
       end
 
       it "is not used when not used" do

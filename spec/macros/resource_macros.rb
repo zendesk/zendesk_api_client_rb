@@ -5,6 +5,8 @@ module ResourceMacros
 
   def under(object, &blk)
     context "under a #{object.class.singular_resource_name}" do
+      let(:parent) { object }
+
       define_method(:default_options) do
         { "#{object.class.singular_resource_name}_id" => object.id }
       end

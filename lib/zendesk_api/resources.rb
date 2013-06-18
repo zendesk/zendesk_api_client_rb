@@ -20,6 +20,18 @@ module ZendeskAPI
   class SharingAgreement < ReadResource; end
   class JobStatus < ReadResource; end
 
+  class Tag < Resource
+    alias :name :id
+
+    def path(opts = {})
+      super(opts.merge(:with_parent => true, :with_id => false))
+    end
+
+    def attributes_for_save
+      { self.class.resource_name => [id] }
+    end
+  end
+
   class Attachment < Data
     def initialize(client, attributes)
       if attributes.is_a?(Hash)
@@ -65,6 +77,7 @@ module ZendeskAPI
 
     has_many Ticket
     has_many User
+    has_many Tag
   end
 
   class ForumSubscription < Resource
@@ -120,6 +133,7 @@ module ZendeskAPI
     has_many :comments, :class => TopicComment
     has_many :subscriptions, :class => TopicSubscription
     has :vote, :class => TopicVote
+    has_many Tag
 
     def votes(opts = {})
       return @votes if @votes && !opts[:reload]
@@ -212,8 +226,6 @@ module ZendeskAPI
       has :author, :class => User
     end
 
-    class Tag < Resource; end
-
     class Comment < Data
       include Save
 
@@ -241,6 +253,8 @@ module ZendeskAPI
     has :comment, :class => Comment, :inline => true
     has :last_comment, :class => Comment, :inline => true
     has_many :last_comments, :class => Comment, :inline => true
+
+    has_many Tag
 
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used

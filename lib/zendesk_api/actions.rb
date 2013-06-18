@@ -58,7 +58,7 @@ module ZendeskAPI
         next unless send("#{association_name}_used?") && association = send(association_name)
 
         inline_creation = association_data[:inline] == :create && new_record?
-        changed = association.is_a?(Collection) || !association.changes.empty?
+        changed = association.is_a?(Collection) || association.changed?
 
         if association.respond_to?(:save) && changed && !inline_creation && association.save
           self.send("#{association_name}=", association) # set id/ids columns
@@ -160,12 +160,7 @@ module ZendeskAPI
       # @param [Client] client The {Client} object to be used
       # @param [Hash] opts The optional parameters to pass. Defaults to {}
       def destroy!(client, opts = {})
-        @client = client # so we can use client.logger in rescue
-        association = opts.delete(:association) || Association.new(:class => self)
-
-        client.connection.delete(association.generate_path(opts)) do |req|
-          req.params = opts
-        end
+        new(client, opts).destroy!
 
         true
       end
@@ -197,7 +192,7 @@ module ZendeskAPI
 
       def update!(client, attributes = {})
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        resource = new(client, { :id => attributes.delete(:id), :global => attributes.delete(:global) })
+        resource = new(client, :id => attributes.delete(:id), :global => attributes.delete(:global), :association => attributes.delete(:association))
         resource.attributes.merge!(attributes)
         resource.save!(:force_update => resource.is_a?(SingularResource))
         resource

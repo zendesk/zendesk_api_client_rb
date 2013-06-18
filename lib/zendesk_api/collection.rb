@@ -299,14 +299,14 @@ module ZendeskAPI
     end
 
     def _save(method = :save)
-      if @resources
-        @resources.map! do |item|
-          if item.respond_to?(method) && !item.changes.empty?
-            item.send(method)
-          end
+      return self unless @resources
 
-          item
+      @resources.map! do |item|
+        if item.respond_to?(method) && item.changed?
+          item.send(method)
         end
+
+        item
       end
 
       self
@@ -351,7 +351,16 @@ module ZendeskAPI
 
     def handle_response(body)
       results = body.delete(@resource_class.model_key) || body.delete("results")
-      @resources = results.map {|res| @resource_class.new(@client, res)}
+
+      @resources = results.map do |res|
+        # Simplified Associations#wrap_resource
+        case res
+        when Hash
+          @resource_class.new(@client, res.merge(:association => association))
+        when String, Fixnum
+          @resource_class.new(@client, :id => res, :association => association)
+        end
+      end
 
       set_page_and_count(body)
       set_includes(@resources, @includes, body)
