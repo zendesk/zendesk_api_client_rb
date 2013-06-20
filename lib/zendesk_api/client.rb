@@ -32,12 +32,13 @@ module ZendeskAPI
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
 
-      @resource_cache[method] ||= {}
+      @resource_cache[method] ||= { :class => nil, :cache => ZendeskAPI::LRUCache.new }
 
-      if !options.delete(:reload) && (cached = @resource_cache[method][options.hash])
+      if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
-        @resource_cache[method][options.hash] = ZendeskAPI::Collection.new(self, ZendeskAPI.const_get(ZendeskAPI::Helpers.modulize_string(Inflection.singular(method))), options)
+        @resource_cache[method][:class] ||= ZendeskAPI.const_get(ZendeskAPI::Helpers.modulize_string(Inflection.singular(method)))
+        @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
       end
     end
 

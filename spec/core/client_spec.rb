@@ -199,6 +199,11 @@ describe ZendeskAPI::Client do
       subject.tickets.should be_instance_of(ZendeskAPI::Collection)
 
       subject.instance_variable_get(:@resource_cache)["tickets"].should_not be_empty
+      subject.instance_variable_get(:@resource_cache)["tickets"][:class].should == ZendeskAPI::Ticket
+      subject.instance_variable_get(:@resource_cache)["tickets"][:cache].should be_instance_of(ZendeskAPI::LRUCache)
+
+      ZendeskAPI.should_not_receive(:const_get)
+      subject.tickets.should be_instance_of(ZendeskAPI::Collection)
     end
 
     it "should not cache calls with different options" do
