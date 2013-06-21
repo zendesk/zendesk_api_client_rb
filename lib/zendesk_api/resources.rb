@@ -60,11 +60,9 @@ module ZendeskAPI
 
   class Attachment < Data
     def initialize(client, attributes)
-      if attributes.is_a?(Hash)
-        super
-      else
-        super(client, :file => attributes)
-      end
+      attributes[:file] ||= attributes.delete(:id)
+
+      super
     end
 
     def save

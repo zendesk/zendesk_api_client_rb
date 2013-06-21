@@ -141,7 +141,7 @@ module ZendeskAPI
       if @resources && (!@fetchable || !reload)
         return @resources
       elsif association && association.options.parent && association.options.parent.new_record?
-        return @resources = []
+        return (@resources = [])
       end
 
       @response = get_response(@query || self.path)
@@ -363,10 +363,9 @@ module ZendeskAPI
 
     # Simplified Associations#wrap_resource
     def wrap_resource(res)
-      case res
-      when Hash
+      if res.is_a?(Hash)
         @resource_class.new(@client, res.merge(:association => association))
-      when String, Fixnum
+      else
         @resource_class.new(@client, :id => res, :association => association)
       end
     end
