@@ -35,6 +35,12 @@ module ZendeskAPI
       true
     end
 
+    def destroy!
+      super do |req|
+        req.body = attributes_for_save
+      end
+    end
+
     module Update
       def _save(method = :save)
         return self unless @resources
@@ -176,8 +182,13 @@ module ZendeskAPI
     attr_reader :on
 
     def initialize(client, attributes = {})
-      @on = attributes.first
-      super(client, attributes[1])
+      # Try and find the root key
+      @on = (attributes.keys.map(&:to_s) - %w{association options}).first
+
+      # Make what's inside that key the root attributes
+      attributes.merge!(attributes.delete(@on))
+
+      super
     end
   end
 
