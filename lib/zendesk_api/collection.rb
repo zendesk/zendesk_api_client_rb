@@ -363,7 +363,10 @@ module ZendeskAPI
 
     # Simplified Associations#wrap_resource
     def wrap_resource(res)
-      if res.is_a?(Hash)
+      case res
+      when Array
+        wrap_resource(Hash[*res])
+      when Hash
         @resource_class.new(@client, res.merge(:association => association))
       else
         @resource_class.new(@client, :id => res, :association => association)

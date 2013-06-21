@@ -21,6 +21,8 @@ module ZendeskAPI
 
       @response = @client.connection.send(method, req_path) do |req|
         req.body = attributes_for_save.merge(@global_params)
+
+        yield req if block_given?
       end
 
       if @response.body && @response.body[self.class.singular_resource_name]
@@ -33,8 +35,8 @@ module ZendeskAPI
     end
 
     # Saves, returning false if it fails and attaching the errors
-    def save(options={})
-      save!(options)
+    def save(options = {}, &block)
+      save!(options, &block)
     rescue ZendeskAPI::Error::RecordInvalid => e
       @errors = e.errors
       false
@@ -91,6 +93,8 @@ module ZendeskAPI
 
       response = client.connection.get(association.generate_path(options)) do |req|
         req.params = options
+
+        yield req if block_given?
       end
 
       new(client, response.body[singular_resource_name]).tap do |resource|
@@ -100,8 +104,8 @@ module ZendeskAPI
     end
 
     # Finds, returning nil if it fails
-    def find(client, options = {})
-      find!(client, options)
+    def find(client, options = {}, &block)
+      find!(client, options, &block)
     rescue ZendeskAPI::Error::ClientError => e
       nil
     end
@@ -118,13 +122,16 @@ module ZendeskAPI
       # Create a resource given the attributes passed in.
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to create.
-      def create!(client, attributes = {})
+      def create!(client, attributes = {}, &block)
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        new(client, attributes).tap(&:save!)
+
+        new(client, attributes).tap do |resource|
+          resource.save!(&block)
+        end
       end
 
-      def create(client, attributes = {})
-        create!(client, attributes)
+      def create(client, attributes = {}, &block)
+        create!(client, attributes, &block)
       rescue ZendeskAPI::Error::ClientError
         nil
       end
@@ -147,14 +154,14 @@ module ZendeskAPI
       return false if destroyed? || new_record?
 
       @client.connection.delete(url || path) do |req|
-        req.body = attributes_for_save
+        yield req if block_given?
       end
 
       @destroyed = true
     end
 
-    def destroy
-      destroy!
+    def destroy(&block)
+      destroy!(&block)
     rescue ZendeskAPI::Error::ClientError
       false
     end
@@ -163,14 +170,14 @@ module ZendeskAPI
       # Deletes a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
       # @param [Hash] opts The optional parameters to pass. Defaults to {}
-      def destroy!(client, opts = {})
-        new(client, opts).destroy!
+      def destroy!(client, opts = {}, &block)
+        new(client, opts).destroy!(&block)
 
         true
       end
 
-      def destroy(client, attributes = {})
-        destroy!(client, attributes)
+      def destroy(client, attributes = {}, &block)
+        destroy!(client, attributes, &block)
       rescue ZendeskAPI::Error::ClientError
         false
       end
@@ -188,17 +195,17 @@ module ZendeskAPI
       # Updates  a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to update. Default to {}
-      def update(client, attributes = {})
-        update!(client, attributes)
+      def update(client, attributes = {}, &block)
+        update!(client, attributes, &block)
       rescue ZendeskAPI::Error::ClientError
         false
       end
 
-      def update!(client, attributes = {})
+      def update!(client, attributes = {}, &block)
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
         resource = new(client, :id => attributes.delete(:id), :global => attributes.delete(:global), :association => attributes.delete(:association))
         resource.attributes.merge!(attributes)
-        resource.save!(:force_update => resource.is_a?(SingularResource))
+        resource.save!(:force_update => resource.is_a?(SingularResource), &block)
         resource
       end
     end
