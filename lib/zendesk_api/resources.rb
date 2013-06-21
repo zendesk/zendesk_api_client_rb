@@ -19,6 +19,7 @@ module ZendeskAPI
   class Group < Resource; end
   class SharingAgreement < ReadResource; end
   class JobStatus < ReadResource; end
+  class Tag < Resource; end
 
   class Attachment < Data
     def initialize(client, attributes)
