@@ -24,6 +24,7 @@ module ZendeskAPI
     alias :name :id
 
     def path(opts = {})
+      raise "tags must have parent resource" unless association.options.parent
       super(opts.merge(:with_parent => true, :with_id => false))
     end
 
