@@ -392,7 +392,10 @@ describe ZendeskAPI::Collection do
     context "with everything else" do
       it "should pass to new, since this is how attachment handles it" do
         attachment = mock(:changes => [:xxx], :changed? => true)
-        ZendeskAPI::TestResource.should_receive(:new).with(client, "img.jpg").and_return attachment
+        ZendeskAPI::TestResource.should_receive(:new).
+          with(client, :id => "img.jpg", :association => instance_of(ZendeskAPI::Association)).
+          and_return attachment
+
         subject << "img.jpg"
 
         attachment.should_receive :save
