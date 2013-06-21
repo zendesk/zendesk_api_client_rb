@@ -60,6 +60,7 @@ module ZendeskAPI
           :include => (options.delete(:include) || klass.resource_name).to_s,
           :include_key => (options.delete(:include_key) || :id).to_s,
           :singular => options.delete(:singular),
+          :extensions => Array(options.delete(:extend))
         }
       end
 
@@ -177,6 +178,10 @@ module ZendeskAPI
             end
 
             collection = ZendeskAPI::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
+
+            if association[:extensions].any?
+              collection.extend(*association[:extensions])
+            end
 
             if resources.any?
               collection.replace(resources)

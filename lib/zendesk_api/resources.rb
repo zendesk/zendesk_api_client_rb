@@ -20,12 +20,37 @@ module ZendeskAPI
   class SharingAgreement < ReadResource; end
   class JobStatus < ReadResource; end
 
-  class Tag < Resource
+  class Tag < DataResource
+    include Update
+    include Destroy
+
     alias :name :id
 
     def path(opts = {})
       raise "tags must have parent resource" unless association.options.parent
       super(opts.merge(:with_parent => true, :with_id => false))
+    end
+
+    def changed?
+      true
+    end
+
+    module Update
+      def _save(method = :save)
+        return self unless @resources
+
+        client.connection.post(path) do |req|
+          req.body = { :tags => @resources.map(&:id) }
+        end
+
+        true
+      rescue Faraday::Error::ClientError => e
+        if method == :save
+          false
+        else
+          raise e
+        end
+      end
     end
 
     def attributes_for_save
@@ -78,7 +103,7 @@ module ZendeskAPI
 
     has_many Ticket
     has_many User
-    has_many Tag
+    has_many Tag, :extend => Tag::Update
   end
 
   class ForumSubscription < Resource
@@ -134,7 +159,7 @@ module ZendeskAPI
     has_many :comments, :class => TopicComment
     has_many :subscriptions, :class => TopicSubscription
     has :vote, :class => TopicVote
-    has_many Tag
+    has_many Tag, :extend => Tag::Update
 
     def votes(opts = {})
       return @votes if @votes && !opts[:reload]
@@ -255,7 +280,7 @@ module ZendeskAPI
     has :last_comment, :class => Comment, :inline => true
     has_many :last_comments, :class => Comment, :inline => true
 
-    has_many Tag
+    has_many Tag, :extend => Tag::Update
 
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used

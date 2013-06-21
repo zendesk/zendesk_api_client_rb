@@ -145,7 +145,11 @@ module ZendeskAPI
     # @return [Boolean] Successful?
     def destroy!
       return false if destroyed? || new_record?
-      @client.connection.delete(url || path)
+
+      @client.connection.delete(url || path) do |req|
+        req.body = attributes_for_save
+      end
+
       @destroyed = true
     end
 
