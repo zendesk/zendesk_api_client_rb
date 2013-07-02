@@ -86,7 +86,7 @@ One way to use the client is to pass it in as an argument to individual classes.
 ZendeskAPI::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save
 ZendeskAPI::Ticket.create(client, :subject => "Test Ticket", :comment => { :value => "This is a test" }, :submitter_id => client.current_user.id, :priority => "urgent")
 ZendeskAPI::Ticket.find(client, :id => 1)
-ZendeskAPI::Ticket.delete(client, :id => 1)
+ZendeskAPI::Ticket.destroy(client, :id => 1)
 ```
 
 Another way is to use the instance methods under client.
@@ -95,7 +95,7 @@ Another way is to use the instance methods under client.
 client.tickets.first
 client.tickets.find(:id => 1)
 client.tickets.create(:subject => "Test Ticket", :comment => { :value => "This is a test" }, :submitter_id => client.current_user.id, :priority => "urgent")
-client.tickets.delete(:id => 1)
+client.tickets.destroy(:id => 1)
 ```
 
 The methods under ZendeskAPI::Client (such as .tickets) return an instance of ZendeskAPI::Collection a lazy-loaded list of that resource.
