@@ -448,12 +448,20 @@ module ZendeskAPI
   class UserField < Resource; end
   class OrganizationField < Resource; end
 
-  class OAuthClient < Resource
+  class OauthClient < Resource
     namespace "oauth"
+
+    def self.singular_resource_name
+      "client"
+    end
   end
 
-  class OAuthToken < ReadResource
+  class OauthToken < ReadResource
     include Destroy
     namespace "oauth"
+
+    def self.singular_resource_name
+      "token"
+    end
   end
 end
