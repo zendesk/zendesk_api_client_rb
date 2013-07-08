@@ -448,11 +448,11 @@ module ZendeskAPI
   class UserField < Resource; end
   class OrganizationField < Resource; end
 
-  class OAuthClient < Resource
+  class Client < Resource
     namespace "oauth"
   end
 
-  class OAuthToken < ReadResource
+  class Token < ReadResource
     include Destroy
     namespace "oauth"
   end
