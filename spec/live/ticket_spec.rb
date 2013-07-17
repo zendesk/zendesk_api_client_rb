@@ -27,6 +27,8 @@ describe ZendeskAPI::Ticket do
         client.connection.get("/tickets/1") do |req|
           req.headers[:Accept] = "*/*"
         end
+
+        sleep(5)
       end
     end
 
