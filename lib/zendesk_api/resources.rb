@@ -464,4 +464,6 @@ module ZendeskAPI
       "token"
     end
   end
+
+  class Target < Resource; end
 end
