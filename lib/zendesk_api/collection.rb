@@ -235,6 +235,7 @@ module ZendeskAPI
       @count = nil
       @next_page = nil
       @prev_page = nil
+      @query = nil
     end
 
     # @private
