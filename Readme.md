@@ -13,7 +13,7 @@ Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wik
 * Version 0.0.5 brings with it a change to the top-level namespace. All references to Zendesk should now use ZendeskAPI.
 * Version 0.3.0 changed the license from MIT to Apache Version 2.
 * Version 0.3.2 introduced a regression when side-loading roles on users. This was fixed in 0.3.4.
-* Version 0.4.0rc1 changes the way errors are handled. Please see the [wiki page](https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors) for more info.
+* Version 1.0.0 changes the way errors are handled. Please see the [wiki page](https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors) for more info.
 
 ## Installation
 
