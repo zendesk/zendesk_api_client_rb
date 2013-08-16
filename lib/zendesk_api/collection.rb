@@ -126,7 +126,7 @@ module ZendeskAPI
           raise "this collection is for #{@resource_class}"
         end
       else
-        @resources << wrap_resource(item)
+        @resources << wrap_resource(item, true)
       end
     end
 
@@ -363,14 +363,17 @@ module ZendeskAPI
     end
 
     # Simplified Associations#wrap_resource
-    def wrap_resource(res)
+    def wrap_resource(res, with_association = @resource_class == Tag)
       case res
       when Array
         wrap_resource(Hash[*res])
       when Hash
-        @resource_class.new(@client, res.merge(:association => association))
+        res = res.merge(:association => @association) if with_association
+        @resource_class.new(@client, res)
       else
-        @resource_class.new(@client, :id => res, :association => association)
+        res = { :id => res }
+        res.merge!(:association => @association) if with_association
+        @resource_class.new(@client, res)
       end
     end
 

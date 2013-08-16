@@ -92,8 +92,8 @@ module ZendeskAPI
     end
 
     # Returns the path to the resource
-    def path(*args)
-      @association.generate_path(self, *args)
+    def path(options = {})
+      @association.generate_path(self, options)
     end
 
     # Passes #to_json to the underlying attributes hash

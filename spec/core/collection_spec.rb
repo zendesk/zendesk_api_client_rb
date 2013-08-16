@@ -703,5 +703,21 @@ describe ZendeskAPI::Collection do
         subject.create
       end
     end
+
+    context "resources" do
+      before(:each) do
+        stub_json_request(:get, %r{test_resources/active},
+          json(:test_resources => [{ :id => 1 }]))
+
+        subject.fetch
+
+        stub_json_request(:put, %r{test_resources/1})
+      end
+
+      it "should not save using the collection path" do
+        resource = subject.first
+        resource.save
+      end
+    end
   end
 end
