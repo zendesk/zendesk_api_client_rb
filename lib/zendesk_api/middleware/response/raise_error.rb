@@ -4,6 +4,13 @@ module ZendeskAPI
   module Middleware
     module Response
       class RaiseError < Faraday::Response::RaiseError
+
+        def call(env)
+          super
+        rescue Faraday::Error::TimeoutError, Faraday::Error::ConnectionFailed => e
+          raise Error::NetworkError.new(e)
+        end
+
         def on_complete(env)
           case env[:status]
           when 404
