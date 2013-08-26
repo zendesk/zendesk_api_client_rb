@@ -14,6 +14,10 @@ module ZendeskAPI
           @errors = {}
         end
       end
+
+      def to_s
+        "#{self.class.name}: #{@errors.to_s}"
+      end
     end
 
     class NetworkError < ClientError; end

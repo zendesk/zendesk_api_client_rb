@@ -24,8 +24,11 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
   end
 
   context "status errors" do
+    let(:body) { "" }
+
     before(:each) do
-      stub_request(:any, /.*/).to_return(:status => status)
+      stub_request(:any, /.*/).to_return(:status => status, :body => body,
+        :headers => { :content_type => "application/json" })
     end
 
     context "with status = 404" do
@@ -49,6 +52,21 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
 
       it "should raise RecordInvalid" do
         expect { client.connection.get "/non_existent" }.to raise_error(ZendeskAPI::Error::RecordInvalid)
+      end
+
+      context "with a body" do
+        let(:body) { MultiJson.dump(:details => "hello") }
+
+        it "should return RecordInvalid with proper message" do
+          begin
+            client.connection.get "/non_existent"
+          rescue ZendeskAPI::Error::RecordInvalid => e
+            e.errors.should == "hello"
+            e.to_s.should == "ZendeskAPI::Error::RecordInvalid: hello"
+          else
+            fail # didn't raise an error
+          end
+        end
       end
     end
 
