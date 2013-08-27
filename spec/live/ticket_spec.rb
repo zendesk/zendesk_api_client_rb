@@ -9,7 +9,8 @@ describe ZendeskAPI::Ticket do
       :priority => "normal",
       :requester_id => user.id,
       :submitter_id => user.id,
-      :collaborator_ids => [agent.id]
+      :collaborator_ids => [agent.id],
+      :tags => ["awesome", "blossom"]
     }
   end
 
