@@ -15,6 +15,7 @@ require 'zendesk_api/middleware/response/gzip'
 require 'zendesk_api/middleware/response/parse_iso_dates'
 require 'zendesk_api/middleware/response/raise_error'
 require 'zendesk_api/middleware/response/logger'
+require 'zendesk_api/delegator'
 
 module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
@@ -33,11 +34,13 @@ module ZendeskAPI
       options = args.last.is_a?(Hash) ? args.pop : {}
 
       @resource_cache[method] ||= { :class => nil, :cache => ZendeskAPI::LRUCache.new }
-
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
-        @resource_cache[method][:class] ||= ZendeskAPI.const_get(ZendeskAPI::Helpers.modulize_string(Inflection.singular(method)))
+        klass_as_const = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method))
+        klass = class_from_namespace(klass_as_const)
+
+        @resource_cache[method][:class] ||= klass
         @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
       end
     end
@@ -109,6 +112,10 @@ module ZendeskAPI
       end
     end
 
+    def voice
+      Delegator.new(self)
+    end
+
     protected
 
     # Called by {#connection} to build a connection. Can be overwritten in a
@@ -157,6 +164,16 @@ module ZendeskAPI
     end
 
     private
+
+    def class_from_namespace(klass_as_const)
+      [ZendeskAPI, ZendeskAPI::Voice].each do |ns|
+        if ns.const_defined?(klass_as_const)
+          return ns.const_get(klass_as_const)
+        end
+      end
+
+      nil
+    end
 
     def check_url
       if !config.allow_http && config.url !~ /^https/

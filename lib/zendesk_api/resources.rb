@@ -466,4 +466,10 @@ module ZendeskAPI
   end
 
   class Target < Resource; end
+
+  module Voice
+    class PhoneNumber < Resource
+      namespace "channels/voice"
+    end
+  end
 end
