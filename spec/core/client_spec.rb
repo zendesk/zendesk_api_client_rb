@@ -19,7 +19,7 @@ describe ZendeskAPI::Client do
         ZendeskAPI::Client.new do |config|
           config.url = "http://www.google.com"
         end
-      end.to raise_error(ArgumentError) 
+      end.to raise_error(ArgumentError)
     end
 
     it "should not raise an exception when url isn't ssl and allow_http is set to true" do
@@ -115,7 +115,7 @@ describe ZendeskAPI::Client do
 
     context "#logger" do
       before(:each) do
-        @client = ZendeskAPI::Client.new do |config| 
+        @client = ZendeskAPI::Client.new do |config|
           config.url = "https://example.zendesk.com/"
           config.logger = subject
         end
@@ -231,5 +231,16 @@ describe ZendeskAPI::Client do
     client.config.allow_http.should == true
     client.connection.should == "FOO"
     client.connection.object_id.should == client.connection.object_id # it's cached
+  end
+
+  context ZendeskAPI::Voice do
+    it "defers to voice delegator" do
+      ZendeskAPI::Client.any_instance.should_receive(:phone_numbers).once
+      subject.voice.phone_numbers
+    end
+
+    it "manages namespace correctly" do
+      ZendeskAPI::Voice::PhoneNumber.new(subject, {}).path.should match(/channels\/voice\/phone_numbers/)
+    end
   end
 end

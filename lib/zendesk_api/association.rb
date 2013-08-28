@@ -1,7 +1,7 @@
 require 'zendesk_api/helpers'
 
 module ZendeskAPI
-  # Represents an association between two resources 
+  # Represents an association between two resources
   # @private
   class Association
     # @return [Hash] Options passed into the association
@@ -10,7 +10,7 @@ module ZendeskAPI
     # Options to pass in
     # * class - Required
     # * parent - Parent instance
-    # * path - Optional path instead of resource name 
+    # * path - Optional path instead of resource name
     def initialize(options = {})
       @options = Hashie::Mash.new(options)
     end
@@ -32,7 +32,7 @@ module ZendeskAPI
       instance = args.first
 
       namespace = @options[:class].to_s.split("::")
-      namespace.delete("ZendeskAPI")
+      %w(ZendeskAPI Voice).each { |ns| namespace.delete(ns) }
       has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
 
       if has_parent
