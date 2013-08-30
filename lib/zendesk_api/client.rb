@@ -30,6 +30,7 @@ module ZendeskAPI
     # memoization and creates a new Collection instance.
     # @return [Collection] Collection instance for resource
     def method_missing(method, *args, &block)
+      return super unless respond_to?(method)
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
 
@@ -37,13 +38,21 @@ module ZendeskAPI
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
-        klass_as_const = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method))
+        klass_as_const = constant_name_for_method(method)
         klass = class_from_namespace(klass_as_const)
 
         @resource_cache[method][:class] ||= klass
         @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
       end
     end
+
+     def respond_to_missing?(method_name, include_private=false)
+       !!class_from_namespace(constant_name_for_method(method_name)) || super
+     end if RUBY_VERSION >= "1.9"
+
+     def respond_to?(method_name, include_private=false)
+       !!class_from_namespace(constant_name_for_method(method_name)) || super
+     end if RUBY_VERSION < "1.9"
 
     # Returns the current user (aka me)
     # @return [ZendeskAPI::User] Current user or nil
@@ -164,6 +173,10 @@ module ZendeskAPI
     end
 
     private
+
+    def constant_name_for_method(method_name)
+      ZendeskAPI::Helpers.modulize_string(Inflection.singular(method_name.to_s))
+    end
 
     def class_from_namespace(klass_as_const)
       [ZendeskAPI, ZendeskAPI::Voice].each do |ns|
