@@ -45,7 +45,7 @@ module ZendeskAPI
       def _save(method = :save)
         return self unless @resources
 
-        client.connection.post(path) do |req|
+        @client.connection.post(path) do |req|
           req.body = { :tags => @resources.map(&:id) }
         end
 
