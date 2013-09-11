@@ -472,4 +472,9 @@ module ZendeskAPI
       namespace "channels/voice"
     end
   end
+
+  class TicketForm < Resource
+    # TODO
+    # post :clone
+  end
 end
