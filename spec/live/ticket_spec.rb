@@ -23,7 +23,7 @@ describe ZendeskAPI::Ticket do
   it_should_be_readable organization, :tickets
 
   context "recent tickets" do
-    before(:each) do
+    before(:all) do
       VCR.use_cassette("visit_recent_ticket") do
         client.connection.get("/tickets/1") do |req|
           req.headers[:Accept] = "*/*"
