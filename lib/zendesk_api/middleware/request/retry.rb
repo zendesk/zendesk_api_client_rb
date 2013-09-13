@@ -16,6 +16,7 @@ module ZendeskAPI
         end
 
         def call(env)
+          original_env = env.dup
           response = @app.call(env)
 
           if ERROR_CODES.include?(response.env[:status])
@@ -30,7 +31,7 @@ module ZendeskAPI
 
             @logger.warn "" if @logger
 
-            @app.call(env)
+            @app.call(original_env)
           else
             response
           end
