@@ -291,6 +291,8 @@ module ZendeskAPI
 
     has_many Tag, :extend => Tag::Update
 
+    has_many :incidents, :class => Ticket
+
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used
     # @param [Integer] start_time The start_time parameter
