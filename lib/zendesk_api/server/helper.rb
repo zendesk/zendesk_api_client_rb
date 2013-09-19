@@ -60,6 +60,8 @@ module ZendeskAPI::Server
     end
 
     def map_headers(headers)
+      return "" if !headers
+
       headers.map do |k,v|
         name = k.split("-").map(&:capitalize).join("-")
         "#{name}: #{v}"
