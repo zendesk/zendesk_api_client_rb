@@ -63,7 +63,7 @@ module ZendeskAPI::Server
       return "" if !headers
 
       headers.map do |k,v|
-        name = k.split("-").map(&:capitalize).join("-")
+        name = k.to_s.split("-").map(&:capitalize).join("-")
         "#{name}: #{v}"
       end.join("\n")
     end
