@@ -56,7 +56,16 @@ module ZendeskAPI
         opts = args.last.is_a?(Hash) ? args.pop : {}
         opts.merge!(:association => @association)
 
-        @resource_class.send(deferrable, @client, @options.merge(opts))
+        @resource_class.send(deferrable, @client, opts)
+      end
+    end
+
+    # Convenience method to build a new resource and
+    # add it to the collection.
+    # @param [Hash] options Options or attributes to pass
+    def build(opts = {})
+      wrap_resource(opts).tap do |res|
+        self << res
       end
     end
 
