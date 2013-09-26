@@ -56,7 +56,28 @@ module ZendeskAPI
         opts = args.last.is_a?(Hash) ? args.pop : {}
         opts.merge!(:association => @association)
 
-        @resource_class.send(deferrable, @client, @options.merge(opts))
+        @resource_class.send(deferrable, @client, opts)
+      end
+    end
+
+    # Convenience method to build a new resource and
+    # add it to the collection. Fetches the collection as well.
+    # @param [Hash] options Options or attributes to pass
+    def build(opts = {})
+      wrap_resource(opts, true).tap do |res|
+        self << res
+      end
+    end
+
+    # Convenience method to build a new resource and
+    # add it to the collection. Fetches the collection as well.
+    # @param [Hash] options Options or attributes to pass
+    def build!(opts = {})
+      wrap_resource(opts, true).tap do |res|
+        fetch!
+
+        # << does a fetch too
+        self << res
       end
     end
 
@@ -119,6 +140,7 @@ module ZendeskAPI
     # @raise [ArgumentError] if the resource doesn't belong in this collection
     def <<(item)
       fetch
+
       if item.is_a?(Resource)
         if item.is_a?(@resource_class)
           @resources << item

@@ -98,6 +98,18 @@ describe ZendeskAPI::Collection do
         it "should pass association" do
           subject.last.association.should == association
         end
+
+        it "should #build a resource and add it" do
+          resource = subject.build
+          subject.should include(resource)
+          resource.association.should == subject.association
+        end
+
+        it "should #build! a resource and add it" do
+          resource = subject.build!
+          subject.should include(resource)
+          resource.association.should == subject.association
+        end
       end
     end
   end
