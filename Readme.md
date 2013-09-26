@@ -98,6 +98,7 @@ Another way is to use the instance methods under client.
 ```ruby
 client.tickets.first
 client.tickets.find(:id => 1)
+client.tickets.build(:subject => "Test Ticket")
 client.tickets.create(:subject => "Test Ticket", :comment => { :value => "This is a test" }, :submitter_id => client.current_user.id, :priority => "urgent")
 client.tickets.destroy(:id => 1)
 ```
