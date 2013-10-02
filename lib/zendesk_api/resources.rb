@@ -12,7 +12,13 @@ module ZendeskAPI
   class Locale < ReadResource; end
 
   class CustomRole < DataResource; end
-  class Role < DataResource; end
+
+  class Role < DataResource
+    def to_param
+      name
+    end
+  end
+
   class Topic < Resource; end
   class Bookmark < Resource; end
   class Ability < DataResource; end
