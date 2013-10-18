@@ -541,6 +541,10 @@ module ZendeskAPI
       end
     end
 
+    def self.uploads(client, *args, &block)
+      ZendeskAPI::Collection.new(client, Upload, *args, &block)
+    end
+
     def self.installations(client, *args, &block)
       ZendeskAPI::Collection.new(client, Installation, *args, &block)
     end

@@ -269,6 +269,112 @@ ticket.comment.uploads << File.new("img.jpg")
 ticket.save
 ```
 
+### Apps API
+
+v1.1.0 introduces support for the Zendesk [Apps API](http://developer.zendesk.com/documentation/apps)
+
+#### Creating Apps
+
+```ruby
+upload = client.apps.uploads.create!(:file => "path/to/app.zip")
+client.apps.create!(:name => "test", :short_description => "My test app", :upload_id => upload.id)
+
+# Or
+
+app = ZendeskAPI::App.new(client, :name => "test", :short_description => "My test app")
+app.upload = "path/to/app.zip"
+app.save!
+
+# Or
+
+upload = ZendeskAPI::App::Upload.new(client, :file => "path/to/app.zip")
+upload.save!
+
+app = ZendeskAPI::App.new(client, :name => "test", :short_description => "My test app", :upload_id => upload.id)
+app.save!
+
+# Not supported!
+client.apps.create!(:name => "test", :short_description => "My test app", :upload => "app.zip")
+```
+
+*Note: job statuses are currently not supported, so you must manually poll the job status API for app creation.*
+```ruby
+body = {}
+until %w{failed completed}.include?(body["status"])
+  response = client.connection.get(app.response.headers["Location"])
+  body = response.body
+
+  sleep(body["retry_in"])
+end
+```
+
+#### Updating Apps
+
+```ruby
+client.apps.update!(:id => 123, :short_description => "New Description")
+
+app = ZendeskAPI::App.new(client, :id => 123, :short_description => "New Description")
+app.save!
+
+ZendeskAPI::App.update!(client, :id => 123, :short_description => "New Description")
+```
+
+#### Deleting Apps
+
+```ruby
+client.apps.destroy!(:id => 123)
+
+app = ZendeskAPI::App.new(client, :id => 123)
+app.destroy!
+
+ZendeskAPI::App.destroy!(client, :id => 123)
+```
+
+#### Installing an App
+
+```ruby
+install = ZendeskAPI::App::Installation.new(client, :app_id => 123)
+install.save!
+
+client.apps.installations.create!(:app_id => 123)
+
+ZendeskAPI::App::Installation.create!(client, :app_id => 123)
+```
+
+#### List Installations
+
+```ruby
+apps = client.app.installations
+apps.fetch!
+```
+
+#### Update Installation
+
+```ruby
+client.app.installations.update!(:id => 123, :settings => { :title => "My New Name" })
+
+install = ZendeskAPI::App::Installation.new(client, :id => 123)
+install.settings = { :title => "My New Name" }
+install.save!
+
+
+ZendeskAPI::App::Installation.update!(client, :id => 123, :settings => { :title => "My New Name" })
+```
+
+
+#### Delete Installation
+
+```ruby
+client.app.installations.destroy!(:id => 123)
+
+install = ZendeskAPI::App::Installation.new(client, :id => 123)
+install.destroy!
+
+
+ZendeskAPI::App::Installation.destroy!(client, :id => 123)
+```
+
+
 ## Note on Patches/Pull Requests
 1. Fork the project.
 2. Make your feature addition or bug fix.
