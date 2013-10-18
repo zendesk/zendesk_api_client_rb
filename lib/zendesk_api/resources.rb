@@ -535,6 +535,10 @@ module ZendeskAPI
       def attributes_for_save
         attributes.changes
       end
+
+      def handle_response
+        @attributes.replace(@response.body) if @response.body
+      end
     end
 
     def self.installations(client, *args, &block)
