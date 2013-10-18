@@ -25,9 +25,7 @@ module ZendeskAPI
         yield req if block_given?
       end
 
-      if @response.body && @response.body[self.class.singular_resource_name]
-        @attributes.replace @attributes.deep_merge(@response.body[self.class.singular_resource_name] || {})
-      end
+      handle_response
 
       @attributes.clear_changes
       clear_associations
@@ -69,6 +67,12 @@ module ZendeskAPI
         if (association_data[:inline] == true || inline_creation) && association.changed?
           attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
         end
+      end
+    end
+
+    def handle_response
+      if @response.body && @response.body[self.class.singular_resource_name]
+        @attributes.replace @attributes.deep_merge(@response.body[self.class.singular_resource_name] || {})
       end
     end
   end

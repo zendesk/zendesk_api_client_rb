@@ -32,6 +32,8 @@ module ZendeskAPI
       instance = args.first
 
       namespace = @options[:class].to_s.split("::")
+      namespace[-1] = @options[:class].resource_path
+
       %w(ZendeskAPI Voice).each { |ns| namespace.delete(ns) }
       has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
 
@@ -118,7 +120,7 @@ module ZendeskAPI
       return unless association_on_parent = parent_class.associations.detect {|a| a[:class] == @options[:class] }
       [
         extract_parent_id(parent_class, instance, options, original_options),
-        @options.path || association_on_parent[:name].to_s
+        @options.path || association_on_parent[:path] || association_on_parent[:name].to_s
       ]
     end
 
