@@ -357,10 +357,8 @@ install = ZendeskAPI::App::Installation.new(client, :id => 123)
 install.settings = { :title => "My New Name" }
 install.save!
 
-
 ZendeskAPI::App::Installation.update!(client, :id => 123, :settings => { :title => "My New Name" })
 ```
-
 
 #### Delete Installation
 
@@ -369,7 +367,6 @@ client.app.installations.destroy!(:id => 123)
 
 install = ZendeskAPI::App::Installation.new(client, :id => 123)
 install.destroy!
-
 
 ZendeskAPI::App::Installation.destroy!(client, :id => 123)
 ```
