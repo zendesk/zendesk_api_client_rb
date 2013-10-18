@@ -271,7 +271,7 @@ ticket.save
 
 ### Apps API
 
-v1.1.0 introduces support for the Zendesk [Apps API](http://developer.zendesk.com/documentation/apps)
+v1.1.0 introduces support for the Zendesk [Apps API](http://developer.zendesk.com/documentation/apps/reference/api.html)
 
 #### Creating Apps
 
