@@ -290,7 +290,9 @@ app.save!
 upload = ZendeskAPI::App::Upload.new(client, :file => "path/to/app.zip")
 upload.save!
 
-app = ZendeskAPI::App.new(client, :name => "test", :short_description => "My test app", :upload_id => upload.id)
+app = ZendeskAPI::App.new(client, :name => "test")
+app.short_description = "My test app"
+app.upload_id = upload.id
 app.save!
 
 # Not supported!
