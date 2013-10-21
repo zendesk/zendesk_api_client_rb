@@ -44,10 +44,6 @@ module ZendeskAPI
         keys.each{|key| delete key}
       end
 
-      def [](key)
-        super(key)
-      end
-
       def regular_writer(key, value)
         if self.has_key?(key) && self[key] == value
           value
@@ -58,8 +54,9 @@ module ZendeskAPI
       end
 
       def delete(key)
-        self[key] = nil
-        super
+        super.tap do |value|
+          changes[key] = nil
+        end
       end
 
       def changes

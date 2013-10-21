@@ -485,4 +485,79 @@ module ZendeskAPI
     # TODO
     # post :clone
   end
+
+  class App < DataResource
+    include Create
+    include Update
+    include Destroy
+
+    def initialize(client, attributes = {})
+      attributes[:upload_id] ||= nil
+
+      super
+    end
+
+    class Upload < Data
+      class << self
+        def resource_path
+          "uploads"
+        end
+      end
+
+      include Create
+
+      def initialize(client, attributes)
+        attributes[:file] ||= attributes.delete(:id)
+
+        super
+      end
+
+      # Not nested under :upload, just returns :id
+      def save!(*)
+        super.tap do
+          attributes.id = @response.body["id"]
+        end
+      end
+
+      # Always save
+      def changed?
+        true
+      end
+
+      # Don't nest attributes
+      def attributes_for_save
+        attributes
+      end
+    end
+
+    class Installation < Resource
+      # Don't nest attributes
+      def attributes_for_save
+        attributes.changes
+      end
+
+      def handle_response
+        @attributes.replace(@response.body) if @response.body
+      end
+    end
+
+    def self.uploads(client, *args, &block)
+      ZendeskAPI::Collection.new(client, Upload, *args, &block)
+    end
+
+    def self.installations(client, *args, &block)
+      ZendeskAPI::Collection.new(client, Installation, *args, &block)
+    end
+
+    has Upload, :path => "uploads"
+
+    # Don't nest attributes
+    def attributes_for_save
+      attributes.changes
+    end
+
+    def handle_response
+      @attributes.replace(@response.body) if @response.body
+    end
+  end
 end

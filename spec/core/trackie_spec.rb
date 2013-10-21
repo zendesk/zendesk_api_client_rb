@@ -21,6 +21,24 @@ describe ZendeskAPI::Trackie do
     end
   end
 
+  context "deleting keys" do
+    before(:each) do
+      subject[:key] = true
+    end
+
+    it "returns key on deletion" do
+      subject.delete(:key).should be_true
+    end
+
+    context "after deletion" do
+      before(:each) { subject.delete(:key) }
+
+      it "keeps the changes" do
+        subject.changed?(:key).should be_true
+      end
+    end
+  end
+
   context "adding identical keys" do
     before(:each) do
       subject[:key] = "foo"

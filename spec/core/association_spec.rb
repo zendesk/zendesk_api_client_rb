@@ -180,6 +180,27 @@ describe ZendeskAPI::Association do
         subject.generate_path.should == "test_resources/1/blergh"
       end
     end
+
+    context "with a path on the association" do
+      before(:each) do
+        association = ZendeskAPI::TestResource.associations.detect {|a| a[:name] == :children}
+        association[:path] = "blergh"
+      end
+
+      it "should generate nested resource path" do
+        subject.generate_path.should == "test_resources/1/blergh"
+      end
+    end
+
+    context "with no association" do
+      before(:each) do
+        ZendeskAPI::TestResource.associations.clear
+      end
+
+      it "should generate nested resource path" do
+        subject.generate_path.should == "test_resources/test_children"
+      end
+    end
   end
 
   context "class with a parent id" do
