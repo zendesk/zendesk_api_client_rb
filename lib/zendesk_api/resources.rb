@@ -451,6 +451,8 @@ module ZendeskAPI
     has_many TopicSubscription
     has_many :topic_comments, :class => TopicComment
     has_many :topic_votes, :class => Topic::TopicVote
+
+    has_many Setting
   end
 
   class UserField < Resource; end
