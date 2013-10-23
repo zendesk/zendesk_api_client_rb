@@ -263,8 +263,14 @@ module ZendeskAPI
 
   class Ticket < Resource
     class Audit < DataResource
+      class Event < Data
+        has :author, :class => User
+      end
+
       # need this to support SideLoading
       has :author, :class => User
+
+      has_many Event
     end
 
     class Comment < Data
