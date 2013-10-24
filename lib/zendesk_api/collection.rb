@@ -385,7 +385,7 @@ module ZendeskAPI
     end
 
     # Simplified Associations#wrap_resource
-    def wrap_resource(res, with_association = @resource_class == Tag)
+    def wrap_resource(res, with_association = [Tag, Setting].include?(@resource_class))
       case res
       when Array
         wrap_resource(Hash[*res])

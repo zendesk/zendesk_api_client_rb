@@ -184,7 +184,7 @@ module ZendeskAPI
     has :actor, :class => User
   end
 
-  class Setting < DataResource
+  class Setting < UpdateResource
     attr_reader :on
 
     def initialize(client, attributes = {})
@@ -195,6 +195,18 @@ module ZendeskAPI
       attributes.merge!(attributes.delete(@on))
 
       super
+    end
+
+    def new_record?
+      false
+    end
+
+    def path(options = {})
+      super(options.merge(:with_parent => true))
+    end
+
+    def attributes_for_save
+      { self.class.resource_name => { @on => attributes.changes } }
     end
   end
 
