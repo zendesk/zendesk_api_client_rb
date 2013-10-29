@@ -239,6 +239,18 @@ describe ZendeskAPI::Collection do
           [ZendeskAPI::TestResource.new(client, :id => 2), 2]
         )
       end
+
+      it "raises an ArgumentError without a block (all)" do
+        expect do |b|
+          subject.all
+        end.to raise_error(ArgumentError)
+      end
+
+      it "raises an ArgumentError without a block (all!)" do
+        expect do |b|
+          subject.all!
+        end.to raise_error(ArgumentError)
+      end
     end
 
     context "successful requests" do

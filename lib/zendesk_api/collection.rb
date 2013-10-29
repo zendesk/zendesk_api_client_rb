@@ -302,6 +302,8 @@ module ZendeskAPI
     end
 
     def _all(start_page = @options["page"], bang = false, &block)
+      raise(ArgumentError, "must pass a block") unless block
+
       page(start_page)
       clear_cache
 
