@@ -273,6 +273,8 @@ module ZendeskAPI
     extend Read
   end
 
+  class TicketRelated < DataResource; end
+
   class Ticket < Resource
     class Audit < DataResource
       class Event < Data
@@ -308,6 +310,7 @@ module ZendeskAPI
     has Group
     has :forum_topic, :class => Topic
     has Organization
+    has :related, :class => TicketRelated
 
     has :comment, :class => Comment, :inline => true
     has :last_comment, :class => Comment, :inline => true
