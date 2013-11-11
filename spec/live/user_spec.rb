@@ -18,19 +18,12 @@ describe ZendeskAPI::User, :delete_after do
   end
 
   context "passwords", :vcr do
-    subject do
-      VCR.use_cassette("user_admin") do
-        client.users.find(:id => 20014182) ||
-          client.users.detect {|u| u.role.name == "admin"}
-      end
-    end
-
-    before(:each) do
-      subject.set_password!(:password => "test")
+    it "sets the password" do
+      agent.set_password!(:password => client.config.password)
     end
 
     it "changes the password" do
-      subject.change_password!(:new_password => "testing", :old_password => :test)
+      current_user.change_password!(:previous_password => client.config.password, :password => client.config.password)
     end
   end
 
