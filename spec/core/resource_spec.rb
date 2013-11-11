@@ -305,6 +305,74 @@ describe ZendeskAPI::Resource do
     end
   end
 
+  context "on any" do
+    let(:method) { "test_any_method" }
+
+    before(:each) do
+      ZendeskAPI::TestResource.any method
+    end
+
+    context "class method" do
+      subject { ZendeskAPI::TestResource }
+
+      it "should create a method of the same name" do
+        subject.instance_methods.map(&:to_s).should include(method)
+      end
+    end
+
+    context "instance method" do
+      subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+
+      it "throws an argumenterror without a :verb" do
+        expect { subject.send(method) }.to raise_error(KeyError)
+      end
+
+      context "with an array response" do
+        before(:each) do
+          stub_json_request(:put, %r{test_resources/1/#{method}}, json(:test_resources => [{ :id => 1, :method => method }]))
+        end
+
+        it "should return true" do
+          subject.send(method, :verb => :put).should be_true
+        end
+
+        it "should update the attributes if they exist" do
+          subject.send(method)
+          subject[:method].should == method
+        end
+      end
+
+      context "with a resource response" do
+        before(:each) do
+          stub_json_request(:put, %r{test_resources/1/#{method}}, json(:test_resource => { :id => 1, :method => method }))
+        end
+
+        it "should return true" do
+          subject.send(method, :verb => :put).should be_true
+        end
+
+        it "should update the attributes if they exist" do
+          subject.send(method, :verb => :put)
+          subject[:method].should == method
+        end
+      end
+
+      context "with client error" do
+        before(:each) do
+          stub_request(:put, %r{test_resources/1/#{method}}).to_return(:status => 500)
+        end
+
+        it "doesn't raise without bang" do
+          silence_logger { subject.send("#{method}", :verb => :put).should be_false }
+        end
+
+        it "raises with bang" do
+          expect { silence_logger{ subject.send("#{method}!", :verb => :put) } }.to raise_error(ZendeskAPI::Error::ClientError)
+        end
+      end
+    end
+  end
+
   %w{put post delete}.each do |verb|
     context "on #{verb}" do
       let(:method) { "test_#{verb}_method" }
@@ -323,17 +391,34 @@ describe ZendeskAPI::Resource do
       context "instance method" do
         subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
-        before(:each) do
-          stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resources => [{ :id => 1, :method => method }]))
+        context "with an array response" do
+          before(:each) do
+            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resources => [{ :id => 1, :method => method }]))
+          end
+
+          it "should return true" do
+            subject.send(method).should be_true
+          end
+
+          it "should update the attributes if they exist" do
+            subject.send(method)
+            subject[:method].should == method
+          end
         end
 
-        it "should return true" do
-          subject.send(method).should be_true
-        end
+        context "with a resource response" do
+          before(:each) do
+            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resource => { :id => 1, :method => method }))
+          end
 
-        it "should update the attributes if they exist" do
-          subject.send(method)
-          subject[:method].should == method
+          it "should return true" do
+            subject.send(method).should be_true
+          end
+
+          it "should update the attributes if they exist" do
+            subject.send(method)
+            subject[:method].should == method
+          end
         end
 
         context "with client error" do
@@ -341,8 +426,12 @@ describe ZendeskAPI::Resource do
             stub_request(verb.to_sym, %r{test_resources/1/#{method}}).to_return(:status => 500)
           end
 
-          it "should raise" do
-            expect { silence_logger{ subject.send(method) } }.to raise_error(ZendeskAPI::Error::ClientError)
+          it "doesn't raise without bang" do
+            silence_logger { subject.send("#{method}").should be_false }
+          end
+
+          it "raises with bang" do
+            expect { silence_logger{ subject.send("#{method}!") } }.to raise_error(ZendeskAPI::Error::ClientError)
           end
         end
       end

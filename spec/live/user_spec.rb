@@ -17,6 +17,23 @@ describe ZendeskAPI::User, :delete_after do
     end
   end
 
+  context "passwords", :vcr do
+    subject do
+      VCR.use_cassette("user_admin") do
+        client.users.find(:id => 20014182) ||
+          client.users.detect {|u| u.role.name == "admin"}
+      end
+    end
+
+    before(:each) do
+      subject.set_password!(:password => "test")
+    end
+
+    it "changes the password" do
+      subject.change_password!(:new_password => "testing", :old_password => :test)
+    end
+  end
+
   context "side-loading" do
     context "no permission set" do
       subject do

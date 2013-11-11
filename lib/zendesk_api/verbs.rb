@@ -10,23 +10,45 @@ module ZendeskAPI
       #   Reloads the resource's attributes if any are in the response body.
       #
       #   Created method takes an optional options hash. Valid options to be passed in to the created method: reload (for caching, default: false)
-      def create_verb(verb)
-        define_method verb do |method|
-          define_method method do |*method_args|
+      def create_verb(method_verb)
+        define_method method_verb do |method|
+          define_method "#{method}!" do |*method_args|
             opts = method_args.last.is_a?(Hash) ? method_args.pop : {}
-            return instance_variable_get("@_#{verb}_#{method}") if instance_variable_defined?("@_#{verb}_#{method}") && !opts[:reload]
 
-            response = @client.connection.send(verb, "#{path}/#{method}") do |req|
+            if method_verb == :any
+              verb = opts.delete(:verb)
+              raise(ArgumentError, ":verb required for method defined as :any") unless verb
+            else
+              verb = method_verb
+            end
+
+            @response = @client.connection.send(verb, "#{path}/#{method}") do |req|
               req.body = opts
             end
 
-            if (resources = response.body[self.class.resource_name]) &&
-              (res = resources.find {|res| res["id"] == id})
-              @attributes = ZendeskAPI::Trackie.new(res)
-              @attributes.clear_changes
-            end
+            return false unless @response.success?
+            return false unless @response.body
+
+            resource = @response.body[self.class.singular_resource_name] ||
+              @response.body.fetch(self.class.resource_name, []).detect {|res| res["id"] == id} ||
+              {}
+
+            @attributes.replace @attributes.deep_merge(resource)
+            @attributes.clear_changes
+            clear_associations
 
             true
+          end
+
+          define_method method do |*method_args|
+            begin
+              send("#{method}!", *method_args)
+            rescue ZendeskAPI::Error::RecordInvalid => e
+              @errors = e.errors
+              false
+            rescue ZendeskAPI::Error::ClientError
+              false
+            end
           end
         end
       end
@@ -35,5 +57,6 @@ module ZendeskAPI
     create_verb :put
     create_verb :post
     create_verb :delete
+    create_verb :any
   end
 end

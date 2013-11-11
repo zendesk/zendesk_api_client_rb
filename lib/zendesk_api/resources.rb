@@ -452,6 +452,28 @@ module ZendeskAPI
       self.role_id = role.name if key?(:role)
     end
 
+    any :password
+
+    # Set a user's password
+    def set_password(opts = {})
+      password(opts.merge(:verb => :post))
+    end
+
+    # Change a user's password
+    def change_password(opts = {})
+      password(opts.merge(:verb => :put))
+    end
+
+    # Set a user's password
+    def set_password!(opts = {})
+      password!(opts.merge(:verb => :post))
+    end
+
+    # Change a user's password
+    def change_password!(opts = {})
+      password!(opts.merge(:verb => :put))
+    end
+
     has Organization
 
     has CustomRole, :inline => true, :include => :roles
