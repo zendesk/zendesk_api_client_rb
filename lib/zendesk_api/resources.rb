@@ -301,6 +301,8 @@ module ZendeskAPI
       alias :save! :save
     end
 
+    put :mark_as_spam
+
     has :requester, :class => User, :inline => :create
     has :submitter, :class => User
     has :assignee, :class => User
