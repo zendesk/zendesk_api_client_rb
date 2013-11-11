@@ -324,7 +324,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
       it "throws an argumenterror without a :verb" do
-        expect { subject.send(method) }.to raise_error(KeyError)
+        expect { subject.send(method) }.to raise_error(ArgumentError)
       end
 
       context "with an array response" do
@@ -337,7 +337,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should update the attributes if they exist" do
-          subject.send(method)
+          subject.send(method, :verb => :put)
           subject[:method].should == method
         end
       end
