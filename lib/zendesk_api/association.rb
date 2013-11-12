@@ -120,6 +120,9 @@ module ZendeskAPI
       path = @options.path
 
       association_on_parent = parent_class.associations.detect {|a| a[:name] == @options[:name]}
+      association_on_parent ||= parent_class.associations.detect do |a|
+        !a[:inline] && a[:class] == @options[:class]
+      end
 
       if association_on_parent
         path ||= association_on_parent[:path]
