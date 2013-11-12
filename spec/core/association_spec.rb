@@ -198,7 +198,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should generate nested resource path" do
-        subject.generate_path.should == "test_resources/test_children"
+        subject.generate_path.should == "test_resources/1/test_children"
       end
     end
   end
