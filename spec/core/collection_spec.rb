@@ -61,7 +61,7 @@ describe ZendeskAPI::Collection do
     context "with a class with a parent" do
       let(:association) do
         ZendeskAPI::Association.new(:class => ZendeskAPI::TestResource::TestChild,
-          :parent => ZendeskAPI::TestResource.new(client, :id => 1))
+          :parent => ZendeskAPI::TestResource.new(client, :id => 1), :name => :children)
       end
 
       subject do

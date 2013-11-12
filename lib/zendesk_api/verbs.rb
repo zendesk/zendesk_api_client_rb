@@ -29,11 +29,14 @@ module ZendeskAPI
             return false unless @response.success?
             return false unless @response.body
 
-            resource = @response.body[self.class.singular_resource_name] ||
-              @response.body.fetch(self.class.resource_name, []).detect {|res| res["id"] == id} ||
-              {}
+            resource = nil
 
-            @attributes.replace @attributes.deep_merge(resource)
+            if @response.body.is_a?(Hash)
+              resource = @response.body[self.class.singular_resource_name]
+              resource ||= @response.body.fetch(self.class.resource_name, []).detect {|res| res["id"] == id}
+            end
+
+            @attributes.replace @attributes.deep_merge(resource || {})
             @attributes.clear_changes
             clear_associations
 

@@ -387,10 +387,10 @@ module ZendeskAPI
     end
 
     # Simplified Associations#wrap_resource
-    def wrap_resource(res, with_association = [Tag, Setting].include?(@resource_class))
+    def wrap_resource(res, with_association = with_association?)
       case res
       when Array
-        wrap_resource(Hash[*res])
+        wrap_resource(Hash[*res], with_association)
       when Hash
         res = res.merge(:association => @association) if with_association
         @resource_class.new(@client, res)
@@ -399,6 +399,12 @@ module ZendeskAPI
         res.merge!(:association => @association) if with_association
         @resource_class.new(@client, res)
       end
+    end
+
+    # Two special cases, and all namespaced classes
+    def with_association?
+      [Tag, Setting].include?(@resource_class) ||
+        @resource_class.to_s.split("::").size > 2
     end
 
     ## Method missing

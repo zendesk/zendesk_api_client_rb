@@ -281,13 +281,15 @@ module ZendeskAPI
         has :author, :class => User
       end
 
+      put :trust
+
       # need this to support SideLoading
       has :author, :class => User
 
       has_many Event
     end
 
-    class Comment < Data
+    class Comment < DataResource
       include Save
 
       has_many :uploads, :class => Attachment, :inline => true
@@ -314,7 +316,9 @@ module ZendeskAPI
     has Organization
     has :related, :class => TicketRelated
 
-    has :comment, :class => Comment, :inline => true
+    has Comment, :inline => true
+    has_many Comment
+
     has :last_comment, :class => Comment, :inline => true
     has_many :last_comments, :class => Comment, :inline => true
 

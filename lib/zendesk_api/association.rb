@@ -117,7 +117,7 @@ module ZendeskAPI
     end
 
     def build_parent_namespace(parent_class, instance, options, original_options)
-      return unless association_on_parent = parent_class.associations.detect {|a| a[:class] == @options[:class] }
+      return unless association_on_parent = parent_class.associations.detect {|a| a[:name] == @options[:name]}
       [
         extract_parent_id(parent_class, instance, options, original_options),
         @options.path || association_on_parent[:path] || association_on_parent[:name].to_s

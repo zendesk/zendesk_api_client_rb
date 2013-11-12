@@ -155,7 +155,7 @@ describe ZendeskAPI::Association do
   end
 
   context "class with a specified parent" do
-    subject { described_class.new(:class => ZendeskAPI::TestResource::TestChild, :parent => instance) }
+    subject { described_class.new(:class => ZendeskAPI::TestResource::TestChild, :parent => instance, :name => :children) }
 
     it "should generate nested resource path" do
       subject.generate_path.should == "test_resources/1/children"
@@ -204,7 +204,7 @@ describe ZendeskAPI::Association do
   end
 
   context "class with a parent id" do
-    subject { described_class.new(:class => ZendeskAPI::TestResource::TestChild) }
+    subject { described_class.new(:class => ZendeskAPI::TestResource::TestChild, :name => :children) }
 
     it "should raise an error if not passed an instance or id" do
       expect { subject.generate_path }.to raise_error(ArgumentError)
