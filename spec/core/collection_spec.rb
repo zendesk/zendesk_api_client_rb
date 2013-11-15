@@ -363,6 +363,16 @@ describe ZendeskAPI::Collection do
       end
     end
 
+    context "with nil body" do
+      before(:each) do
+        stub_request(:get, %r{test_resources}).to_return(:status => 200)
+      end
+
+      it "should properly be handled" do
+        silence_logger { subject.fetch(true).should be_empty }
+      end
+    end
+
     context "with unfetchable resource" do
       subject { ZendeskAPI::Collection.new(client, ZendeskAPI::NilResource) }
 

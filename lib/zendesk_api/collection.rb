@@ -167,7 +167,7 @@ module ZendeskAPI
       end
 
       @response = get_response(@query || self.path)
-      handle_response(@response.body.dup)
+      handle_response(@response.body)
 
       @query = nil
       @resources
@@ -375,7 +375,12 @@ module ZendeskAPI
       end
     end
 
-    def handle_response(body)
+    def handle_response(response_body)
+      unless response_body
+        raise ZendeskAPI::Error::NetworkError, @response.env
+      end
+
+      body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
 
       @resources = results.map do |res|
