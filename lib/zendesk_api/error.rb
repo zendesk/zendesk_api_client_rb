@@ -1,6 +1,8 @@
 module ZendeskAPI
   module Error
-    class ClientError < Faraday::Error::ClientError; end
+    class ClientError < Faraday::Error::ClientError
+      attr_reader :wrapped_exception
+    end
 
     class RecordInvalid < ClientError
       attr_accessor :response, :errors
