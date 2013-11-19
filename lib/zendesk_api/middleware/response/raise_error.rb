@@ -8,7 +8,7 @@ module ZendeskAPI
         def call(env)
           super
         rescue Faraday::Error::TimeoutError, Faraday::Error::ConnectionFailed => e
-          raise Error::NetworkError.new(e)
+          raise Error::NetworkError.new(e, env)
         end
 
         def on_complete(env)
