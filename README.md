@@ -110,20 +110,20 @@ as #each.
 ### Caveats
 
 Resource updating is implemented by sending only the `changed?` attributes to the server (see `ZendeskAPI::TrackChanges`).
-Unfortunately, this module only hooks into `Hash` meaning any changes to an `Array`not resulting in a new instance will not be tracked and sent.
+Unfortunately, this module only hooks into `Hash` meaning any changes to an `Array` not resulting in a new instance will not be tracked and sent.
 
 ```
 zendesk_api_client_rb $ bundle console
-> a = ZendeskAPI::Trackie.new(:tags => []).tap(&:clear_changes)
-> a.changed?(:tags)
+> a = ZendeskAPI::Trackie.new(:test => []).tap(&:clear_changes)
+> a.changed?(:test)
  => false
-> a.tags << "my_new_tag"
- => ["my_new_tag"]
-> a.changed?(:tags)
+> a.test << "hello"
+ => ["hello"]
+> a.changed?(:test)
  => false
-> a.tags += %w{my_other_tag}
- => ["my_new_tag", "my_other_tag"]
-> a.changed?(:tags)
+> a.test += %w{hi}
+ => ["hello", "hi"]
+> a.changed?(:test)
  => true
 ```
 
