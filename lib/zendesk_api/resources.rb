@@ -308,7 +308,7 @@ module ZendeskAPI
     has :requester, :class => User, :inline => :create
     has :submitter, :class => User
     has :assignee, :class => User
-    has_many :collaborators, :class => User
+    has_many :collaborators, :class => User, :inline => true
     has_many Audit
     has :metrics, :class => TicketMetric
     has Group
