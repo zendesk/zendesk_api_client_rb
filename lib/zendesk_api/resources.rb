@@ -537,6 +537,40 @@ module ZendeskAPI
     # post :clone
   end
 
+  class AppInstallation < Resource
+    namespace "apps"
+
+    def self.singular_resource_name
+      "installation"
+    end
+
+    # Don't nest attributes
+    def attributes_for_save
+      attributes.changes
+    end
+
+    def handle_response
+      @attributes.replace(@response.body) if @response.body
+    end
+  end
+
+  class AppNotification < CreateResource
+    class << self
+      def resource_path
+        "apps/notify"
+      end
+    end
+
+    # Don't nest attributes
+    def attributes_for_save
+      attributes.changes
+    end
+
+    def handle_response
+      @attributes.replace(@response.body) if @response.body
+    end
+  end
+
   class App < DataResource
     include Create
     include Update
@@ -581,23 +615,12 @@ module ZendeskAPI
       end
     end
 
-    class Installation < Resource
-      # Don't nest attributes
-      def attributes_for_save
-        attributes.changes
-      end
-
-      def handle_response
-        @attributes.replace(@response.body) if @response.body
-      end
-    end
-
     def self.uploads(client, *args, &block)
       ZendeskAPI::Collection.new(client, Upload, *args, &block)
     end
 
     def self.installations(client, *args, &block)
-      ZendeskAPI::Collection.new(client, Installation, *args, &block)
+      ZendeskAPI::Collection.new(client, AppInstallation, *args, &block)
     end
 
     has Upload, :path => "uploads"
