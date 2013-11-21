@@ -28,13 +28,11 @@ describe ZendeskAPI::App do
     end
 
     app.id = body["app_id"]
-    app.short_description = "My Test App"
     app.author_name = "Mr. Sprinkles"
     app.author_email = "sprinkle@example.com"
 
     VCR.use_cassette("app_save") { app.save! }
 
-    app.short_description.should == "My Test App"
     app.author_name.should == "Mr. Sprinkles"
 
     VCR.use_cassette("app_destroy") { app.destroy! }
