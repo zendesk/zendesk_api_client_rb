@@ -12,7 +12,7 @@ PATH
       faraday_middleware (>= 0.8.7)
       hashie (>= 1.2)
       inflection
-      mime-types
+      mime-types (~> 1.0)
       multi_json
       multipart-post
 
@@ -62,7 +62,7 @@ GEM
     jruby-openssl (0.8.8)
       bouncy-castle-java (>= 1.5.0147)
     json (1.8.0)
-    mime-types (2.0)
+    mime-types (1.25)
     mongoid (3.1.4)
       activemodel (~> 3.2)
       moped (~> 1.4)
