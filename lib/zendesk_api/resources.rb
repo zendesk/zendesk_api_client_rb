@@ -262,9 +262,11 @@ module ZendeskAPI
     end
 
     has_many Comment
+    has_many :collaborators, :class => User
 
     has Organization
     has :requester, :class => User
+    has :assignee, :class => User
   end
 
   class TicketField < Resource; end
