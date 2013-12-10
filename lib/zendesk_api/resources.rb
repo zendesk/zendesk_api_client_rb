@@ -266,6 +266,7 @@ module ZendeskAPI
 
     has Organization
     has :requester, :class => User
+    has :assignee, :class => User
   end
 
   class TicketField < Resource; end
