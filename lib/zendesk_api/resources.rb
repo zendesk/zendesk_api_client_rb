@@ -190,7 +190,7 @@ module ZendeskAPI
     end
 
     has_many Comment
-    has_many :collaborators, :class => User
+    has_many :collaborators, :class => User, :inline => true
 
     has Organization
     has :requester, :class => User
