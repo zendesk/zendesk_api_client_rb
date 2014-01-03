@@ -101,6 +101,13 @@ describe ZendeskAPI::Association do
         instance.children.should be_instance_of(ZendeskAPI::Collection)
       end
 
+      it "should not change objects" do
+        child = 'foo'
+        children = [child]
+        instance.children = children
+        children[0].should == 'foo'
+      end
+
       it "is not used when not used" do
         instance.children_used?.should == false
       end
