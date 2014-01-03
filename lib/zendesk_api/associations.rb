@@ -195,8 +195,8 @@ module ZendeskAPI
         def define_has_many_setter(association)
           define_method "#{association[:name]}=" do |resources|
             if resources.is_a?(Array)
-              resources.map! { |attr| wrap_resource(attr, association) }
-              send(association[:name]).replace(resources)
+              wrapped = resources.map { |attr| wrap_resource(attr, association) }
+              send(association[:name]).replace(wrapped)
             else
               resources.association = Association.new(association.merge(:parent => self))
               instance_variable_set("@#{association[:name]}", resources)
