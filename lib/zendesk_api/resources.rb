@@ -502,6 +502,17 @@ module ZendeskAPI
     has_many :topic_votes, :class => Topic::TopicVote
 
     has_many Setting
+
+    def attributes_for_save
+      # Don't send role_id, it's necessary
+      # for side-loading, but causes problems on save
+      # see #initialize
+      attrs = attributes.changes.delete_if do |k, _|
+        k == "role_id"
+      end
+
+      { self.class.singular_resource_name => attrs }
+    end
   end
 
   class UserField < Resource; end
