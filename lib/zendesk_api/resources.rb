@@ -593,6 +593,14 @@ module ZendeskAPI
       super
     end
 
+    def self.create!(client, attributes = {}, &block)
+      if file_path = attributes.delete(:upload)
+        attributes[:upload_id] = client.apps.uploads.create!(:file => file_path).id
+      end
+
+      super
+    end
+
     class Upload < Data
       class << self
         def resource_path
