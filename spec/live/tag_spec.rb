@@ -20,6 +20,13 @@ describe ZendeskAPI::Tag, :vcr, :not_findable do
         tags.should == %w{tag3}
       end
 
+      it "shouldn't re-save destroyed tags" do
+        parent.tags.first.destroy!
+        parent.tags.save!
+
+        tags.should == %w{tag3}
+      end
+
       it "should be updatable" do
         parent.tags.update!(:id => "tag4")
 

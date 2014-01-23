@@ -328,7 +328,7 @@ module ZendeskAPI
       result = true
 
       @resources.map! do |item|
-        if item.respond_to?(method) && item.changed?
+        if item.respond_to?(method) && !item.destroyed? && item.changed?
           result &&= item.send(method)
         end
 

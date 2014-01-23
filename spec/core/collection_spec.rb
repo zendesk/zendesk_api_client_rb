@@ -391,7 +391,7 @@ describe ZendeskAPI::Collection do
     end
 
     context "with a hash" do
-      let(:object) { mock('ZendeskAPI::TestResource', :changes => [:xxx], :changed? => true) }
+      let(:object) { mock('ZendeskAPI::TestResource', :changes => [:xxx], :changed? => true, :destroyed? => false) }
 
       it "should call create with those options" do
         ZendeskAPI::TestResource.should_receive(:new).
@@ -425,7 +425,7 @@ describe ZendeskAPI::Collection do
 
     context "with everything else" do
       it "should pass to new, since this is how attachment handles it" do
-        attachment = mock(:changes => [:xxx], :changed? => true)
+        attachment = mock(:changes => [:xxx], :changed? => true, :destroyed? => false)
         ZendeskAPI::TestResource.should_receive(:new).
           with(client, :id => "img.jpg", :association => instance_of(ZendeskAPI::Association)).
           and_return attachment
@@ -434,6 +434,25 @@ describe ZendeskAPI::Collection do
 
         attachment.should_receive :save
         subject.save
+      end
+    end
+
+    context "with a destroyed object" do
+      let(:object) { ZendeskAPI::TestResource.new(client, options) }
+
+      before(:each) do
+        subject << object
+      end
+
+      it "should not save object" do
+        object.should_receive(:destroyed?).and_return(true)
+        object.should_not_receive(:save)
+
+        subject.save
+      end
+
+      it "should have object in collection" do
+        subject.should include(object)
       end
     end
   end
