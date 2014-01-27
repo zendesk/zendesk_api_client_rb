@@ -8,8 +8,8 @@ PATH
   remote: .
   specs:
     zendesk_api (1.2.4)
-      faraday (>= 0.8.0)
-      faraday_middleware (>= 0.8.7)
+      faraday (~> 0.8.0)
+      faraday_middleware (~> 0.8.7)
       hashie (>= 1.2)
       inflection
       mime-types (~> 1.0)
@@ -51,7 +51,7 @@ GEM
     eventmachine (1.0.3-java)
     faraday (0.8.7)
       multipart-post (~> 1.1)
-    faraday_middleware (0.9.0)
+    faraday_middleware (0.8.8)
       faraday (>= 0.7.4, < 0.9)
     fssm (0.2.10)
     haml (4.0.3)
