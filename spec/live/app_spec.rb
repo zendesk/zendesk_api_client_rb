@@ -1,7 +1,7 @@
 require 'core/spec_helper'
 
 describe ZendeskAPI::App do
-  it "should work "do
+  it "should work" do
     upload = VCR.use_cassette("app_upload_create") do
       ZendeskAPI::App::Upload.new(client, :id => "spec/fixtures/sample_app.zip").tap(&:save!)
     end
@@ -36,5 +36,17 @@ describe ZendeskAPI::App do
     app.author_name.should == "Mr. Sprinkles"
 
     VCR.use_cassette("app_destroy") { app.destroy! }
+  end
+
+  it "should be able to handle the simplest creation api call" do
+    return_val = stub(:return_val)
+    return_val.stub(:id => 1)
+    return_val.stub(:save!)
+
+    ZendeskAPI::App::Upload.should_receive(:create!).and_return(return_val)
+    ZendeskAPI::App.should_receive(:new).with(client, hash_including(:name => "test_api_client_rb", :upload_id => 1))
+      .and_return(return_val)
+
+    client.apps.create!(:name => "test_api_client_rb", :upload => "abc.zip")
   end
 end
