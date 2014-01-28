@@ -39,14 +39,8 @@ describe ZendeskAPI::App do
   end
 
   it "should be able to handle the simplest creation api call" do
-    return_val = stub(:return_val)
-    return_val.stub(:id => 1)
-    return_val.stub(:save!)
-
-    ZendeskAPI::App::Upload.should_receive(:create!).and_return(return_val)
-    ZendeskAPI::App.should_receive(:new).with(client, hash_including(:name => "test_api_client_rb", :upload_id => 1))
-      .and_return(return_val)
-
-    client.apps.create!(:name => "test_api_client_rb", :upload => "abc.zip")
+    VCR.use_cassette("app_create via client.apps.create") do
+      client.apps.create!({ :name => "Testing App Creation", :upload => "spec/fixtures/sample_app.zip" })
+    end
   end
 end
