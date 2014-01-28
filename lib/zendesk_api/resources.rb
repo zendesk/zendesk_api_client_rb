@@ -602,7 +602,7 @@ module ZendeskAPI
         body = response.body
 
         retry_count -= 1
-        sleep(body["retry_in"])
+        sleep(body["retry_in"] || 3)
 
         break if retry_count <= 0
       end
