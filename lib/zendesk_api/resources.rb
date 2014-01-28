@@ -593,6 +593,29 @@ module ZendeskAPI
       super
     end
 
+    def save!(options = {})
+      super
+
+      body, retry_count = {}, 5
+      until %w{failed completed}.include?(body["status"])
+        response = @client.connection.get(@response.headers["Location"])
+        body = response.body
+
+        retry_count -= 1
+        sleep(body["retry_in"] || 3)
+
+        break if retry_count <= 0
+      end
+
+      if body["status"] == "completed"
+        @client.config.logger.info("App saved")
+      elsif body["status"] == "failed"
+        @client.config.logger.fatal("Failed to save app")
+      else
+        @client.config.logger.warn("App might not be saved")
+      end
+    end
+
     class Upload < Data
       class << self
         def resource_path
