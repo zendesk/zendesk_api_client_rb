@@ -295,7 +295,8 @@ app.short_description = "My test app"
 app.upload_id = upload.id
 app.save!
 
-# Not supported!
+# Or
+
 client.apps.create!(:name => "test", :short_description => "My test app", :upload => "app.zip")
 ```
 
