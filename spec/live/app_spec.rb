@@ -39,8 +39,8 @@ describe ZendeskAPI::App do
   end
 
   it "should be able to handle the simplest creation api call" do
-    VCR.use_cassette("app_create via client.apps.create") do
-      client.apps.create!({ :name => "Testing App Creation", :upload => "spec/fixtures/sample_app.zip" })
+    VCR.use_cassette("app_simple_create") do
+      expect { ZendeskAPI::App.create!(client, { :name => "Testing App Creation", :upload => "spec/fixtures/sample_app.zip" }) }.to_not raise_error
     end
   end
 end
