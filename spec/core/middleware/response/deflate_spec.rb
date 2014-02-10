@@ -5,7 +5,13 @@ describe ZendeskAPI::Middleware::Response::Deflate do
     subject { '{ "TESTDATA": true }' }
 
     before(:each) do
-      stub_request(:get, %r{blergh}).to_return(:headers => { :content_encoding => "deflate" }, :body => Zlib::Deflate.deflate(subject))
+      stub_request(:get, %r{blergh}).to_return(
+        :headers => {
+          :content_encoding => "deflate",
+          :content_type => "application/json"
+        },
+        :body => Zlib::Deflate.deflate(subject)
+      )
     end
 
     it "should inflate returned body" do

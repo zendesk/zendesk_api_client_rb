@@ -28,13 +28,12 @@ Gem::Specification.new do |s|
 # Optional. Only used for uploads testing.
 #  s.add_development_dependency "actionpack"
 
-  s.add_runtime_dependency "faraday", "~> 0.8.0"
-  s.add_runtime_dependency "faraday_middleware", "~> 0.8.7"
+  s.add_runtime_dependency "faraday", "~> 0.9"
   s.add_runtime_dependency "hashie", ">= 1.2"
   s.add_runtime_dependency "inflection"
   s.add_runtime_dependency "multi_json"
-  s.add_runtime_dependency "mime-types", "~> 1.0"
-  s.add_runtime_dependency "multipart-post"
+  s.add_runtime_dependency "mime-types", "~> 2.0"
+  s.add_runtime_dependency "multipart-post", "~> 2.0"
 
   s.files              = `git ls-files -x Gemfile.lock`.split("\n") rescue ''
   s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")

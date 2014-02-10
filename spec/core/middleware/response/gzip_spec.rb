@@ -9,7 +9,13 @@ describe ZendeskAPI::Middleware::Response::Gzip do
       gz.write(subject)
       gz.close
 
-      stub_request(:get, %r{blergh}).to_return(:headers => { :content_encoding => "gzip" }, :body => encoded_data.string)
+      stub_request(:get, %r{blergh}).to_return(
+        :headers => {
+          :content_encoding => "gzip",
+          :content_type => "application/json"
+        },
+        :body => encoded_data.string
+      )
     end
 
     it "should inflate returned body" do
