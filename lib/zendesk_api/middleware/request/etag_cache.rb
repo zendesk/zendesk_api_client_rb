@@ -18,17 +18,17 @@ module ZendeskAPI
           [@cache_key_prefix, env[:url].to_s]
         end
 
-        def call(env)
-          return @app.call(env) unless [:get, :head].include?(env[:method])
+        def call(environment)
+          return @app.call(environment) unless [:get, :head].include?(environment[:method])
 
           # send known etag
-          cached = @cache.read(cache_key(env))
+          cached = @cache.read(cache_key(environment))
 
           if cached
-            env[:request_headers]["If-None-Match"] ||= cached[:response_headers]["Etag"]
+            environment[:request_headers]["If-None-Match"] ||= cached[:response_headers]["Etag"]
           end
 
-          @app.call(env).on_complete do
+          @app.call(environment).on_complete do |env|
             if cached && env[:status] == 304 # not modified
               env[:body] = cached[:body]
               env[:response_headers].merge!(
@@ -38,7 +38,7 @@ module ZendeskAPI
                 :content_encoding => cached[:response_headers][:content_encoding]
               )
             elsif env[:status] == 200 && env[:response_headers]["Etag"] # modified and cacheable
-              @cache.write(cache_key(env), env)
+              @cache.write(cache_key(env), env.to_hash)
             end
           end
         end

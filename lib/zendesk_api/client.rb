@@ -1,5 +1,4 @@
 require 'faraday'
-require 'faraday_middleware'
 
 require 'zendesk_api/version'
 require 'zendesk_api/sideloading'
@@ -9,10 +8,12 @@ require 'zendesk_api/lru_cache'
 require 'zendesk_api/middleware/request/etag_cache'
 require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/upload'
+require 'zendesk_api/middleware/request/encode_json'
 require 'zendesk_api/middleware/response/callback'
 require 'zendesk_api/middleware/response/deflate'
 require 'zendesk_api/middleware/response/gzip'
 require 'zendesk_api/middleware/response/parse_iso_dates'
+require 'zendesk_api/middleware/response/parse_json'
 require 'zendesk_api/middleware/response/raise_error'
 require 'zendesk_api/middleware/response/logger'
 require 'zendesk_api/delegator'
@@ -134,7 +135,7 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
-        builder.response :json, :content_type => 'application/json'
+        builder.use ZendeskAPI::Middleware::Response::ParseJson
 
         adapter = config.adapter || Faraday.default_adapter
 
@@ -156,7 +157,7 @@ module ZendeskAPI
 
         builder.use ZendeskAPI::Middleware::Request::Upload
         builder.request :multipart
-        builder.request :json
+        builder.use ZendeskAPI::Middleware::Request::EncodeJson
         builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
 
         builder.adapter *adapter

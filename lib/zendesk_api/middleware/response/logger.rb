@@ -1,11 +1,9 @@
-require 'faraday_middleware/response_middleware'
-
 module ZendeskAPI
   module Middleware
     module Response
       # Faraday middleware to handle logging
       # @private
-      class Logger < Faraday::Response::Middleware
+      class Logger < Faraday::Middleware
         def initialize(app, logger = nil)
           super(app)
 
