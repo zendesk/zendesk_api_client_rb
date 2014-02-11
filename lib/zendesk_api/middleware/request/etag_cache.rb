@@ -38,7 +38,7 @@ module ZendeskAPI
                 :content_encoding => cached[:response_headers][:content_encoding]
               )
             elsif env[:status] == 200 && env[:response_headers]["Etag"] # modified and cacheable
-              @cache.write(cache_key(env), env.to_h)
+              @cache.write(cache_key(env), env.to_hash)
             end
           end
         end
