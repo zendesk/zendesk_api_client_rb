@@ -277,11 +277,11 @@ v1.1.0 introduces support for the Zendesk [Apps API](http://developer.zendesk.co
 
 ```ruby
 upload = client.apps.uploads.create!(:file => "path/to/app.zip")
-client.apps.create!(:name => "test", :short_description => "My test app", :upload_id => upload.id)
+client.apps.create!(:name => "test", :upload_id => upload.id)
 
 # Or
 
-app = ZendeskAPI::App.new(client, :name => "test", :short_description => "My test app")
+app = ZendeskAPI::App.new(client, :name => "test")
 app.upload = "path/to/app.zip"
 app.save!
 
@@ -291,13 +291,12 @@ upload = ZendeskAPI::App::Upload.new(client, :file => "path/to/app.zip")
 upload.save!
 
 app = ZendeskAPI::App.new(client, :name => "test")
-app.short_description = "My test app"
 app.upload_id = upload.id
 app.save!
 
 # Or
 
-client.apps.create!(:name => "test", :short_description => "My test app", :upload => "app.zip")
+client.apps.create!(:name => "test", :upload => "app.zip")
 ```
 
 *Note: job statuses are currently not supported, so you must manually poll the job status API for app creation.*
@@ -314,12 +313,12 @@ end
 #### Updating Apps
 
 ```ruby
-client.apps.update!(:id => 123, :short_description => "New Description")
+client.apps.update!(:id => 123)
 
-app = ZendeskAPI::App.new(client, :id => 123, :short_description => "New Description")
+app = ZendeskAPI::App.new(client, :id => 123)
 app.save!
 
-ZendeskAPI::App.update!(client, :id => 123, :short_description => "New Description")
+ZendeskAPI::App.update!(client, :id => 123)
 ```
 
 #### Deleting Apps
