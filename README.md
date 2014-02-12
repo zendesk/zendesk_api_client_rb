@@ -204,7 +204,7 @@ Using side-loading, however, the user can be partially loaded in the same reques
 
 ```ruby
 tickets = client.tickets.include(:users)
-# Or client.tickets(include: :users)
+# Or client.tickets(:include => :users)
 # Does *NOT* make a request to the server since it is already loaded
 tickets.first.requester # => #<ZendeskAPI::User id=...>
 ```
@@ -277,11 +277,11 @@ v1.1.0 introduces support for the Zendesk [Apps API](http://developer.zendesk.co
 
 ```ruby
 upload = client.apps.uploads.create!(:file => "path/to/app.zip")
-client.apps.create!(:name => "test", :short_description => "My test app", :upload_id => upload.id)
+client.apps.create!(:name => "test", :upload_id => upload.id)
 
 # Or
 
-app = ZendeskAPI::App.new(client, :name => "test", :short_description => "My test app")
+app = ZendeskAPI::App.new(client, :name => "test")
 app.upload = "path/to/app.zip"
 app.save!
 
@@ -291,12 +291,12 @@ upload = ZendeskAPI::App::Upload.new(client, :file => "path/to/app.zip")
 upload.save!
 
 app = ZendeskAPI::App.new(client, :name => "test")
-app.short_description = "My test app"
 app.upload_id = upload.id
 app.save!
 
-# Not supported!
-client.apps.create!(:name => "test", :short_description => "My test app", :upload => "app.zip")
+# Or
+
+client.apps.create!(:name => "test", :upload => "app.zip")
 ```
 
 *Note: job statuses are currently not supported, so you must manually poll the job status API for app creation.*
@@ -313,12 +313,20 @@ end
 #### Updating Apps
 
 ```ruby
-client.apps.update!(:id => 123, :short_description => "New Description")
+upload = client.apps.uploads.create!(:file => "NewApp.zip")
 
-app = ZendeskAPI::App.new(client, :id => 123, :short_description => "New Description")
+# Then
+
+client.apps.update!(:id => 123, :upload_id => upload.id)
+
+# Or
+
+app = ZendeskAPI::App.new(client, :id => 123, :upload_id => upload.id)
 app.save!
 
-ZendeskAPI::App.update!(client, :id => 123, :short_description => "New Description")
+# Or
+
+ZendeskAPI::App.update!(client, :id => 123, :upload_id => upload.id)
 ```
 
 #### Deleting Apps
