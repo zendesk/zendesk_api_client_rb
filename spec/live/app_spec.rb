@@ -12,7 +12,7 @@ describe ZendeskAPI::App do
 
     VCR.use_cassette("app_create") { app.save! }
 
-    check_job app
+    body = check_job(app)
 
     app.id = body["app_id"]
     app.author_name = "Mr. Sprinkles"
@@ -29,7 +29,7 @@ describe ZendeskAPI::App do
     VCR.use_cassette("app_simple_create") do
       app = ZendeskAPI::App.create!(client, { :name => "Testing App Creation", :upload => "spec/fixtures/sample_app.zip" })
 
-      check_job app
+      check_job(app)
 
       VCR.use_cassette("app_destroy") { app.destroy! }
     end
@@ -51,4 +51,6 @@ def check_job(app)
   if body["status"] == "failed"
     fail "Could not create app: #{body.inspect}"
   end
+
+  body
 end
