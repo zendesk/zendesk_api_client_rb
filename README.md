@@ -313,12 +313,20 @@ end
 #### Updating Apps
 
 ```ruby
-client.apps.update!(:id => 123)
+upload = client.apps.uploads.create!(file: "NewApp.zip"))
 
-app = ZendeskAPI::App.new(client, :id => 123)
+# Then
+
+client.apps.update!(:id => 123, :upload_id => upload.id)
+
+# Or
+
+app = ZendeskAPI::App.new(client, :id => 123, :upload_id => upload.id)
 app.save!
 
-ZendeskAPI::App.update!(client, :id => 123)
+# Or
+
+ZendeskAPI::App.update!(client, :id => 123, :upload_id => upload.id)
 ```
 
 #### Deleting Apps
