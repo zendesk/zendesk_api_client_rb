@@ -204,7 +204,7 @@ Using side-loading, however, the user can be partially loaded in the same reques
 
 ```ruby
 tickets = client.tickets.include(:users)
-# Or client.tickets(include: :users)
+# Or client.tickets(:include => :users)
 # Does *NOT* make a request to the server since it is already loaded
 tickets.first.requester # => #<ZendeskAPI::User id=...>
 ```
@@ -313,7 +313,7 @@ end
 #### Updating Apps
 
 ```ruby
-upload = client.apps.uploads.create!(file: "NewApp.zip"))
+upload = client.apps.uploads.create!(:file => "NewApp.zip")
 
 # Then
 
