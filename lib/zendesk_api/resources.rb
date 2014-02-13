@@ -31,6 +31,7 @@ module ZendeskAPI
     include Destroy
 
     alias :name :id
+    alias :to_param :id
 
     def path(opts = {})
       raise "tags must have parent resource" unless association.options.parent
@@ -113,7 +114,7 @@ module ZendeskAPI
 
     has_many Ticket
     has_many User
-    has_many Tag, :extend => Tag::Update
+    has_many Tag, :extend => Tag::Update, :inline => :create
   end
 
   class ForumSubscription < Resource
@@ -169,7 +170,7 @@ module ZendeskAPI
     has_many :comments, :class => TopicComment
     has_many :subscriptions, :class => TopicSubscription
     has :vote, :class => TopicVote
-    has_many Tag, :extend => Tag::Update
+    has_many Tag, :extend => Tag::Update, :inline => :create
 
     def votes(opts = {})
       return @votes if @votes && !opts[:reload]
@@ -322,7 +323,7 @@ module ZendeskAPI
     has :last_comment, :class => Comment, :inline => true
     has_many :last_comments, :class => Comment, :inline => true
 
-    has_many Tag, :extend => Tag::Update
+    has_many Tag, :extend => Tag::Update, :inline => :create
 
     has_many :incidents, :class => Ticket
 
