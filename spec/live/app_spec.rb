@@ -29,28 +29,29 @@ describe ZendeskAPI::App do
     VCR.use_cassette("app_simple_create") do
       app = ZendeskAPI::App.create!(client, { :name => "Testing App Creation", :upload => "spec/fixtures/sample_app.zip" })
 
-      check_job(app)
+      body = check_job(app)
 
+      app.id = body["app_id"]
       VCR.use_cassette("app_destroy") { app.destroy! }
     end
   end
-end
 
-def check_job(app)
-  body = {}
+  def check_job(app)
+    body = {}
 
-  VCR.use_cassette("app_create_job_status") do
-    until %w{failed completed}.include?(body["status"])
-      response = client.connection.get(app.response.headers["Location"])
-      body = response.body
+    VCR.use_cassette("app_create_job_status") do
+      until %w{failed completed}.include?(body["status"])
+        response = client.connection.get(app.response.headers["Location"])
+        body = response.body
 
-      sleep(3)
+        sleep(3)
+      end
     end
-  end
 
-  if body["status"] == "failed"
-    fail "Could not create app: #{body.inspect}"
-  end
+    if body["status"] == "failed"
+      fail "Could not create app: #{body.inspect}"
+    end
 
-  body
+    body
+  end
 end
