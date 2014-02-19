@@ -14,6 +14,7 @@ Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wik
 * Version 0.3.0 changed the license from MIT to Apache Version 2.
 * Version 0.3.2 introduced a regression when side-loading roles on users. This was fixed in 0.3.4.
 * Version 1.0.0 changes the way errors are handled. Please see the [wiki page](https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors) for more info.
+* Version 1.3.0 updates the Faraday dependency to 0.9. Since Faraday did not bump a major version we have not either, but there is no guarantee >= 1.3.0 works with Faraday < 0.9
 
 ## Installation
 
