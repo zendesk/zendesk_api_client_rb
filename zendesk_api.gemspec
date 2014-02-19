@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.description = %q{Ruby wrapper for the REST API at http://www.zendesk.com. Documentation at http://developer.zendesk.com.}
   s.license     = 'Apache License Version 2.0'
 
-  s.required_ruby_version     = ">= 1.9.0"
+  s.required_ruby_version     = ">= 1.8.7"
   s.required_rubygems_version = ">= 1.3.6"
 
   s.add_development_dependency "bump"
