@@ -6,6 +6,7 @@ ARGV[0] ||= "console"
 if %w(s server).include?(ARGV[0])
   Bundler.setup(:default, :server)
 
+  require 'optparse'
   require 'zendesk_api'
   require 'zendesk_api/server/base'
 
