@@ -305,6 +305,7 @@ module ZendeskAPI
     end
 
     put :mark_as_spam
+    post :merge
 
     has :requester, :class => User, :inline => :create
     has :submitter, :class => User
