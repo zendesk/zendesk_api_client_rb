@@ -49,7 +49,11 @@ module ZendeskAPI
               hash = hash[key]
             end
 
-            mime_type = MIME::Types.type_for(path).first || "application/octet-stream"
+            mime_type = MIME::Types.type_for(path).first
+            mime_type ||= if defined?(ActionDispatch) && file.is_a?(ActionDispatch::Http::UploadedFile)
+              file.content_type
+            end
+            mime_type ||= "application/octet-stream"
 
             hash[:filename] ||= if file.respond_to?(:original_filename)
               file.original_filename

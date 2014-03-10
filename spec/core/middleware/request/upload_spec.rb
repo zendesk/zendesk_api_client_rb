@@ -10,7 +10,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
   end
 
   it "should handle body with no file" do
-    subject.call(:body => {})[:body].should == {} 
+    subject.call(:body => {})[:body].should == {}
   end
 
   it "should handle invalid types" do
@@ -58,7 +58,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
     context "with an ActionDispatch::Http::UploadedFile" do
       before(:each) do
-        @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello", :tempfile => Tempfile.new(File.basename(filename)))
+        @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello.jpg", :tempfile => Tempfile.new(File.basename(filename)))
         @env = subject.call(:body => { :file => @upload })
       end
 
@@ -72,6 +72,14 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
       it "should add filename if none exist" do
         @env[:body][:filename].should == "hello"
+      end
+
+      context "when path does not resolve a mime_type" do
+        it "should use the content_type of ActionDispatch::Http::UploadedFile " do
+          @upload.tempfile.path = "XXX"
+          @env = subject.call(:body => { :file => @upload })
+          @env[:body][:uploaded_data][:content_type].should == "image/jpeg"
+        end
       end
     end
   end
