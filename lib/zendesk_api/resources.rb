@@ -543,6 +543,14 @@ module ZendeskAPI
     class PhoneNumber < Resource
       namespace "channels/voice"
     end
+
+    class Greeting < Resource
+      namespace "channels/voice"
+    end
+
+    class GreetingCategory < Resource
+      namespace "channels/voice"
+    end
   end
 
   class TicketForm < Resource
