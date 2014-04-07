@@ -19,7 +19,13 @@ module ZendeskAPI
     end
   end
 
-  class Topic < Resource; end
+  class Topic < Resource
+    def self.import(client, attributes)
+      topic = new(client, attributes)
+      return unless topic.save(:path => "import/topics")
+      topic
+    end
+  end
   class Bookmark < Resource; end
   class Ability < DataResource; end
   class Group < Resource; end
@@ -153,6 +159,11 @@ module ZendeskAPI
       include Create
       include Update
       include Destroy
+      def self.import(client, attributes)
+        topiccomment = new(client, attributes)
+        return unless topiccomment.save(:path => "import/topics/#{attributes[:topic_id]}/comments")
+        topiccomment
+      end
     end
 
     class TopicVote < SingularResource
