@@ -19,13 +19,7 @@ module ZendeskAPI
     end
   end
 
-  class Topic < Resource
-    def self.import(client, attributes)
-      topic = new(client, attributes)
-      return unless topic.save(:path => "import/topics")
-      topic
-    end
-  end
+  class Topic < Resource; end
   class Bookmark < Resource; end
   class Ability < DataResource; end
   class Group < Resource; end
@@ -159,10 +153,17 @@ module ZendeskAPI
       include Create
       include Update
       include Destroy
+
+      def self.import!(client, attributes)
+        new(client, attributes).tap do |comment|
+          comment.save!(:path => 'import/' + comment.path)
+        end
+      end
+
       def self.import(client, attributes)
-        topiccomment = new(client, attributes)
-        return unless topiccomment.save(:path => "import/topics/#{attributes[:topic_id]}/comments")
-        topiccomment
+        comment = new(client, attributes)
+        return unless comment.save(:path => 'import/' + comment.path)
+        comment
       end
     end
 
@@ -188,6 +189,18 @@ module ZendeskAPI
 
       association = ZendeskAPI::Association.new(:class => TopicVote, :parent => self, :path => 'votes')
       @votes = ZendeskAPI::Collection.new(@client, TopicVote, opts.merge(:association => association))
+    end
+
+    def self.import!(client, attributes)
+      new(client, attributes).tap do |topic|
+        topic.save!(:path => "import/topics")
+      end
+    end
+
+    def self.import(client, attributes)
+      topic = new(client, attributes)
+      return unless topic.save(:path => "import/topics")
+      topic
     end
   end
 
@@ -345,6 +358,16 @@ module ZendeskAPI
     # @return [Collection] Collection of {Ticket}
     def self.incremental_export(client, start_time)
       ZendeskAPI::Collection.new(client, self, :path => "exports/tickets?start_time=#{start_time.to_i}")
+    end
+
+    # Imports a ticket through the imports/tickets endpoint using save!
+    # @param [Client] client The {Client} object to be used
+    # @param [Hash] attributes The attributes to create.
+    # @return [Ticket] Created object or nil
+    def self.import!(client, attributes)
+      new(client, attributes).tap do |ticket|
+        ticket.save!(:path => "imports/tickets")
+      end
     end
 
     # Imports a ticket through the imports/tickets endpoint
