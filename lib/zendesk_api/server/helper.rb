@@ -89,10 +89,15 @@ HTTP/1.1 #{@method.to_s.upcase} #{request[:url]}
       @html_response =<<-END
 HTTP/1.1 #{response[:status]}
 #{map_headers(response[:headers])}
+      END
+
+      unless response[:body].to_s.empty?
+        @html_response =<<-END
 
 
 #{CodeRay.scan(JSON.pretty_generate(response[:body]), :json).span}
-      END
+        END
+      end
 
       @user_response_hash = { :status => response[:status], :headers => response[:headers], :body => response[:body] }
     end
