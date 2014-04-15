@@ -92,7 +92,7 @@ HTTP/1.1 #{response[:status]}
       END
 
       unless response[:body].to_s.empty?
-        @html_response <<-END
+        @html_response +=<<-END
 
 
 #{CodeRay.scan(JSON.pretty_generate(response[:body]), :json).span}
