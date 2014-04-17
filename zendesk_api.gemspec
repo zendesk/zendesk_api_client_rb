@@ -25,9 +25,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "webmock", "~> 1.9.0"
   s.add_development_dependency "yard"
 
-  # Optional. Only used for uploads testing.
-  # s.add_development_dependency "actionpack", "~> 3.2.0"
-
   s.add_runtime_dependency "faraday", "~> 0.9"
   s.add_runtime_dependency "hashie", ">= 1.2"
   s.add_runtime_dependency "inflection"

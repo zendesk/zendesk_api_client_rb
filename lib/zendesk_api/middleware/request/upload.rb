@@ -38,7 +38,7 @@ module ZendeskAPI
           else
             if defined?(ActionDispatch) && file.is_a?(ActionDispatch::Http::UploadedFile)
               path = file.tempfile.path
-              mime_type = file.content_type
+              mime_type = file.content_type || MIME::Types.type_for(file.original_filename).first
             else
               warn "WARNING: Passed invalid filename #{file} of type #{file.class} to upload"
             end

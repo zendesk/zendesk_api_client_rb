@@ -15,6 +15,10 @@ require 'logger'
 require 'stringio'
 require 'multi_json'
 
+class String
+  def encoding_aware?; false; end
+end
+
 require File.join(File.dirname(__FILE__), '..', 'macros', 'resource_macros')
 require File.join(File.dirname(__FILE__), '..', 'fixtures', 'zendesk')
 require File.join(File.dirname(__FILE__), '..', 'fixtures', 'test_resources')

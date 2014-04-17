@@ -1,5 +1,6 @@
 require 'core/spec_helper'
 require 'tempfile'
+require 'action_dispatch'
 
 describe ZendeskAPI::Middleware::Request::Upload do
   subject { ZendeskAPI::Middleware::Request::Upload.new(lambda {|env| env}) }
@@ -45,47 +46,39 @@ describe ZendeskAPI::Middleware::Request::Upload do
     end
   end
 
-  begin
-    require 'action_dispatch'
-  rescue LoadError
-    warn "Could not load ActionDispatch; not running ActionDispatch::Http::UploadedFile tests"
-  end
-
-  if defined?(ActionDispatch)
-    class String
-      def encoding_aware?; false; end
+  context "with an ActionDispatch::Http::UploadedFile" do
+    before(:each) do
+      @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello.jpg", :tempfile => Tempfile.new(['hello', '.jpg']))
+      @env = subject.call(:body => { :file => @upload })
     end
 
-    context "with an ActionDispatch::Http::UploadedFile" do
-      before(:each) do
-        @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello.jpg", :tempfile => Tempfile.new(File.basename(filename)))
-        @env = subject.call(:body => { :file => @upload })
-      end
+    it "should convert file string to UploadIO" do
+      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+    end
 
-      it "should convert file string to UploadIO" do
-        @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
-      end
+    it "should remove file string" do
+      @env[:body][:file].should be_nil
+    end
 
-      it "should remove file string" do
-        @env[:body][:file].should be_nil
-      end
+    it "should add filename if none exist" do
+      @env[:body][:filename].should == "hello.jpg"
+    end
 
-      it "should add filename if none exist" do
-        @env[:body][:filename].should == "hello.jpg"
-      end
+    it "should use the content type of the tempfile" do
+      @env[:body][:uploaded_data].content_type.should == "image/jpeg"
+    end
 
+    context "when path does not resolve a mime_type" do
       it "should pass correct filename to Faraday::UploadIO" do
         @env[:body][:filename].should == "hello.jpg"
         @env[:body][:uploaded_data].original_filename.should == @env[:body][:filename]
       end
 
-      # context "when path does not resolve a mime_type" do
-      #   it "should use the content_type of ActionDispatch::Http::UploadedFile " do
-      #     @upload.tempfile.path = "XXX"
-      #     @env = subject.call(:body => { :file => @upload })
-      #     @env[:body][:uploaded_data][:content_type].should == "image/jpeg"
-      #   end
-      # end
+      it "should use the content_type of ActionDispatch::Http::UploadedFile " do
+        @upload.tempfile = Tempfile.new("XXX")
+        @env = subject.call(:body => { :file => @upload })
+        @env[:body][:uploaded_data].content_type.should == "image/jpeg"
+      end
     end
   end
 
