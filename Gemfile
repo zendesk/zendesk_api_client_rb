@@ -5,7 +5,6 @@ source 'https://rubygems.org'
 
 gem "simplecov", :platforms => :ruby_19, :group => :test
 gem "jruby-openssl", :platforms => :jruby
-gem "multipart-post", :git => "https://github.com/steved555/multipart-post.git"
 
 group :server do
   gem "thin"

@@ -58,7 +58,7 @@ module ZendeskAPI
               File.basename(path)
             end
 
-            hash[:uploaded_data] = Faraday::UploadIO.new(path, mime_type)
+            hash[:uploaded_data] = Faraday::UploadIO.new(path, mime_type, hash[:filename])
           end
         end
 
