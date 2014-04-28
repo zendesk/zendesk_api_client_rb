@@ -289,6 +289,7 @@ module ZendeskAPI
     has_many Comment
 
     has Organization
+    has Group
     has :requester, :class => User
   end
 
