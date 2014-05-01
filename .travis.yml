@@ -5,4 +5,5 @@ rvm:
   - 2.1.1
   - jruby
 bundler_args: --without=server console
+before_install: gem install rake --version 10.3.1
 cache: bundler
