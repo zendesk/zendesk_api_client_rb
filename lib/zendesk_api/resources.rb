@@ -22,6 +22,11 @@ module ZendeskAPI
   class Topic < Resource; end
   class Bookmark < Resource; end
   class Ability < DataResource; end
+  class UserView < Resource
+    def self.preview(client, options = {})
+      Collection.new(client, UserViewRow, options.merge!(:path => "user_views/preview", :verb => :post))
+    end
+  end
   class Group < Resource; end
   class SharingAgreement < ReadResource; end
   class JobStatus < ReadResource; end
@@ -393,6 +398,13 @@ module ZendeskAPI
 
     # Recovers this suspended ticket to an actual ticket
     put :recover
+  end
+
+  class UserViewRow < DataResource
+    has User
+    def self.model_key
+      "rows"
+    end
   end
 
   class ViewRow < DataResource
