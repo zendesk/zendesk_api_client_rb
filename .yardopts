@@ -6,7 +6,6 @@
 --load ./util/resource_handler.rb
 --load ./util/verb_handler.rb
 --exclude lib/zendesk_api/console
---exclude lib/zendesk_api/server
 -r Readme.md
 lib/**/*.rb
 -

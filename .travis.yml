@@ -4,6 +4,6 @@ rvm:
   - 2.0.0
   - 2.1.1
   - jruby
-bundler_args: --without="server console"
+bundler_args: --without="console"
 before_install: gem i bundler
 cache: bundler

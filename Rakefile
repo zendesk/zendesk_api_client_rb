@@ -13,11 +13,6 @@ if defined?(RSpec)
     t.pattern = "spec/core/**/*_spec.rb"
   end
 
-  desc "Run server specs"
-  RSpec::Core::RakeTask.new("spec:server") do |t|
-    t.pattern = "spec/server/**/*_spec.rb"
-  end
-
   desc "Run live specs"
   RSpec::Core::RakeTask.new("spec:live") do |t|
     t.pattern = "spec/live/**/*_spec.rb"
