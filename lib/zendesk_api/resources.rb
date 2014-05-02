@@ -543,6 +543,10 @@ module ZendeskAPI
       namespace "channels/voice"
     end
 
+    class Address < Resource
+      namespace "channels/voice"
+    end
+
     class Greeting < Resource
       namespace "channels/voice"
     end
