@@ -71,16 +71,21 @@ describe ZendeskAPI::Middleware::Request::Upload do
       end
 
       it "should add filename if none exist" do
-        @env[:body][:filename].should == "hello"
+        @env[:body][:filename].should == "hello.jpg"
       end
 
-      context "when path does not resolve a mime_type" do
-        it "should use the content_type of ActionDispatch::Http::UploadedFile " do
-          @upload.tempfile.path = "XXX"
-          @env = subject.call(:body => { :file => @upload })
-          @env[:body][:uploaded_data][:content_type].should == "image/jpeg"
-        end
+      it "should pass correct filename to Faraday::UploadIO" do
+        @env[:body][:filename].should == "hello.jpg"
+        @env[:body][:uploaded_data].original_filename.should == @env[:body][:filename]
       end
+
+      # context "when path does not resolve a mime_type" do
+      #   it "should use the content_type of ActionDispatch::Http::UploadedFile " do
+      #     @upload.tempfile.path = "XXX"
+      #     @env = subject.call(:body => { :file => @upload })
+      #     @env[:body][:uploaded_data][:content_type].should == "image/jpeg"
+      #   end
+      # end
     end
   end
 
