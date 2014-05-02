@@ -75,9 +75,10 @@ describe ZendeskAPI::Middleware::Request::Upload do
       end
 
       it "should use the content_type of ActionDispatch::Http::UploadedFile " do
-        @upload.tempfile = Tempfile.new("XXX")
-        @env = subject.call(:body => { :file => @upload })
-        @env[:body][:uploaded_data].content_type.should == "image/jpeg"
+        @upload.content_type = 'application/random'
+
+        env = subject.call(:body => { :file => @upload })
+        env[:body][:uploaded_data].content_type.should == 'application/random'
       end
     end
   end
