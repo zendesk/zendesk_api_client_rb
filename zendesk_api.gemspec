@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency "webmock", "~> 1.9.0"
   s.add_development_dependency "yard"
 
-# Optional. Only used for uploads testing.
-#  s.add_development_dependency "actionpack"
+  # Optional. Only used for uploads testing.
+  # s.add_development_dependency "actionpack", "~> 3.2.0"
 
   s.add_runtime_dependency "faraday", "~> 0.8.0"
   s.add_runtime_dependency "faraday_middleware", "~> 0.8.7"
@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "inflection"
   s.add_runtime_dependency "multi_json"
   s.add_runtime_dependency "mime-types", "~> 1.0"
-  s.add_runtime_dependency "multipart-post"
+  s.add_runtime_dependency "multipart-post", "~> 1.1"
 
   s.files              = `git ls-files -x Gemfile.lock`.split("\n") rescue ''
   s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")
