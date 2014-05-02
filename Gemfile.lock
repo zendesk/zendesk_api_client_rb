@@ -12,6 +12,16 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    actionpack (3.2.17)
+      activemodel (= 3.2.17)
+      activesupport (= 3.2.17)
+      builder (~> 3.0.0)
+      erubis (~> 2.7.0)
+      journey (~> 1.0.4)
+      rack (~> 1.4.5)
+      rack-cache (~> 1.2)
+      rack-test (~> 0.6.1)
+      sprockets (~> 2.2.1)
     activemodel (3.2.17)
       activesupport (= 3.2.17)
       builder (~> 3.0.0)
@@ -39,6 +49,7 @@ GEM
     database_cleaner (1.2.0)
     diff-lcs (1.2.5)
     docile (1.1.3)
+    erubis (2.7.0)
     eventmachine (1.0.3)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
@@ -46,8 +57,10 @@ GEM
     haml (4.0.5)
       tilt
     hashie (2.1.1)
+    hike (1.2.3)
     i18n (0.6.9)
     inflection (1.0.0)
+    journey (1.0.4)
     json (1.8.1)
     mime-types (1.25.1)
     mongoid (3.1.6)
@@ -60,7 +73,9 @@ GEM
     multipart-post (2.0.0)
     newrelic_rpm (3.8.0.218)
     origin (1.1.0)
-    rack (1.5.2)
+    rack (1.4.5)
+    rack-cache (1.2)
+      rack (>= 0.4)
     rack-protection (1.5.3)
       rack
     rack-ssl-enforcer (0.2.6)
@@ -96,6 +111,11 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
+    sprockets (2.2.2)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -112,6 +132,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionpack (~> 3.2)
   bootstrap-sass
   bump
   coderay

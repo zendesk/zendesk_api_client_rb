@@ -34,6 +34,11 @@ group :console do
   gem "ripl"
 end
 
-gem "json", :group => :test, :platform => :ruby_18
+group :test do
+  gem "json", :platform => :ruby_18
+
+  # only used for uploads testing
+  gem "actionpack", "~> 3.2"
+end
 
 gemspec
