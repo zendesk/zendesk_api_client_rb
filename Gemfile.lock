@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zendesk_api (1.2.9)
+    zendesk_api (1.2.10)
       faraday (~> 0.8.0)
       faraday_middleware (~> 0.8.7)
       hashie (>= 1.2)
