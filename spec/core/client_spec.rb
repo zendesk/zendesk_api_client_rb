@@ -240,7 +240,7 @@ describe ZendeskAPI::Client do
     end
 
     it "manages namespace correctly" do
-      client.addresses.path.should match(/channels\/voice\/addresses/)
+      client.certification_addresses.path.should match(/channels\/voice\/certification_addresses/)
       client.phone_numbers.path.should match(/channels\/voice\/phone_numbers/)
       client.greetings.path.should match(/channels\/voice\/greetings/)
       client.greeting_categories.path.should match(/channels\/voice\/greeting_categories/)

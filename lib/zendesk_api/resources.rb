@@ -578,7 +578,7 @@ module ZendeskAPI
       namespace "channels/voice"
     end
 
-    class Address < Resource
+    class CertificationAddress < Resource
       namespace "channels/voice"
     end
 
