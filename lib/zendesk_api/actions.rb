@@ -55,6 +55,7 @@ module ZendeskAPI
     def save_associations
       self.class.associations.each do |association_data|
         association_name = association_data[:name]
+
         next unless send("#{association_name}_used?") && association = send(association_name)
 
         inline_creation = association_data[:inline] == :create && new_record?
@@ -64,8 +65,8 @@ module ZendeskAPI
           self.send("#{association_name}=", association) # set id/ids columns
         end
 
-        if (association_data[:inline] == true || inline_creation) && association.changed?
-          attributes[association_name] = (association.is_a?(Collection) ? association.map(&:to_param) : association.to_param)
+        if (association_data[:inline] == true || inline_creation) && changed
+          attributes[association_name] = association.to_param
         end
       end
     end

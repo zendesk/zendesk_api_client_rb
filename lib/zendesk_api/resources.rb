@@ -335,7 +335,13 @@ module ZendeskAPI
     has :requester, :class => User, :inline => :create
     has :submitter, :class => User
     has :assignee, :class => User
-    has_many :collaborators, :class => User, :inline => true
+
+    has_many :collaborators, :class => User, :inline => true, :extend => (Module.new do
+      def to_param
+        map(&:id)
+      end
+    end)
+
     has_many Audit
     has :metrics, :class => TicketMetric
     has Group
