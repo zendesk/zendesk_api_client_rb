@@ -107,24 +107,6 @@ describe ZendeskAPI::Resource do
     end
   end
 
-  context "failing" do
-    before(:each) do
-      ZendeskAPI::TestResource.has_many ZendeskAPI::TestResource::TestChild
-
-      stub_json_request(:get, %r{test_resources/1}, json(
-        :test_resource => { :id => 1, :test_children => [4] }
-      ))
-
-      stub_json_request(:put, %r{test_resources/1})
-
-      @resource = ZendeskAPI::TestResource.find(client, :id => 1)
-    end
-
-    it "should not make an update call for test children" do
-      @resource.save!
-    end
-  end
-
   context "#save" do
     let(:id) { 1 }
     let(:attr) { { :param => "test" } }
@@ -550,14 +532,6 @@ describe ZendeskAPI::Resource do
       expect{
         ZendeskAPI::TestResource.new(client, nil)
       }.to raise_error(/Expected a Hash/i)
-    end
-  end
-
-  context "Ticket#tags" do
-    subject { ZendeskAPI::Ticket.new(client, :id => 1, :tags => %w{tag1 tag2}) }
-
-    it "should not try and make a request when saving tags that haven't changed" do
-      subject.tags.save!
     end
   end
 end

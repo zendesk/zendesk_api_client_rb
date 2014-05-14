@@ -52,13 +52,8 @@ module ZendeskAPI
       def _save(method = :save)
         return self unless @resources
 
-        original_tags = association.options.parent.attributes.tags
-        new_tags = @resources.reject(&:destroyed?).map(&:id)
-
-        if new_tags != original_tags
-          @client.connection.post(path) do |req|
-            req.body = { :tags => new_tags }
-          end
+        @client.connection.post(path) do |req|
+          req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }
         end
 
         true
