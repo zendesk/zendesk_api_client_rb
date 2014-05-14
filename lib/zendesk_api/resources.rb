@@ -53,11 +53,11 @@ module ZendeskAPI
         return self unless @resources
 
         original_tags = association.options.parent.attributes.tags
-        new_tags = @resources.reject(&:destroyed?).map(&:id)
+        new_tags = @resources.map(&:id)
 
         if new_tags != original_tags
           @client.connection.post(path) do |req|
-            req.body = { :tags => new_tags }
+            req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }
           end
         end
 
