@@ -107,24 +107,6 @@ describe ZendeskAPI::Resource do
     end
   end
 
-  context "failing" do
-    before(:each) do
-      ZendeskAPI::TestResource.has_many ZendeskAPI::TestResource::TestChild
-
-      stub_json_request(:get, %r{test_resources/1}, json(
-        :test_resource => { :id => 1, :test_children => [4] }
-      ))
-
-      stub_json_request(:put, %r{test_resources/1})
-
-      @resource = ZendeskAPI::TestResource.find(client, :id => 1)
-    end
-
-    it "should not make an update call for test children" do
-      @resource.save!
-    end
-  end
-
   context "#save" do
     let(:id) { 1 }
     let(:attr) { { :param => "test" } }
