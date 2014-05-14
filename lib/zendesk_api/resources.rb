@@ -49,25 +49,15 @@ module ZendeskAPI
     end
 
     module Update
-      def replace(*)
-        super.tap do |resources|
-          @original_resources = resources.dup
-        end
-      end
-
-      def fetch!(*)
-        super.tap do |resources|
-          @original_resources = resources.dup
-        end
-      end
-
       def _save(method = :save)
         return self unless @resources
 
-        resources = @resources.reject(&:destroyed?)
-        if @original_resources != resources
+        original_tags = association.options.parent.attributes.tags
+        new_tags = @resources.map(&:id)
+
+        if new_tags != original_tags
           @client.connection.post(path) do |req|
-            req.body = { :tags => resources.map(&:id) }
+            req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }
           end
         end
 
