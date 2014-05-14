@@ -288,6 +288,10 @@ module ZendeskAPI
 
     alias :to_str :to_s
 
+    def to_param
+      map(&:to_param)
+    end
+
     private
 
     def set_page_and_count(body)
