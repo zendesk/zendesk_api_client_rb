@@ -46,7 +46,7 @@ def client
             def options
               super.tap do |options|
                 options[:headers].merge!(
-                  :authorization => "Basic #{authorization}"
+                  :authorization => "Basic #{Base64.urlsafe_encode64(authorization)}"
                 )
               end
             end
