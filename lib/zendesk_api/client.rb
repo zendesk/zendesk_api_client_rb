@@ -9,6 +9,7 @@ require 'zendesk_api/middleware/request/etag_cache'
 require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/request/encode_json'
+require 'zendesk_api/middleware/request/url_based_access_token'
 require 'zendesk_api/middleware/response/callback'
 require 'zendesk_api/middleware/response/deflate'
 require 'zendesk_api/middleware/response/gzip'
@@ -145,8 +146,10 @@ module ZendeskAPI
         end
 
         # request
-        if config.access_token
+        if config.access_token && !config.url_based_access_token
           builder.authorization("Bearer", config.access_token)
+        elsif config.access_token
+          builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
         else
           builder.use Faraday::Request::BasicAuthentication, config.username, config.password
         end

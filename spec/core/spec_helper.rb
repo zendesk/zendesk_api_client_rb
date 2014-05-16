@@ -34,6 +34,7 @@ def client
 
         if data["token"]
           config.access_token = data["token"]
+          config.url_based_access_token = true
         else
           config.password = data["password"]
         end
