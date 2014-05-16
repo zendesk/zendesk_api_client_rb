@@ -31,7 +31,28 @@ def client
       if File.exist?(credentials)
         data = YAML.load(File.read(credentials))
         config.username = data["username"]
-        config.password = data["password"]
+
+        if data["token"]
+          config.access_token = data["token"]
+        else
+          config.password = data["password"]
+        end
+
+        if data["auth"]
+          config.extend(Module.new do
+            attr_accessor :authorization
+
+            def options
+              super.tap do |options|
+                options[:headers].merge!(
+                  :authorization => authorization
+                )
+              end
+            end
+          end)
+          config.authorization = data["auth"]
+        end
+
         config.url = data["url"]
 
         if data["url"].start_with?("http://")
