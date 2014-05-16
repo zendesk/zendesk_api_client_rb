@@ -46,7 +46,7 @@ def client
             def options
               super.tap do |options|
                 options[:headers].merge!(
-                  :authorization => authorization
+                  :authorization => "Basic #{authorization}"
                 )
               end
             end
