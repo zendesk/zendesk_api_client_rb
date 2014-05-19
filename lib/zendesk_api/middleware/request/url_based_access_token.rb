@@ -10,7 +10,14 @@ module ZendeskAPI
         end
 
         def call(env)
-          env[:url] += "?access_token=#{@token}"
+          if env[:url].query
+            env[:url].query += '&'
+          else
+            env[:url].query = ''
+          end
+
+          env[:url].query += "access_token=#{@token}"
+
           @app.call(env)
         end
       end
