@@ -395,6 +395,13 @@ module ZendeskAPI
     put :recover
   end
 
+  class UserViewRow < DataResource
+    has User
+    def self.model_key
+      "rows"
+    end
+  end
+
   class ViewRow < DataResource
     has Ticket
 
@@ -470,6 +477,12 @@ module ZendeskAPI
       apply!(ticket)
     rescue Faraday::Error::ClientError => e
       Hashie::Mash.new
+    end
+  end
+
+  class UserView < Rule
+    def self.preview(client, options = {})
+      Collection.new(client, UserViewRow, options.merge!(:path => "user_views/preview", :verb => :post))
     end
   end
 
