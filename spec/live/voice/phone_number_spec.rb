@@ -1,3 +1,5 @@
+require 'core/spec_helper'
+
 describe ZendeskAPI::Voice::PhoneNumber, :delete_after do
   def valid_attributes
     {:number => "+14434064759", :country_code => "US", :toll_free => "false"}
