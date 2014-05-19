@@ -18,12 +18,14 @@ describe ZendeskAPI::User, :delete_after do
   end
 
   context "passwords", :vcr do
+    let(:password) { client.config.password || ENV['PASSWORD'] }
+
     it "sets the password" do
-      agent.set_password!(:password => client.config.password)
+      agent.set_password!(:password => password)
     end
 
     it "changes the password" do
-      current_user.change_password!(:previous_password => client.config.password, :password => client.config.password)
+      current_user.change_password!(:previous_password => password, :password => password)
     end
   end
 
