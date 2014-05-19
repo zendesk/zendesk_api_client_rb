@@ -22,11 +22,6 @@ module ZendeskAPI
   class Topic < Resource; end
   class Bookmark < Resource; end
   class Ability < DataResource; end
-  class UserView < Resource
-    def self.preview(client, options = {})
-      Collection.new(client, UserViewRow, options.merge!(:path => "user_views/preview", :verb => :post))
-    end
-  end
   class Group < Resource; end
   class SharingAgreement < ReadResource; end
   class JobStatus < ReadResource; end
@@ -482,6 +477,12 @@ module ZendeskAPI
       apply!(ticket)
     rescue Faraday::Error::ClientError => e
       Hashie::Mash.new
+    end
+  end
+
+  class UserView < Rule
+    def self.preview(client, options = {})
+      Collection.new(client, UserViewRow, options.merge!(:path => "user_views/preview", :verb => :post))
     end
   end
 

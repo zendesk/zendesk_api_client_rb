@@ -10,7 +10,7 @@ describe ZendeskAPI::UserView, :delete_after do
     }
   end
 
-  it_should_be_creatable
   it_should_be_readable :user_views
+  it_should_be_creatable
   it_should_be_deletable
 end
