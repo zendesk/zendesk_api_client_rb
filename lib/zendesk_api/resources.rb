@@ -650,11 +650,7 @@ module ZendeskAPI
     end
   end
 
-  class App < DataResource
-    include Create
-    include Update
-    include Destroy
-
+  class App < Resource
     def initialize(client, attributes = {})
       attributes[:upload_id] ||= nil
 
