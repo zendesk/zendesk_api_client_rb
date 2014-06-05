@@ -628,8 +628,8 @@ module ZendeskAPI
       attributes.changes
     end
 
-    def handle_response
-      @attributes.replace(@response.body) if @response.body
+    def handle_response(response)
+      @attributes.replace(response.body) if response.body
     end
   end
 
@@ -645,8 +645,8 @@ module ZendeskAPI
       attributes.changes
     end
 
-    def handle_response
-      @attributes.replace(@response.body) if @response.body
+    def handle_response(response)
+      @attributes.replace(response.body) if response.body
     end
   end
 
@@ -713,8 +713,8 @@ module ZendeskAPI
       attributes.changes
     end
 
-    def handle_response
-      @attributes.replace(@response.body) if @response.body
+    def handle_response(response)
+      @attributes.replace(response.body) if response.body
     end
   end
 end

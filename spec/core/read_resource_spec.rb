@@ -21,6 +21,30 @@ describe ZendeskAPI::ReadResource do
       }.to raise_error("No :id given")
     end
 
+    context "with overriden handle_response" do
+      subject do
+        Class.new(ZendeskAPI::TestResource) do
+          def self.singular_resource_name
+            'hello'
+          end
+
+          def handle_response(response)
+            @attributes.replace(response.body)
+          end
+        end
+      end
+
+      before(:each) do
+        stub_json_request(:get, %r{hellos/#{id}}, json(:testing => 1))
+      end
+
+      it "should return instance of resource" do
+        object = subject.find(client, :id => id)
+        object.should be_instance_of(subject)
+        object.testing.should == 1
+      end
+    end
+
     context "with side loads" do
       before(:each) do
         stub_json_request(:get, %r{test_resources/#{id}\?include=nil_resource}, json(

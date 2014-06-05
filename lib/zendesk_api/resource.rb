@@ -143,6 +143,12 @@ module ZendeskAPI
   class DataResource < Data
     attr_accessor :error, :error_message
     extend Verbs
+
+    def handle_response(response)
+      if response.body && response.body[self.class.singular_resource_name]
+        @attributes.replace(@attributes.deep_merge(response.body[self.class.singular_resource_name]))
+      end
+    end
   end
 
   # Represents a resource that can only GET

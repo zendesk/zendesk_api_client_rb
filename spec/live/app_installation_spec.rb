@@ -42,6 +42,7 @@ describe ZendeskAPI::AppInstallation do
 
     installations = client.app.installations
     VCR.use_cassette("app_install_fetch") { installations.fetch! }
+    VCR.use_cassette("app_install_find") { client.app.installations.find!(:id => install.id) }
 
     installations.should include(install)
 

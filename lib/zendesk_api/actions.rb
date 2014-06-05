@@ -25,7 +25,7 @@ module ZendeskAPI
         yield req if block_given?
       end
 
-      handle_response
+      handle_response(@response)
 
       @attributes.clear_changes
       clear_associations
@@ -70,12 +70,6 @@ module ZendeskAPI
         end
       end
     end
-
-    def handle_response
-      if @response.body && @response.body[self.class.singular_resource_name]
-        @attributes.replace @attributes.deep_merge(@response.body[self.class.singular_resource_name] || {})
-      end
-    end
   end
 
   module Read
@@ -102,7 +96,8 @@ module ZendeskAPI
         yield req if block_given?
       end
 
-      new(client, response.body[singular_resource_name]).tap do |resource|
+      new(client).tap do |resource|
+        resource.handle_response(response)
         resource.set_includes(resource, includes, response.body)
         resource.attributes.clear_changes
       end

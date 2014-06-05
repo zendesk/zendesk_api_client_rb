@@ -22,6 +22,7 @@ describe ZendeskAPI::App do
 
     app.author_name.should == "Mr. Sprinkles"
 
+    VCR.use_cassette("app_find") { client.apps.find!(:id => app.id) }
     VCR.use_cassette("app_destroy") { app.destroy! }
   end
 
