@@ -23,6 +23,8 @@ require File.join(File.dirname(__FILE__), '..', 'macros', 'resource_macros')
 require File.join(File.dirname(__FILE__), '..', 'fixtures', 'zendesk')
 require File.join(File.dirname(__FILE__), '..', 'fixtures', 'test_resources')
 
+$credentials_warning = false
+
 # tests fail when this is included in a Module (someone else also defines client)
 def client
   credentials = File.join(File.dirname(__FILE__), '..', 'fixtures', 'credentials.yml')
@@ -60,8 +62,12 @@ def client
           config.allow_http = true
         end
       else
-        puts "using default credentials: live specs will fail."
-        puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
+        unless $credentials_warning
+          STDERR.puts "using default credentials: live specs will fail."
+          STDERR.puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
+          $credentials_warning = true
+        end
+
         config.username = "please.change"
         config.password = "me"
         config.url = "https://my.zendesk.com/api/v2"

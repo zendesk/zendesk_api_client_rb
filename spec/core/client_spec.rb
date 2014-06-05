@@ -34,7 +34,7 @@ describe ZendeskAPI::Client do
     it "should handle valid url" do
       expect do
         ZendeskAPI::Client.new do |config|
-          config.url = "https://example.zendesk.com/"
+          config.url = "https://example.zendesk.com/api/v2"
         end.to_not raise_error
       end
     end
@@ -42,7 +42,7 @@ describe ZendeskAPI::Client do
     context "basic_auth" do
       subject do
         ZendeskAPI::Client.new do |config|
-          config.url = "https://example.zendesk.com"
+          config.url = "https://example.zendesk.com/api/v2"
           config.username = "hello"
           config.password = "token"
         end
@@ -60,7 +60,7 @@ describe ZendeskAPI::Client do
     context "access token" do
       subject do
         ZendeskAPI::Client.new do |config|
-          config.url = "https://example.zendesk.com"
+          config.url = "https://example.zendesk.com/api/v2"
           config.access_token = "hello"
         end
       end
@@ -77,7 +77,7 @@ describe ZendeskAPI::Client do
     context "#token" do
       let(:client) do
         ZendeskAPI::Client.new do |config|
-          config.url = "https://example.zendesk.com"
+          config.url = "https://example.zendesk.com/api/v2"
           config.username = username
           config.token = "token"
         end
@@ -116,7 +116,7 @@ describe ZendeskAPI::Client do
     context "#logger" do
       before(:each) do
         @client = ZendeskAPI::Client.new do |config|
-          config.url = "https://example.zendesk.com/"
+          config.url = "https://example.zendesk.com/api/v2"
           config.logger = subject
         end
 

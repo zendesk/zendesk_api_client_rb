@@ -496,10 +496,14 @@ describe ZendeskAPI::Resource do
 
   context "SingularTestResource" do
     context "#find" do
+      before do
+        stub_json_request(:get, %r{/singular_test_resource})
+      end
+
       it "should not require an id" do
         expect do
           ZendeskAPI::SingularTestResource.find(client)
-        end.to_not raise_error(ArgumentError)
+        end.to_not raise_error
       end
     end
 
