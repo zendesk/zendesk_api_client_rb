@@ -117,6 +117,9 @@ module ZendeskAPI
     has_many Tag, :extend => Tag::Update, :inline => :create
   end
 
+  class Brand < Resource
+  end
+
   class ForumSubscription < Resource
     has Forum
     has User
@@ -347,6 +350,7 @@ module ZendeskAPI
     has Group
     has :forum_topic, :class => Topic
     has Organization
+    has Brand
     has :related, :class => TicketRelated
 
     has Comment, :inline => true

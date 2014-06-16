@@ -21,6 +21,7 @@ describe ZendeskAPI::Ticket do
   it_should_be_readable user, :requested_tickets
   it_should_be_readable agent, :ccd_tickets
   it_should_be_readable organization, :tickets
+  it_should_be_readable brand, :tickets
 
   context "recent tickets" do
     before(:all) do

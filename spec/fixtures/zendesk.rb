@@ -82,5 +82,11 @@ module ZendeskAPI
         @organization ||= current_user.organization
       end
     end
+
+    def brand
+      VCR.use_cassette('valid_brand') do
+        @brand ||= current_user.brand
+      end
+    end
   end
 end
