@@ -1,5 +1,15 @@
 module ZendeskAPI
+  module ResponseHandler
+    def handle_response(response)
+      if response.body && response.body[self.class.singular_resource_name]
+        @attributes.replace(@attributes.deep_merge(response.body[self.class.singular_resource_name]))
+      end
+    end
+  end
+
   module Save
+    include ResponseHandler
+
     # If this resource hasn't been deleted, then create or save it.
     # Executes a POST if it is a {Data#new_record?}, otherwise a PUT.
     # Merges returned attributes on success.
@@ -75,6 +85,7 @@ module ZendeskAPI
   module Read
     def self.extended(klass)
       klass.send(:include, ZendeskAPI::Sideloading)
+      klass.send(:include, ResponseHandler)
     end
 
     # Finds a resource by an id and any options passed in.
