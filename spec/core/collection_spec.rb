@@ -305,8 +305,8 @@ describe ZendeskAPI::Collection do
         end
 
         it "should reset the collection" do
-          subject.first_page?.should be_true
-          subject.fetch.should == [ZendeskAPI::TestResource.new(client, :id => 1)]
+          expect(subject.first_page?).to be(true)
+          expect(subject.fetch).to eq([ZendeskAPI::TestResource.new(client, :id => 1)])
         end
       end
     end
