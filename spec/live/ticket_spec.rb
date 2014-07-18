@@ -52,7 +52,7 @@ describe ZendeskAPI::Ticket do
     end
 
     it "finds tickets after a old date" do
-      results.to_a.first.should be_an_instance_of ZendeskAPI::Ticket
+      expect(results.to_a.first).to be_an_instance_of ZendeskAPI::Ticket
     end
 
     it "is able to do next" do
@@ -132,7 +132,7 @@ describe ZendeskAPI::Ticket do
         user.requested_tickets.each(&:destroy)
         user.destroy
 
-        threads.all? {|st| [201, 422, 409].include?(st)}.should be(true)
+        expect(threads.all? {|st| [201, 422, 409].include?(st)}).to be(true)
       end
     end
   end

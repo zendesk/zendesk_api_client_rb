@@ -11,7 +11,7 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
     let(:env) {{ :body => nil }}
 
     it 'should not return json' do
-      response[:body].should be_nil
+      expect(response[:body]).to be_nil
     end
   end
 

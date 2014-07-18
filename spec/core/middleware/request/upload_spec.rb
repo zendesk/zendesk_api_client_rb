@@ -24,11 +24,11 @@ describe ZendeskAPI::Middleware::Request::Upload do
     end
 
     it "should convert file string to UploadIO" do
-      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+      expect(@env[:body][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
     end
 
     it "should remove file string" do
-      @env[:body][:file].should be_nil
+      expect(@env[:body][:file]).to be_nil
     end
 
     it "should add filename if none exist" do
@@ -53,11 +53,11 @@ describe ZendeskAPI::Middleware::Request::Upload do
     end
 
     it "should convert file string to UploadIO" do
-      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+      expect(@env[:body][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
     end
 
     it "should remove file string" do
-      @env[:body][:file].should be_nil
+      expect(@env[:body][:file]).to be_nil
     end
 
     it "should add filename if none exist" do
@@ -90,11 +90,11 @@ describe ZendeskAPI::Middleware::Request::Upload do
     end
 
     it "should convert file string to UploadIO" do
-      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+      expect(@env[:body][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
     end
 
     it "should remove file string" do
-      @env[:body][:file].should be_nil
+      expect(@env[:body][:file]).to be_nil
     end
 
     it "should add filename if none exist" do
@@ -109,11 +109,11 @@ describe ZendeskAPI::Middleware::Request::Upload do
       end
 
       it "should convert file string to UploadIO" do
-        @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+        expect(@env[:body][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
       end
 
       it "should remove file string" do
-        @env[:body][:file].should be_nil
+        expect(@env[:body][:file]).to be_nil
       end
 
       it "should add filename if none exist" do
@@ -138,7 +138,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
         end
 
         it "should convert file string to UploadIO" do
-          @env[:body][:user][:photo][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+          expect(@env[:body][:user][:photo][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
         end
 
         it "should add filename if none exist" do
@@ -152,7 +152,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
         end
 
         it "should convert file string to UploadIO" do
-          @env[:body][:user][:photo][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+          expect(@env[:body][:user][:photo][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
         end
 
         it "should not change filename" do

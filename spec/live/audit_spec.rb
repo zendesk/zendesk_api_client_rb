@@ -8,8 +8,8 @@ describe ZendeskAPI::Ticket::Audit do
       audit = ticket.audits(include: :users).first
       event = audit.events.first
 
-      event.should be_instance_of(ZendeskAPI::Ticket::Audit::Event)
-      event.author.should be_instance_of(ZendeskAPI::User)
+      expect(event).to be_instance_of(ZendeskAPI::Ticket::Audit::Event)
+      expect(event.author).to be_instance_of(ZendeskAPI::User)
     end
   end
 end

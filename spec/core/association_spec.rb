@@ -13,7 +13,7 @@ describe ZendeskAPI::Association do
 
       it "should not try and fetch nil child" do
         instance.child_id = nil
-        instance.child.should be_nil
+        expect(instance.child).to be_nil
       end
 
       it "should cache an set object" do
@@ -38,7 +38,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should not fetch an unknown object" do
-       instance.child.should be_nil
+       expect(instance.child).to be_nil
       end
 
       it "should fetch an object known by id" do
@@ -56,7 +56,7 @@ describe ZendeskAPI::Association do
       it "should handle resource not found errors" do
         stub_request(:get, %r{test_resources/1/child/5}).to_return(:status => 404)
         instance.child_id = 5
-        silence_logger{ instance.child.should be_nil }
+        silence_logger{ expect(instance.child).to be_nil }
       end
 
       it "is not used when not used" do
@@ -73,32 +73,32 @@ describe ZendeskAPI::Association do
       it "should cache a set object" do
         instance.children = [child]
         expect(instance.children.map(&:id)).to eq([1])
-        instance.children.should be_instance_of(ZendeskAPI::Collection)
+        expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should set ids" do
         instance.children_ids = []
         instance.children = [child]
         expect(instance.children_ids).to eq([child.id])
-        instance.children.should be_instance_of(ZendeskAPI::Collection)
+        expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should build and cache objects set via hash" do
         instance.children = [{:id => 2}]
         expect(instance.children.map(&:id)).to eq([2])
-        instance.children.should be_instance_of(ZendeskAPI::Collection)
+        expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should build a object set via id" do
         instance.children = [2]
         expect(instance.children.map(&:id)).to eq([2])
-        instance.children.should be_instance_of(ZendeskAPI::Collection)
+        expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should fetch unknown objects" do
         stub_json_request(:get, %r{test_resources/1/children}, json(:test_children => [{:id => 2}, {:id => 3}]))
         expect(instance.children.map(&:id)).to eq([2,3])
-        instance.children.should be_instance_of(ZendeskAPI::Collection)
+        expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
 
       it "should not change objects" do
@@ -156,7 +156,7 @@ describe ZendeskAPI::Association do
       it "should generate specific resource path" do
         opts = { :id => 1 }
         expect(subject.generate_path(opts)).to eq("test_resources/1")
-        opts.should be_empty
+        expect(opts).to be_empty
       end
     end
   end
@@ -225,7 +225,7 @@ describe ZendeskAPI::Association do
       it "should generate nested resource path" do
         opts = { :test_resource_id => 3 }
         expect(subject.generate_path(opts)).to eq("test_resources/3/children")
-        opts.should be_empty
+        expect(opts).to be_empty
       end
     end
   end

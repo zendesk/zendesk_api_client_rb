@@ -14,7 +14,7 @@ describe ZendeskAPI::Configuration do
   end
 
   it "should set user agent header properly" do
-    subject.options[:headers][:user_agent].should =~ /ZendeskAPI API/
+    expect(subject.options[:headers][:user_agent]).to match(/ZendeskAPI API/)
   end
 
   it "should merge options with client_options" do

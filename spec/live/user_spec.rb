@@ -37,13 +37,13 @@ describe ZendeskAPI::User, :delete_after do
 
       it "should include role" do
         if subject
-          subject.changes.key?(:role_id).should be(false)
+          expect(subject.changes.key?(:role_id)).to be(false)
           subject.role.should_not be_nil
-          subject.role.id.should be_nil
+          expect(subject.role.id).to be_nil
           expect(subject.role.name).to eq("admin")
           subject.role.configuration.should_not be_nil
 
-          subject.custom_role.should be_nil
+          expect(subject.custom_role).to be_nil
         end
       end
     end
@@ -55,9 +55,9 @@ describe ZendeskAPI::User, :delete_after do
 
       it "should include role" do
         if subject
-          subject.changes.key?(:role_id).should be(false)
+          expect(subject.changes.key?(:role_id)).to be(false)
           subject.role.should_not be_nil
-          subject.role.id.should be_nil
+          expect(subject.role.id).to be_nil
           expect(subject.role.name).to eq("agent")
 
           subject.custom_role.should_not be_nil

@@ -11,7 +11,7 @@ describe ZendeskAPI::ReadResource do
       end
 
       it "should return instance of resource" do
-        subject.find(client, :id => id).should be_instance_of(subject)
+        expect(subject.find(client, :id => id)).to be_instance_of(subject)
       end
     end
 
@@ -40,7 +40,7 @@ describe ZendeskAPI::ReadResource do
 
       it "should return instance of resource" do
         object = subject.find(client, :id => id)
-        object.should be_instance_of(subject)
+        expect(object).to be_instance_of(subject)
         expect(object.testing).to eq(1)
       end
     end

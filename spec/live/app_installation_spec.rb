@@ -44,7 +44,7 @@ describe ZendeskAPI::AppInstallation do
     VCR.use_cassette("app_install_fetch") { installations.fetch! }
     VCR.use_cassette("app_install_find") { client.app.installations.find!(:id => install.id) }
 
-    installations.should include(install)
+    expect(installations).to include(install)
 
     install.settings.name = "My New Name"
     VCR.use_cassette("app_install_update") { install.save! }

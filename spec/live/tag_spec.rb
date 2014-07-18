@@ -49,7 +49,7 @@ describe ZendeskAPI::Tag, :vcr, :not_findable do
         parent.tags.delete_if {|tag| tag.id == "tag3"}
         parent.tags.save!
 
-        tags.should be_empty
+        expect(tags).to be_empty
       end
     end
   end

@@ -11,7 +11,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should initially be empty" do
-      subject.instance_variable_defined?(:@resources).should be(false)
+      expect(subject.instance_variable_defined?(:@resources)).to be(false)
     end
   end
 
@@ -101,13 +101,13 @@ describe ZendeskAPI::Collection do
 
         it "should #build a resource and add it" do
           resource = subject.build
-          subject.should include(resource)
+          expect(subject).to include(resource)
           expect(resource.association).to eq(subject.association)
         end
 
         it "should #build! a resource and add it" do
           resource = subject.build!
-          subject.should include(resource)
+          expect(subject).to include(resource)
           expect(resource.association).to eq(subject.association)
         end
       end
@@ -135,7 +135,7 @@ describe ZendeskAPI::Collection do
         before(:each) { subject.page(3) }
 
         it "should empty the cache" do
-          subject.instance_variable_get(:@resources).should be_nil
+          expect(subject.instance_variable_get(:@resources)).to be_nil
         end
       end
     end
@@ -153,7 +153,7 @@ describe ZendeskAPI::Collection do
         before(:each) { subject.per_page(20) }
 
         it "should empty the cache" do
-          subject.instance_variable_get(:@resources).should be_nil
+          expect(subject.instance_variable_get(:@resources)).to be_nil
         end
       end
     end
@@ -161,11 +161,11 @@ describe ZendeskAPI::Collection do
 
   context "pagination with no options and no data" do
     it "should return an empty array on #next" do
-      subject.next.should be_empty
+      expect(subject.next).to be_empty
     end
 
     it "should return an empty array on #prev" do
-      subject.prev.should be_empty
+      expect(subject.prev).to be_empty
     end
   end
 
@@ -343,7 +343,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should not set the page" do
-          @page.should be_nil
+          expect(@page).to be_nil
         end
       end
     end
@@ -359,7 +359,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should properly be handled" do
-        silence_logger { subject.fetch(true).should be_empty }
+        silence_logger { expect(subject.fetch(true)).to be_empty }
       end
     end
 
@@ -369,7 +369,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should properly be handled" do
-        silence_logger { subject.fetch(true).should be_empty }
+        silence_logger { expect(subject.fetch(true)).to be_empty }
       end
     end
 
@@ -378,7 +378,7 @@ describe ZendeskAPI::Collection do
 
       it "should not call connection" do
         expect(client.connection).to_not receive(:get)
-        subject.fetch(true).should be_empty
+        expect(subject.fetch(true)).to be_empty
       end
     end
   end
@@ -403,7 +403,7 @@ describe ZendeskAPI::Collection do
         expect(object).to receive(:save)
         subject.save
 
-        subject.should include(object)
+        expect(subject).to include(object)
       end
     end
 
@@ -419,7 +419,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should have object in collection" do
-        subject.should include(object)
+        expect(subject).to include(object)
       end
     end
 
@@ -452,7 +452,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should have object in collection" do
-        subject.should include(object)
+        expect(subject).to include(object)
       end
     end
   end
@@ -722,7 +722,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should create a new collection if it isn't an array method" do
-      subject.recent.should be_instance_of(ZendeskAPI::Collection)
+      expect(subject.recent).to be_instance_of(ZendeskAPI::Collection)
     end
 
     it "should pass the correct query_path to the new collection" do

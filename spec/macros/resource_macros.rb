@@ -57,7 +57,7 @@ module ResourceMacros
       end
 
       it "should be savable" do
-        @object.save.should be(true)
+        expect(@object.save).to be(true)
       end
 
       context "after save" do
@@ -97,8 +97,8 @@ module ResourceMacros
       end
 
       it "should be destroyable" do
-        @object.destroy.should be(true)
-        @object.destroyed?.should be(true)
+        expect(@object.destroy).to be(true)
+        expect(@object.destroyed?).to be(true)
 
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
           opts = default_options
@@ -108,7 +108,7 @@ module ResourceMacros
           if options[:find]
             expect(obj.send(options[:find].first)).to eq(options[:find].last)
           else
-            obj.should be_nil
+            expect(obj).to be_nil
           end
         end
       end
@@ -140,7 +140,7 @@ module ResourceMacros
 
         if result.is_a?(ZendeskAPI::Collection)
           result.fetch(true).should_not be_empty
-          result.fetch.should include(@object) if create
+          expect(result.fetch).to include(@object) if create
           object = result.first
         else
           result.should_not be_nil
