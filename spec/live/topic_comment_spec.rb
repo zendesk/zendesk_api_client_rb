@@ -23,7 +23,7 @@ describe ZendeskAPI::Topic::TopicComment do
 
     it "returns nothing if import fails" do
       VCR.use_cassette("topic_comment_import_cannot_import") do
-        expect(silence_logger { ZendeskAPI::Topic::TopicComment.import(client, {})).to eq(nil })
+        silence_logger { expect(ZendeskAPI::Topic::TopicComment.import(client, {})).to eq(nil) }
       end
     end
   end

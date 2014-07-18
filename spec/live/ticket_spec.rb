@@ -75,7 +75,7 @@ describe ZendeskAPI::Ticket do
 
     it "returns nothing if import fails" do
       VCR.use_cassette("ticket_import_cannot_import") do
-        expect(silence_logger { ZendeskAPI::Ticket.import(client, {})).to eq(nil })
+        silence_logger { expect(ZendeskAPI::Ticket.import(client, {})).to eq(nil) }
       end
     end
   end
@@ -87,8 +87,8 @@ describe ZendeskAPI::Ticket do
       ticket.comment.uploads << File.new("spec/fixtures/Argentina.gif")
 
       ticket.save!
-      expect(ticket.changes).to eq({} # uploads were set before save)
-      expect(ticket.comment.attributes[:uploads].map(&:class)).to eq([String, String] # upload was sent as tokens)
+      expect(ticket.changes).to eq({}) # uploads were set before save
+      expect(ticket.comment.attributes[:uploads].map(&:class)).to eq([String, String]) # upload was sent as tokens
     end
   end
 
@@ -98,7 +98,7 @@ describe ZendeskAPI::Ticket do
       ticket.comment = ZendeskAPI::Ticket::Comment.new(client, :value => "My comment", :public => false)
       ticket.save!
 
-      expect(ticket.changes).to eq({} # comment was set before save)
+      expect(ticket.changes).to eq({}) # comment was set before save
       expect(ticket.attributes[:comment]).to eq({"value" => "My comment", "public" => false})
     end
   end
