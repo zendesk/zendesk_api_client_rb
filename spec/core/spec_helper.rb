@@ -15,7 +15,10 @@ require 'logger'
 require 'stringio'
 require 'multi_json'
 
-require 'byebug' rescue LoadError nil
+begin
+  require 'byebug'
+rescue LoadError
+end
 
 class String
   def encoding_aware?; false; end
