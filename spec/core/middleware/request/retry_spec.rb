@@ -13,9 +13,11 @@ describe ZendeskAPI::Middleware::Request::Retry do
         to_return(:status => 429, :headers => { :retry_after => 1 }).
         to_return(:status => 200)
 
-      runtime do
+      seconds = runtime {
         client.connection.get("blergh").status.should == 200
-      end.should be_within(0.2).of(1)
+      }
+
+      seconds.should be_within(0.2).of(1)
     end
   end
 
@@ -25,7 +27,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
         to_return(:status => 503).
         to_return(:status => 200)
 
-      ZendeskAPI::Middleware::Request::Retry.any_instance.should_receive(:sleep).exactly(10).times.with(1)
+      expect_any_instance_of(ZendeskAPI::Middleware::Request::Retry).to receive(:sleep).exactly(10).times.with(1)
     end
 
     it "should wait default timeout seconds and then retry request on error" do
@@ -35,7 +37,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
     end
 
     it "should print to logger" do
-      client.config.logger.should_receive(:warn).at_least(:once)
+      expect(client.config.logger).to receive(:warn).at_least(:once)
       client.connection.get("blergh")
     end
 

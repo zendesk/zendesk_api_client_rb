@@ -132,7 +132,7 @@ describe ZendeskAPI::Client do
 
         context "with a request" do
           it "should log" do
-            client.config.logger.should_receive(:info).at_least(:once)
+            expect(client.config.logger).to receive(:info).at_least(:once)
             @client.connection.get('/bs')
           end
         end
@@ -164,7 +164,7 @@ describe ZendeskAPI::Client do
 
         context "with a request" do
           it "should log to the subject" do
-            out.should_receive(:write).at_least(:once)
+            expect(out).to receive(:write).at_least(:once)
             @client.connection.get('/bs')
           end
         end
@@ -184,7 +184,7 @@ describe ZendeskAPI::Client do
 
   context "#connection" do
     it "should initially be false" do
-      subject.instance_variable_get(:@connection).should be_false
+      subject.instance_variable_get(:@connection).should be_falsey
     end
 
     it "connection should be initialized on first call to #connection" do
@@ -202,7 +202,7 @@ describe ZendeskAPI::Client do
       subject.instance_variable_get(:@resource_cache)["tickets"][:class].should == ZendeskAPI::Ticket
       subject.instance_variable_get(:@resource_cache)["tickets"][:cache].should be_instance_of(ZendeskAPI::LRUCache)
 
-      ZendeskAPI.should_not_receive(:const_get)
+      expect(ZendeskAPI).to_not receive(:const_get)
       subject.tickets.should be_instance_of(ZendeskAPI::Collection)
     end
 
@@ -216,7 +216,7 @@ describe ZendeskAPI::Client do
 
     it "should not pass reload to the underlying collection" do
       collection = subject.search(:query => 'abc', :reload => true)
-      collection.options.key?(:reload).should be_false
+      collection.options.key?(:reload).should be(false)
     end
 
     it "should cache calls with the same options" do
@@ -235,7 +235,7 @@ describe ZendeskAPI::Client do
 
   context ZendeskAPI::Voice do
     it "defers to voice delegator" do
-      ZendeskAPI::Client.any_instance.should_receive(:phone_numbers).once
+      expect(subject).to receive(:phone_numbers).once
       subject.voice.phone_numbers
     end
 

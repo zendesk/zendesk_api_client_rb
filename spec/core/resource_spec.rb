@@ -20,7 +20,7 @@ describe ZendeskAPI::Resource do
       end
 
       it "should return instance of resource" do
-        subject.update(client, :id => id, :test => :hello).should be_true
+        subject.update(client, :id => id, :test => :hello).should be_truthy
       end
 
       context "with global params" do
@@ -29,7 +29,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should return instance of resource" do
-          subject.update(client, :id => id, :test => :hello, :global => {:something => "something"}).should be_true
+          subject.update(client, :id => id, :test => :hello, :global => {:something => "something"}).should be_truthy
         end
       end
 
@@ -39,7 +39,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should handle it properly" do
-          expect { silence_logger{ subject.update(client, :id => id).should be_false } }.to_not raise_error
+          expect { silence_logger{ subject.update(client, :id => id).should be(false) } }.to_not raise_error
         end
       end
     end
@@ -55,7 +55,7 @@ describe ZendeskAPI::Resource do
       end
 
       it "should return instance of resource" do
-        subject.destroy(client, :id => id).should be_true
+        subject.destroy(client, :id => id).should be(true)
       end
 
       context "with client error" do
@@ -64,7 +64,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should handle it properly" do
-          expect { silence_logger{ subject.destroy(client, :id => id).should be_false } }.to_not raise_error
+          expect { silence_logger{ subject.destroy(client, :id => id).should be(false) } }.to_not raise_error
         end
       end
     end
@@ -77,9 +77,9 @@ describe ZendeskAPI::Resource do
       end
 
       it "should return true and set destroyed" do
-        subject.destroy.should be_true
-        subject.destroyed?.should be_true
-        subject.destroy.should be_false
+        subject.destroy.should be(true)
+        subject.destroyed?.should be(true)
+        subject.destroy.should be(false)
       end
 
       context "with client error" do
@@ -88,8 +88,8 @@ describe ZendeskAPI::Resource do
         end
 
         it "should return false and not set destroyed" do
-          silence_logger{ subject.destroy.should be_false }
-          subject.destroyed?.should be_false
+          silence_logger{ subject.destroy.should be(false) }
+          subject.destroyed?.should be(false)
         end
       end
     end
@@ -117,16 +117,16 @@ describe ZendeskAPI::Resource do
     end
 
     it "should not save if already destroyed" do
-      subject.should_receive(:destroyed?).and_return(true)
-      subject.save.should be_false
+      expect(subject).to receive(:destroyed?).and_return(true)
+      subject.save.should be(false)
     end
 
     it "should not be a new record with an id" do
-      subject.new_record?.should be_false
+      subject.new_record?.should be(false)
     end
 
     it "should put on save" do
-      subject.save.should be_true
+      subject.save.should be(true)
       subject[:param].should == "abc"
     end
 
@@ -148,7 +148,7 @@ describe ZendeskAPI::Resource do
       end
 
       it "should be properly handled" do
-        expect { silence_logger { subject.save.should be_false } }.to_not raise_error
+        expect { silence_logger { subject.save.should be(false) } }.to_not raise_error
       end
     end
 
@@ -160,12 +160,12 @@ describe ZendeskAPI::Resource do
       end
 
       it "should be true without an id" do
-        subject.new_record?.should be_true
+        subject.new_record?.should be(true)
       end
 
       it "should be false after creating" do
-        subject.save.should be_true
-        subject.new_record?.should be_false
+        subject.save.should be(true)
+        subject.new_record?.should be(false)
         subject.id.should == id
       end
     end
@@ -181,7 +181,7 @@ describe ZendeskAPI::Resource do
 
         it "should call save on the association" do
           subject.child.foo = "bar"
-          subject.child.should_receive(:save)
+          expect(subject.child).to receive(:save)
 
           subject.save
 
@@ -223,7 +223,7 @@ describe ZendeskAPI::Resource do
 
         it "should save the associated objects when it is new" do
           subject.children = [{:foo => "bar"}]
-          subject.children.first.should_receive(:save)
+          expect(subject.children.first).to receive(:save)
           subject.save
           subject.instance_variable_get(:@children).should be_nil
         end
@@ -238,7 +238,7 @@ describe ZendeskAPI::Resource do
         it "should save the associated objects when it is changes" do
           subject.children = [{:id => 1}]
           subject.children.first.foo = "bar"
-          subject.children.first.should_receive(:save)
+          expect(subject.children.first).to receive(:save)
           subject.save
           subject.instance_variable_get(:@children).should be_nil
         end
@@ -333,7 +333,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should return true" do
-          subject.send(method, :verb => :put).should be_true
+          subject.send(method, :verb => :put).should be(true)
         end
 
         it "should update the attributes if they exist" do
@@ -348,7 +348,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should return true" do
-          subject.send(method, :verb => :put).should be_true
+          subject.send(method, :verb => :put).should be(true)
         end
 
         it "should update the attributes if they exist" do
@@ -363,7 +363,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "doesn't raise without bang" do
-          silence_logger { subject.send("#{method}", :verb => :put).should be_false }
+          silence_logger { subject.send("#{method}", :verb => :put).should be(false) }
         end
 
         it "raises with bang" do
@@ -397,7 +397,7 @@ describe ZendeskAPI::Resource do
           end
 
           it "should return true" do
-            subject.send(method).should be_true
+            subject.send(method).should be(true)
           end
 
           it "should update the attributes if they exist" do
@@ -412,7 +412,7 @@ describe ZendeskAPI::Resource do
           end
 
           it "should return true" do
-            subject.send(method).should be_true
+            subject.send(method).should be(true)
           end
 
           it "should update the attributes if they exist" do
@@ -427,7 +427,7 @@ describe ZendeskAPI::Resource do
           end
 
           it "doesn't raise without bang" do
-            silence_logger { subject.send("#{method}").should be_false }
+            silence_logger { subject.send("#{method}").should be(false) }
           end
 
           it "raises with bang" do
@@ -448,7 +448,7 @@ describe ZendeskAPI::Resource do
     subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
     it "should call #to_json on @attributes" do
-      subject.attributes.should_receive(:to_json)
+      expect(subject.attributes).to receive(:to_json)
       subject.to_json
     end
   end
@@ -489,7 +489,7 @@ describe ZendeskAPI::Resource do
 
     it "warns about weird comparissons" do
       object = ZendeskAPI::TestResource.new(client, :id => 2)
-      object.should_receive(:warn)
+      expect(object).to receive(:warn)
       object.should_not == "xxx"
     end
   end

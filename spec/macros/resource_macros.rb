@@ -57,7 +57,7 @@ module ResourceMacros
       end
 
       it "should be savable" do
-        @object.save.should be_true
+        @object.save.should be(true)
       end
 
       context "after save" do
@@ -97,8 +97,8 @@ module ResourceMacros
       end
 
       it "should be destroyable" do
-        @object.destroy.should be_true
-        @object.destroyed?.should be_true
+        @object.destroy.should be(true)
+        @object.destroyed?.should be(true)
 
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
           opts = default_options

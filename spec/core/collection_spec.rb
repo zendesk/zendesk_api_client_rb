@@ -11,7 +11,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should initially be empty" do
-      subject.instance_variable_defined?(:@resources).should be_false
+      subject.instance_variable_defined?(:@resources).should be(false)
     end
   end
 
@@ -377,7 +377,7 @@ describe ZendeskAPI::Collection do
       subject { ZendeskAPI::Collection.new(client, ZendeskAPI::NilResource) }
 
       it "should not call connection" do
-        client.connection.should_not_receive(:get)
+        expect(client.connection).to_not receive(:get)
         subject.fetch(true).should be_empty
       end
     end
@@ -394,13 +394,13 @@ describe ZendeskAPI::Collection do
       let(:object) { double('ZendeskAPI::TestResource', :changes => [:xxx], :changed? => true, :destroyed? => false) }
 
       it "should call create with those options" do
-        ZendeskAPI::TestResource.should_receive(:new).
+        expect(ZendeskAPI::TestResource).to receive(:new).
           with(client, options.merge(:association => subject.association)).
           and_return(object)
 
         subject << options
 
-        object.should_receive(:save)
+        expect(object).to receive(:save)
         subject.save
 
         subject.should include(object)
@@ -414,7 +414,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should save object" do
-        object.should_receive(:save)
+        expect(object).to receive(:save)
         subject.save
       end
 
@@ -426,13 +426,13 @@ describe ZendeskAPI::Collection do
     context "with everything else" do
       it "should pass to new, since this is how attachment handles it" do
         attachment = double(:changes => [:xxx], :changed? => true, :destroyed? => false)
-        ZendeskAPI::TestResource.should_receive(:new).
+        expect(ZendeskAPI::TestResource).to receive(:new).
           with(client, :id => "img.jpg", :association => instance_of(ZendeskAPI::Association)).
           and_return attachment
 
         subject << "img.jpg"
 
-        attachment.should_receive :save
+        expect(attachment).to receive(:save)
         subject.save
       end
     end
@@ -445,8 +445,8 @@ describe ZendeskAPI::Collection do
       end
 
       it "should not save object" do
-        object.should_receive(:destroyed?).and_return(true)
-        object.should_not_receive(:save)
+        expect(object).to receive(:destroyed?).and_return(true)
+        expect(object).to_not receive(:save)
 
         subject.save
       end
@@ -512,7 +512,7 @@ describe ZendeskAPI::Collection do
         before do
           subject.page(1)
           subject.clear_cache
-          subject.should_not_receive(:fetch)
+          expect(subject).to_not receive(:fetch)
         end
 
         it "should do nothing on #prev" do

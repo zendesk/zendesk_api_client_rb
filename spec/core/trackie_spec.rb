@@ -5,19 +5,19 @@ describe ZendeskAPI::Trackie do
   before(:each) { subject.clear_changes }
 
   it "should not be changed" do
-    subject.changed?.should be_false
+    subject.changed?.should be(false)
   end
 
   context "adding keys" do
     before(:each) { subject[:key] = true }
 
     it "should include key in changes" do
-      subject.changes[:key].should be_true
+      subject.changes[:key].should be(true)
     end
 
     specify "key should be changed" do
-      subject.changed?(:key).should be_true
-      subject.changed?.should be_true
+      subject.changed?(:key).should be(true)
+      subject.changed?.should be(true)
     end
   end
 
@@ -27,14 +27,14 @@ describe ZendeskAPI::Trackie do
     end
 
     it "returns key on deletion" do
-      subject.delete(:key).should be_true
+      subject.delete(:key).should be(true)
     end
 
     context "after deletion" do
       before(:each) { subject.delete(:key) }
 
       it "keeps the changes" do
-        subject.changed?(:key).should be_true
+        subject.changed?(:key).should be(true)
       end
     end
   end
@@ -48,12 +48,12 @@ describe ZendeskAPI::Trackie do
     end
 
     it "should not include key in changes" do
-      subject.changes[:key].should be_false
+      subject.changes[:key].should be_falsey
     end
 
     specify "key should not be changed" do
-      subject.changed?(:key).should be_false
-      subject.changed?.should be_false
+      subject.changed?(:key).should be(false)
+      subject.changed?.should be(false)
     end
   end
 
@@ -65,11 +65,11 @@ describe ZendeskAPI::Trackie do
     end
 
     it "should include changes from nested hash" do
-      subject.changes[:key][:test].should be_true
+      subject.changes[:key][:test].should be(true)
     end
 
     specify "subject should be changed" do
-      subject.changed?.should be_true
+      subject.changed?.should be(true)
     end
   end
 
@@ -86,7 +86,7 @@ describe ZendeskAPI::Trackie do
     end
 
     specify "subject should be changed" do
-      subject.changed?.should be_true
+      subject.changed?.should be(true)
     end
   end
 =end
@@ -99,11 +99,11 @@ describe ZendeskAPI::Trackie do
     end
 
     it "should include changes from nested array" do
-      subject.changes[:key].first[:test].should be_true
+      subject.changes[:key].first[:test].should be(true)
     end
 
     specify "subject should be changed" do
-      subject.changed?.should be_true
+      subject.changed?.should be(true)
     end
 
     context "clearing" do

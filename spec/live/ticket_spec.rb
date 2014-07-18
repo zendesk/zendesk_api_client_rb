@@ -132,7 +132,7 @@ describe ZendeskAPI::Ticket do
         user.requested_tickets.each(&:destroy)
         user.destroy
 
-        threads.all? {|st| [201, 422, 409].include?(st)}.should be_true
+        threads.all? {|st| [201, 422, 409].include?(st)}.should be(true)
       end
     end
   end

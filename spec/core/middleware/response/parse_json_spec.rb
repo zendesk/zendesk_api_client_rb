@@ -46,7 +46,7 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
       let(:body) { '{ "TESTDATA": true }' }
 
       it "should parse returned body" do
-        client.connection.get("blergh").body['TESTDATA'].should be_true
+        client.connection.get("blergh").body['TESTDATA'].should be(true)
       end
     end
   end

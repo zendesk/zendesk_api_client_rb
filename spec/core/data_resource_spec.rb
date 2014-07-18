@@ -155,7 +155,7 @@ describe ZendeskAPI::DataResource do
         end
 
         it "should handle nil response from find api" do
-          ZendeskAPI::TestResource.should_receive(:find).twice.and_return(nil)
+          expect(ZendeskAPI::TestResource).to receive(:find).twice.and_return(nil)
           subject.test_resource.should be_nil
           subject.test_resource
         end
@@ -223,12 +223,12 @@ describe ZendeskAPI::DataResource do
         subject { ZendeskAPI::TestResource.new(client, :test_resource_ids => test_resource_ids) }
 
         it "should find foo_id and load it from the api" do
-          ZendeskAPI::TestResource.should_receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times
+          expect(ZendeskAPI::TestResource).to receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times
           subject.test_resources
         end
 
         it "should handle nil response from find api" do
-          ZendeskAPI::TestResource.should_receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times.and_return(nil)
+          expect(ZendeskAPI::TestResource).to receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times.and_return(nil)
           subject.test_resources.should be_empty
           subject.test_resources # Test expectations
         end

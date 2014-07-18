@@ -15,6 +15,8 @@ require 'logger'
 require 'stringio'
 require 'multi_json'
 
+require 'byebug' rescue LoadError nil
+
 class String
   def encoding_aware?; false; end
 end
@@ -120,10 +122,6 @@ module TestHelper
 end
 
 RSpec.configure do |c|
-  # so we can use `:vcr` rather than `:vcr => true`;
-  # in RSpec 3 this will no longer be necessary.
-  c.treat_symbols_as_metadata_keys_with_true_values = true
-
   c.before(:each) do
     ZendeskAPI::TestResource.associations.clear
     ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
