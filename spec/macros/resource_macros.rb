@@ -34,7 +34,7 @@ module ResourceMacros
         options = default_options
         options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
         expect(described_class.find(client, options)).to eq(@object)
-      end 
+      end
 
       after(:all) do
         VCR.use_cassette("#{described_class.to_s}_create_delete") do
@@ -73,7 +73,7 @@ module ResourceMacros
           options = default_options
           options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
           expect(described_class.find(client, options)).to eq(@object)
-        end 
+        end
       end
 
       after(:all) do

@@ -10,7 +10,7 @@ describe ZendeskAPI::CreateResource do
     end
 
     it "should return instance of resource" do
-      expect(subject.create(client, attr)).to be_instance_of(subject) 
+      expect(subject.create(client, attr)).to be_instance_of(subject)
     end
 
     context "with client error" do
