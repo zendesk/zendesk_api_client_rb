@@ -13,7 +13,7 @@ describe ZendeskAPI::User, :delete_after do
 
   it "should be able to find by email" do
     VCR.use_cassette("user_find_by_email") do
-      client.users.search(:query => current_user.email).to_a.should == [current_user]
+      expect(client.users.search(:query => current_user.email).to_a).to eq([current_user])
     end
   end
 
@@ -40,7 +40,7 @@ describe ZendeskAPI::User, :delete_after do
           subject.changes.key?(:role_id).should be(false)
           subject.role.should_not be_nil
           subject.role.id.should be_nil
-          subject.role.name.should == "admin"
+          expect(subject.role.name).to eq("admin")
           subject.role.configuration.should_not be_nil
 
           subject.custom_role.should be_nil
@@ -58,11 +58,11 @@ describe ZendeskAPI::User, :delete_after do
           subject.changes.key?(:role_id).should be(false)
           subject.role.should_not be_nil
           subject.role.id.should be_nil
-          subject.role.name.should == "agent"
+          expect(subject.role.name).to eq("agent")
 
           subject.custom_role.should_not be_nil
-          subject.custom_role.id.should == 3692
-          subject.custom_role.name.should == "Staff"
+          expect(subject.custom_role.id).to eq(3692)
+          expect(subject.custom_role.name).to eq("Staff")
           subject.custom_role.configuration.should_not be_nil
         end
       end

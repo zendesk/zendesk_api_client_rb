@@ -24,7 +24,7 @@ describe ZendeskAPI::Collection do
         current = subject.to_a.dup
         nxt = subject.next
 
-        nxt.size.should == 1
+        expect(nxt.size).to eq(1)
         nxt.should_not == current
       end
 
@@ -32,7 +32,7 @@ describe ZendeskAPI::Collection do
         current = subject.to_a.dup
         prev = subject.prev
 
-        prev.size.should == 1
+        expect(prev.size).to eq(1)
         prev.should_not == current
       end
     end
@@ -41,11 +41,11 @@ describe ZendeskAPI::Collection do
       before(:each) { subject.per_page(1).page(2) }
 
       it "should increase page option and not call fetch" do
-        subject.next.should == 3
+        expect(subject.next).to eq(3)
       end
 
       it "should decrease page option and not call fetch" do
-        subject.prev.should == 1
+        expect(subject.prev).to eq(1)
       end
 
       context "with page == 1" do
@@ -56,7 +56,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should do nothing on #prev" do
-          subject.prev.should == []
+          expect(subject.prev).to eq([])
         end
       end
     end

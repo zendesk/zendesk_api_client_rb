@@ -2,14 +2,14 @@ require 'core/spec_helper'
 
 describe ZendeskAPI::DataResource do
   specify "singular resource name" do
-    ZendeskAPI::Ticket.singular_resource_name.should == "ticket"
-    ZendeskAPI::TicketField.singular_resource_name.should == "ticket_field"
+    expect(ZendeskAPI::Ticket.singular_resource_name).to eq("ticket")
+    expect(ZendeskAPI::TicketField.singular_resource_name).to eq("ticket_field")
   end
 
   specify "resource name" do
-    ZendeskAPI::Ticket.resource_name.should == "tickets"
-    ZendeskAPI::TicketField.resource_name.should == "ticket_fields"
-    ZendeskAPI::Category.resource_name.should == "categories"
+    expect(ZendeskAPI::Ticket.resource_name).to eq("tickets")
+    expect(ZendeskAPI::TicketField.resource_name).to eq("ticket_fields")
+    expect(ZendeskAPI::Category.resource_name).to eq("categories")
   end
 
   context "association" do
@@ -41,7 +41,7 @@ describe ZendeskAPI::DataResource do
       before(:each) { subject.attributes[:priority] = "normal" }
 
       it "should be able to access underlying attributes" do
-        subject.priority.should == "normal"
+        expect(subject.priority).to eq("normal")
       end
 
       it "should be able to change underlying attributes" do
@@ -62,7 +62,7 @@ describe ZendeskAPI::DataResource do
       before(:each) { subject.priority = "normal" }
 
       it "should be able to change underlying attributes" do
-        subject.priority.should == "normal"
+        expect(subject.priority).to eq("normal")
       end
 
       it "should be able to change underlying attributes" do
@@ -108,7 +108,7 @@ describe ZendeskAPI::DataResource do
         end
 
         it "should pass the path on to the resource" do
-          subject.test_resource.path.should == "test_resources"
+          expect(subject.test_resource.path).to eq("test_resources")
         end
 
         context "with a client error" do
@@ -140,7 +140,7 @@ describe ZendeskAPI::DataResource do
         end
 
         it "should load foo from the hash" do
-          subject.message.should == "FOO_OBJ"
+          expect(subject.message).to eq("FOO_OBJ")
         end
       end
 
@@ -191,7 +191,7 @@ describe ZendeskAPI::DataResource do
         end
 
         it "should pass the path on to the resource" do
-          subject.test_resources.path.should == "test_resources/1/test_resources"
+          expect(subject.test_resources.path).to eq("test_resources/1/test_resources")
         end
 
         context "with an explicit path set" do
@@ -200,7 +200,7 @@ describe ZendeskAPI::DataResource do
           end
 
           it "should call the right path" do
-            subject.test_resources.path.should == "test_resources/1/blargh"
+            expect(subject.test_resources.path).to eq("test_resources/1/blargh")
           end
         end
       end
@@ -210,7 +210,7 @@ describe ZendeskAPI::DataResource do
         subject { ZendeskAPI::TestResource.new(client, :test_resources => test_resources).test_resources.first }
 
         it "should properly create instance" do
-          subject.message.should == "FOO_OBJ"
+          expect(subject.message).to eq("FOO_OBJ")
         end
 
         it "should map bars onto TestResource class" do

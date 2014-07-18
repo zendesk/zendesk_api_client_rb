@@ -18,7 +18,7 @@ describe ZendeskAPI::Setting do
         settings.fetch!(true)
 
         lotus = settings.detect {|set| set.on == "lotus"}
-        lotus.keyboard_shortcuts_enabled.should == !original_setting
+        expect(lotus.keyboard_shortcuts_enabled).to eq(!original_setting)
       end
     end
   end

@@ -7,7 +7,7 @@ describe ZendeskAPI::Collection do
 
   context "initialization" do
     it "should set the resource class" do
-      subject.instance_variable_get(:@resource_class).should == ZendeskAPI::TestResource
+      expect(subject.instance_variable_get(:@resource_class)).to eq(ZendeskAPI::TestResource)
     end
 
     it "should initially be empty" do
@@ -19,7 +19,7 @@ describe ZendeskAPI::Collection do
     subject { ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :ids => [1, 2, 3, 4]) }
 
     it "should join array with commas" do
-      subject.instance_variable_get(:@options)[:ids].should == "1,2,3,4"
+      expect(subject.instance_variable_get(:@options)[:ids]).to eq("1,2,3,4")
     end
   end
 
@@ -96,19 +96,19 @@ describe ZendeskAPI::Collection do
         end
 
         it "should pass association" do
-          subject.last.association.should == association
+          expect(subject.last.association).to eq(association)
         end
 
         it "should #build a resource and add it" do
           resource = subject.build
           subject.should include(resource)
-          resource.association.should == subject.association
+          expect(resource.association).to eq(subject.association)
         end
 
         it "should #build! a resource and add it" do
           resource = subject.build!
           subject.should include(resource)
-          resource.association.should == subject.association
+          expect(resource.association).to eq(subject.association)
         end
       end
     end
@@ -173,21 +173,21 @@ describe ZendeskAPI::Collection do
     before(:each) { subject.per_page(5).page(2) }
 
     it "should set per_page option" do
-      subject.per_page(10).should == subject
-      subject.instance_variable_get(:@options)["per_page"].should == 10
+      expect(subject.per_page(10)).to eq(subject)
+      expect(subject.instance_variable_get(:@options)["per_page"]).to eq(10)
     end
 
     it "should set page option" do
-      subject.page(10).should == subject
-      subject.instance_variable_get(:@options)["page"].should == 10
+      expect(subject.page(10)).to eq(subject)
+      expect(subject.instance_variable_get(:@options)["page"]).to eq(10)
     end
 
     it "should increate page option" do
-      subject.next.should == 3
+      expect(subject.next).to eq(3)
     end
 
     it "should decreate page option" do
-      subject.prev.should == 1
+      expect(subject.prev).to eq(1)
     end
   end
 
@@ -315,7 +315,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should set the page to 1" do
-          @page.should == 1
+          expect(@page).to eq(1)
         end
       end
 
@@ -331,7 +331,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should set the page to 2" do
-          @page.should == 2
+          expect(@page).to eq(2)
         end
       end
 
@@ -349,8 +349,8 @@ describe ZendeskAPI::Collection do
     end
 
     it "does not fetch if associated is a new record" do
-      ZendeskAPI::Category.new(client).forums.fetch.should == []
-      ZendeskAPI::Category.new(client).forums.to_a.should == []
+      expect(ZendeskAPI::Category.new(client).forums.fetch).to eq([])
+      expect(ZendeskAPI::Category.new(client).forums.to_a).to eq([])
     end
 
     context "with client error" do
@@ -484,7 +484,7 @@ describe ZendeskAPI::Collection do
         current = subject.to_a.dup
         nxt = subject.next
 
-        nxt.size.should == 1
+        expect(nxt.size).to eq(1)
         nxt.should_not == current
       end
 
@@ -492,7 +492,7 @@ describe ZendeskAPI::Collection do
         current = subject.to_a.dup
         prev = subject.prev
 
-        prev.size.should == 1
+        expect(prev.size).to eq(1)
         prev.should_not == current
       end
     end
@@ -501,11 +501,11 @@ describe ZendeskAPI::Collection do
       before(:each) { subject.per_page(1).page(2) }
 
       it "should increase page option and not call fetch" do
-        subject.next.should == 3
+        expect(subject.next).to eq(3)
       end
 
       it "should decrease page option and not call fetch" do
-        subject.prev.should == 1
+        expect(subject.prev).to eq(1)
       end
 
       context "with page == 1" do
@@ -516,7 +516,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should do nothing on #prev" do
-          subject.prev.should == []
+          expect(subject.prev).to eq([])
         end
       end
     end
@@ -546,7 +546,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load the correct nil_resource" do
-        @resource.nil_resource.name.should == "hi"
+        expect(@resource.nil_resource.name).to eq("hi")
       end
     end
 
@@ -572,7 +572,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should side load the correct nil_resource" do
-          @resource.nil_resource.name.should == "hi"
+          expect(@resource.nil_resource.name).to eq("hi")
         end
       end
 
@@ -584,7 +584,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should side load the correct nil_resource" do
-          @resource.nil_resource.name.should == "bye"
+          expect(@resource.nil_resource.name).to eq("bye")
         end
       end
     end
@@ -608,7 +608,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load the correct nil_resources" do
-        @resource.nil_resources.map(&:name).should == %w{hi hello}
+        expect(@resource.nil_resources.map(&:name)).to eq(%w{hi hello})
       end
     end
 
@@ -630,7 +630,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load the correct nil_resources" do
-        @resource.nil_resources.map(&:id).should == [2, 4]
+        expect(@resource.nil_resources.map(&:id)).to eq([2, 4])
       end
     end
 
@@ -652,7 +652,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load the correct nil_resources" do
-        @resource.nil_resource.id.should == 2
+        expect(@resource.nil_resource.id).to eq(2)
       end
     end
 
@@ -675,7 +675,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load the correct nil_resource" do
-        @resource.nil_resource.name.should == 4
+        expect(@resource.nil_resource.name).to eq(4)
       end
     end
 
@@ -699,7 +699,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load the correct nil_resource" do
-        @resource.nil_resource.id.should == 4
+        expect(@resource.nil_resource.id).to eq(4)
       end
     end
   end
@@ -709,16 +709,16 @@ describe ZendeskAPI::Collection do
 
     context "with an class method on the resource class" do
       it "should pass methods to class if defined" do
-        subject.test.should == "hi"
+        expect(subject.test).to eq("hi")
       end
     end
 
     it "should pass all methods not defined to resources" do
-      subject.compact.should == [1, 2, 3]
+      expect(subject.compact).to eq([1, 2, 3])
     end
 
     it "should take a block" do
-      subject.map {|i| i.to_i + 1}.should == [2, 3, 1, 4]
+      expect(subject.map {|i| i.to_i + 1}).to eq([2, 3, 1, 4])
     end
 
     it "should create a new collection if it isn't an array method" do
@@ -726,7 +726,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should pass the correct query_path to the new collection" do
-      subject.recent.instance_variable_get(:@collection_path).last.should == :recent
+      expect(subject.recent.instance_variable_get(:@collection_path).last).to eq(:recent)
     end
   end
 
@@ -738,7 +738,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should not blow up" do
-      subject.to_a.should == []
+      expect(subject.to_a).to eq([])
     end
   end
 

@@ -33,7 +33,7 @@ module ResourceMacros
       it "should be findable", :unless => metadata[:not_findable] do
         options = default_options
         options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-        described_class.find(client, options).should == @object
+        expect(described_class.find(client, options)).to eq(@object)
       end 
 
       after(:all) do
@@ -66,13 +66,13 @@ module ResourceMacros
         end
 
         it "should keep attributes" do
-          @object.send(attribute).should == value 
+          expect(@object.send(attribute)).to eq(value )
         end
 
         it "should be findable", :unless => metadata[:not_findable] do
           options = default_options
           options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-          described_class.find(client, options).should == @object
+          expect(described_class.find(client, options)).to eq(@object)
         end 
       end
 
@@ -106,7 +106,7 @@ module ResourceMacros
           obj = silence_logger{ described_class.find(client, opts) }
 
           if options[:find]
-            obj.send(options[:find].first).should == options[:find].last
+            expect(obj.send(options[:find].first)).to eq(options[:find].last)
           else
             obj.should be_nil
           end
@@ -144,7 +144,7 @@ module ResourceMacros
           object = result.first
         else
           result.should_not be_nil
-          result.should == @object if create
+          expect(result).to eq(@object) if create
           object = result
         end
 

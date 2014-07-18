@@ -19,7 +19,7 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
     let(:env) {{ :body => '' }}
 
     it 'should not return json' do
-      response[:body].should == ''
+      expect(response[:body]).to eq('')
     end
   end
 
@@ -28,11 +28,11 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
       let(:env) {{ :body => { :a => :b } }}
 
       it 'encodes json' do
-        response[:body].should == JSON.dump(:a => :b)
+        expect(response[:body]).to eq(JSON.dump(:a => :b))
       end
 
       it 'sets the content type' do
-        response[:request_headers]['Content-Type'].should == 'application/json'
+        expect(response[:request_headers]['Content-Type']).to eq('application/json')
       end
     end
 
@@ -45,11 +45,11 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
       }}
 
       it 'encodes json' do
-        response[:body].should == JSON.dump(:a => :b)
+        expect(response[:body]).to eq(JSON.dump(:a => :b))
       end
 
       it 'keeps the content type' do
-        response[:request_headers]['Content-Type'].should == 'application/json'
+        expect(response[:request_headers]['Content-Type']).to eq('application/json')
       end
     end
 
@@ -62,11 +62,11 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
       }}
 
       it 'encodes json' do
-        response[:body].should == JSON.dump(:a => :b)
+        expect(response[:body]).to eq(JSON.dump(:a => :b))
       end
 
       it 'keeps the content type' do
-        response[:request_headers]['Content-Type'].should == 'application/json; encoding=utf-8'
+        expect(response[:request_headers]['Content-Type']).to eq('application/json; encoding=utf-8')
       end
     end
   end

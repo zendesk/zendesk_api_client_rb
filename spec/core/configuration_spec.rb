@@ -6,11 +6,11 @@ describe ZendeskAPI::Configuration do
   it "should properly merge options" do
     url = "test.host"
     subject.url = url
-    subject.options[:url].should == url
+    expect(subject.options[:url]).to eq(url)
   end
 
   it "should set accept header properly" do
-    subject.options[:headers][:accept].should == 'application/json'
+    expect(subject.options[:headers][:accept]).to eq('application/json')
   end
 
   it "should set user agent header properly" do
@@ -19,6 +19,6 @@ describe ZendeskAPI::Configuration do
 
   it "should merge options with client_options" do
     subject.client_options = {:ssl => false}
-    subject.options[:ssl].should == false
+    expect(subject.options[:ssl]).to eq(false)
   end
 end

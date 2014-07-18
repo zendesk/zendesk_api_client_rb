@@ -61,8 +61,8 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
           begin
             client.connection.get "/non_existent"
           rescue ZendeskAPI::Error::RecordInvalid => e
-            e.errors.should == "hello"
-            e.to_s.should == "ZendeskAPI::Error::RecordInvalid: hello"
+            expect(e.errors).to eq("hello")
+            expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: hello")
           else
             fail # didn't raise an error
           end

@@ -21,13 +21,13 @@ describe ZendeskAPI::Topic do
       VCR.use_cassette("topic_import_can_import") do
         old = Time.now - 5*365*24*60*60
         topic = ZendeskAPI::Topic.import(client, valid_attributes.merge(:created_at => old))
-        ZendeskAPI::Topic.find(client, topic).created_at.year.should == old.year
+        expect(ZendeskAPI::Topic.find(client, topic).created_at.year).to eq(old.year)
       end
     end
 
     it "returns nothing if import fails" do
       VCR.use_cassette("topic_import_cannot_import") do
-        silence_logger { ZendeskAPI::Topic.import(client, {}).should == nil }
+        expect(silence_logger { ZendeskAPI::Topic.import(client, {})).to eq(nil })
       end
     end
   end

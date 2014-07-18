@@ -5,7 +5,7 @@ describe ZendeskAPI::Resource do
     context "with :global as part of attributes" do
       it "should set @global_params" do
         resource = ZendeskAPI::TestResource.new(client, { :global => { :something => 'hey' }})
-        resource.instance_variable_get(:@global_params).should == { :something => 'hey' }
+        expect(resource.instance_variable_get(:@global_params)).to eq({ :something => 'hey' })
       end
     end
   end
@@ -127,7 +127,7 @@ describe ZendeskAPI::Resource do
 
     it "should put on save" do
       subject.save.should be(true)
-      subject[:param].should == "abc"
+      expect(subject[:param]).to eq("abc")
     end
 
     context "with unused associations" do
@@ -138,7 +138,7 @@ describe ZendeskAPI::Resource do
       end
 
       it "should not touch them" do
-        subject.save.should == true
+        expect(subject.save).to eq(true)
       end
     end
 
@@ -166,7 +166,7 @@ describe ZendeskAPI::Resource do
       it "should be false after creating" do
         subject.save.should be(true)
         subject.new_record?.should be(false)
-        subject.id.should == id
+        expect(subject.id).to eq(id)
       end
     end
 
@@ -210,7 +210,7 @@ describe ZendeskAPI::Resource do
           subject.children = [2, 3]
           subject.children_ids = [1]
           subject.save
-          subject.children_ids.should == [2,3]
+          expect(subject.children_ids).to eq([2,3])
           subject.instance_variable_get(:@children).should be_nil
         end
 
@@ -263,7 +263,7 @@ describe ZendeskAPI::Resource do
           it "should save param data" do
             subject.save_associations
 
-            subject.attributes[:nil].should == "TESTDATA"
+            expect(subject.attributes[:nil]).to eq("TESTDATA")
           end
 
           it "should not save param data when unchanged" do
@@ -287,7 +287,7 @@ describe ZendeskAPI::Resource do
             end
 
             it "should save param data" do
-              subject.attributes[:nil].should == "TESTDATA"
+              expect(subject.attributes[:nil]).to eq("TESTDATA")
             end
           end
 
@@ -338,7 +338,7 @@ describe ZendeskAPI::Resource do
 
         it "should update the attributes if they exist" do
           subject.send(method, :verb => :put)
-          subject[:method].should == method
+          expect(subject[:method]).to eq(method)
         end
       end
 
@@ -353,7 +353,7 @@ describe ZendeskAPI::Resource do
 
         it "should update the attributes if they exist" do
           subject.send(method, :verb => :put)
-          subject[:method].should == method
+          expect(subject[:method]).to eq(method)
         end
       end
 
@@ -402,7 +402,7 @@ describe ZendeskAPI::Resource do
 
           it "should update the attributes if they exist" do
             subject.send(method)
-            subject[:method].should == method
+            expect(subject[:method]).to eq(method)
           end
         end
 
@@ -417,7 +417,7 @@ describe ZendeskAPI::Resource do
 
           it "should update the attributes if they exist" do
             subject.send(method)
-            subject[:method].should == method
+            expect(subject[:method]).to eq(method)
           end
         end
 
@@ -440,7 +440,7 @@ describe ZendeskAPI::Resource do
 
   context "#inspect" do
     it "should display nicely" do
-      ZendeskAPI::User.new(client, :foo => :bar).inspect.should == "#<ZendeskAPI::User {\"foo\"=>:bar}>"
+      expect(ZendeskAPI::User.new(client, :foo => :bar).inspect).to eq("#<ZendeskAPI::User {\"foo\"=>:bar}>")
     end
   end
 
@@ -455,12 +455,12 @@ describe ZendeskAPI::Resource do
 
   context "#==" do
     it "is same when id is same" do
-      ZendeskAPI::TestResource.new(client, :id => 1, "bar" => "baz").should == ZendeskAPI::TestResource.new(client, :id => 1, "foo" => "bar")
+      expect(ZendeskAPI::TestResource.new(client, :id => 1, "bar" => "baz")).to eq(ZendeskAPI::TestResource.new(client, :id => 1, "foo" => "bar"))
     end
 
     it "is same when object_id is same" do
       object = ZendeskAPI::TestResource.new(client, "bar" => "baz")
-      object.should == object
+      expect(object).to eq(object)
     end
 
     it "is different when both have no id" do
@@ -472,11 +472,11 @@ describe ZendeskAPI::Resource do
     end
 
     it "is same when class is Data" do
-      ZendeskAPI::TestResource.new(client, :id => 2).should == ZendeskAPI::TestResource::TestChild.new(client, :id => 2)
+      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to eq(ZendeskAPI::TestResource::TestChild.new(client, :id => 2))
     end
 
     it "is same when class is Integer" do
-      ZendeskAPI::TestResource.new(client, :id => 2).should == 2
+      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to eq(2)
     end
 
     it "is different when class is Integer" do
@@ -529,7 +529,7 @@ describe ZendeskAPI::Resource do
   context "#new" do
     it "builds with hash" do
       object = ZendeskAPI::TestResource.new(client, {})
-      object.attributes.should == {}
+      expect(object.attributes).to eq({})
     end
 
     it "fails to build with nil (e.g. empty response from server)" do

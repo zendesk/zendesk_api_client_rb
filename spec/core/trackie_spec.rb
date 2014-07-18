@@ -82,7 +82,7 @@ describe ZendeskAPI::Trackie do
     end
 
     it "should include changes from nested array" do
-      subject.changes[:key].should == [:test]
+      expect(subject.changes[:key]).to eq([:test])
     end
 
     specify "subject should be changed" do
@@ -123,7 +123,7 @@ describe ZendeskAPI::Trackie do
     end
 
     it "returns the value corresponding to the :size key" do
-      subject.size.should == 42
+      expect(subject.size).to eq(42)
     end
   end
 end

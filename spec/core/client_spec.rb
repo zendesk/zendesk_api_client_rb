@@ -90,7 +90,7 @@ describe ZendeskAPI::Client do
         let(:username) { "hello/token" }
 
         it "should not add /token to the username" do
-          subject.username.should == "hello/token"
+          expect(subject.username).to eq("hello/token")
         end
       end
 
@@ -104,11 +104,11 @@ describe ZendeskAPI::Client do
         end
 
         it "should copy token to password" do
-          subject.token.should == subject.password
+          expect(subject.token).to eq(subject.password)
         end
 
         it "should add /token to the username" do
-          subject.username.should == "hello/token"
+          expect(subject.username).to eq("hello/token")
         end
       end
     end
@@ -199,7 +199,7 @@ describe ZendeskAPI::Client do
       subject.tickets.should be_instance_of(ZendeskAPI::Collection)
 
       subject.instance_variable_get(:@resource_cache)["tickets"].should_not be_empty
-      subject.instance_variable_get(:@resource_cache)["tickets"][:class].should == ZendeskAPI::Ticket
+      expect(subject.instance_variable_get(:@resource_cache)["tickets"][:class]).to eq(ZendeskAPI::Ticket)
       subject.instance_variable_get(:@resource_cache)["tickets"][:cache].should be_instance_of(ZendeskAPI::LRUCache)
 
       expect(ZendeskAPI).to_not receive(:const_get)
@@ -220,7 +220,7 @@ describe ZendeskAPI::Client do
     end
 
     it "should cache calls with the same options" do
-      subject.search(:query => 'abc').should == subject.search(:query => 'abc')
+      expect(subject.search(:query => 'abc')).to eq(subject.search(:query => 'abc'))
     end
   end
 
@@ -228,9 +228,9 @@ describe ZendeskAPI::Client do
     client = SimpleClient.new do |config|
       config.allow_http = true
     end
-    client.config.allow_http.should == true
-    client.connection.should == "FOO"
-    client.connection.object_id.should == client.connection.object_id # it's cached
+    expect(client.config.allow_http).to eq(true)
+    expect(client.connection).to eq("FOO")
+    expect(client.connection.object_id).to eq(client.connection.object_id) # it's cached
   end
 
   context ZendeskAPI::Voice do

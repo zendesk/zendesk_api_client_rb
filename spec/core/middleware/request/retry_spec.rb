@@ -14,7 +14,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
         to_return(:status => 200)
 
       seconds = runtime {
-        client.connection.get("blergh").status.should == 200
+        expect(client.connection.get("blergh").status).to eq(200)
       }
 
       seconds.should be_within(0.2).of(1)
@@ -32,7 +32,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
 
     it "should wait default timeout seconds and then retry request on error" do
       runtime do
-        client.connection.get("blergh").status.should == 200
+        expect(client.connection.get("blergh").status).to eq(200)
       end.should <= 0.5
     end
 
