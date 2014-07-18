@@ -52,7 +52,7 @@ describe ZendeskAPI::Collection do
         before do
           subject.page(1)
           subject.clear_cache
-          subject.should_not_receive(:fetch)
+          expect(subject).to_not receive(:fetch)
         end
 
         it "should do nothing on #prev" do

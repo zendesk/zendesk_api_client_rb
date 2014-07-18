@@ -189,7 +189,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should not call save on the association if they are synced" do
-          subject.child.should_not_receive(:save)
+          expect(subject.child).to_not receive(:save)
 
           subject.save
 
@@ -216,7 +216,7 @@ describe ZendeskAPI::Resource do
 
         it "should not save the associated objects when there are no changes" do
           subject.children = [2]
-          subject.children.first.should_not_receive(:save)
+          expect(subject.children.first).to_not receive(:save)
           subject.save
           expect(subject.instance_variable_get(:@children)).to be_nil
         end
@@ -230,7 +230,7 @@ describe ZendeskAPI::Resource do
 
         it "should not save the associated objects when it is set via full hash" do
           subject.children = [{:id => 1, :foo => "bar"}]
-          subject.children.first.should_not_receive(:save)
+          expect(subject.children.first).to_not receive(:save)
           subject.save
           expect(subject.instance_variable_get(:@children)).to be_nil
         end

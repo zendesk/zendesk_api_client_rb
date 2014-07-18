@@ -127,7 +127,7 @@ describe ZendeskAPI::Collection do
         before(:each) { subject.page(nil) }
 
         it "should not empty the cache" do
-          subject.instance_variable_get(:@resources).should_not be_empty
+          expect(subject.instance_variable_get(:@resources)).to_not be_empty
         end
       end
 
@@ -145,7 +145,7 @@ describe ZendeskAPI::Collection do
         before(:each) { subject.per_page(nil) }
 
         it "should not empty the cache" do
-          subject.instance_variable_get(:@resources).should_not be_empty
+          expect(subject.instance_variable_get(:@resources)).to_not be_empty
         end
       end
 
@@ -542,7 +542,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resource.should_not be_nil
+        expect(@resource.nil_resource).to_not be_nil
       end
 
       it "should side load the correct nil_resource" do
@@ -568,7 +568,7 @@ describe ZendeskAPI::Collection do
         before(:each) { @resource = subject.detect {|res| res.id == 1} }
 
         it "should side load nil_resources" do
-          @resource.nil_resource.should_not be_nil
+          expect(@resource.nil_resource).to_not be_nil
         end
 
         it "should side load the correct nil_resource" do
@@ -580,7 +580,7 @@ describe ZendeskAPI::Collection do
         before(:each) { @resource = subject.detect {|res| res.id == 2} }
 
         it "should side load nil_resources" do
-          @resource.nil_resource.should_not be_nil
+          expect(@resource.nil_resource).to_not be_nil
         end
 
         it "should side load the correct nil_resource" do
@@ -604,7 +604,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resources.should_not be_empty
+        expect(@resource.nil_resources).to_not be_empty
       end
 
       it "should side load the correct nil_resources" do
@@ -626,7 +626,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resources.should_not be_empty
+        expect(@resource.nil_resources).to_not be_empty
       end
 
       it "should side load the correct nil_resources" do
@@ -648,7 +648,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resource.should_not be_nil
+        expect(@resource.nil_resource).to_not be_nil
       end
 
       it "should side load the correct nil_resources" do
@@ -671,7 +671,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resource.should_not be_nil
+        expect(@resource.nil_resource).to_not be_nil
       end
 
       it "should side load the correct nil_resource" do
@@ -695,7 +695,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resource.should_not be_nil
+        expect(@resource.nil_resource).to_not be_nil
       end
 
       it "should side load the correct nil_resource" do
@@ -705,7 +705,7 @@ describe ZendeskAPI::Collection do
   end
 
   context "method missing" do
-    before(:each) { subject.stub(:fetch).and_return([1, 2, nil, 3]) }
+    before(:each) { allow(subject).to receive(:fetch).and_return([1, 2, nil, 3]) }
 
     context "with an class method on the resource class" do
       it "should pass methods to class if defined" do

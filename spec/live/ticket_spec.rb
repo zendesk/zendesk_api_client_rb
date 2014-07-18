@@ -127,7 +127,7 @@ describe ZendeskAPI::Ticket do
         end
 
         user = client.users.detect {|user| user.email == email}
-        user.should_not be_nil
+        expect(user).to_not be_nil
 
         user.requested_tickets.each(&:destroy)
         user.destroy

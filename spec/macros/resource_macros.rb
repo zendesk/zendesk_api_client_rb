@@ -26,8 +26,8 @@ module ResourceMacros
       end
 
       it "should have an id" do
-        @object.should_not be_nil
-        @object.send(:id).should_not be_nil
+        expect(@object).to_not be_nil
+        expect(@object.send(:id)).to_not be_nil
       end
 
       it "should be findable", :unless => metadata[:not_findable] do
@@ -139,11 +139,11 @@ module ResourceMacros
         args.each {|a| result = result.send(a, options) }
 
         if result.is_a?(ZendeskAPI::Collection)
-          result.fetch(true).should_not be_empty
+          expect(result.fetch(true)).to_not be_empty
           expect(result.fetch).to include(@object) if create
           object = result.first
         else
-          result.should_not be_nil
+          expect(result).to_not be_nil
           expect(result).to eq(@object) if create
           object = result
         end
@@ -151,7 +151,7 @@ module ResourceMacros
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           options = default_options
           options.merge!(:id => object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-          described_class.find(client, options).should_not be_nil
+          expect(described_class.find(client, options)).to_not be_nil
         end
       end
     end

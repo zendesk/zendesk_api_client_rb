@@ -49,7 +49,7 @@ describe ZendeskAPI::Client do
       end
 
       it "should build basic auth middleware" do
-        subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication).should_not be_nil
+        expect(subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to_not be_nil
       end
 
       it "should not build token middleware" do
@@ -96,7 +96,7 @@ describe ZendeskAPI::Client do
 
       context "with no password" do
         it "should build basic auth middleware" do
-          client.connection.builder.handlers.index(Faraday::Request::BasicAuthentication).should_not be_nil
+          expect(client.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to_not be_nil
         end
 
         it "should not build token middleware" do
@@ -142,7 +142,7 @@ describe ZendeskAPI::Client do
         subject { false }
 
         it "should not log" do
-          @client.connection.builder.handlers.should_not include(ZendeskAPI::Middleware::Response::Logger)
+          expect(@client.connection.builder.handlers).to_not include(ZendeskAPI::Middleware::Response::Logger)
         end
       end
 
@@ -198,7 +198,7 @@ describe ZendeskAPI::Client do
 
       expect(subject.tickets).to be_instance_of(ZendeskAPI::Collection)
 
-      subject.instance_variable_get(:@resource_cache)["tickets"].should_not be_empty
+      expect(subject.instance_variable_get(:@resource_cache)["tickets"]).to_not be_empty
       expect(subject.instance_variable_get(:@resource_cache)["tickets"][:class]).to eq(ZendeskAPI::Ticket)
       expect(subject.instance_variable_get(:@resource_cache)["tickets"][:cache]).to be_instance_of(ZendeskAPI::LRUCache)
 
