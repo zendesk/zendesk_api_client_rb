@@ -464,11 +464,11 @@ describe ZendeskAPI::Resource do
     end
 
     it "is different when both have no id" do
-      ZendeskAPI::TestResource.new(client).should_not == ZendeskAPI::TestResource.new(client)
+      expect(ZendeskAPI::TestResource.new(client)).to_not eq(ZendeskAPI::TestResource.new(client))
     end
 
     it "is different when id is different" do
-      ZendeskAPI::TestResource.new(client, :id => 2).should_not == ZendeskAPI::TestResource.new(client, :id => 1)
+      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to_not eq(ZendeskAPI::TestResource.new(client, :id => 1))
     end
 
     it "is same when class is Data" do
@@ -480,17 +480,17 @@ describe ZendeskAPI::Resource do
     end
 
     it "is different when class is Integer" do
-      ZendeskAPI::TestResource.new(client, :id => 2).should_not == 3
+      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to_not eq(3)
     end
 
     it "is different when other is no resource" do
-      ZendeskAPI::TestResource.new(client, :id => 2).should_not == nil
+      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to_not eq(nil)
     end
 
     it "warns about weird comparissons" do
       object = ZendeskAPI::TestResource.new(client, :id => 2)
       expect(object).to receive(:warn)
-      object.should_not == "xxx"
+      expect(object).to_not eq("xxx")
     end
   end
 

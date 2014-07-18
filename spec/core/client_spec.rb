@@ -207,11 +207,11 @@ describe ZendeskAPI::Client do
     end
 
     it "should not cache calls with different options" do
-      subject.search(:query => 'abc').should_not == subject.search(:query => '123')
+      expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => '123'))
     end
 
     it "should not cache calls with :reload => true options" do
-      subject.search(:query => 'abc').should_not == subject.search(:query => 'abc', :reload => true)
+      expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => 'abc', :reload => true))
     end
 
     it "should not pass reload to the underlying collection" do

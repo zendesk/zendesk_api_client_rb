@@ -41,7 +41,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
       end
 
       it "should not change filename" do
-        @env[:body][:filename].should_not == "test.jpg"
+        expect(@env[:body][:filename]).to_not eq("test.jpg")
       end
     end
   end
@@ -126,7 +126,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
         end
 
         it "should not change filename" do
-          @env[:body][:filename].should_not == "test.jpg"
+          expect(@env[:body][:filename]).to_not eq("test.jpg")
         end
       end
     end
@@ -156,7 +156,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
         end
 
         it "should not change filename" do
-          @env[:body][:user][:photo][:filename].should_not == "test.jpg"
+          expect(@env[:body][:user][:photo][:filename]).to_not eq("test.jpg")
         end
       end
     end

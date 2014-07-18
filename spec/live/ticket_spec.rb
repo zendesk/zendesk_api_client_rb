@@ -60,7 +60,7 @@ describe ZendeskAPI::Ticket do
       stub_json_request(:get, %r{/api/v2/exports/tickets}, json(:results => []))
 
       results.next
-      results.first.should_not == first
+      expect(results.first).to_not eq(first)
     end
   end
 

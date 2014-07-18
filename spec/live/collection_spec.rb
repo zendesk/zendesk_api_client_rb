@@ -25,7 +25,7 @@ describe ZendeskAPI::Collection do
         nxt = subject.next
 
         expect(nxt.size).to eq(1)
-        nxt.should_not == current
+        expect(nxt).to_not eq(current)
       end
 
       it "should find the prev page by calling fetch" do
@@ -33,7 +33,7 @@ describe ZendeskAPI::Collection do
         prev = subject.prev
 
         expect(prev.size).to eq(1)
-        prev.should_not == current
+        expect(prev).to_not eq(current)
       end
     end
 
