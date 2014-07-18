@@ -298,6 +298,17 @@ describe ZendeskAPI::Collection do
           [ZendeskAPI::TestResource.new(client, :id => 2), 2]
         )
       end
+
+      context "afterwards" do
+        before(:each) do
+          silence_logger { subject.all {|_|} }
+        end
+
+        it "should reset the collection" do
+          subject.first_page?.should be_true
+          subject.fetch.should == [ZendeskAPI::TestResource.new(client, :id => 1)]
+        end
+      end
     end
   end
 

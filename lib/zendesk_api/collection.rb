@@ -324,6 +324,9 @@ module ZendeskAPI
 
         self.next
       end
+
+      page(nil)
+      clear_cache
     end
 
     def _save(method = :save)
