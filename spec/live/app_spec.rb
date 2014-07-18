@@ -20,7 +20,7 @@ describe ZendeskAPI::App do
 
     VCR.use_cassette("app_save") { app.save! }
 
-    app.author_name.should == "Mr. Sprinkles"
+    expect(app.author_name).to eq("Mr. Sprinkles")
 
     VCR.use_cassette("app_find") { client.apps.find!(:id => app.id) }
     VCR.use_cassette("app_destroy") { app.destroy! }

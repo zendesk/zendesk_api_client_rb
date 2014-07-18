@@ -52,7 +52,7 @@ describe ZendeskAPI::Ticket do
     end
 
     it "finds tickets after a old date" do
-      results.to_a.first.should be_an_instance_of ZendeskAPI::Ticket
+      expect(results.to_a.first).to be_an_instance_of ZendeskAPI::Ticket
     end
 
     it "is able to do next" do
@@ -60,7 +60,7 @@ describe ZendeskAPI::Ticket do
       stub_json_request(:get, %r{/api/v2/exports/tickets}, json(:results => []))
 
       results.next
-      results.first.should_not == first
+      expect(results.first).to_not eq(first)
     end
   end
 
@@ -69,13 +69,13 @@ describe ZendeskAPI::Ticket do
       VCR.use_cassette("ticket_import_can_import") do
         old = Time.now - 5*365*24*60*60
         ticket = ZendeskAPI::Ticket.import(client, valid_attributes.merge(:created_at => old))
-        ZendeskAPI::Ticket.find(client, ticket).created_at.year.should == old.year
+        expect(ZendeskAPI::Ticket.find(client, ticket).created_at.year).to eq(old.year)
       end
     end
 
     it "returns nothing if import fails" do
       VCR.use_cassette("ticket_import_cannot_import") do
-        silence_logger { ZendeskAPI::Ticket.import(client, {}).should == nil }
+        silence_logger { expect(ZendeskAPI::Ticket.import(client, {})).to eq(nil) }
       end
     end
   end
@@ -87,8 +87,8 @@ describe ZendeskAPI::Ticket do
       ticket.comment.uploads << File.new("spec/fixtures/Argentina.gif")
 
       ticket.save!
-      ticket.changes.should == {} # uploads were set before save
-      ticket.comment.attributes[:uploads].map(&:class).should == [String, String] # upload was sent as tokens
+      expect(ticket.changes).to eq({}) # uploads were set before save
+      expect(ticket.comment.attributes[:uploads].map(&:class)).to eq([String, String]) # upload was sent as tokens
     end
   end
 
@@ -98,8 +98,8 @@ describe ZendeskAPI::Ticket do
       ticket.comment = ZendeskAPI::Ticket::Comment.new(client, :value => "My comment", :public => false)
       ticket.save!
 
-      ticket.changes.should == {} # comment was set before save
-      ticket.attributes[:comment].should == {"value" => "My comment", "public" => false}
+      expect(ticket.changes).to eq({}) # comment was set before save
+      expect(ticket.attributes[:comment]).to eq({"value" => "My comment", "public" => false})
     end
   end
 
@@ -127,12 +127,12 @@ describe ZendeskAPI::Ticket do
         end
 
         user = client.users.detect {|user| user.email == email}
-        user.should_not be_nil
+        expect(user).to_not be_nil
 
         user.requested_tickets.each(&:destroy)
         user.destroy
 
-        threads.all? {|st| [201, 422, 409].include?(st)}.should be_true
+        expect(threads.all? {|st| [201, 422, 409].include?(st)}).to be(true)
       end
     end
   end

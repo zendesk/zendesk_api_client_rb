@@ -12,7 +12,7 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
     end
 
     it "should return nil body" do
-      client.connection.get("blergh").body.should be_nil
+      expect(client.connection.get("blergh").body).to be_nil
     end
   end
 
@@ -30,7 +30,7 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
       let(:body) { nil }
 
       it "should return nil body" do
-        client.connection.get("blergh").body.should be_nil
+        expect(client.connection.get("blergh").body).to be_nil
       end
     end
 
@@ -38,7 +38,7 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
       let(:body) { '' }
 
       it "should return nil body" do
-        client.connection.get("blergh").body.should be_nil
+        expect(client.connection.get("blergh").body).to be_nil
       end
     end
 
@@ -46,7 +46,7 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
       let(:body) { '{ "TESTDATA": true }' }
 
       it "should parse returned body" do
-        client.connection.get("blergh").body['TESTDATA'].should be_true
+        expect(client.connection.get("blergh").body['TESTDATA']).to be(true)
       end
     end
   end

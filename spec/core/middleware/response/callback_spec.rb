@@ -12,6 +12,6 @@ describe ZendeskAPI::Middleware::Response::Callback do
   end
 
   it "should call callbacks " do
-    client.connection.get("test_endpoint").body.should == response
+    expect(client.connection.get("test_endpoint").body).to eq(response)
   end
 end

@@ -2,14 +2,14 @@ require 'core/spec_helper'
 
 describe ZendeskAPI::DataResource do
   specify "singular resource name" do
-    ZendeskAPI::Ticket.singular_resource_name.should == "ticket"
-    ZendeskAPI::TicketField.singular_resource_name.should == "ticket_field"
+    expect(ZendeskAPI::Ticket.singular_resource_name).to eq("ticket")
+    expect(ZendeskAPI::TicketField.singular_resource_name).to eq("ticket_field")
   end
 
   specify "resource name" do
-    ZendeskAPI::Ticket.resource_name.should == "tickets"
-    ZendeskAPI::TicketField.resource_name.should == "ticket_fields"
-    ZendeskAPI::Category.resource_name.should == "categories"
+    expect(ZendeskAPI::Ticket.resource_name).to eq("tickets")
+    expect(ZendeskAPI::TicketField.resource_name).to eq("ticket_fields")
+    expect(ZendeskAPI::Category.resource_name).to eq("categories")
   end
 
   context "association" do
@@ -23,7 +23,7 @@ describe ZendeskAPI::DataResource do
     it "should try and find non-existent object" do
       stub_json_request(:get, %r{test_resources/1/nil}, json(:nil_data_resource => {}))
 
-      subject.nil.should be_instance_of(ZendeskAPI::NilDataResource)
+      expect(subject.nil).to be_instance_of(ZendeskAPI::NilDataResource)
     end
 
     context "inline => true" do
@@ -41,7 +41,7 @@ describe ZendeskAPI::DataResource do
       before(:each) { subject.attributes[:priority] = "normal" }
 
       it "should be able to access underlying attributes" do
-        subject.priority.should == "normal"
+        expect(subject.priority).to eq("normal")
       end
 
       it "should be able to change underlying attributes" do
@@ -62,7 +62,7 @@ describe ZendeskAPI::DataResource do
       before(:each) { subject.priority = "normal" }
 
       it "should be able to change underlying attributes" do
-        subject.priority.should == "normal"
+        expect(subject.priority).to eq("normal")
       end
 
       it "should be able to change underlying attributes" do
@@ -86,14 +86,14 @@ describe ZendeskAPI::DataResource do
       subject { ZendeskAPI::TestResource }
 
       it "should define a method with the same name" do
-        subject.instance_methods.map(&:to_s).should include("test_resource")
+        expect(subject.instance_methods.map(&:to_s)).to include("test_resource")
       end
 
       context "with explicit class name" do
         before(:all) { ZendeskAPI::TestResource.has :baz, :class => ZendeskAPI::TestResource }
 
         it "should define a method with the same name" do
-          subject.instance_methods.map(&:to_s).should include("baz")
+          expect(subject.instance_methods.map(&:to_s)).to include("baz")
         end
       end
     end
@@ -104,18 +104,18 @@ describe ZendeskAPI::DataResource do
         before(:each) { stub_json_request(:get, %r{test_resources/\d+}, json(:test_resource => {})) }
 
         it "should attempt to grab the resource from the host" do
-          subject.test_resource.should be_instance_of(ZendeskAPI::TestResource)
+          expect(subject.test_resource).to be_instance_of(ZendeskAPI::TestResource)
         end
 
         it "should pass the path on to the resource" do
-          subject.test_resource.path.should == "test_resources"
+          expect(subject.test_resource.path).to eq("test_resources")
         end
 
         context "with a client error" do
           before(:each) { stub_request(:get, %r{test_resources/\d+}).to_return(:status => 500) }
 
           it "should handle it properly" do
-            expect { silence_logger{ subject.test_resource.should be_nil } }.to_not raise_error
+            expect { silence_logger{ expect(subject.test_resource).to be_nil } }.to_not raise_error
           end
         end
 
@@ -126,7 +126,7 @@ describe ZendeskAPI::DataResource do
           end
 
           it "should call the right path" do
-            subject.test_resource.should be_instance_of(ZendeskAPI::TestResource)
+            expect(subject.test_resource).to be_instance_of(ZendeskAPI::TestResource)
           end
         end
       end
@@ -136,11 +136,11 @@ describe ZendeskAPI::DataResource do
         subject { ZendeskAPI::TestResource.new(client, :test_resource => test_resource).test_resource }
 
         it "should load the correct instance" do
-          subject.should be_instance_of(ZendeskAPI::TestResource)
+          expect(subject).to be_instance_of(ZendeskAPI::TestResource)
         end
 
         it "should load foo from the hash" do
-          subject.message.should == "FOO_OBJ"
+          expect(subject.message).to eq("FOO_OBJ")
         end
       end
 
@@ -155,8 +155,8 @@ describe ZendeskAPI::DataResource do
         end
 
         it "should handle nil response from find api" do
-          ZendeskAPI::TestResource.should_receive(:find).twice.and_return(nil)
-          subject.test_resource.should be_nil
+          expect(ZendeskAPI::TestResource).to receive(:find).twice.and_return(nil)
+          expect(subject.test_resource).to be_nil
           subject.test_resource
         end
       end
@@ -170,14 +170,14 @@ describe ZendeskAPI::DataResource do
       subject { ZendeskAPI::TestResource }
 
       it "should define a method with the same name" do
-        subject.instance_methods.map(&:to_s).should include("test_resources")
+        expect(subject.instance_methods.map(&:to_s)).to include("test_resources")
       end
 
       context "with explicit class name" do
         before(:each) { ZendeskAPI::TestResource.has_many :cats, :class => ZendeskAPI::TestResource }
 
         it "should define a method with the same name" do
-          subject.instance_methods.map(&:to_s).should include("cats")
+          expect(subject.instance_methods.map(&:to_s)).to include("cats")
         end
       end
     end
@@ -187,11 +187,11 @@ describe ZendeskAPI::DataResource do
         subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
         it "should not attempt to grab the resource from the host" do
-          subject.test_resources.should be_instance_of(ZendeskAPI::Collection)
+          expect(subject.test_resources).to be_instance_of(ZendeskAPI::Collection)
         end
 
         it "should pass the path on to the resource" do
-          subject.test_resources.path.should == "test_resources/1/test_resources"
+          expect(subject.test_resources.path).to eq("test_resources/1/test_resources")
         end
 
         context "with an explicit path set" do
@@ -200,7 +200,7 @@ describe ZendeskAPI::DataResource do
           end
 
           it "should call the right path" do
-            subject.test_resources.path.should == "test_resources/1/blargh"
+            expect(subject.test_resources.path).to eq("test_resources/1/blargh")
           end
         end
       end
@@ -210,11 +210,11 @@ describe ZendeskAPI::DataResource do
         subject { ZendeskAPI::TestResource.new(client, :test_resources => test_resources).test_resources.first }
 
         it "should properly create instance" do
-          subject.message.should == "FOO_OBJ"
+          expect(subject.message).to eq("FOO_OBJ")
         end
 
         it "should map bars onto TestResource class" do
-          subject.should be_instance_of(ZendeskAPI::TestResource)
+          expect(subject).to be_instance_of(ZendeskAPI::TestResource)
         end
       end
 
@@ -223,13 +223,13 @@ describe ZendeskAPI::DataResource do
         subject { ZendeskAPI::TestResource.new(client, :test_resource_ids => test_resource_ids) }
 
         it "should find foo_id and load it from the api" do
-          ZendeskAPI::TestResource.should_receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times
+          expect(ZendeskAPI::TestResource).to receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times
           subject.test_resources
         end
 
         it "should handle nil response from find api" do
-          ZendeskAPI::TestResource.should_receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times.and_return(nil)
-          subject.test_resources.should be_empty
+          expect(ZendeskAPI::TestResource).to receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times.and_return(nil)
+          expect(subject.test_resources).to be_empty
           subject.test_resources # Test expectations
         end
       end

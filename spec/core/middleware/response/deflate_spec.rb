@@ -15,7 +15,7 @@ describe ZendeskAPI::Middleware::Response::Deflate do
     end
 
     it "should inflate returned body" do
-      client.connection.get("blergh").body['TESTDATA'].should be_true
+      expect(client.connection.get("blergh").body['TESTDATA']).to be(true)
     end
   end
 end

@@ -7,11 +7,11 @@ describe ZendeskAPI::Collection do
 
   context "initialization" do
     it "should set the resource class" do
-      subject.instance_variable_get(:@resource_class).should == ZendeskAPI::TestResource
+      expect(subject.instance_variable_get(:@resource_class)).to eq(ZendeskAPI::TestResource)
     end
 
     it "should initially be empty" do
-      subject.instance_variable_defined?(:@resources).should be_false
+      expect(subject.instance_variable_defined?(:@resources)).to be(false)
     end
   end
 
@@ -19,7 +19,7 @@ describe ZendeskAPI::Collection do
     subject { ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :ids => [1, 2, 3, 4]) }
 
     it "should join array with commas" do
-      subject.instance_variable_get(:@options)[:ids].should == "1,2,3,4"
+      expect(subject.instance_variable_get(:@options)[:ids]).to eq("1,2,3,4")
     end
   end
 
@@ -96,19 +96,19 @@ describe ZendeskAPI::Collection do
         end
 
         it "should pass association" do
-          subject.last.association.should == association
+          expect(subject.last.association).to eq(association)
         end
 
         it "should #build a resource and add it" do
           resource = subject.build
-          subject.should include(resource)
-          resource.association.should == subject.association
+          expect(subject).to include(resource)
+          expect(resource.association).to eq(subject.association)
         end
 
         it "should #build! a resource and add it" do
           resource = subject.build!
-          subject.should include(resource)
-          resource.association.should == subject.association
+          expect(subject).to include(resource)
+          expect(resource.association).to eq(subject.association)
         end
       end
     end
@@ -127,7 +127,7 @@ describe ZendeskAPI::Collection do
         before(:each) { subject.page(nil) }
 
         it "should not empty the cache" do
-          subject.instance_variable_get(:@resources).should_not be_empty
+          expect(subject.instance_variable_get(:@resources)).to_not be_empty
         end
       end
 
@@ -135,7 +135,7 @@ describe ZendeskAPI::Collection do
         before(:each) { subject.page(3) }
 
         it "should empty the cache" do
-          subject.instance_variable_get(:@resources).should be_nil
+          expect(subject.instance_variable_get(:@resources)).to be_nil
         end
       end
     end
@@ -145,7 +145,7 @@ describe ZendeskAPI::Collection do
         before(:each) { subject.per_page(nil) }
 
         it "should not empty the cache" do
-          subject.instance_variable_get(:@resources).should_not be_empty
+          expect(subject.instance_variable_get(:@resources)).to_not be_empty
         end
       end
 
@@ -153,7 +153,7 @@ describe ZendeskAPI::Collection do
         before(:each) { subject.per_page(20) }
 
         it "should empty the cache" do
-          subject.instance_variable_get(:@resources).should be_nil
+          expect(subject.instance_variable_get(:@resources)).to be_nil
         end
       end
     end
@@ -161,11 +161,11 @@ describe ZendeskAPI::Collection do
 
   context "pagination with no options and no data" do
     it "should return an empty array on #next" do
-      subject.next.should be_empty
+      expect(subject.next).to be_empty
     end
 
     it "should return an empty array on #prev" do
-      subject.prev.should be_empty
+      expect(subject.prev).to be_empty
     end
   end
 
@@ -173,21 +173,21 @@ describe ZendeskAPI::Collection do
     before(:each) { subject.per_page(5).page(2) }
 
     it "should set per_page option" do
-      subject.per_page(10).should == subject
-      subject.instance_variable_get(:@options)["per_page"].should == 10
+      expect(subject.per_page(10)).to eq(subject)
+      expect(subject.instance_variable_get(:@options)["per_page"]).to eq(10)
     end
 
     it "should set page option" do
-      subject.page(10).should == subject
-      subject.instance_variable_get(:@options)["page"].should == 10
+      expect(subject.page(10)).to eq(subject)
+      expect(subject.instance_variable_get(:@options)["page"]).to eq(10)
     end
 
     it "should increate page option" do
-      subject.next.should == 3
+      expect(subject.next).to eq(3)
     end
 
     it "should decreate page option" do
-      subject.prev.should == 1
+      expect(subject.prev).to eq(1)
     end
   end
 
@@ -326,7 +326,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should set the page to 1" do
-          @page.should == 1
+          expect(@page).to eq(1)
         end
       end
 
@@ -342,7 +342,7 @@ describe ZendeskAPI::Collection do
         end
 
         it "should set the page to 2" do
-          @page.should == 2
+          expect(@page).to eq(2)
         end
       end
 
@@ -354,14 +354,14 @@ describe ZendeskAPI::Collection do
         end
 
         it "should not set the page" do
-          @page.should be_nil
+          expect(@page).to be_nil
         end
       end
     end
 
     it "does not fetch if associated is a new record" do
-      ZendeskAPI::Category.new(client).forums.fetch.should == []
-      ZendeskAPI::Category.new(client).forums.to_a.should == []
+      expect(ZendeskAPI::Category.new(client).forums.fetch).to eq([])
+      expect(ZendeskAPI::Category.new(client).forums.to_a).to eq([])
     end
 
     context "with client error" do
@@ -370,7 +370,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should properly be handled" do
-        silence_logger { subject.fetch(true).should be_empty }
+        silence_logger { expect(subject.fetch(true)).to be_empty }
       end
     end
 
@@ -380,7 +380,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should properly be handled" do
-        silence_logger { subject.fetch(true).should be_empty }
+        silence_logger { expect(subject.fetch(true)).to be_empty }
       end
     end
 
@@ -388,8 +388,8 @@ describe ZendeskAPI::Collection do
       subject { ZendeskAPI::Collection.new(client, ZendeskAPI::NilResource) }
 
       it "should not call connection" do
-        client.connection.should_not_receive(:get)
-        subject.fetch(true).should be_empty
+        expect(client.connection).to_not receive(:get)
+        expect(subject.fetch(true)).to be_empty
       end
     end
   end
@@ -405,16 +405,16 @@ describe ZendeskAPI::Collection do
       let(:object) { double('ZendeskAPI::TestResource', :changes => [:xxx], :changed? => true, :destroyed? => false) }
 
       it "should call create with those options" do
-        ZendeskAPI::TestResource.should_receive(:new).
+        expect(ZendeskAPI::TestResource).to receive(:new).
           with(client, options.merge(:association => subject.association)).
           and_return(object)
 
         subject << options
 
-        object.should_receive(:save)
+        expect(object).to receive(:save)
         subject.save
 
-        subject.should include(object)
+        expect(subject).to include(object)
       end
     end
 
@@ -425,25 +425,25 @@ describe ZendeskAPI::Collection do
       end
 
       it "should save object" do
-        object.should_receive(:save)
+        expect(object).to receive(:save)
         subject.save
       end
 
       it "should have object in collection" do
-        subject.should include(object)
+        expect(subject).to include(object)
       end
     end
 
     context "with everything else" do
       it "should pass to new, since this is how attachment handles it" do
         attachment = double(:changes => [:xxx], :changed? => true, :destroyed? => false)
-        ZendeskAPI::TestResource.should_receive(:new).
+        expect(ZendeskAPI::TestResource).to receive(:new).
           with(client, :id => "img.jpg", :association => instance_of(ZendeskAPI::Association)).
           and_return attachment
 
         subject << "img.jpg"
 
-        attachment.should_receive :save
+        expect(attachment).to receive(:save)
         subject.save
       end
     end
@@ -456,14 +456,14 @@ describe ZendeskAPI::Collection do
       end
 
       it "should not save object" do
-        object.should_receive(:destroyed?).and_return(true)
-        object.should_not_receive(:save)
+        expect(object).to receive(:destroyed?).and_return(true)
+        expect(object).to_not receive(:save)
 
         subject.save
       end
 
       it "should have object in collection" do
-        subject.should include(object)
+        expect(subject).to include(object)
       end
     end
   end
@@ -495,16 +495,16 @@ describe ZendeskAPI::Collection do
         current = subject.to_a.dup
         nxt = subject.next
 
-        nxt.size.should == 1
-        nxt.should_not == current
+        expect(nxt.size).to eq(1)
+        expect(nxt).to_not eq(current)
       end
 
       it "should find the prev page by calling fetch" do
         current = subject.to_a.dup
         prev = subject.prev
 
-        prev.size.should == 1
-        prev.should_not == current
+        expect(prev.size).to eq(1)
+        expect(prev).to_not eq(current)
       end
     end
 
@@ -512,22 +512,22 @@ describe ZendeskAPI::Collection do
       before(:each) { subject.per_page(1).page(2) }
 
       it "should increase page option and not call fetch" do
-        subject.next.should == 3
+        expect(subject.next).to eq(3)
       end
 
       it "should decrease page option and not call fetch" do
-        subject.prev.should == 1
+        expect(subject.prev).to eq(1)
       end
 
       context "with page == 1" do
         before do
           subject.page(1)
           subject.clear_cache
-          subject.should_not_receive(:fetch)
+          expect(subject).to_not receive(:fetch)
         end
 
         it "should do nothing on #prev" do
-          subject.prev.should == []
+          expect(subject.prev).to eq([])
         end
       end
     end
@@ -553,11 +553,11 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resource.should_not be_nil
+        expect(@resource.nil_resource).to_not be_nil
       end
 
       it "should side load the correct nil_resource" do
-        @resource.nil_resource.name.should == "hi"
+        expect(@resource.nil_resource.name).to eq("hi")
       end
     end
 
@@ -579,11 +579,11 @@ describe ZendeskAPI::Collection do
         before(:each) { @resource = subject.detect {|res| res.id == 1} }
 
         it "should side load nil_resources" do
-          @resource.nil_resource.should_not be_nil
+          expect(@resource.nil_resource).to_not be_nil
         end
 
         it "should side load the correct nil_resource" do
-          @resource.nil_resource.name.should == "hi"
+          expect(@resource.nil_resource.name).to eq("hi")
         end
       end
 
@@ -591,11 +591,11 @@ describe ZendeskAPI::Collection do
         before(:each) { @resource = subject.detect {|res| res.id == 2} }
 
         it "should side load nil_resources" do
-          @resource.nil_resource.should_not be_nil
+          expect(@resource.nil_resource).to_not be_nil
         end
 
         it "should side load the correct nil_resource" do
-          @resource.nil_resource.name.should == "bye"
+          expect(@resource.nil_resource.name).to eq("bye")
         end
       end
     end
@@ -615,11 +615,11 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resources.should_not be_empty
+        expect(@resource.nil_resources).to_not be_empty
       end
 
       it "should side load the correct nil_resources" do
-        @resource.nil_resources.map(&:name).should == %w{hi hello}
+        expect(@resource.nil_resources.map(&:name)).to eq(%w{hi hello})
       end
     end
 
@@ -637,11 +637,11 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resources.should_not be_empty
+        expect(@resource.nil_resources).to_not be_empty
       end
 
       it "should side load the correct nil_resources" do
-        @resource.nil_resources.map(&:id).should == [2, 4]
+        expect(@resource.nil_resources.map(&:id)).to eq([2, 4])
       end
     end
 
@@ -659,11 +659,11 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resource.should_not be_nil
+        expect(@resource.nil_resource).to_not be_nil
       end
 
       it "should side load the correct nil_resources" do
-        @resource.nil_resource.id.should == 2
+        expect(@resource.nil_resource.id).to eq(2)
       end
     end
 
@@ -682,11 +682,11 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resource.should_not be_nil
+        expect(@resource.nil_resource).to_not be_nil
       end
 
       it "should side load the correct nil_resource" do
-        @resource.nil_resource.name.should == 4
+        expect(@resource.nil_resource.name).to eq(4)
       end
     end
 
@@ -706,38 +706,38 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load nil_resources" do
-        @resource.nil_resource.should_not be_nil
+        expect(@resource.nil_resource).to_not be_nil
       end
 
       it "should side load the correct nil_resource" do
-        @resource.nil_resource.id.should == 4
+        expect(@resource.nil_resource.id).to eq(4)
       end
     end
   end
 
   context "method missing" do
-    before(:each) { subject.stub(:fetch).and_return([1, 2, nil, 3]) }
+    before(:each) { allow(subject).to receive(:fetch).and_return([1, 2, nil, 3]) }
 
     context "with an class method on the resource class" do
       it "should pass methods to class if defined" do
-        subject.test.should == "hi"
+        expect(subject.test).to eq("hi")
       end
     end
 
     it "should pass all methods not defined to resources" do
-      subject.compact.should == [1, 2, 3]
+      expect(subject.compact).to eq([1, 2, 3])
     end
 
     it "should take a block" do
-      subject.map {|i| i.to_i + 1}.should == [2, 3, 1, 4]
+      expect(subject.map {|i| i.to_i + 1}).to eq([2, 3, 1, 4])
     end
 
     it "should create a new collection if it isn't an array method" do
-      subject.recent.should be_instance_of(ZendeskAPI::Collection)
+      expect(subject.recent).to be_instance_of(ZendeskAPI::Collection)
     end
 
     it "should pass the correct query_path to the new collection" do
-      subject.recent.instance_variable_get(:@collection_path).last.should == :recent
+      expect(subject.recent.instance_variable_get(:@collection_path).last).to eq(:recent)
     end
   end
 
@@ -749,7 +749,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should not blow up" do
-      subject.to_a.should == []
+      expect(subject.to_a).to eq([])
     end
   end
 

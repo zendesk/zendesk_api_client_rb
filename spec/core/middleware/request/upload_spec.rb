@@ -7,15 +7,15 @@ describe ZendeskAPI::Middleware::Request::Upload do
   let(:filename) { File.join(File.dirname(__FILE__), "test.jpg") }
 
   it "should handle no body" do
-    subject.call({}).should == {}
+    expect(subject.call({})).to eq({})
   end
 
   it "should handle body with no file" do
-    subject.call(:body => {})[:body].should == {}
+    expect(subject.call(:body => {})[:body]).to eq({})
   end
 
   it "should handle invalid types" do
-    subject.call(:body => { :file => :invalid })[:body].should == {}
+    expect(subject.call(:body => { :file => :invalid })[:body]).to eq({})
   end
 
   context "with file string" do
@@ -24,15 +24,15 @@ describe ZendeskAPI::Middleware::Request::Upload do
     end
 
     it "should convert file string to UploadIO" do
-      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+      expect(@env[:body][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
     end
 
     it "should remove file string" do
-      @env[:body][:file].should be_nil
+      expect(@env[:body][:file]).to be_nil
     end
 
     it "should add filename if none exist" do
-      @env[:body][:filename].should == "test.jpg"
+      expect(@env[:body][:filename]).to eq("test.jpg")
     end
 
     context "with filename" do
@@ -41,7 +41,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
       end
 
       it "should not change filename" do
-        @env[:body][:filename].should_not == "test.jpg"
+        expect(@env[:body][:filename]).to_not eq("test.jpg")
       end
     end
   end
@@ -53,32 +53,32 @@ describe ZendeskAPI::Middleware::Request::Upload do
     end
 
     it "should convert file string to UploadIO" do
-      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+      expect(@env[:body][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
     end
 
     it "should remove file string" do
-      @env[:body][:file].should be_nil
+      expect(@env[:body][:file]).to be_nil
     end
 
     it "should add filename if none exist" do
-      @env[:body][:filename].should == "hello.jpg"
+      expect(@env[:body][:filename]).to eq("hello.jpg")
     end
 
     it "should use the content type of the tempfile" do
-      @env[:body][:uploaded_data].content_type.should == "image/jpeg"
+      expect(@env[:body][:uploaded_data].content_type).to eq("image/jpeg")
     end
 
     context "when path does not resolve a mime_type" do
       it "should pass correct filename to Faraday::UploadIO" do
-        @env[:body][:filename].should == "hello.jpg"
-        @env[:body][:uploaded_data].original_filename.should == @env[:body][:filename]
+        expect(@env[:body][:filename]).to eq("hello.jpg")
+        expect(@env[:body][:uploaded_data].original_filename).to eq(@env[:body][:filename])
       end
 
       it "should use the content_type of ActionDispatch::Http::UploadedFile " do
         @upload.content_type = 'application/random'
 
         env = subject.call(:body => { :file => @upload })
-        env[:body][:uploaded_data].content_type.should == 'application/random'
+        expect(env[:body][:uploaded_data].content_type).to eq('application/random')
       end
     end
   end
@@ -90,15 +90,15 @@ describe ZendeskAPI::Middleware::Request::Upload do
     end
 
     it "should convert file string to UploadIO" do
-      @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+      expect(@env[:body][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
     end
 
     it "should remove file string" do
-      @env[:body][:file].should be_nil
+      expect(@env[:body][:file]).to be_nil
     end
 
     it "should add filename if none exist" do
-      @env[:body][:filename].should == File.basename(@tempfile.path)
+      expect(@env[:body][:filename]).to eq(File.basename(@tempfile.path))
     end
   end
 
@@ -109,15 +109,15 @@ describe ZendeskAPI::Middleware::Request::Upload do
       end
 
       it "should convert file string to UploadIO" do
-        @env[:body][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+        expect(@env[:body][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
       end
 
       it "should remove file string" do
-        @env[:body][:file].should be_nil
+        expect(@env[:body][:file]).to be_nil
       end
 
       it "should add filename if none exist" do
-        @env[:body][:filename].should == "test.jpg"
+        expect(@env[:body][:filename]).to eq("test.jpg")
       end
 
       context "with filename" do
@@ -126,7 +126,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
         end
 
         it "should not change filename" do
-          @env[:body][:filename].should_not == "test.jpg"
+          expect(@env[:body][:filename]).to_not eq("test.jpg")
         end
       end
     end
@@ -138,11 +138,11 @@ describe ZendeskAPI::Middleware::Request::Upload do
         end
 
         it "should convert file string to UploadIO" do
-          @env[:body][:user][:photo][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+          expect(@env[:body][:user][:photo][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
         end
 
         it "should add filename if none exist" do
-          @env[:body][:user][:photo][:filename].should == "test.jpg"
+          expect(@env[:body][:user][:photo][:filename]).to eq("test.jpg")
         end
       end
 
@@ -152,11 +152,11 @@ describe ZendeskAPI::Middleware::Request::Upload do
         end
 
         it "should convert file string to UploadIO" do
-          @env[:body][:user][:photo][:uploaded_data].should be_instance_of(Faraday::UploadIO)
+          expect(@env[:body][:user][:photo][:uploaded_data]).to be_instance_of(Faraday::UploadIO)
         end
 
         it "should not change filename" do
-          @env[:body][:user][:photo][:filename].should_not == "test.jpg"
+          expect(@env[:body][:user][:photo][:filename]).to_not eq("test.jpg")
         end
       end
     end

@@ -263,6 +263,10 @@ module ZendeskAPI
     # @private
     def to_ary; nil; end
 
+    def respond_to?(name)
+      super || Array.new.respond_to?(name)
+    end
+
     # Sends methods to underlying array of resources.
     def method_missing(name, *args, &block)
       if resource_methods.include?(name)

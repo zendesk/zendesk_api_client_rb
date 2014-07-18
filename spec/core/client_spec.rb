@@ -49,11 +49,11 @@ describe ZendeskAPI::Client do
       end
 
       it "should build basic auth middleware" do
-        subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication).should_not be_nil
+        expect(subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to_not be_nil
       end
 
       it "should not build token middleware" do
-        subject.connection.headers["Authorization"].should be_nil
+        expect(subject.connection.headers["Authorization"]).to be_nil
       end
     end
 
@@ -66,11 +66,11 @@ describe ZendeskAPI::Client do
       end
 
       it "should not build basic auth middleware" do
-        subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication).should be_nil
+        expect(subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to be_nil
       end
 
       it "should build token middleware" do
-        subject.connection.headers["Authorization"].should match(/Bearer/)
+        expect(subject.connection.headers["Authorization"]).to match(/Bearer/)
       end
     end
 
@@ -90,25 +90,25 @@ describe ZendeskAPI::Client do
         let(:username) { "hello/token" }
 
         it "should not add /token to the username" do
-          subject.username.should == "hello/token"
+          expect(subject.username).to eq("hello/token")
         end
       end
 
       context "with no password" do
         it "should build basic auth middleware" do
-          client.connection.builder.handlers.index(Faraday::Request::BasicAuthentication).should_not be_nil
+          expect(client.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to_not be_nil
         end
 
         it "should not build token middleware" do
-          client.connection.builder.handlers.index(Faraday::Request::TokenAuthentication).should be_nil
+          expect(client.connection.builder.handlers.index(Faraday::Request::TokenAuthentication)).to be_nil
         end
 
         it "should copy token to password" do
-          subject.token.should == subject.password
+          expect(subject.token).to eq(subject.password)
         end
 
         it "should add /token to the username" do
-          subject.username.should == "hello/token"
+          expect(subject.username).to eq("hello/token")
         end
       end
     end
@@ -127,12 +127,12 @@ describe ZendeskAPI::Client do
         subject { true }
 
         it "should log in faraday" do
-          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
+          expect(@client.connection.builder.handlers).to include(ZendeskAPI::Middleware::Response::Logger)
         end
 
         context "with a request" do
           it "should log" do
-            client.config.logger.should_receive(:info).at_least(:once)
+            expect(client.config.logger).to receive(:info).at_least(:once)
             @client.connection.get('/bs')
           end
         end
@@ -142,7 +142,7 @@ describe ZendeskAPI::Client do
         subject { false }
 
         it "should not log" do
-          @client.connection.builder.handlers.should_not include(ZendeskAPI::Middleware::Response::Logger)
+          expect(@client.connection.builder.handlers).to_not include(ZendeskAPI::Middleware::Response::Logger)
         end
       end
 
@@ -150,7 +150,7 @@ describe ZendeskAPI::Client do
         subject { nil }
 
         it "should log" do
-          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
+          expect(@client.connection.builder.handlers).to include(ZendeskAPI::Middleware::Response::Logger)
         end
       end
 
@@ -159,12 +159,12 @@ describe ZendeskAPI::Client do
         subject { Logger.new(out) }
 
         it "should log" do
-          @client.connection.builder.handlers.should include(ZendeskAPI::Middleware::Response::Logger)
+          expect(@client.connection.builder.handlers).to include(ZendeskAPI::Middleware::Response::Logger)
         end
 
         context "with a request" do
           it "should log to the subject" do
-            out.should_receive(:write).at_least(:once)
+            expect(out).to receive(:write).at_least(:once)
             @client.connection.get('/bs')
           end
         end
@@ -178,49 +178,49 @@ describe ZendeskAPI::Client do
     end
 
     it "should be a user instance" do
-      client.current_user.should be_instance_of(ZendeskAPI::User)
+      expect(client.current_user).to be_instance_of(ZendeskAPI::User)
     end
   end
 
   context "#connection" do
     it "should initially be false" do
-      subject.instance_variable_get(:@connection).should be_false
+      expect(subject.instance_variable_get(:@connection)).to be_falsey
     end
 
     it "connection should be initialized on first call to #connection" do
-      subject.connection.should be_instance_of(Faraday::Connection)
+      expect(subject.connection).to be_instance_of(Faraday::Connection)
     end
   end
 
   context "resources" do
     it "should return an instance of ZendeskAPI::Collection if there is no method" do
-      subject.instance_variable_get(:@resource_cache)["tickets"].should be_nil
+      expect(subject.instance_variable_get(:@resource_cache)["tickets"]).to be_nil
 
-      subject.tickets.should be_instance_of(ZendeskAPI::Collection)
+      expect(subject.tickets).to be_instance_of(ZendeskAPI::Collection)
 
-      subject.instance_variable_get(:@resource_cache)["tickets"].should_not be_empty
-      subject.instance_variable_get(:@resource_cache)["tickets"][:class].should == ZendeskAPI::Ticket
-      subject.instance_variable_get(:@resource_cache)["tickets"][:cache].should be_instance_of(ZendeskAPI::LRUCache)
+      expect(subject.instance_variable_get(:@resource_cache)["tickets"]).to_not be_empty
+      expect(subject.instance_variable_get(:@resource_cache)["tickets"][:class]).to eq(ZendeskAPI::Ticket)
+      expect(subject.instance_variable_get(:@resource_cache)["tickets"][:cache]).to be_instance_of(ZendeskAPI::LRUCache)
 
-      ZendeskAPI.should_not_receive(:const_get)
-      subject.tickets.should be_instance_of(ZendeskAPI::Collection)
+      expect(ZendeskAPI).to_not receive(:const_get)
+      expect(subject.tickets).to be_instance_of(ZendeskAPI::Collection)
     end
 
     it "should not cache calls with different options" do
-      subject.search(:query => 'abc').should_not == subject.search(:query => '123')
+      expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => '123'))
     end
 
     it "should not cache calls with :reload => true options" do
-      subject.search(:query => 'abc').should_not == subject.search(:query => 'abc', :reload => true)
+      expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => 'abc', :reload => true))
     end
 
     it "should not pass reload to the underlying collection" do
       collection = subject.search(:query => 'abc', :reload => true)
-      collection.options.key?(:reload).should be_false
+      expect(collection.options.key?(:reload)).to be(false)
     end
 
     it "should cache calls with the same options" do
-      subject.search(:query => 'abc').should == subject.search(:query => 'abc')
+      expect(subject.search(:query => 'abc')).to eq(subject.search(:query => 'abc'))
     end
   end
 
@@ -228,22 +228,22 @@ describe ZendeskAPI::Client do
     client = SimpleClient.new do |config|
       config.allow_http = true
     end
-    client.config.allow_http.should == true
-    client.connection.should == "FOO"
-    client.connection.object_id.should == client.connection.object_id # it's cached
+    expect(client.config.allow_http).to eq(true)
+    expect(client.connection).to eq("FOO")
+    expect(client.connection.object_id).to eq(client.connection.object_id) # it's cached
   end
 
   context ZendeskAPI::Voice do
     it "defers to voice delegator" do
-      ZendeskAPI::Client.any_instance.should_receive(:phone_numbers).once
+      expect(subject).to receive(:phone_numbers).once
       subject.voice.phone_numbers
     end
 
     it "manages namespace correctly" do
-      client.certification_addresses.path.should match(/channels\/voice\/certification_addresses/)
-      client.phone_numbers.path.should match(/channels\/voice\/phone_numbers/)
-      client.greetings.path.should match(/channels\/voice\/greetings/)
-      client.greeting_categories.path.should match(/channels\/voice\/greeting_categories/)
+      expect(client.certification_addresses.path).to match(/channels\/voice\/certification_addresses/)
+      expect(client.phone_numbers.path).to match(/channels\/voice\/phone_numbers/)
+      expect(client.greetings.path).to match(/channels\/voice\/greetings/)
+      expect(client.greeting_categories.path).to match(/channels\/voice\/greeting_categories/)
     end
   end
 end

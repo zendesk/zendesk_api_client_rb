@@ -26,14 +26,14 @@ module ResourceMacros
       end
 
       it "should have an id" do
-        @object.should_not be_nil
-        @object.send(:id).should_not be_nil
+        expect(@object).to_not be_nil
+        expect(@object.send(:id)).to_not be_nil
       end
 
       it "should be findable", :unless => metadata[:not_findable] do
         options = default_options
         options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-        described_class.find(client, options).should == @object
+        expect(described_class.find(client, options)).to eq(@object)
       end 
 
       after(:all) do
@@ -57,7 +57,7 @@ module ResourceMacros
       end
 
       it "should be savable" do
-        @object.save.should be_true
+        expect(@object.save).to be(true)
       end
 
       context "after save" do
@@ -66,13 +66,13 @@ module ResourceMacros
         end
 
         it "should keep attributes" do
-          @object.send(attribute).should == value 
+          expect(@object.send(attribute)).to eq(value )
         end
 
         it "should be findable", :unless => metadata[:not_findable] do
           options = default_options
           options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-          described_class.find(client, options).should == @object
+          expect(described_class.find(client, options)).to eq(@object)
         end 
       end
 
@@ -97,8 +97,8 @@ module ResourceMacros
       end
 
       it "should be destroyable" do
-        @object.destroy.should be_true
-        @object.destroyed?.should be_true
+        expect(@object.destroy).to be(true)
+        expect(@object.destroyed?).to be(true)
 
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
           opts = default_options
@@ -106,9 +106,9 @@ module ResourceMacros
           obj = silence_logger{ described_class.find(client, opts) }
 
           if options[:find]
-            obj.send(options[:find].first).should == options[:find].last
+            expect(obj.send(options[:find].first)).to eq(options[:find].last)
           else
-            obj.should be_nil
+            expect(obj).to be_nil
           end
         end
       end
@@ -139,19 +139,19 @@ module ResourceMacros
         args.each {|a| result = result.send(a, options) }
 
         if result.is_a?(ZendeskAPI::Collection)
-          result.fetch(true).should_not be_empty
-          result.fetch.should include(@object) if create
+          expect(result.fetch(true)).to_not be_empty
+          expect(result.fetch).to include(@object) if create
           object = result.first
         else
-          result.should_not be_nil
-          result.should == @object if create
+          expect(result).to_not be_nil
+          expect(result).to eq(@object) if create
           object = result
         end
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           options = default_options
           options.merge!(:id => object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-          described_class.find(client, options).should_not be_nil
+          expect(described_class.find(client, options)).to_not be_nil
         end
       end
     end

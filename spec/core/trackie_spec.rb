@@ -5,19 +5,19 @@ describe ZendeskAPI::Trackie do
   before(:each) { subject.clear_changes }
 
   it "should not be changed" do
-    subject.changed?.should be_false
+    expect(subject.changed?).to be(false)
   end
 
   context "adding keys" do
     before(:each) { subject[:key] = true }
 
     it "should include key in changes" do
-      subject.changes[:key].should be_true
+      expect(subject.changes[:key]).to be(true)
     end
 
     specify "key should be changed" do
-      subject.changed?(:key).should be_true
-      subject.changed?.should be_true
+      expect(subject.changed?(:key)).to be(true)
+      expect(subject.changed?).to be(true)
     end
   end
 
@@ -27,14 +27,14 @@ describe ZendeskAPI::Trackie do
     end
 
     it "returns key on deletion" do
-      subject.delete(:key).should be_true
+      expect(subject.delete(:key)).to be(true)
     end
 
     context "after deletion" do
       before(:each) { subject.delete(:key) }
 
       it "keeps the changes" do
-        subject.changed?(:key).should be_true
+        expect(subject.changed?(:key)).to be(true)
       end
     end
   end
@@ -48,12 +48,12 @@ describe ZendeskAPI::Trackie do
     end
 
     it "should not include key in changes" do
-      subject.changes[:key].should be_false
+      expect(subject.changes[:key]).to be_falsey
     end
 
     specify "key should not be changed" do
-      subject.changed?(:key).should be_false
-      subject.changed?.should be_false
+      expect(subject.changed?(:key)).to be(false)
+      expect(subject.changed?).to be(false)
     end
   end
 
@@ -65,11 +65,11 @@ describe ZendeskAPI::Trackie do
     end
 
     it "should include changes from nested hash" do
-      subject.changes[:key][:test].should be_true
+      expect(subject.changes[:key][:test]).to be(true)
     end
 
     specify "subject should be changed" do
-      subject.changed?.should be_true
+      expect(subject.changed?).to be(true)
     end
   end
 
@@ -82,11 +82,11 @@ describe ZendeskAPI::Trackie do
     end
 
     it "should include changes from nested array" do
-      subject.changes[:key].should == [:test]
+      expect(subject.changes[:key]).to eq([:test])
     end
 
     specify "subject should be changed" do
-      subject.changed?.should be_true
+      expect(subject.changed?).to be(true)
     end
   end
 =end
@@ -99,11 +99,11 @@ describe ZendeskAPI::Trackie do
     end
 
     it "should include changes from nested array" do
-      subject.changes[:key].first[:test].should be_true
+      expect(subject.changes[:key].first[:test]).to be(true)
     end
 
     specify "subject should be changed" do
-      subject.changed?.should be_true
+      expect(subject.changed?).to be(true)
     end
 
     context "clearing" do
@@ -112,7 +112,7 @@ describe ZendeskAPI::Trackie do
       end
 
       it "should not have any changes" do
-        subject.changes.should be_empty
+        expect(subject.changes).to be_empty
       end
     end
   end
@@ -123,7 +123,7 @@ describe ZendeskAPI::Trackie do
     end
 
     it "returns the value corresponding to the :size key" do
-      subject.size.should == 42
+      expect(subject.size).to eq(42)
     end
   end
 end
