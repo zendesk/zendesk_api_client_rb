@@ -85,7 +85,9 @@ module ZendeskAPI
 
     def brand
       VCR.use_cassette('valid_brand') do
-        @brand ||= current_user.brand
+        @brand ||= client.brands.detect do |brand|
+          client.config.url.start_with?(brand.brand_url)
+        end
       end
     end
   end
