@@ -96,7 +96,7 @@ module ResourceMacros
         end
       end
 
-      it "should be destroyable" do
+      it "should be destroyable" do |example|
         expect(@object.destroy).to be(true)
         expect(@object.destroyed?).to be(true)
 
@@ -134,7 +134,7 @@ module ResourceMacros
         end
       end if create
 
-      it "should be findable" do
+      it "should be findable" do |example|
         result = klass
         args.each {|a| result = result.send(a, options) }
 
