@@ -517,13 +517,6 @@ module ZendeskAPI
       put :request_verification
     end
 
-    def initialize(*)
-      super
-
-      # Needed for proper Role sideloading
-      self.role_id = role.name if key?(:role)
-    end
-
     any :password
 
     # Set a user's password
@@ -578,6 +571,13 @@ module ZendeskAPI
       end
 
       { self.class.singular_resource_name => attrs }
+    end
+
+    def handle_response(*)
+      super
+
+      # Needed for proper Role sideloading
+      self.role_id = role.name if key?(:role)
     end
   end
 
