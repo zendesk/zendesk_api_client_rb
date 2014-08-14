@@ -13,15 +13,17 @@ describe ZendeskAPI::Macro, :delete_after do
   it_should_be_deletable
 
   describe "application", :vcr do
-    subject do
+    subject { @object }
+
+    before :all do
       VCR.use_cassette("#{described_class.to_s}_application_create") do
-        described_class.create(client, valid_attributes.merge(default_options))
+        @object = described_class.create(client, valid_attributes.merge(default_options))
       end
     end
 
     after :all do
       VCR.use_cassette("#{described_class.to_s}_application_delete") do
-        subject.destroy
+        @object.destroy
       end
     end
 
