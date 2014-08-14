@@ -139,9 +139,18 @@ module ResourceMacros
         args.each {|a| result = result.send(a, options) }
 
         if result.is_a?(ZendeskAPI::Collection)
-          expect(result.fetch(true)).to_not be_empty
-          expect(result.fetch).to include(@object) if create
-          object = result.first
+          if create
+            object = nil
+
+            result.all do |o|
+              object = o if @object == o
+            end
+
+            expect(object).to_not be_nil
+          else
+            expect(result.fetch(true)).to_not be_empty
+            object = result.first
+          end
         else
           expect(result).to_not be_nil
           expect(result).to eq(@object) if create
