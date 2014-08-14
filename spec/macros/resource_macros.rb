@@ -103,7 +103,7 @@ module ResourceMacros
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
           opts = default_options
           opts.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-          obj = silence_logger{ described_class.find(client, opts) }
+          obj = described_class.find(client, opts)
 
           if options[:find]
             expect(obj.send(options[:find].first)).to eq(options[:find].last)
