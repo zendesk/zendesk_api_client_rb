@@ -118,6 +118,12 @@ module ZendeskAPI
   end
 
   class Brand < Resource
+    def destroy!
+      self.active = false
+      save!
+
+      super
+    end
   end
 
   class ForumSubscription < Resource
