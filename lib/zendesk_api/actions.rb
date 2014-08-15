@@ -1,7 +1,7 @@
 module ZendeskAPI
   module ResponseHandler
     def handle_response(response)
-      if response.body && response.body[self.class.singular_resource_name]
+      if response.body.is_a?(Hash) && response.body[self.class.singular_resource_name]
         @attributes.replace(@attributes.deep_merge(response.body[self.class.singular_resource_name]))
       end
     end

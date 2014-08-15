@@ -387,7 +387,7 @@ module ZendeskAPI
     end
 
     def handle_response(response_body)
-      unless response_body
+      unless response_body.is_a?(Hash)
         raise ZendeskAPI::Error::NetworkError, @response.env
       end
 

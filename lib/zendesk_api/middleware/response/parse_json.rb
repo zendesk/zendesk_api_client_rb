@@ -12,10 +12,10 @@ module ZendeskAPI
           type = type.split(';', 2).first if type.index(';')
           type
 
-          if type == 'application/json' && env[:body].respond_to?(:to_str) && !env[:body].strip.empty?
+          return unless type == 'application/json'
+
+          unless env[:body].strip.empty?
             env[:body] = JSON.parse(env[:body])
-          else
-            env[:body] = nil
           end
         end
       end

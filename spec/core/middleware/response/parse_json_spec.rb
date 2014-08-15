@@ -11,8 +11,8 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
       )
     end
 
-    it "should return nil body" do
-      expect(client.connection.get("blergh").body).to be_nil
+    it "should not return nil body" do
+      expect(client.connection.get("blergh").body).to eql('<nope></nope>')
     end
   end
 
@@ -29,16 +29,16 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
     context "with a nil body" do
       let(:body) { nil }
 
-      it "should return nil body" do
-        expect(client.connection.get("blergh").body).to be_nil
+      it "should return empty body" do
+        expect(client.connection.get("blergh").body).to eql('')
       end
     end
 
     context "with a empty body" do
       let(:body) { '' }
 
-      it "should return nil body" do
-        expect(client.connection.get("blergh").body).to be_nil
+      it "should return empty body" do
+        expect(client.connection.get("blergh").body).to eql('')
       end
     end
 

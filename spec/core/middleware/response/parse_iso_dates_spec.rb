@@ -29,7 +29,7 @@ describe ZendeskAPI::Middleware::Response::ParseIsoDates do
   end
 
   it "should not blow up on empty body" do
-    expect(fake_response('').body).to eq(nil)
+    expect(fake_response('').body).to eq('')
   end
 
   it "should leave arrays with ids alone" do
