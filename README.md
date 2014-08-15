@@ -16,6 +16,7 @@ Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wik
 * Version 1.0.0 changes the way errors are handled. Please see the [wiki page](https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors) for more info.
 * Version 1.3.0 updates the Faraday dependency to 0.9. Since Faraday did not bump a major version we have not either, but there is no guarantee >= 1.3.0 works with Faraday < 0.9
 * Version 1.3.8 had a bug where attachments were created, but the response was not handled properly
+* Version >= 1.0 and < 1.4.2 had a bug where non application/json response bodies were discarded
 
 ## Installation
 
