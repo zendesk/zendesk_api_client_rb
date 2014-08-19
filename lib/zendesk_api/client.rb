@@ -39,12 +39,15 @@ module ZendeskAPI
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
-        klass_as_const = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method))
-        klass = class_from_namespace(klass_as_const)
-
-        @resource_cache[method][:class] ||= klass
+        @resource_cache[method][:class] ||= method_as_class(method)
         @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
       end
+    end
+
+    def respond_to?(method, *args)
+      ((cache = @resource_cache[method]) && cache[:class]) || !method_as_class(method).nil? || super
+    rescue NameError
+      super
     end
 
     # Returns the current user (aka me)
@@ -212,6 +215,11 @@ module ZendeskAPI
           logger.warn "WARNING: #{warning}"
         end
       end
+    end
+
+    def method_as_class(method)
+      klass_as_const = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
+      class_from_namespace(klass_as_const)
     end
   end
 end

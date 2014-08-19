@@ -222,6 +222,29 @@ describe ZendeskAPI::Client do
     it "should cache calls with the same options" do
       expect(subject.search(:query => 'abc')).to eq(subject.search(:query => 'abc'))
     end
+
+    it "should respond_to? for valid resources" do
+      expect(subject.respond_to?(:tickets)).to eq(true)
+    end
+
+    it "should respond_to? for valid cached resources" do
+      subject.tickets
+
+      expect(subject.respond_to?(:tickets)).to eq(true)
+    end
+
+    it "should respond_to? for actual instance methods" do
+      expect(subject.respond_to?(:set_default_logger, true)).to eq(true)
+      expect(subject.respond_to?(:set_default_logger)).to eq(false)
+    end
+
+    it "should not respond_to? invalid resources" do
+      expect(subject.respond_to?(:nope)).to eq(false)
+    end
+
+    it "delegates voice correctly" do
+      expect(subject.voice.greetings).to be_instance_of(ZendeskAPI::Collection)
+    end
   end
 
   it "can be subclassed" do
