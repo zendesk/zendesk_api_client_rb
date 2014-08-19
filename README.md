@@ -324,7 +324,8 @@ client.apps.update!(:id => 123, :upload_id => upload.id)
 
 # Or
 
-app = ZendeskAPI::App.new(client, :id => 123, :upload_id => upload.id)
+app = ZendeskAPI::App.new(client, :id => 123)
+app.upload_id = upload.id
 app.save!
 
 # Or
