@@ -46,8 +46,6 @@ module ZendeskAPI
 
     def respond_to?(method, *args)
       ((cache = @resource_cache[method]) && cache[:class]) || !method_as_class(method).nil? || super
-    rescue NameError
-      super
     end
 
     # Returns the current user (aka me)
@@ -182,6 +180,11 @@ module ZendeskAPI
       nil
     end
 
+    def method_as_class(method)
+      klass_as_const = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
+      class_from_namespace(klass_as_const)
+    end
+
     def check_url
       if !config.allow_http && config.url !~ /^https/
         raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
@@ -215,11 +218,6 @@ module ZendeskAPI
           logger.warn "WARNING: #{warning}"
         end
       end
-    end
-
-    def method_as_class(method)
-      klass_as_const = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
-      class_from_namespace(klass_as_const)
     end
   end
 end
