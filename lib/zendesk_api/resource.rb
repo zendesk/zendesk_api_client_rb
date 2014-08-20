@@ -179,4 +179,17 @@ module ZendeskAPI
       { self.class.resource_name.to_sym => attributes.changes }
     end
   end
+
+  # Namespace parent class for Data/Resource classes
+  module DataNamespace
+    class << self
+      def included(base)
+        @descendants ||= []
+        @descendants << base
+      end
+      def descendants
+        @descendants || []
+      end
+    end
+  end
 end
