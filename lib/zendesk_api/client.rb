@@ -171,13 +171,17 @@ module ZendeskAPI
     private
 
     def class_from_namespace(klass_as_const)
-      [ZendeskAPI, ZendeskAPI::Voice].each do |ns|
+      namespaces.each do |ns|
         if ns.const_defined?(klass_as_const)
           return ns.const_get(klass_as_const)
         end
       end
 
       nil
+    end
+
+    def namespaces
+      [ZendeskAPI] + ZendeskAPI::DataNamespace.descendants
     end
 
     def method_as_class(method)
