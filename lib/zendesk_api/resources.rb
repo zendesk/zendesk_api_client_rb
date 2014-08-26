@@ -603,8 +603,7 @@ module ZendeskAPI
 
   class Target < Resource; end
 
-  class Voice
-    include DataNamespace
+  module Voice
     class PhoneNumber < Resource
       namespace "channels/voice"
     end

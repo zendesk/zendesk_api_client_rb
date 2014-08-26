@@ -34,8 +34,7 @@ module ZendeskAPI
       namespace = @options[:class].to_s.split("::")
       namespace[-1] = @options[:class].resource_path
 
-      # Remove components without path information
-      ignorable_namespace_strings.each { |ns| namespace.delete(ns) }
+      %w(ZendeskAPI Voice).each { |ns| namespace.delete(ns) }
       has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
 
       if has_parent
@@ -71,11 +70,6 @@ module ZendeskAPI
     end
 
     private
-
-    # @return [Array<String>] ['ZendeskAPI', 'Voice', etc.. ]
-    def ignorable_namespace_strings
-      ZendeskAPI::DataNamespace.descendants.map { |klass| klass.to_s.split('::') }.flatten.uniq
-    end
 
     def _side_load(resource, side_loads)
       side_loads.map! do |side_load|
