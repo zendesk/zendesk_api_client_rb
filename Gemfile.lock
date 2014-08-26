@@ -3,7 +3,7 @@ PATH
   specs:
     zendesk_api (1.4.2)
       faraday (~> 0.9)
-      hashie (>= 1.2)
+      hashie (>= 1.2, < 4.0)
       inflection
       mime-types (~> 1.0)
       multi_json
