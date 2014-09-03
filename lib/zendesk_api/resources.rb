@@ -604,6 +604,7 @@ module ZendeskAPI
   class Target < Resource; end
 
   module Voice
+    include DataNamespace
     class PhoneNumber < Resource
       namespace "channels/voice"
     end
