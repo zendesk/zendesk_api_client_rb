@@ -245,6 +245,10 @@ describe ZendeskAPI::Client do
     it "delegates voice correctly" do
       expect(subject.voice.greetings).to be_instance_of(ZendeskAPI::Collection)
     end
+
+    it "looks in the appropriate namespaces" do
+      expect(subject.greetings.association.options['class']).to eq(ZendeskAPI::Voice::Greeting)
+    end
   end
 
   it "can be subclassed" do

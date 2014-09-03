@@ -170,14 +170,23 @@ module ZendeskAPI
 
     private
 
-    def class_from_namespace(klass_as_const)
+    def class_from_namespace(klass_as_string)
       namespaces.each do |ns|
-        if ns.const_defined?(klass_as_const)
-          return ns.const_get(klass_as_const)
+        if module_defines_class?(ns, klass_as_string)
+          return ns.const_get(klass_as_string)
         end
       end
 
       nil
+    end
+
+    # 1.9+ changed default to search ancestors, added flag to disable behavior.
+    def module_defines_class?(mod, klass_as_string)
+      if RUBY_VERSION < '1.9'
+        mod.const_defined?(klass_as_string)
+      else
+        mod.const_defined?(klass_as_string, false)
+      end
     end
 
     def namespaces
@@ -185,8 +194,8 @@ module ZendeskAPI
     end
 
     def method_as_class(method)
-      klass_as_const = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
-      class_from_namespace(klass_as_const)
+      klass_as_string = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
+      class_from_namespace(klass_as_string)
     end
 
     def check_url
