@@ -55,7 +55,7 @@ module ZendeskAPI
 
     def ticket
       VCR.use_cassette('valid_ticket') do
-        @ticket ||= client.tickets.first
+        @ticket ||= client.tickets.detect {|t| t.status != 'closed'}
         @ticket ||= client.tickets.create(
           :subject => "Test Ticket",
           :description => "This is a test of the emergency alert system.",
