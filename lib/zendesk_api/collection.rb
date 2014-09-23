@@ -19,6 +19,9 @@ module ZendeskAPI
     # @return [Hash] query options
     attr_reader :options
 
+    # @return [ZendeskAPI::ClientError] The last response error
+    attr_reader :error
+
     # Creates a new Collection instance. Does not fetch resources.
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
     # @param [Client] client The {Client} to use.
@@ -176,6 +179,8 @@ module ZendeskAPI
     def fetch(*args)
       fetch!(*args)
     rescue Faraday::Error::ClientError => e
+      @error = e
+
       []
     end
 
@@ -373,6 +378,7 @@ module ZendeskAPI
     ## Fetch
 
     def get_response(path)
+      @error = nil
       @response = @client.connection.send(@verb || "get", path) do |req|
         opts = @options.delete_if {|_, v| v.nil?}
 
