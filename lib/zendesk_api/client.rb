@@ -40,6 +40,7 @@ module ZendeskAPI
         cached
       else
         @resource_cache[method][:class] ||= method_as_class(method)
+        raise "Resource for #{method} does not exist" unless @resource_cache[method][:class]
         @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
       end
     end

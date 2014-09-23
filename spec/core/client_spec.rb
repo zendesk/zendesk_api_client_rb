@@ -249,6 +249,10 @@ describe ZendeskAPI::Client do
     it "looks in the appropriate namespaces" do
       expect(subject.greetings.association.options['class']).to eq(ZendeskAPI::Voice::Greeting)
     end
+
+    it 'raises if the resource does not exist' do
+      expect { subject.random_resource }.to raise_error(RuntimeError)
+    end
   end
 
   it "can be subclassed" do
