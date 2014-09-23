@@ -374,6 +374,19 @@ describe ZendeskAPI::Collection do
       end
     end
 
+    context "with an invalid model key expectation" do
+      before(:each) do
+        stub_json_request(:get, %r{test_resources}, json(
+          :test_resource_stuff => [{:id => 2}],
+          :next_page => "/test_resources?page=2"
+        ))
+      end
+
+      it "should properly be handled" do
+        expect(subject.fetch(true)).to be_empty
+      end
+    end
+
     context "with nil body" do
       before(:each) do
         stub_request(:get, %r{test_resources}).to_return(:status => 200)

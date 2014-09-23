@@ -394,6 +394,10 @@ module ZendeskAPI
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
 
+      unless results
+        raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
+      end
+
       @resources = results.map do |res|
         wrap_resource(res)
       end
