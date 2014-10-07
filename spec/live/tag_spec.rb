@@ -1,8 +1,6 @@
 require 'core/spec_helper'
 
 describe ZendeskAPI::Tag, :vcr, :not_findable do
-  it_should_be_readable :tags
-
   [organization, topic, ticket].each do |object|
     under object do
       before(:each) do
