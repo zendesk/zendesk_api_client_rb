@@ -302,6 +302,14 @@ module ZendeskAPI
     has :requester, :class => User
   end
 
+  class AnonymousRequest < CreateResource
+    def self.singular_resource_name
+      'request'
+    end
+
+    namespace 'portal'
+  end
+
   class TicketField < Resource; end
 
   class TicketMetric < DataResource
@@ -605,6 +613,7 @@ module ZendeskAPI
 
   module Voice
     include DataNamespace
+
     class PhoneNumber < Resource
       namespace "channels/voice"
     end
