@@ -292,10 +292,10 @@ module ZendeskAPI
   class Request < Resource
     class Comment < DataResource
       include Save
-      
+
       has_many :uploads, :class => Attachment, :inline => true
       has :author, :class => User
-      
+
       def save
         save_associations
         true
@@ -304,6 +304,7 @@ module ZendeskAPI
       alias :save! :save
     end
 
+    has Comment, :inline => true
     has_many Comment
 
     has Organization
