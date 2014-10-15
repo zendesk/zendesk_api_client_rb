@@ -290,9 +290,18 @@ module ZendeskAPI
   end
 
   class Request < Resource
-    class Comment < ReadResource
-      has_many Attachment, :inline => true
+    class Comment < DataResource
+      include Save
+      
+      has_many :uploads, :class => Attachment, :inline => true
       has :author, :class => User
+      
+      def save
+        save_associations
+        true
+      end
+
+      alias :save! :save
     end
 
     has_many Comment
