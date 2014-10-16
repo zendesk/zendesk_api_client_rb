@@ -116,11 +116,8 @@ module ZendeskAPI
       end
     end
 
-    ZendeskAPI::DataNamespace.descendants.each do |namespace|
-      delegator = ZendeskAPI::Helpers.snakecase_string(namespace.to_s.split("::").last)
-      define_method delegator do |*| # takes arguments, but doesn't do anything with them
-        Delegator.new(self)
-      end
+    def voice
+      Delegator.new(self)
     end
 
     protected
@@ -174,9 +171,32 @@ module ZendeskAPI
 
     private
 
+    def class_from_namespace(klass_as_string)
+      namespaces.each do |ns|
+        if module_defines_class?(ns, klass_as_string)
+          return ns.const_get(klass_as_string)
+        end
+      end
+
+      nil
+    end
+
+    # 1.9+ changed default to search ancestors, added flag to disable behavior.
+    def module_defines_class?(mod, klass_as_string)
+      if RUBY_VERSION < '1.9'
+        mod.const_defined?(klass_as_string)
+      else
+        mod.const_defined?(klass_as_string, false)
+      end
+    end
+
+    def namespaces
+      [ZendeskAPI] + ZendeskAPI::DataNamespace.descendants
+    end
+
     def method_as_class(method)
       klass_as_string = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
-      ZendeskAPI::Association.class_from_namespace(klass_as_string)
+      class_from_namespace(klass_as_string)
     end
 
     def check_url

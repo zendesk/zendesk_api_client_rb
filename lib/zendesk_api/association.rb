@@ -4,31 +4,6 @@ module ZendeskAPI
   # Represents an association between two resources
   # @private
   class Association
-    class << self
-      def namespaces
-        [ZendeskAPI] + ZendeskAPI::DataNamespace.descendants
-      end
-
-      def class_from_namespace(klass_as_string)
-        namespaces.each do |ns|
-          if module_defines_class?(ns, klass_as_string)
-            return ns.const_get(klass_as_string)
-          end
-        end
-
-        nil
-      end
-
-      # 1.9+ changed default to search ancestors, added flag to disable behavior.
-      def module_defines_class?(mod, klass_as_string)
-        if RUBY_VERSION < '1.9'
-          mod.const_defined?(klass_as_string)
-        else
-          mod.const_defined?(klass_as_string, false)
-        end
-      end
-    end
-
     # @return [Hash] Options passed into the association
     attr_reader :options
 
@@ -64,10 +39,10 @@ module ZendeskAPI
       has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
 
       if has_parent
-        parent_class = @options.parent ? @options.parent.class : Association.class_from_namespace(ZendeskAPI::Helpers.modulize_string(namespace[0]))
+        parent_class = @options.parent ? @options.parent.class : ZendeskAPI.const_get(ZendeskAPI::Helpers.modulize_string(namespace[0]))
         parent_namespace = build_parent_namespace(parent_class, instance, options, original_options)
         namespace[1..1] = parent_namespace if parent_namespace
-        namespace[0] = parent_class.resource_path
+        namespace[0] = parent_class.resource_name
       else
         namespace[0] = @options.path || @options[:class].resource_path
       end

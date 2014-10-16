@@ -180,20 +180,6 @@ describe ZendeskAPI::Association do
       end
     end
 
-    context "when parent has a namespace" do
-      before(:each) do
-        instance.class.namespace 'hello'
-      end
-
-      after(:each) do
-        instance.class.namespace nil
-      end
-
-      it "should generate a specific nested resource path" do
-        expect(subject.generate_path(child)).to eq("hello/test_resources/1/children/1")
-      end
-    end
-
     context "with a specified path" do
       before(:each) { subject.options[:path] = "blergh" }
 

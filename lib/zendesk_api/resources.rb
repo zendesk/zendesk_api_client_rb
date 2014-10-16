@@ -747,17 +747,4 @@ module ZendeskAPI
       @attributes.replace(response.body) if response.body
     end
   end
-
-  module DynamicContent
-    include DataNamespace
-
-    class Item < ZendeskAPI::Resource
-      namespace 'dynamic_content'
-
-      class Variant < ZendeskAPI::Resource
-      end
-
-      has_many Variant
-    end
-  end
 end
