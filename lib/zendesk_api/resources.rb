@@ -754,11 +754,7 @@ module ZendeskAPI
     class Item < ZendeskAPI::Resource
       namespace 'dynamic_content'
 
-      class Variant < ZendeskAPI::DataResource
-        extend Read
-
-        include Create
-        include Update
+      class Variant < ZendeskAPI::Resource
       end
 
       has_many Variant
