@@ -118,7 +118,7 @@ module ZendeskAPI
 
     ZendeskAPI::DataNamespace.descendants.each do |namespace|
       delegator = ZendeskAPI::Helpers.snakecase_string(namespace.to_s.split("::").last)
-      define_method delegator do
+      define_method delegator do |_| # takes options, but doesn't do anything with them
         Delegator.new(self)
       end
     end
