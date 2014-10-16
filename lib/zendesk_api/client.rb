@@ -116,8 +116,11 @@ module ZendeskAPI
       end
     end
 
-    def voice
-      Delegator.new(self)
+    ZendeskAPI::DataNamespace.descendants.each do |namespace|
+      delegator = ZendeskAPI::Helpers.snakecase_string(namespace.to_s.split("::").last)
+      define_method delegator do
+        Delegator.new(self)
+      end
     end
 
     protected
