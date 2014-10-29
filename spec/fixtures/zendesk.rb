@@ -100,9 +100,9 @@ module ZendeskAPI
     end
 
     def dynamic_content_item
-      VCR.use_cassette('valid_brand') do
+      VCR.use_cassette('valid_dynamic_content') do
         @item ||= client.dynamic_content.items.first
-        @item ||= client.dynamic_content.items.create!(:name => 'Test Item', :content => 'Testing')
+        @item ||= client.dynamic_content.items.create!(:name => 'Test Item', :content => 'Testing', :default_locale_id => 1)
       end
     end
   end
