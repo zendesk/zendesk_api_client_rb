@@ -27,6 +27,18 @@ describe ZendeskAPI::Topic::TopicComment do
       end
     end
   end
+
+  it "can upload while creating" do
+    VCR.use_cassette("topic_comment_inline_uploads") do
+      comment = ZendeskAPI::Topic::TopicComment.new(client, valid_attributes.merge(:topic_id => topic.id))
+      comment.uploads << "spec/fixtures/Argentina.gif"
+      comment.uploads << File.new("spec/fixtures/Argentina.gif")
+
+      comment.save!
+      expect(comment.changes).to eq({}) # uploads were set before save
+      expect(comment.attributes[:uploads].map(&:class)).to eq([String, String]) # upload was sent as tokens
+    end
+  end
 end
 
 describe ZendeskAPI::User::TopicComment do

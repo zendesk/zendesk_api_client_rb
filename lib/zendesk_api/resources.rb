@@ -163,6 +163,8 @@ module ZendeskAPI
       include Update
       include Destroy
 
+      has_many :uploads, :class => Attachment, :inline => true
+
       def self.import!(client, attributes)
         new(client, attributes).tap do |comment|
           comment.save!(:path => 'import/' + comment.path)
@@ -192,6 +194,8 @@ module ZendeskAPI
     has_many :subscriptions, :class => TopicSubscription
     has :vote, :class => TopicVote
     has_many Tag, :extend => Tag::Update, :inline => :create
+    has_many Attachment
+    has_many :uploads, :class => Attachment, :inline => true
 
     def votes(opts = {})
       return @votes if @votes && !opts[:reload]

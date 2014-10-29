@@ -31,4 +31,16 @@ describe ZendeskAPI::Topic do
       end
     end
   end
+
+  it "can upload while creating" do
+    VCR.use_cassette("topic_inline_uploads") do
+      topic = ZendeskAPI::Topic.new(client, valid_attributes)
+      topic.uploads << "spec/fixtures/Argentina.gif"
+      topic.uploads << File.new("spec/fixtures/Argentina.gif")
+
+      topic.save!
+      expect(topic.changes).to eq({}) # uploads were set before save
+      expect(topic.attributes[:uploads].map(&:class)).to eq([String, String]) # upload was sent as tokens
+    end
+  end
 end
