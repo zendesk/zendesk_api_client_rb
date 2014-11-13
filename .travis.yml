@@ -1,8 +1,6 @@
 rvm:
-  - ree
   - 1.9.3
   - 2.0.0
-  - 2.1.1
+  - 2.1.5
   - jruby
-before_install: gem i bundler
 cache: bundler

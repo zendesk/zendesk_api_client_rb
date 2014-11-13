@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "hashie", ">= 1.2", "< 4.0"
   s.add_runtime_dependency "inflection"
   s.add_runtime_dependency "multi_json"
-  s.add_runtime_dependency "mime-types", "~> 1.0"
   s.add_runtime_dependency "multipart-post", "~> 2.0"
 
   s.files              = `git ls-files -x Gemfile.lock`.split("\n") rescue ''
