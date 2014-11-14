@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zendesk_api (1.4.6)
+    zendesk_api (1.5.0)
       faraday (~> 0.9)
       hashie (>= 1.2, < 4.0)
       inflection
