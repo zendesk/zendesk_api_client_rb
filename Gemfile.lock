@@ -5,6 +5,7 @@ PATH
       faraday (~> 0.9)
       hashie (>= 1.2, < 4.0)
       inflection
+      mime-types
       multi_json
       multipart-post (~> 2.0)
 
@@ -49,6 +50,7 @@ GEM
     inflection (1.0.0)
     journey (1.0.4)
     json (1.8.1)
+    mime-types (2.4.3)
     multi_json (1.10.1)
     multipart-post (2.0.0)
     rack (1.4.5)
