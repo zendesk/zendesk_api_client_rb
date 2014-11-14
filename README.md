@@ -398,14 +398,14 @@ ZendeskAPI::AppInstallation.destroy!(client, :id => 123)
 
 ## Supported Ruby Versions
 
-Tested with Ruby 1.9.3, 2.0.0, 2.1.0, and jRuby.
+Tested with Ruby 1.9, 2.0, 2.1, and jRuby.
 [![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png?branch=master)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
 [![Gem Version](https://badge.fury.io/rb/zendesk_api.png)](http://badge.fury.io/rb/zendesk_api)
 [![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.png)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
 
 ## Copyright and license
 
-Copyright 2013 Zendesk
+Copyright 2014 Zendesk
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
