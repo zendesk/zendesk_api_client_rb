@@ -68,7 +68,7 @@ describe ZendeskAPI::Ticket do
       VCR.use_cassette("ticket_import_can_import") do
         old = Time.now - 5*365*24*60*60
         ticket = ZendeskAPI::Ticket.import(client, valid_attributes.merge(:created_at => old.iso8601))
-        expect(ZendeskAPI::Ticket.find(client, ticket).created_at.year).to eq(old.year)
+        expect(ZendeskAPI::Ticket.find(client, :id => ticket.id).created_at.year).to eq(old.year)
       end
     end
 
