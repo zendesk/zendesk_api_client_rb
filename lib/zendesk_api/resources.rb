@@ -473,6 +473,37 @@ module ZendeskAPI
     has :execution, :class => RuleExecution
     has ViewCount, :path => "count"
 
+    # View class configuration helpers
+    def add_column(column)
+      columns = attributes.execution.columns.map {|c| c["id"]}
+      columns << column
+      self.columns = columns
+    end
+
+    def columns=(columns)
+      self.output ||= {}
+      self.output["columns"] = columns
+      save
+    end
+
+    def all_conditions=(conditions)
+      self.conditions ||= {}
+      self.conditions["all"] = conditions
+    end
+
+    def any_conditions=(conditions)
+      self.conditions ||= {}
+      self.conditions["any"] = conditions
+    end
+
+    def add_all_condition(field, operator, value)
+      conditions["all"] << {"field" => field, "operator" => operator, "value" => value}
+    end
+
+    def add_any_condition(field, operator, value)
+      conditions["any"] << {"field" => field, "operator" => operator, "value" => value}
+    end
+
     def self.preview(client, options = {})
       Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
     end
@@ -480,6 +511,10 @@ module ZendeskAPI
 
   class Trigger < Rule
     has :execution, :class => RuleExecution
+
+    def add_action(field, value)
+      actions << {"field" => field, "value" => value}
+    end
   end
 
   class Automation < Rule
