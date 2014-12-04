@@ -475,7 +475,7 @@ module ZendeskAPI
 
     # View class configuration helpers
     def add_column(column)
-      columns = attributes.execution.columns.map {|c| c["id"]}
+      columns = execution.columns.map {|c| c["id"]}
       columns << column
       self.columns = columns
     end
@@ -483,7 +483,6 @@ module ZendeskAPI
     def columns=(columns)
       self.output ||= {}
       self.output["columns"] = columns
-      save
     end
 
     def all_conditions=(conditions)
