@@ -506,9 +506,8 @@ module ZendeskAPI
     has :execution, :class => RuleExecution
     has ViewCount, :path => "count"
 
-    # View class configuration helpers
     def add_column(column)
-      columns = execution.columns.map {|c| c["id"]}
+      columns = execution.columns.map {|c| c[:id]}
       columns << column
       self.columns = columns
     end
