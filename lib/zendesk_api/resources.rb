@@ -507,7 +507,7 @@ module ZendeskAPI
     has ViewCount, :path => "count"
 
     def add_column(column)
-      columns = execution.columns.map {|c| c[:id]}
+      columns = execution.columns.map(&:id)
       columns << column
       self.columns = columns
     end
