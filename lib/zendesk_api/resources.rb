@@ -465,7 +465,40 @@ module ZendeskAPI
     end
   end
 
+  module Conditions
+    def all_conditions=(all_conditions)
+      self.conditions ||= {}
+      self.conditions[:all] = all_conditions
+    end
+
+    def any_conditions=(any_conditions)
+      self.conditions ||= {}
+      self.conditions[:any] = any_conditions
+    end
+
+    def add_all_condition(field, operator, value)
+      self.conditions ||= {}
+      self.conditions[:all] ||= []
+      self.conditions[:all] << { :field => field, :operator => operator, :value => value }
+    end
+
+    def add_any_condition(field, operator, value)
+      self.conditions ||= {}
+      self.conditions[:any] ||= []
+      self.conditions[:any] << { :field => field, :operator => operator, :value => value }
+    end
+  end
+
+  module Actions
+    def add_action(field, value)
+      self.actions ||= []
+      self.actions << { :field => field, :value => value }
+    end
+  end
+
   class View < Rule
+    include Conditions
+
     has_many :tickets, :class => Ticket
     has_many :feed, :class => Ticket, :path => "feed"
 
@@ -482,25 +515,7 @@ module ZendeskAPI
 
     def columns=(columns)
       self.output ||= {}
-      self.output["columns"] = columns
-    end
-
-    def all_conditions=(conditions)
-      self.conditions ||= {}
-      self.conditions["all"] = conditions
-    end
-
-    def any_conditions=(conditions)
-      self.conditions ||= {}
-      self.conditions["any"] = conditions
-    end
-
-    def add_all_condition(field, operator, value)
-      conditions["all"] << {"field" => field, "operator" => operator, "value" => value}
-    end
-
-    def add_any_condition(field, operator, value)
-      conditions["any"] << {"field" => field, "operator" => operator, "value" => value}
+      self.output[:columns] = columns
     end
 
     def self.preview(client, options = {})
@@ -509,18 +524,22 @@ module ZendeskAPI
   end
 
   class Trigger < Rule
-    has :execution, :class => RuleExecution
+    include Conditions
+    include Actions
 
-    def add_action(field, value)
-      actions << {"field" => field, "value" => value}
-    end
+    has :execution, :class => RuleExecution
   end
 
   class Automation < Rule
+    include Conditions
+    include Actions
+
     has :execution, :class => RuleExecution
   end
 
   class Macro < Rule
+    include Actions
+
     has :execution, :class => RuleExecution
 
     # Returns the update to a ticket that happens when a macro will be applied.

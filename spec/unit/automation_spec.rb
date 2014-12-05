@@ -1,6 +1,6 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::View do
+describe ZendeskAPI::Automation do
   subject do
     described_class.new(double, {
       :title => "my test view",
@@ -12,33 +12,6 @@ describe ZendeskAPI::View do
         :columns => [:id => "status", :title=> "Status"]
       }
     })
-  end
-
-  describe "#columns=" do
-    it "should add a single column" do
-      new_column = ["priority"]
-      subject.columns = new_column
-
-      expect(subject.output["columns"]).to eq(new_column)
-    end
-
-    it "should set columns on output" do
-      new_columns = ["type", "priority"]
-      subject.columns = new_columns
-
-      expect(subject.output["columns"]).to eq(new_columns)
-    end
-  end
-
-  describe "#add_column" do
-    it "should add a column to the existing columns" do
-      existing_columns = subject.execution.columns.map {|c| c["id"]}
-      expect(existing_columns.include?("type")).to eq(false)
-
-      subject.add_column("type")
-
-      expect(subject.output["columns"]).to eq(existing_columns << "type")
-    end
   end
 
   describe "#all_conditions=" do
