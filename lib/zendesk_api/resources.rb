@@ -465,7 +465,40 @@ module ZendeskAPI
     end
   end
 
+  module Conditions
+    def all_conditions=(all_conditions)
+      self.conditions ||= {}
+      self.conditions[:all] = all_conditions
+    end
+
+    def any_conditions=(any_conditions)
+      self.conditions ||= {}
+      self.conditions[:any] = any_conditions
+    end
+
+    def add_all_condition(field, operator, value)
+      self.conditions ||= {}
+      self.conditions[:all] ||= []
+      self.conditions[:all] << { :field => field, :operator => operator, :value => value }
+    end
+
+    def add_any_condition(field, operator, value)
+      self.conditions ||= {}
+      self.conditions[:any] ||= []
+      self.conditions[:any] << { :field => field, :operator => operator, :value => value }
+    end
+  end
+
+  module Actions
+    def add_action(field, value)
+      self.actions ||= []
+      self.actions << { :field => field, :value => value }
+    end
+  end
+
   class View < Rule
+    include Conditions
+
     has_many :tickets, :class => Ticket
     has_many :feed, :class => Ticket, :path => "feed"
 
@@ -473,20 +506,39 @@ module ZendeskAPI
     has :execution, :class => RuleExecution
     has ViewCount, :path => "count"
 
+    def add_column(column)
+      columns = execution.columns.map(&:id)
+      columns << column
+      self.columns = columns
+    end
+
+    def columns=(columns)
+      self.output ||= {}
+      self.output[:columns] = columns
+    end
+
     def self.preview(client, options = {})
       Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
     end
   end
 
   class Trigger < Rule
+    include Conditions
+    include Actions
+
     has :execution, :class => RuleExecution
   end
 
   class Automation < Rule
+    include Conditions
+    include Actions
+
     has :execution, :class => RuleExecution
   end
 
   class Macro < Rule
+    include Actions
+
     has :execution, :class => RuleExecution
 
     # Returns the update to a ticket that happens when a macro will be applied.
