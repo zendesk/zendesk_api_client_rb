@@ -732,7 +732,7 @@ module ZendeskAPI
     end
 
     def handle_response(response)
-      @attributes.replace(response.body) if response.body
+      @attributes.replace(response.body) if response.body.is_a?(Hash)
     end
   end
 
