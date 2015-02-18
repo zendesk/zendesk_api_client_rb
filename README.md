@@ -18,6 +18,7 @@ Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wik
 * Version 1.3.8 had a bug where attachments were created, but the response was not handled properly
 * Version >= 1.0 and < 1.4.2 had a bug where non application/json response bodies were discarded
 * Version 1.5.0 removed support for Ruby 1.8
+* Version 1.6.0 ZendeskAPI::Voice::CertificationAddress is now ZendeskAPI::Voice::Address
 
 ## Installation
 

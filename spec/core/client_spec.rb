@@ -271,7 +271,7 @@ describe ZendeskAPI::Client do
     end
 
     it "manages namespace correctly" do
-      expect(client.certification_addresses.path).to match(/channels\/voice\/certification_addresses/)
+      expect(client.addresses.path).to match(/channels\/voice\/addresses/)
       expect(client.phone_numbers.path).to match(/channels\/voice\/phone_numbers/)
       expect(client.greetings.path).to match(/channels\/voice\/greetings/)
       expect(client.greeting_categories.path).to match(/channels\/voice\/greeting_categories/)
