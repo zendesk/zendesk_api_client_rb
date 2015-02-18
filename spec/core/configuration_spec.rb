@@ -17,6 +17,10 @@ describe ZendeskAPI::Configuration do
     expect(subject.options[:headers][:user_agent]).to match(/ZendeskAPI API/)
   end
 
+  it "should set a default open_timeout" do
+    expect(subject.options[:request][:open_timeout]).to eq(10)
+  end
+
   it "should merge options with client_options" do
     subject.client_options = {:ssl => false}
     expect(subject.options[:ssl]).to eq(false)
