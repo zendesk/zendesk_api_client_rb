@@ -348,13 +348,19 @@ ZendeskAPI::App.destroy!(client, :id => 123)
 
 #### Installing an App
 
+**Installation name is required**
+
 ```ruby
-install = ZendeskAPI::AppInstallation.new(client, :app_id => 123)
-install.save!
+installation = ZendeskAPI::AppInstallation.new(client, :app_id => 123, :settings => { :name => 'Name' })
+installation.save!
 
-client.apps.installations.create!(:app_id => 123)
+# or
 
-ZendeskAPI::AppInstallation.create!(client, :app_id => 123)
+client.apps.installations.create!(:app_id => 123, :settings => { :name => 'Name' })
+
+# or
+
+ZendeskAPI::AppInstallation.create!(client, :app_id => 123, :settings => { :name => 'Name' })
 ```
 
 #### List Installations
@@ -369,9 +375,9 @@ apps.fetch!
 ```ruby
 client.app.installations.update!(:id => 123, :settings => { :title => "My New Name" })
 
-install = ZendeskAPI::AppInstallation.new(client, :id => 123)
-install.settings = { :title => "My New Name" }
-install.save!
+installation = ZendeskAPI::AppInstallation.new(client, :id => 123)
+installation.settings = { :title => "My New Name" }
+installation.save!
 
 ZendeskAPI::AppInstallation.update!(client, :id => 123, :settings => { :title => "My New Name" })
 ```
@@ -381,8 +387,8 @@ ZendeskAPI::AppInstallation.update!(client, :id => 123, :settings => { :title =>
 ```ruby
 client.app.installations.destroy!(:id => 123)
 
-install = ZendeskAPI::AppInstallation.new(client, :id => 123)
-install.destroy!
+installation = ZendeskAPI::AppInstallation.new(client, :id => 123)
+installation.destroy!
 
 ZendeskAPI::AppInstallation.destroy!(client, :id => 123)
 ```
