@@ -804,6 +804,39 @@ module ZendeskAPI
     end
   end
 
+  module HelpCenter
+    include DataNamespace
+
+    class Category < ZendeskAPI::Resource
+      class << self
+        def singular_resource_name
+          'hello'
+        end
+
+        def resource_name
+          'asd'
+        end
+
+        def resource_path
+          'testing'
+        end
+      end
+    end
+
+    class Article < ZendeskAPI::Resource
+      namespace 'help_center'
+    end
+
+    class Section < ZendeskAPI::Resource
+      namespace 'help_center'
+
+      class Article < ZendeskAPI::Resource
+      end
+
+      has_many Article
+    end
+  end
+
   module DynamicContent
     include DataNamespace
 

@@ -28,6 +28,8 @@ module ZendeskAPI
     # @return [Array] Custom response callbacks
     attr_reader :callbacks
 
+    attr_accessor :namespace
+
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
     # @return [Collection] Collection instance for resource
@@ -119,7 +121,9 @@ module ZendeskAPI
     ZendeskAPI::DataNamespace.descendants.each do |namespace|
       delegator = ZendeskAPI::Helpers.snakecase_string(namespace.to_s.split("::").last)
       define_method delegator do |*| # takes arguments, but doesn't do anything with them
-        Delegator.new(self)
+        new_client = dup
+        new_client.namespace = delegator
+        new_client
       end
     end
 
@@ -176,6 +180,12 @@ module ZendeskAPI
 
     def method_as_class(method)
       klass_as_string = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
+
+      if namespace
+        modulized_namespace = ZendeskAPI::Helpers.modulize_string(namespace)
+        klass_as_string = "#{modulized_namespace}::#{klass_as_string}"
+      end
+
       ZendeskAPI::Association.class_from_namespace(klass_as_string)
     end
 
