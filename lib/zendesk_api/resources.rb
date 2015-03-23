@@ -360,6 +360,12 @@ module ZendeskAPI
       alias :save! :save
     end
 
+    class SatisfactionRating < CreateResource
+      class << self
+        alias :resource_name :singular_resource_name
+      end
+    end
+
     put :mark_as_spam
     post :merge
 
