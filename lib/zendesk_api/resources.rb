@@ -26,6 +26,10 @@ module ZendeskAPI
   class SharingAgreement < ReadResource; end
   class JobStatus < ReadResource; end
 
+  class Session < ReadResource
+    include Destroy
+  end
+
   class Tag < DataResource
     include Update
     include Destroy
@@ -620,6 +624,37 @@ module ZendeskAPI
     end
 
     has Organization
+
+    class Session < Resource
+    end
+
+    class CurrentSession < SingularResource
+      class << self
+        def singular_resource_name
+          'session'
+        end
+
+        alias :resource_name :singular_resource_name
+      end
+    end
+
+    has_many Session
+
+    def current_session
+      ZendeskAPI::User::CurrentSession.find(@client, :user_id => 'me')
+    end
+
+    delete :logout
+
+    def clear_sessions!
+      @client.connection.delete(path + '/sessions')
+    end
+
+    def clear_sessions
+      clear_sessions!
+    rescue ZendeskAPI::Error::ClientError
+      false
+    end
 
     has CustomRole, :inline => true, :include => :roles
     has Role, :inline => true, :include_key => :name
