@@ -857,4 +857,12 @@ module ZendeskAPI
       has_many Variant
     end
   end
+
+  class PushNotificationDevice < Resource
+    def self.destroy_many(client, tokens)
+      ZendeskAPI::Collection.new(client, self,"push_notification_devices" => tokens,
+                                 :path =>  "push_notification_devices/destroy_many",
+                                 :verb => :post).fetch
+    end
+  end
 end
