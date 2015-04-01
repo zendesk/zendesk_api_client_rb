@@ -15,7 +15,7 @@ module ZendeskAPI
           case env[:status]
           when 404
             raise Error::RecordNotFound.new(env)
-          when 422
+          when 422, 413
             raise Error::RecordInvalid.new(env)
           when 400...600
             raise Error::NetworkError.new(env)

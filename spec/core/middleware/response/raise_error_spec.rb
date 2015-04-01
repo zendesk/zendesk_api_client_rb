@@ -70,6 +70,29 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
       end
     end
 
+    context "with status = 413" do
+      let(:status) { 413 }
+
+      it "should raise RecordInvalid" do
+        expect { client.connection.get "/non_existent" }.to raise_error(ZendeskAPI::Error::RecordInvalid)
+      end
+
+      context "with a body" do
+        let(:body) { MultiJson.dump(:details => "big file is big") }
+
+        it "should return RecordInvalid with proper message" do
+          begin
+            client.connection.get "/non_existent"
+          rescue ZendeskAPI::Error::RecordInvalid => e
+            expect(e.errors).to eq("big file is big")
+            expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: big file is big")
+          else
+            fail # didn't raise an error
+          end
+        end
+      end
+    end
+
     context "with status = 200" do
       let(:status) { 200 }
 
