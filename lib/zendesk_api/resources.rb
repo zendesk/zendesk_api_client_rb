@@ -858,11 +858,13 @@ module ZendeskAPI
     end
   end
 
-  class PushNotificationDevice < Resource
+  class PushNotificationDevice < DataResource
     def self.destroy_many(client, tokens)
-      ZendeskAPI::Collection.new(client, self,"push_notification_devices" => tokens,
-                                 :path =>  "push_notification_devices/destroy_many",
-                                 :verb => :post).fetch
+      ZendeskAPI::Collection.new(
+        client, self,"push_notification_devices" => tokens,
+        :path => "push_notification_devices/destroy_many",
+        :verb => :post
+      )
     end
   end
 end
