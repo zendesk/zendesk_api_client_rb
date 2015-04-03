@@ -119,6 +119,14 @@ module ZendeskAPI
     has_many Ticket
     has_many User
     has_many Tag, :extend => Tag::Update, :inline => :create
+
+    # Gets a incremental export of organizations from the start_time until now.
+    # @param [Client] client The {Client} object to be used
+    # @param [Integer] start_time The start_time parameter
+    # @return [Collection] Collection of {Ticket}
+    def self.incremental_export(client, start_time)
+      ZendeskAPI::Collection.new(client, self, :path => "incremental/organizations?start_time=#{start_time.to_i}")
+    end
   end
 
   class Brand < Resource
@@ -335,6 +343,22 @@ module ZendeskAPI
   end
 
   class TicketRelated < DataResource; end
+
+  class TicketEvent < DataResource
+    class Event < Data; end
+
+    has_many :child_events, :class => Event
+    has Ticket
+    has :updater, :class => User
+
+    # Gets a incremental export of ticket events from the start_time until now.
+    # @param [Client] client The {Client} object to be used
+    # @param [Integer] start_time The start_time parameter
+    # @return [Collection] Collection of {Ticket}
+    def self.incremental_export(client, start_time)
+      ZendeskAPI::Collection.new(client, self, :path => "incremental/ticket_events?start_time=#{start_time.to_i}")
+    end
+  end
 
   class Ticket < Resource
     class Audit < DataResource
@@ -621,6 +645,14 @@ module ZendeskAPI
     # Change a user's password
     def change_password!(opts = {})
       password!(opts.merge(:verb => :put))
+    end
+
+    # Gets a incremental export of users from the start_time until now.
+    # @param [Client] client The {Client} object to be used
+    # @param [Integer] start_time The start_time parameter
+    # @return [Collection] Collection of {Ticket}
+    def self.incremental_export(client, start_time)
+      ZendeskAPI::Collection.new(client, self, :path => "incremental/users?start_time=#{start_time.to_i}")
     end
 
     has Organization
