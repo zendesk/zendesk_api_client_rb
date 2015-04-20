@@ -320,7 +320,7 @@ module ZendeskAPI
       page(start_page)
       clear_cache
 
-      while (bang ? fetch! : fetch) && !empty?
+      while (bang ? fetch! : fetch)
         each do |resource|
           arguments = [resource, @options["page"] || 1]
 
@@ -331,7 +331,7 @@ module ZendeskAPI
           block.call(*arguments)
         end
 
-        self.next
+        last_page? ? break : self.next
       end
 
       page(nil)
