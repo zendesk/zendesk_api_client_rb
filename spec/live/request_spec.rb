@@ -9,7 +9,7 @@ describe ZendeskAPI::Request do
   end
 
   it_should_be_creatable
-  it_should_be_updatable :solved, true
+  it_should_be_updatable :solved, true, { :comment => { :value => 'This is solved!' } }
   it_should_be_readable :requests
   it_should_be_readable user, :requests
 

@@ -44,7 +44,7 @@ module ResourceMacros
     end
   end
 
-  def it_should_be_updatable(attribute, value = "TESTDATA")
+  def it_should_be_updatable(attribute, value = "TESTDATA", extra = {})
     context "update", :vcr do
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_update_create") do
@@ -54,6 +54,7 @@ module ResourceMacros
 
       before(:each) do
         @object.send("#{attribute}=", value)
+        extra.each {|k, v| @object.send("#{k}=", v)}
       end
 
       it "should be savable" do
@@ -66,7 +67,7 @@ module ResourceMacros
         end
 
         it "should keep attributes" do
-          expect(@object.send(attribute)).to eq(value )
+          expect(@object.send(attribute)).to eq(value)
         end
 
         it "should be findable", :unless => metadata[:not_findable] do
