@@ -824,6 +824,9 @@ module ZendeskAPI
       super
     end
 
+    class Plan < Resource
+    end
+
     class Upload < Data
       class << self
         def resource_path
@@ -866,6 +869,7 @@ module ZendeskAPI
     end
 
     has Upload, :path => "uploads"
+    has_many Plan
 
     # Don't nest attributes
     def attributes_for_save
