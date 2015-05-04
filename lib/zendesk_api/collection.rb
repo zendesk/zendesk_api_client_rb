@@ -113,11 +113,11 @@ module ZendeskAPI
     end
 
     def first_page?
-      !@options["page"] || @options["page"].to_i <= 1
+      !@prev_page
     end
 
     def last_page?
-      !@options["page"] || @options["page"].to_i * @options["per_page"].to_i >= count
+      !@next_page
     end
 
     # Saves all newly created resources stored in this collection.
