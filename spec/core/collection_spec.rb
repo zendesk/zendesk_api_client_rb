@@ -253,6 +253,82 @@ describe ZendeskAPI::Collection do
       end
     end
 
+    context "requests with no next_page" do
+      before(:each) do
+        stub_json_request(:get, %r{test_resources$}, json(
+          :test_resources => [{:id => 1}],
+          :next_page => "/test_resources?page=2"
+        ))
+
+        stub_json_request(:get, %r{test_resources\?page=2}, json(
+          :test_resources => [{:id => 2}]
+        ))
+      end
+
+      it "should yield resource and page" do
+        expect do |b|
+          silence_logger { subject.all(&b) }
+        end.to yield_successive_args(
+          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
+          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+        )
+      end
+    end
+
+    context "incremental requests" do
+      subject do
+        ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :path => 'exports/test_resources?start_time=0')
+      end
+
+      before(:each) do
+        stub_json_request(:get, %r{exports/test_resources\?start_time=0$}, json(
+          :test_resources => [{:id => 1}],
+          :next_page => "/exports/test_resources?start_time=200"
+        ))
+
+        stub_json_request(:get, %r{exports/test_resources\?start_time=200$}, json(
+          :test_resources => [{:id => 2}],
+          :next_page => "/exports/test_resources?start_time=200"
+        ))
+      end
+
+      it "should yield resource and page (and not infinitely loop)" do
+        expect do |b|
+          Timeout.timeout(5) do
+            silence_logger { subject.all(&b) }
+          end
+        end.to yield_successive_args(
+          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
+          [ZendeskAPI::TestResource.new(client, :id => 2), 1] # page defaults to 1
+        )
+      end
+    end
+
+    context "infinite loops" do
+      before(:each) do
+        stub_json_request(:get, %r{test_resources$}, json(
+          :test_resources => [{:id => 1}],
+          :next_page => "/test_resources?page=2"
+        ))
+
+        stub_json_request(:get, %r{/test_resources\?page=2$}, json(
+          :test_resources => [{:id => 2}],
+          :next_page => "/test_resources?page=2"
+        ))
+      end
+
+      xit "should yield resource and page (and not infinitely loop)" do
+        expect do |b|
+          Timeout.timeout(5) do
+            silence_logger { subject.all(&b) }
+          end
+        end.to yield_successive_args(
+          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
+          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+        )
+      end
+    end
+
     context "successful requests" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
