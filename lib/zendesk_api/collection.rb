@@ -117,7 +117,7 @@ module ZendeskAPI
     end
 
     def last_page?
-      !@next_page
+      !@next_page || @next_page == @query
     end
 
     # Saves all newly created resources stored in this collection.
@@ -172,7 +172,6 @@ module ZendeskAPI
       @response = get_response(@query || self.path)
       handle_response(@response.body)
 
-      @query = nil
       @resources
     end
 
