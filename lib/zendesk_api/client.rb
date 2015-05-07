@@ -183,10 +183,6 @@ module ZendeskAPI
       if !config.allow_http && config.url !~ /^https/
         raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
       end
-
-      if config.url !~ %r{api/v2}
-        warn "this gem doesn't support the v1 api"
-      end
     end
 
     def set_token_auth
