@@ -17,7 +17,7 @@ module ZendeskAPI
             raise Error::RecordNotFound.new(env)
           when 422, 413
             raise Error::RecordInvalid.new(env)
-          when 400...600
+          when 100..199, 400..599, 300..303, 305..399
             raise Error::NetworkError.new(env)
           end
         end
