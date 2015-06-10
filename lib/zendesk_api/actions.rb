@@ -107,11 +107,7 @@ module ZendeskAPI
         yield req if block_given?
       end
 
-      new(client).tap do |resource|
-        resource.handle_response(response)
-        resource.set_includes(resource, includes, response.body)
-        resource.attributes.clear_changes
-      end
+      new_from_response(client, response, includes)
     end
 
     # Finds, returning nil if it fails
@@ -157,10 +153,7 @@ module ZendeskAPI
         yield req if block_given?
       end
 
-      JobStatus.new(client).tap do |resource|
-        resource.handle_response(response)
-        resource.attributes.clear_changes
-      end
+      JobStatus.new_from_response(client, response)
     end
   end
 
@@ -218,10 +211,7 @@ module ZendeskAPI
         yield req if block_given?
       end
 
-      JobStatus.new(client).tap do |resource|
-        resource.handle_response(response)
-        resource.attributes.clear_changes
-      end
+      JobStatus.new_from_response(client, response)
     end
   end
 
