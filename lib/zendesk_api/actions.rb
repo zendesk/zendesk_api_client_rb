@@ -151,10 +151,15 @@ module ZendeskAPI
 
   module CreateMany
     def create_many!(client, attributes_array)
-      client.connection.post("#{resource_path}/create_many") do |req|
+      response = client.connection.post("#{resource_path}/create_many") do |req|
         req.body = { resource_name => attributes_array }
 
         yield req if block_given?
+      end
+
+      JobStatus.new(client).tap do |resource|
+        resource.handle_response(response)
+        resource.attributes.clear_changes
       end
     end
   end
@@ -207,10 +212,15 @@ module ZendeskAPI
 
   module DestroyMany
     def destroy_many!(client, ids)
-      client.connection.delete("#{resource_path}/destroy_many") do |req|
+      response = client.connection.delete("#{resource_path}/destroy_many") do |req|
         req.params = { :ids => ids }
 
         yield req if block_given?
+      end
+
+      JobStatus.new(client).tap do |resource|
+        resource.handle_response(response)
+        resource.attributes.clear_changes
       end
     end
   end
