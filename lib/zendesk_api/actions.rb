@@ -149,6 +149,16 @@ module ZendeskAPI
     end
   end
 
+  module CreateMany
+    def create_many!(client, attributes_array)
+      client.connection.post("#{resource_path}/create_many") do |req|
+        req.body = { resource_name => attributes_array }
+
+        yield req if block_given?
+      end
+    end
+  end
+
   module Destroy
     def self.included(klass)
       klass.extend(ClassMethod)
@@ -191,6 +201,16 @@ module ZendeskAPI
         destroy!(client, attributes, &block)
       rescue ZendeskAPI::Error::ClientError
         false
+      end
+    end
+  end
+
+  module DestroyMany
+    def destroy_many!(client, ids)
+      client.connection.delete("#{resource_path}/destroy_many") do |req|
+        req.params = { :ids => ids }
+
+        yield req if block_given?
       end
     end
   end
