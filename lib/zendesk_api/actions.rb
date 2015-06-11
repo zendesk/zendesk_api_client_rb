@@ -107,11 +107,7 @@ module ZendeskAPI
         yield req if block_given?
       end
 
-      new(client).tap do |resource|
-        resource.handle_response(response)
-        resource.set_includes(resource, includes, response.body)
-        resource.attributes.clear_changes
-      end
+      new_from_response(client, response, includes)
     end
 
     # Finds, returning nil if it fails
@@ -146,6 +142,18 @@ module ZendeskAPI
       rescue ZendeskAPI::Error::ClientError
         nil
       end
+    end
+  end
+
+  module CreateMany
+    def create_many!(client, attributes_array)
+      response = client.connection.post("#{resource_path}/create_many") do |req|
+        req.body = { resource_name => attributes_array }
+
+        yield req if block_given?
+      end
+
+      JobStatus.new_from_response(client, response)
     end
   end
 
@@ -192,6 +200,18 @@ module ZendeskAPI
       rescue ZendeskAPI::Error::ClientError
         false
       end
+    end
+  end
+
+  module DestroyMany
+    def destroy_many!(client, ids)
+      response = client.connection.delete("#{resource_path}/destroy_many") do |req|
+        req.params = { :ids => ids }
+
+        yield req if block_given?
+      end
+
+      JobStatus.new_from_response(client, response)
     end
   end
 

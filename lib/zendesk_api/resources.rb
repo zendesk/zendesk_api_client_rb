@@ -605,6 +605,9 @@ module ZendeskAPI
   end
 
   class GroupMembership < Resource
+    extend CreateMany
+    extend DestroyMany
+
     has User
     has Group
   end
