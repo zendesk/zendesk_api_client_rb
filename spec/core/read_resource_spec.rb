@@ -73,5 +73,25 @@ describe ZendeskAPI::ReadResource do
       end
     end
   end
+
+  context "#reload!" do
+    let(:id) { 2 }
+
+    subject { ZendeskAPI::TestResource.new(client, :id => id, :name => 'Old Name') }
+
+    before(:each) do
+      stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => {:id => id, :name => "New Name" }))
+    end
+
+    it "reloads the data" do
+      expect(subject.name).to eq('Old Name')
+      assert_not_requested(:get, %r{test_resources/#{id}})
+
+      subject.reload!
+
+      assert_requested(:get, %r{test_resources/#{id}})
+      expect(subject.name).to eq('New Name')
+    end
+  end
 end
 

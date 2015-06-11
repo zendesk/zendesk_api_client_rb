@@ -155,7 +155,7 @@ module ZendeskAPI
 
   # Represents a resource that can only GET
   class ReadResource < DataResource
-    extend Read
+    include Read
   end
 
   # Represents a resource that can only POST
@@ -175,7 +175,7 @@ module ZendeskAPI
 
   # Represents a resource that can CRUD (create, read, update, delete).
   class Resource < DataResource
-    extend Read
+    include Read
     include Create
 
     include Update
