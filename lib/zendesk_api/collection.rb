@@ -48,6 +48,7 @@ module ZendeskAPI
 
     methods = %w{create find update destroy}
     methods += methods.map {|method| method + "!"}
+    methods += %w{create_many! destroy_many!}
     methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
       # @param [Hash] options Options or attributes to pass
