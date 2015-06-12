@@ -91,7 +91,7 @@ module ZendeskAPI
     end
 
     def reload!
-      response = client.connection.get(path) do |req|
+      response = @client.connection.get(path) do |req|
         yield req if block_given?
       end
 
