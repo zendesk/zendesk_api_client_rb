@@ -160,8 +160,8 @@ module ZendeskAPI
   end
 
   module CreateMany
-    def create_many!(client, attributes_array)
-      response = client.connection.post("#{resource_path}/create_many") do |req|
+    def create_many!(client, attributes_array, association = Association.new(:class => self))
+      response = client.connection.post("#{association.generate_path}/create_many") do |req|
         req.body = { resource_name => attributes_array }
 
         yield req if block_given?
@@ -218,8 +218,8 @@ module ZendeskAPI
   end
 
   module DestroyMany
-    def destroy_many!(client, ids)
-      response = client.connection.delete("#{resource_path}/destroy_many") do |req|
+    def destroy_many!(client, ids, association = Association.new(:class => self))
+      response = client.connection.delete("#{association.generate_path}/destroy_many") do |req|
         req.params = { :ids => ids }
 
         yield req if block_given?

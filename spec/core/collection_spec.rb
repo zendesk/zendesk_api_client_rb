@@ -24,23 +24,41 @@ describe ZendeskAPI::Collection do
   end
 
   context "deferral" do
-    before(:each) do
-      stub_json_request(:any, %r{test_resources}, json(:test_resource => {}))
+    it "should defer #create_many! to the resource class" do
+      collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
+      stub_json_request(:post, %r{bulk_test_resources/create_many$}, json(:job_status => {}))
+      collection.create_many!([{:name => 'Mick'}, {:name => 'Steven'}])
+      assert_requested(:post, %r{bulk_test_resources/create_many$},
+        :body => {
+          :bulk_test_resources => [{:name => 'Mick'}, {:name => 'Steven'}]
+        }
+      )
+    end
+
+    it "should defer #destroy_many! to the resource class" do
+      collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
+      stub_json_request(:delete, %r{bulk_test_resources/destroy_many\?}, json(:job_status => {}))
+      collection.destroy_many!([1,2,3])
+      assert_requested(:delete, %r{bulk_test_resources/destroy_many\?ids%5B%5D=1&ids%5B%5D=2&ids%5B%5D=3$})
     end
 
     it "should defer #create to the resource class" do
+      stub_json_request(:post, %r{test_resources$}, json(:test_resource => {}))
       subject.create
     end
 
     it "should defer #find to the resource class" do
+      stub_json_request(:get, %r{test_resources/1$}, json(:test_resource => {}))
       subject.find(:id => 1)
     end
 
     it "should defer #destroy to the resource class" do
+      stub_json_request(:delete, %r{test_resources/1$}, json(:test_resource => {}))
       subject.destroy(:id => 1)
     end
 
     it "should defer #update to the resource class" do
+      stub_json_request(:put, %r{test_resources/1$}, json(:test_resource => {}))
       subject.update(:id => 1)
     end
 
