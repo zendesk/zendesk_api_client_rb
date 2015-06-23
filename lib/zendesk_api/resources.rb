@@ -6,6 +6,7 @@ module ZendeskAPI
   class Forum < Resource; end
   class User < Resource; end
   class Category < Resource; end
+  class OrganizationMembership < Resource; end
 
 # @internal Begin actual Resource definitions
 
@@ -119,6 +120,7 @@ module ZendeskAPI
     has_many Ticket
     has_many User
     has_many Tag, :extend => Tag::Update, :inline => :create
+    has_many OrganizationMembership
 
     # Gets a incremental export of organizations from the start_time until now.
     # @param [Client] client The {Client} object to be used
@@ -141,6 +143,14 @@ module ZendeskAPI
   class ForumSubscription < Resource
     has Forum
     has User
+  end
+
+  class OrganizationMembership < Resource
+    extend CreateMany
+    extend DestroyMany
+
+    has User
+    has Organization
   end
 
   class Forum < Resource
@@ -704,6 +714,7 @@ module ZendeskAPI
     has_many Group
     has_many GroupMembership
     has_many Topic
+    has_many OrganizationMembership
 
     has_many ForumSubscription
     has_many TopicSubscription
