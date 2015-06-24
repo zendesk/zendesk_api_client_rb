@@ -6,7 +6,7 @@ module ZendeskAPI
   class Forum < Resource; end
   class User < Resource; end
   class Category < Resource; end
-  class OrganizationMembership < Resource; end
+  class OrganizationMembership < ReadResource; end
 
 # @internal Begin actual Resource definitions
 
@@ -145,7 +145,10 @@ module ZendeskAPI
     has User
   end
 
-  class OrganizationMembership < Resource
+  class OrganizationMembership < ReadResource
+    include Create
+    include Destroy
+
     extend CreateMany
     extend DestroyMany
 
