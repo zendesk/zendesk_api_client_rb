@@ -10,7 +10,7 @@ describe ZendeskAPI::DestroyMany do
     end
 
     it 'calls the destroy_many endpoint' do
-      assert_requested(:delete, %r{bulk_test_resources/destroy_many\?ids%5B%5D=1&ids%5B%5D=2&ids%5B%5D=3})
+      assert_requested(:delete, %r{bulk_test_resources/destroy_many\?ids=1,2,3$})
     end
 
     it 'returns a JobStatus' do
