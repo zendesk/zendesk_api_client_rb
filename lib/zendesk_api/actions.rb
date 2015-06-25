@@ -220,7 +220,7 @@ module ZendeskAPI
   module DestroyMany
     def destroy_many!(client, ids, association = Association.new(:class => self))
       response = client.connection.delete("#{association.generate_path}/destroy_many") do |req|
-        req.params = { :ids => ids }
+        req.params = { :ids => ids.join(',') }
 
         yield req if block_given?
       end

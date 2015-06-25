@@ -39,7 +39,7 @@ describe ZendeskAPI::Collection do
       collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
       stub_json_request(:delete, %r{bulk_test_resources/destroy_many\?}, json(:job_status => {}))
       collection.destroy_many!([1,2,3])
-      assert_requested(:delete, %r{bulk_test_resources/destroy_many\?ids%5B%5D=1&ids%5B%5D=2&ids%5B%5D=3$})
+      assert_requested(:delete, %r{bulk_test_resources/destroy_many\?ids=1,2,3$})
     end
 
     it "should defer #create to the resource class" do
