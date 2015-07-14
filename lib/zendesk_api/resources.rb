@@ -785,6 +785,10 @@ module ZendeskAPI
     class GreetingCategory < Resource
       namespace "channels/voice"
     end
+
+    class Ticket < Resource
+      namespace "channels/voice"
+    end
   end
 
   class TicketForm < Resource
