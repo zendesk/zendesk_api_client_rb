@@ -182,8 +182,7 @@ module ZendeskAPI
 
   class Topic < Resource
     class TopicComment < TopicComment
-      extend Read
-
+      include Read
       include Create
       include Update
       include Destroy
@@ -356,7 +355,7 @@ module ZendeskAPI
   class TicketField < Resource; end
 
   class TicketMetric < DataResource
-    extend Read
+    include Read
   end
 
   class TicketRelated < DataResource; end
@@ -635,7 +634,7 @@ module ZendeskAPI
 
   class User < Resource
     class TopicComment < TopicComment
-      extend Read
+      include Read
     end
 
     class Identity < Resource
