@@ -326,8 +326,12 @@ module ZendeskAPI
       has :author, :class => User
 
       def save
-        save_associations
-        true
+        if new_record?
+          save_associations
+          true
+        else
+          false
+        end
       end
 
       alias :save! :save
@@ -394,8 +398,12 @@ module ZendeskAPI
       has :author, :class => User
 
       def save
-        save_associations
-        true
+        if new_record?
+          save_associations
+          true
+        else
+          false
+        end
       end
 
       alias :save! :save
