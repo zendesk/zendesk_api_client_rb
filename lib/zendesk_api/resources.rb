@@ -786,7 +786,7 @@ module ZendeskAPI
       namespace "channels/voice"
     end
 
-    class Ticket < Resource
+    class Ticket < CreateResource
       namespace "channels/voice"
     end
   end
