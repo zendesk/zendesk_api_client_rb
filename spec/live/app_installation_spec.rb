@@ -29,10 +29,10 @@ describe ZendeskAPI::AppInstallation do
 
     app.id = body["app_id"]
 
-    attributes = { :app_id => app.id, :settings => {
-        :name => "My App",
-        "Custom_Field_ID" => "123",
-        "Custom_Field_Default" => "Default"
+    attributes = {
+      :app_id => app.id,
+      :settings => {
+        :name => "My App"
       }
     }
 
