@@ -14,7 +14,7 @@ describe ZendeskAPI::Configuration do
   end
 
   it "should set user agent header properly" do
-    expect(subject.options[:headers][:user_agent]).to match(/ZendeskAPI API/)
+    expect(subject.options[:headers][:user_agent]).to match(/ZendeskAPI Ruby/)
   end
 
   it "should set a default open_timeout" do

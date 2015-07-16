@@ -53,7 +53,7 @@ module ZendeskAPI
         :headers => {
           :accept => 'application/json',
           :accept_encoding => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          :user_agent => "ZendeskAPI API #{ZendeskAPI::VERSION}"
+          :user_agent => "ZendeskAPI Ruby #{ZendeskAPI::VERSION}"
         },
         :request => {
           :open_timeout => 10
