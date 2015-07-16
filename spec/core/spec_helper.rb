@@ -13,7 +13,6 @@ require 'zendesk_api'
 require 'vcr'
 require 'logger'
 require 'stringio'
-require 'multi_json'
 
 begin
   require 'byebug'
@@ -114,7 +113,7 @@ module TestHelper
   end
 
   def json(body = {})
-    MultiJson.dump(body)
+    JSON.dump(body)
   end
 
   def stub_json_request(verb, path_matcher, body = json, options = {})

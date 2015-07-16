@@ -79,7 +79,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
       end
 
       context "with a body" do
-        let(:body) { MultiJson.dump(:details => "hello") }
+        let(:body) { JSON.dump(:details => "hello") }
 
         it "should return RecordInvalid with proper message" do
           begin
@@ -102,7 +102,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
       end
 
       context "with a body" do
-        let(:body) { MultiJson.dump(:details => "big file is big") }
+        let(:body) { JSON.dump(:details => "big file is big") }
 
         it "should return RecordInvalid with proper message" do
           begin
