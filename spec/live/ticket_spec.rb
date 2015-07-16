@@ -25,9 +25,7 @@ describe ZendeskAPI::Ticket do
   context "recent tickets" do
     before(:all) do
       VCR.use_cassette("visit_recent_ticket") do
-        client.connection.get("/tickets/1") do |req|
-          req.headers[:Accept] = "*/*"
-        end
+        client.tickets.find(id: 1)
 
         sleep(5)
       end
