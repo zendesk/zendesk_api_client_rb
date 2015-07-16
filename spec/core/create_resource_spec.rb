@@ -32,7 +32,7 @@ describe ZendeskAPI::CreateResource do
     end
 
     it "should raise if save fails" do
-      expect { subject.create!(client, :test_field => "blah") }.to raise_error
+      expect { subject.create!(client, :test_field => "blah") }.to raise_error(ZendeskAPI::Error::NetworkError)
     end
   end
 end

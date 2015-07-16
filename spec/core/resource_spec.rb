@@ -103,7 +103,7 @@ describe ZendeskAPI::Resource do
     end
 
     it "should raise if save fails" do
-      expect { subject.save! }.to raise_error
+      expect { subject.save! }.to raise_error(ZendeskAPI::Error::RecordInvalid)
     end
   end
 
