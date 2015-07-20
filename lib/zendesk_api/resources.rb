@@ -125,7 +125,7 @@ module ZendeskAPI
     # Gets a incremental export of organizations from the start_time until now.
     # @param [Client] client The {Client} object to be used
     # @param [Integer] start_time The start_time parameter
-    # @return [Collection] Collection of {Ticket}
+    # @return [Collection] Collection of {Organization}
     def self.incremental_export(client, start_time)
       ZendeskAPI::Collection.new(client, self, :path => "incremental/organizations?start_time=#{start_time.to_i}")
     end
@@ -370,7 +370,7 @@ module ZendeskAPI
     # Gets a incremental export of ticket events from the start_time until now.
     # @param [Client] client The {Client} object to be used
     # @param [Integer] start_time The start_time parameter
-    # @return [Collection] Collection of {Ticket}
+    # @return [Collection] Collection of {TicketEvent}
     def self.incremental_export(client, start_time)
       ZendeskAPI::Collection.new(client, self, :path => "incremental/ticket_events?start_time=#{start_time.to_i}")
     end
@@ -673,7 +673,7 @@ module ZendeskAPI
     # Gets a incremental export of users from the start_time until now.
     # @param [Client] client The {Client} object to be used
     # @param [Integer] start_time The start_time parameter
-    # @return [Collection] Collection of {Ticket}
+    # @return [Collection] Collection of {User}
     def self.incremental_export(client, start_time)
       ZendeskAPI::Collection.new(client, self, :path => "incremental/users?start_time=#{start_time.to_i}")
     end
