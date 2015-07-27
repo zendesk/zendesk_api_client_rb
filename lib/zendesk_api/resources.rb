@@ -377,6 +377,8 @@ module ZendeskAPI
   end
 
   class Ticket < Resource
+    extend UpdateMany
+
     class Audit < DataResource
       class Event < Data
         has :author, :class => User

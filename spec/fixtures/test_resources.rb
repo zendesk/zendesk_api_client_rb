@@ -10,6 +10,7 @@ end
 class ZendeskAPI::BulkTestResource < ZendeskAPI::DataResource
   extend ZendeskAPI::CreateMany
   extend ZendeskAPI::DestroyMany
+  extend ZendeskAPI::UpdateMany
 end
 
 class ZendeskAPI::NilResource < ZendeskAPI::Data; end

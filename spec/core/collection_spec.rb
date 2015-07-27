@@ -42,6 +42,13 @@ describe ZendeskAPI::Collection do
       assert_requested(:delete, %r{bulk_test_resources/destroy_many\?ids=1,2,3$})
     end
 
+    it "should defer #update_many! to the resource class" do
+      collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
+      stub_json_request(:put, %r{bulk_test_resources/update_many\?}, json(:job_status => {}))
+      collection.update_many!([1,2,3], {:name => 'Mick'})
+      assert_requested(:put, %r{bulk_test_resources/update_many\?ids=1,2,3$})
+    end
+
     it "should defer #create to the resource class" do
       stub_json_request(:post, %r{test_resources$}, json(:test_resource => {}))
       subject.create
