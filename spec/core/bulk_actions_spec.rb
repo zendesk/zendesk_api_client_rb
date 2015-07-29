@@ -42,4 +42,28 @@ describe ZendeskAPI::CreateMany do
       expect(@response.id).to eq('def')
     end
   end
+
+  describe ZendeskAPI::UpdateMany do
+    subject { ZendeskAPI::BulkTestResource }
+
+    context "update_many!" do
+      let(:attributes) { {:name => 'A', :age => 25} }
+
+      before(:each) do
+        stub_json_request(:put, %r{bulk_test_resources/update_many}, json(:job_status => {:id => 'ghi'}))
+        @response = subject.update_many!(client, [1,2,3], attributes)
+      end
+
+      it 'calls the update_many endpoint' do
+        assert_requested(:put, %r{bulk_test_resources/update_many\?ids=1,2,3$},
+          :body => json(:bulk_test_resource => attributes)
+        )
+      end
+
+      it 'returns a JobStatus' do
+        expect(@response).to be_instance_of(ZendeskAPI::JobStatus)
+        expect(@response.id).to eq('ghi')
+      end
+    end
+  end
 end

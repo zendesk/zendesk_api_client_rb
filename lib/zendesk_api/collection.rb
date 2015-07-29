@@ -47,7 +47,7 @@ module ZendeskAPI
     end
 
     # Methods that take a Hash argument
-    methods = %w{create find update destroy}
+    methods = %w{create find update update_many destroy}
     methods += methods.map {|method| method + "!"}
     methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
@@ -57,10 +57,10 @@ module ZendeskAPI
           raise NoMethodError.new("undefined method \"#{deferrable}\" for #{@resource_class}", deferrable, args)
         end
 
-        opts = args.last.is_a?(Hash) ? args.pop : {}
-        opts.merge!(:association => @association)
+        args << {} unless args.last.is_a?(Hash)
+        args.last.merge!(:association => @association)
 
-        @resource_class.send(deferrable, @client, opts)
+        @resource_class.send(deferrable, @client, *args)
       end
     end
 
