@@ -10,11 +10,11 @@ module ZendeskAPI
       def initialize(response)
         @response = response
 
-        if response[:body].is_a?(Hash) && response[:body].key?("details")
-          @errors = response[:body]["details"]
-        else
-          @errors = {}
+        if response[:body].is_a?(Hash)
+          @errors = response[:body]["details"] || response[:body]["description"]
         end
+
+        @errors ||= {}
       end
 
       def to_s

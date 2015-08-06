@@ -102,7 +102,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
       end
 
       context "with a body" do
-        let(:body) { JSON.dump(:details => "big file is big") }
+        let(:body) { JSON.dump(:description => "big file is big") }
 
         it "should return RecordInvalid with proper message" do
           begin
