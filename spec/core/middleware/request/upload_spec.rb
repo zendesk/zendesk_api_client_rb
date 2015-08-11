@@ -31,6 +31,10 @@ describe ZendeskAPI::Middleware::Request::Upload do
       expect(@env[:body][:file]).to be_nil
     end
 
+    it "should add inline" do
+      expect(@env[:body][:inline]).to eq(true)
+    end
+
     it "should add filename if none exist" do
       expect(@env[:body][:filename]).to eq("test.jpg")
     end

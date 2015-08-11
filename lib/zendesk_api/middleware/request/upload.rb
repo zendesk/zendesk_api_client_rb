@@ -59,6 +59,9 @@ module ZendeskAPI
             end
 
             hash[:uploaded_data] = Faraday::UploadIO.new(path, mime_type, hash[:filename])
+
+            # Just always inline uploads, and let Zendesk decide whether or not to actually inline
+            hash[:inline] = true
           end
         end
 
