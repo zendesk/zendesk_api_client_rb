@@ -809,7 +809,7 @@ module ZendeskAPI
 
         def self.display!(client, options)
           new(client, options).tap do |resource|
-            resource.save!({path: resource.path+'/display'})
+            resource.save!(path: resource.path + '/display')
           end
         end
       end
