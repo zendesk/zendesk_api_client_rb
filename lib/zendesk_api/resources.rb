@@ -377,7 +377,9 @@ module ZendeskAPI
   end
 
   class Ticket < Resource
+    extend CreateMany
     extend UpdateMany
+    extend DestroyMany
 
     class Audit < DataResource
       class Event < Data
