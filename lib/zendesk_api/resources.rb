@@ -736,6 +736,7 @@ module ZendeskAPI
     has_many :topic_votes, :class => Topic::TopicVote
 
     has_many Setting
+    has_many Tag, :extend => Tag::Update, :inline => :create
 
     def attributes_for_save
       # Don't send role_id, it's necessary
