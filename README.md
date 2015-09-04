@@ -314,6 +314,7 @@ until %w{failed completed}.include?(body["status"])
 
   sleep(body["retry_in"])
 end
+raise "Job status query failed. body['message']" if body["status"] == "failed"
 ```
 
 #### Updating Apps
