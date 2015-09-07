@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.description = %q{Ruby wrapper for the REST API at http://www.zendesk.com. Documentation at http://developer.zendesk.com.}
   s.license     = 'Apache License Version 2.0'
 
-  s.required_ruby_version     = ">= 1.9.0"
+  s.required_ruby_version     = ">= 1.9.3"
   s.required_rubygems_version = ">= 1.3.6"
 
   s.add_development_dependency "bump"
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "inflection"
   s.add_runtime_dependency "multipart-post", "~> 2.0"
   s.add_runtime_dependency "mime-types"
+  s.add_runtime_dependency "scrub_rb", "~> 1.0.1"
 
   s.files              = `git ls-files -x Gemfile.lock`.split("\n") rescue ''
   s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")
