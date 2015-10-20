@@ -6,7 +6,7 @@ This client **only** supports Zendesk's v2 API.  Please see our [API documentati
 
 ## Documentation
 
-Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki), [class documentation](https://zendesk-api.herokuapp.com/doc/index.html), and [issues](https://github.com/zendesk/zendesk_api_client_rb/issues) before reporting a bug or asking for help.
+Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki), [class documentation](http://zendesk.github.io/zendesk_api_client_rb), and [issues](https://github.com/zendesk/zendesk_api_client_rb/issues) before reporting a bug or asking for help.
 
 ## Important Notices
 
