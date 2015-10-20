@@ -306,6 +306,7 @@ client.apps.create!(:name => "test", :upload => "app.zip")
 ```
 
 *Note: job statuses are currently not supported, so you must manually poll the job status API for app creation.*
+
 ```ruby
 body = {}
 until %w{failed completed}.include?(body["status"])
