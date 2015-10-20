@@ -14,7 +14,7 @@ class ResourceHandler < YARD::Handlers::Ruby::Base
           p.const_get(k)
         end
       rescue NameError
-        parent = ZendeskAPI.const_get(namespace.to_s.split('::').last)
+        parent = walk_namespace(namespace)
         klass = parent.const_get(klass)
       end
 
@@ -25,7 +25,7 @@ class ResourceHandler < YARD::Handlers::Ruby::Base
       begin
         klass = ZendeskAPI.const_get(klass)
       rescue NameError
-        parent = ZendeskAPI.const_get(namespace.to_s.split('::').last)
+        parent = walk_namespace(namespace)
         klass = parent.const_get(klass)
       end
 
@@ -50,6 +50,12 @@ class ResourceHandler < YARD::Handlers::Ruby::Base
     writer.dynamic = true
     writer.docstring.add_tag(YARD::Tags::Tag.new(:return, "The associated object", klass.name))
     writer.docstring.add_tag(YARD::Tags::Tag.new(:param, "The associated object or its attributes", "Hash or #{klass.name}", "value"))
+  end
+
+  def walk_namespace(namespace)
+    namespace.to_s.split('::').inject(ZendeskAPI) do |klass, namespace|
+      klass.const_get(namespace)
+    end
   end
 
   def get_klass(statement)
