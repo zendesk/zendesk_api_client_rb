@@ -82,7 +82,7 @@ module ZendeskAPI
 
     # Convenience method to build a new resource and
     # add it to the collection. Fetches the collection as well.
-    # @param [Hash] options Options or attributes to pass
+    # @param [Hash] opts Options or attributes to pass
     def build(opts = {})
       wrap_resource(opts, true).tap do |res|
         self << res
@@ -91,7 +91,7 @@ module ZendeskAPI
 
     # Convenience method to build a new resource and
     # add it to the collection. Fetches the collection as well.
-    # @param [Hash] options Options or attributes to pass
+    # @param [Hash] opts Options or attributes to pass
     def build!(opts = {})
       wrap_resource(opts, true).tap do |res|
         fetch!
