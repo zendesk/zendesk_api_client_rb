@@ -1,4 +1,0 @@
----
-BUNDLE_PATH: "/data/samson/releases/20151016-204348-9f1b7c0/cached_repos/8f9cba016aed0ad00efcb77d321b5740/artifacts/bundle"
-BUNDLE_WITHOUT: test
-BUNDLE_DISABLE_SHARED_GEMS: '1'
