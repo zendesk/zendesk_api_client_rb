@@ -1,0 +1,466 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: Readme
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!file.Readme.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: Readme</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Zendesk API Client</h1>
+
+<h2>API version support</h2>
+
+<p>This client <strong>only</strong> supports Zendesk&#39;s v2 API.  Please see our <a href="http://developer.zendesk.com">API documentation</a> for more information.</p>
+
+<h2>Documentation</h2>
+
+<p>Please check out the <a href="https://github.com/zendesk/zendesk_api_client_rb/wiki">wiki</a>, <a href="https://zendesk-api.herokuapp.com/doc/index.html">class documentation</a>, and <a href="https://github.com/zendesk/zendesk_api_client_rb/issues">issues</a> before reporting a bug or asking for help.</p>
+
+<h2>Important Notices</h2>
+
+<ul>
+<li>Version 0.0.5 brings with it a change to the top-level namespace. All references to Zendesk should now use ZendeskAPI.</li>
+<li>Version 0.3.0 changed the license from MIT to Apache Version 2.</li>
+<li>Version 0.3.2 introduced a regression when side-loading roles on users. This was fixed in 0.3.4.</li>
+<li>Version 1.0.0 changes the way errors are handled. Please see the <a href="https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors">wiki page</a> for more info.</li>
+<li>Version 1.3.0 updates the Faraday dependency to 0.9. Since Faraday did not bump a major version we have not either, but there is no guarantee &gt;= 1.3.0 works with Faraday &lt; 0.9</li>
+<li>Version 1.3.8 had a bug where attachments were created, but the response was not handled properly</li>
+<li>Version &gt;= 1.0 and &lt; 1.4.2 had a bug where non application/json response bodies were discarded</li>
+<li>Version 1.5.0 removed support for Ruby 1.8</li>
+<li>Version 1.6.0 ZendeskAPI::Voice::CertificationAddress is now ZendeskAPI::Voice::Address</li>
+<li>Version 1.8.0 no longer considers 1XX and 3XX (except 304) response status codes valid and will raise a NetworkError</li>
+</ul>
+
+<h2>Installation</h2>
+
+<p>The Zendesk API client can be installed using Rubygems or Bundler.</p>
+
+<h3>Rubygems</h3>
+
+<pre class="code sh"><code class="sh">gem install zendesk_api
+</code></pre>
+
+<h3>Bundler</h3>
+
+<p>Add it to your Gemfile</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>zendesk_api</span><span class='tstring_end'>&quot;</span></span>
+</code></pre>
+
+<p>and follow normal <a href="http://gembundler.com/">Bundler</a> installation and execution procedures.</p>
+
+<h2>Configuration</h2>
+
+<p>Configuration is done through a block returning an instance of ZendeskAPI::Client.
+The block is mandatory and if not passed, an ArgumentError will be thrown.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>zendesk_api</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_client'>client</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_config'>config</span><span class='op'>|</span>
+  <span class='comment'># Mandatory:
+</span>
+  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;- your-zendesk-url -&gt;</span><span class='tstring_end'>&quot;</span></span> <span class='comment'># e.g. https://mydesk.zendesk.com/api/v2
+</span>
+  <span class='comment'># Basic / Token Authentication
+</span>  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_username'>username</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>login.email@zendesk.com</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='comment'># Choose one of the following depending on your authentication choice
+</span>  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_token'>token</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>your zendesk token</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>your zendesk password</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='comment'># OAuth Authentication
+</span>  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_access_token'>access_token</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>your OAuth access token</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='comment'># Optional:
+</span>
+  <span class='comment'># Retry uses middleware to notify the user
+</span>  <span class='comment'># when hitting the rate limit, sleep automatically,
+</span>  <span class='comment'># then retry the request.
+</span>  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_retry'>retry</span> <span class='op'>=</span> <span class='kw'>true</span>
+
+  <span class='comment'># Logger prints to STDERR by default, to e.g. print to stdout:
+</span>  <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>logger</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span> <span class='op'>=</span> <span class='const'>Logger</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='const'>STDOUT</span><span class='rparen'>)</span>
+
+  <span class='comment'># Changes Faraday adapter
+</span>  <span class='comment'># config.adapter = :patron
+</span>
+  <span class='comment'># Merged with the default client options hash
+</span>  <span class='comment'># config.client_options = { :ssl =&gt; false }
+</span>
+  <span class='comment'># When getting the error &#39;hostname does not match the server certificate&#39;
+</span>  <span class='comment'># use the API at https://yoursubdomain.zendesk.com/api/v2
+</span><span class='kw'>end</span>
+</code></pre>
+
+<p>Note: This ZendeskAPI API client only supports basic authentication at the moment.</p>
+
+<h2>Usage</h2>
+
+<p>The result of configuration is an instance of ZendeskAPI::Client which can then be used in two different methods.</p>
+
+<p>One way to use the client is to pass it in as an argument to individual classes.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Ticket</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='comma'>,</span> <span class='symbol'>:priority</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>urgent</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># doesn&#39;t actually send a request, must explicitly call #save
+</span><span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Ticket</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:subject</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Test Ticket</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:comment</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='symbol'>:value</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>This is a test</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='symbol'>:submitter_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_current_user'>current_user</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='symbol'>:priority</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>urgent</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Ticket</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='rparen'>)</span>
+<span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Ticket</span><span class='period'>.</span><span class='id identifier rubyid_destroy'>destroy</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>Another way is to use the instance methods under client.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_build'>build</span><span class='lparen'>(</span><span class='symbol'>:subject</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Test Ticket</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='symbol'>:subject</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Test Ticket</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:comment</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='symbol'>:value</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>This is a test</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='comma'>,</span> <span class='symbol'>:submitter_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_current_user'>current_user</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='symbol'>:priority</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>urgent</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_destroy'>destroy</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='rparen'>)</span>
+</code></pre>
+
+<p>The methods under ZendeskAPI::Client (such as .tickets) return an instance of ZendeskAPI::Collection a lazy-loaded list of that resource.
+Actual requests may not be sent until an explicit ZendeskAPI::Collection#fetch, ZendeskAPI::Collection#to_a, or an applicable methods such
+as #each.</p>
+
+<h3>Caveats</h3>
+
+<p>Resource updating is implemented by sending only the <code>changed?</code> attributes to the server (see <code>ZendeskAPI::TrackChanges</code>).
+Unfortunately, this module only hooks into <code>Hash</code> meaning any changes to an <code>Array</code> not resulting in a new instance will not be tracked and sent.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_zendesk_api_client_rb'>zendesk_api_client_rb</span> </code></pre>
+
+<h3>Pagination</h3>
+
+<p>ZendeskAPI::Collections can be paginated:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_tickets'>tickets</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_page'>page</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_per_page'>per_page</span><span class='lparen'>(</span><span class='int'>3</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_next_page'>next_page</span> <span class='op'>=</span> <span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_next'>next</span> <span class='comment'># =&gt; 3
+</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span> <span class='comment'># GET /api/v2/tickets?page=3&amp;per_page=3
+</span><span class='id identifier rubyid_previous_page'>previous_page</span> <span class='op'>=</span> <span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_prev'>prev</span> <span class='comment'># =&gt; 2
+</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span> <span class='comment'># GET /api/v2/tickets?page=2&amp;per_page=3
+</span></code></pre>
+
+<p>Iteration over all resources and pages is handled by Collection#all</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_resource'>resource</span><span class='op'>|</span>
+  <span class='comment'># every resource, from all pages, will be yielded to this block
+</span><span class='kw'>end</span>
+</code></pre>
+
+<p>If given a block with two arguments, the page number is also passed in.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_resource'>resource</span><span class='comma'>,</span> <span class='id identifier rubyid_page_number'>page_number</span><span class='op'>|</span>
+  <span class='comment'># all resources will be yielded along with the page number
+</span><span class='kw'>end</span>
+</code></pre>
+
+<h3>Callbacks</h3>
+
+<p>Callbacks can be added to the ZendeskAPI::Client instance and will be called (with the response env) after all response middleware on a successful request.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_insert_callback'>insert_callback</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_env'>env</span><span class='op'>|</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_env'>env</span><span class='lbracket'>[</span><span class='symbol'>:response_headers</span><span class='rbracket'>]</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h3>Resource management</h3>
+
+<p>Individual resources can be created, modified, saved, and destroyed.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_ticket'>ticket</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='comment'># ZendeskAPI::Ticket.find(client, :id =&gt; 1)
+</span><span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_priority'>priority</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>urgent</span><span class='tstring_end'>&quot;</span></span>
+<span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span> <span class='comment'># =&gt; { &quot;priority&quot; =&gt; &quot;urgent&quot; }
+</span><span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span> <span class='comment'># Will PUT =&gt; true
+</span><span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_destroy'>destroy</span> <span class='comment'># =&gt; true
+</span>
+<span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Ticket</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='lbrace'>{</span> <span class='symbol'>:priority</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>urgent</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_new_record?'>new_record?</span> <span class='comment'># =&gt; true
+</span><span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span> <span class='comment'># Will POST
+</span></code></pre>
+
+<h3>Side-loading</h3>
+
+<p><strong>Warning: this is an experimental feature. Abuse it and lose it.</strong></p>
+
+<p>To facilitate a smaller number of requests and easier manipulation of associated data we allow &quot;side-loading&quot;, or inclusion, of selected resources.</p>
+
+<p>For example:
+A ZendeskAPI::Ticket is associated with ZendeskAPI::User through the requester_id field.
+API requests for that ticket return a structure similar to this:</p>
+
+<pre class="code json"><code class="json">&quot;ticket&quot;: {
+  &quot;id&quot;: 1,
+  &quot;url&quot;: &quot;http.....&quot;,
+  &quot;requester_id&quot;: 7,
+  ...
+}
+</code></pre>
+
+<p>Calling ZendeskAPI::Ticket#requester automatically fetches and loads the user referenced above (<code>/api/v2/users/7</code>).
+Using side-loading, however, the user can be partially loaded in the same request as the ticket.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_tickets'>tickets</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_include'>include</span><span class='lparen'>(</span><span class='symbol'>:users</span><span class='rparen'>)</span>
+<span class='comment'># Or client.tickets(:include =&gt; :users)
+</span><span class='comment'># Does *NOT* make a request to the server since it is already loaded
+</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_requester'>requester</span> <span class='comment'># =&gt; #&lt;ZendeskAPI::User id=...&gt;
+</span></code></pre>
+
+<p>OR</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_ticket'>ticket</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='comma'>,</span> <span class='symbol'>:include</span> <span class='op'>=&gt;</span> <span class='symbol'>:users</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_requester'>requester</span> <span class='comment'># =&gt; #&lt;ZendeskAPI::User id=...&gt;
+</span></code></pre>
+
+<p>Currently, this feature is limited to only a few resources and their associations.
+They are documented on <a href="http://developer.zendesk.com/documentation/rest_api/introduction.html#side-loading-(beta)">developer.zendesk.com</a>.</p>
+
+<h3>Search</h3>
+
+<p>Searching is done through the client. Returned is an instance of ZendeskAPI::Collection:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='symbol'>:query</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>my search query</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># /api/v2/search.json?query=...
+</span><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_users'>users</span><span class='period'>.</span><span class='id identifier rubyid_search'>search</span><span class='lparen'>(</span><span class='symbol'>:query</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>my new query</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>  <span class='comment'># /api/v2/users/search.json?query=...
+</span></code></pre>
+
+<h3>Special case: Custom resources paths</h3>
+
+<p>API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
+They will too return an instance of ZendeskAPI::Collection.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_tickets'>tickets</span><span class='period'>.</span><span class='id identifier rubyid_recent'>recent</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_topics'>topics</span><span class='period'>.</span><span class='id identifier rubyid_show_many'>show_many</span><span class='lparen'>(</span><span class='symbol'>:verb</span> <span class='op'>=&gt;</span> <span class='symbol'>:post</span><span class='comma'>,</span> <span class='symbol'>:ids</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='int'>1</span><span class='comma'>,</span> <span class='int'>2</span><span class='comma'>,</span> <span class='int'>3</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+</code></pre>
+
+<h3>Special Case: Current user</h3>
+
+<p>Use either of the following to obtain the current user instance:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_users'>users</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>me</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_current_user'>current_user</span>
+</code></pre>
+
+<h3>Special Case: Importing a ticket</h3>
+
+<p>Bulk importing tickets allows you to move large amounts of data into Zendesk.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_ticket'>ticket</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Ticket</span><span class='period'>.</span><span class='id identifier rubyid_import'>import</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:subject</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Help</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:comments</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='lbrace'>{</span> <span class='symbol'>:author_id</span> <span class='op'>=&gt;</span> <span class='int'>19</span><span class='comma'>,</span> <span class='symbol'>:value</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>This is a comment</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+</code></pre>
+
+<p><a href="http://developer.zendesk.com/documentation/rest_api/ticket_import.html">http://developer.zendesk.com/documentation/rest_api/ticket_import.html</a></p>
+
+<h3>Attaching files</h3>
+
+<p>Files can be attached to ticket comments using either a path or the File class and will
+be automatically uploaded and attached.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_ticket'>ticket</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Ticket</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:comment</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='symbol'>:value</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>attachments</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_comment'>comment</span><span class='period'>.</span><span class='id identifier rubyid_uploads'>uploads</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>img.jpg</span><span class='tstring_end'>&quot;</span></span>
+<span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_comment'>comment</span><span class='period'>.</span><span class='id identifier rubyid_uploads'>uploads</span> <span class='op'>&lt;&lt;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>img.jpg</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_ticket'>ticket</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span>
+</code></pre>
+
+<h3>Apps API</h3>
+
+<p>v1.1.0 introduces support for the Zendesk <a href="http://developer.zendesk.com/documentation/apps/reference/api.html">Apps API</a></p>
+
+<h4>Creating Apps</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_upload'>upload</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_apps'>apps</span><span class='period'>.</span><span class='id identifier rubyid_uploads'>uploads</span><span class='period'>.</span><span class='id identifier rubyid_create!'>create!</span><span class='lparen'>(</span><span class='symbol'>:file</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>path/to/app.zip</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_apps'>apps</span><span class='period'>.</span><span class='id identifier rubyid_create!'>create!</span><span class='lparen'>(</span><span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>test</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:upload_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_upload'>upload</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+
+<span class='comment'># Or
+</span>
+<span class='id identifier rubyid_app'>app</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>App</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>test</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_upload'>upload</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>path/to/app.zip</span><span class='tstring_end'>&quot;</span></span>
+<span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_save!'>save!</span>
+
+<span class='comment'># Or
+</span>
+<span class='id identifier rubyid_upload'>upload</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>App</span><span class='op'>::</span><span class='const'>Upload</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:file</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>path/to/app.zip</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_upload'>upload</span><span class='period'>.</span><span class='id identifier rubyid_save!'>save!</span>
+
+<span class='id identifier rubyid_app'>app</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>App</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>test</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_upload_id'>upload_id</span> <span class='op'>=</span> <span class='id identifier rubyid_upload'>upload</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span>
+<span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_save!'>save!</span>
+
+<span class='comment'># Or
+</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_apps'>apps</span><span class='period'>.</span><span class='id identifier rubyid_create!'>create!</span><span class='lparen'>(</span><span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>test</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:upload</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>app.zip</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+</code></pre>
+
+<p><em>Note: job statuses are currently not supported, so you must manually poll the job status API for app creation.</em></p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_body'>body</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+<span class='kw'>until</span> <span class='qwords_beg'>%w{</span><span class='tstring_content'>failed</span><span class='words_sep'> </span><span class='tstring_content'>completed</span><span class='words_sep'>}</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_body'>body</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_get'>get</span><span class='lparen'>(</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Location</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_body'>body</span> <span class='op'>=</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span>
+
+  <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='id identifier rubyid_body'>body</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>retry_in</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h4>Updating Apps</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_upload'>upload</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_apps'>apps</span><span class='period'>.</span><span class='id identifier rubyid_uploads'>uploads</span><span class='period'>.</span><span class='id identifier rubyid_create!'>create!</span><span class='lparen'>(</span><span class='symbol'>:file</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>NewApp.zip</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+<span class='comment'># Then
+</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_apps'>apps</span><span class='period'>.</span><span class='id identifier rubyid_update!'>update!</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='comma'>,</span> <span class='symbol'>:upload_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_upload'>upload</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+
+<span class='comment'># Or
+</span>
+<span class='id identifier rubyid_app'>app</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>App</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_upload_id'>upload_id</span> <span class='op'>=</span> <span class='id identifier rubyid_upload'>upload</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span>
+<span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_save!'>save!</span>
+
+<span class='comment'># Or
+</span>
+<span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>App</span><span class='period'>.</span><span class='id identifier rubyid_update!'>update!</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='comma'>,</span> <span class='symbol'>:upload_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_upload'>upload</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+</code></pre>
+
+<h4>Deleting Apps</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_apps'>apps</span><span class='period'>.</span><span class='id identifier rubyid_destroy!'>destroy!</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_app'>app</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>App</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_destroy!'>destroy!</span>
+
+<span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>App</span><span class='period'>.</span><span class='id identifier rubyid_destroy!'>destroy!</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='rparen'>)</span>
+</code></pre>
+
+<h4>Installing an App</h4>
+
+<p><strong>Installation name is required</strong></p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_installation'>installation</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>AppInstallation</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:app_id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='comma'>,</span> <span class='symbol'>:settings</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Name</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_installation'>installation</span><span class='period'>.</span><span class='id identifier rubyid_save!'>save!</span>
+
+<span class='comment'># or
+</span>
+<span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_apps'>apps</span><span class='period'>.</span><span class='id identifier rubyid_installations'>installations</span><span class='period'>.</span><span class='id identifier rubyid_create!'>create!</span><span class='lparen'>(</span><span class='symbol'>:app_id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='comma'>,</span> <span class='symbol'>:settings</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Name</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+
+<span class='comment'># or
+</span>
+<span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>AppInstallation</span><span class='period'>.</span><span class='id identifier rubyid_create!'>create!</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:app_id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='comma'>,</span> <span class='symbol'>:settings</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Name</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+</code></pre>
+
+<h4>List Installations</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_apps'>apps</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_installations'>installations</span>
+<span class='id identifier rubyid_apps'>apps</span><span class='period'>.</span><span class='id identifier rubyid_fetch!'>fetch!</span>
+</code></pre>
+
+<h4>Update Installation</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_installations'>installations</span><span class='period'>.</span><span class='id identifier rubyid_update!'>update!</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='comma'>,</span> <span class='symbol'>:settings</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='symbol'>:title</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>My New Name</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_installation'>installation</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>AppInstallation</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_installation'>installation</span><span class='period'>.</span><span class='id identifier rubyid_settings'>settings</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='symbol'>:title</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>My New Name</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
+<span class='id identifier rubyid_installation'>installation</span><span class='period'>.</span><span class='id identifier rubyid_save!'>save!</span>
+
+<span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>AppInstallation</span><span class='period'>.</span><span class='id identifier rubyid_update!'>update!</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='comma'>,</span> <span class='symbol'>:settings</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='symbol'>:title</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>My New Name</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+</code></pre>
+
+<h4>Delete Installation</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_app'>app</span><span class='period'>.</span><span class='id identifier rubyid_installations'>installations</span><span class='period'>.</span><span class='id identifier rubyid_destroy!'>destroy!</span><span class='lparen'>(</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='rparen'>)</span>
+
+<span class='id identifier rubyid_installation'>installation</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>AppInstallation</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_installation'>installation</span><span class='period'>.</span><span class='id identifier rubyid_destroy!'>destroy!</span>
+
+<span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>AppInstallation</span><span class='period'>.</span><span class='id identifier rubyid_destroy!'>destroy!</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>123</span><span class='rparen'>)</span>
+</code></pre>
+
+<h2>Note on Patches/Pull Requests</h2>
+
+<ol>
+<li>Fork the project.</li>
+<li>Make your feature addition or bug fix.</li>
+<li>Add tests for it. This is important so I don&#39;t break it in a future version
+unintentionally.</li>
+<li>Commit, do not mess with rakefile, version, or history. (if you want to have
+your own version, that is fine but bump version in a commit by itself I can
+ignore when I pull)</li>
+<li>Send me a pull request. Bonus points for topic branches.</li>
+</ol>
+
+<h2>Supported Ruby Versions</h2>
+
+<p>Tested with Ruby 1.9, 2.0, 2.1, 2.2 and jRuby.
+<a href="http://travis-ci.org/zendesk/zendesk_api_client_rb"><img src="https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png?branch=master" alt="Build Status"></a>
+<a href="http://badge.fury.io/rb/zendesk_api"><img src="https://badge.fury.io/rb/zendesk_api.png" alt="Gem Version"></a>
+<a href="https://codeclimate.com/github/zendesk/zendesk_api_client_rb"><img src="https://codeclimate.com/github/zendesk/zendesk_api_client_rb.png" alt="Code Climate"></a></p>
+
+<h2>Copyright and license</h2>
+
+<p>Copyright 2014 Zendesk</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Tue Oct 20 15:11:18 2015 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.1.5).
+</div>
+
+  </body>
+</html>
