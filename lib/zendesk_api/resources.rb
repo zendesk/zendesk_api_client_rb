@@ -637,6 +637,10 @@ module ZendeskAPI
   end
 
   class User < Resource
+    extend CreateMany
+    extend UpdateMany
+    extend DestroyMany
+
     class TopicComment < TopicComment
       include Read
     end
