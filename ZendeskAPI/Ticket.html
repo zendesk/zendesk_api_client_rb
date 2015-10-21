@@ -340,7 +340,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#create_many%21-class_method" title="#create_many! (class method)">+ (Object) <strong>create_many!</strong>(client, attributes_array, association = Association.new(:class =&gt; self)) </a>
+      <a href="#create_many%21-class_method" title="#create_many! (class method)">+ (JobStatus) <strong>create_many!</strong>(client, attributes_array, association = Association.new(:class =&gt; self)) </a>
     
 
     
@@ -359,7 +359,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Creates multiple resources using the create_many endpoint.</p>
+</div></span>
   
 </li>
 
@@ -367,7 +369,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#destroy_many%21-class_method" title="#destroy_many! (class method)">+ (Object) <strong>destroy_many!</strong>(client, ids, association = Association.new(:class =&gt; self)) </a>
+      <a href="#destroy_many%21-class_method" title="#destroy_many! (class method)">+ (JobStatus) <strong>destroy_many!</strong>(client, ids, association = Association.new(:class =&gt; self)) </a>
     
 
     
@@ -386,7 +388,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Destroys multiple resources using the destroy_many endpoint.</p>
+</div></span>
   
 </li>
 
@@ -466,7 +470,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#update_many%21-class_method" title="#update_many! (class method)">+ (Object) <strong>update_many!</strong>(client, ids, attributes) </a>
+      <a href="#update_many%21-class_method" title="#update_many! (class method)">+ (JobStatus) <strong>update_many!</strong>(client, ids, attributes) </a>
     
 
     
@@ -485,7 +489,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Updates multiple resources using the update_many endpoint.</p>
+</div></span>
   
 </li>
 
@@ -1664,7 +1670,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="create_many!-class_method">
   
-    + (<tt>Object</tt>) <strong>create_many!</strong>(client, attributes_array, association = Association.new(:class =&gt; self)) 
+    + (<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>) <strong>create_many!</strong>(client, attributes_array, association = Association.new(:class =&gt; self)) 
   
 
   
@@ -1675,13 +1681,78 @@
         <span class='object_link'><a href="CreateMany.html#create_many%21-class_method" title="ZendeskAPI::CreateMany#create_many! (method)">CreateMany</a></span>
     </span>
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creates multiple resources using the create_many endpoint.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>client</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Client.html" title="ZendeskAPI::Client (class)">Client</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The <span class='object_link'><a href="Client.html" title="ZendeskAPI::Client (class)">ZendeskAPI::Client</a></span> object to be used</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>attributes_array</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>An array of resources to be created.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the <span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span> instance for this create job</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       <div class="method_details ">
   <h3 class="signature " id="destroy_many!-class_method">
   
-    + (<tt>Object</tt>) <strong>destroy_many!</strong>(client, ids, association = Association.new(:class =&gt; self)) 
+    + (<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>) <strong>destroy_many!</strong>(client, ids, association = Association.new(:class =&gt; self)) 
   
 
   
@@ -1692,7 +1763,72 @@
         <span class='object_link'><a href="DestroyMany.html#destroy_many%21-class_method" title="ZendeskAPI::DestroyMany#destroy_many! (method)">DestroyMany</a></span>
     </span>
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Destroys multiple resources using the destroy_many endpoint.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>client</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Client.html" title="ZendeskAPI::Client (class)">Client</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The <span class='object_link'><a href="Client.html" title="ZendeskAPI::Client (class)">Client</a></span> object to be used</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ids</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>An array of ids to destroy</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the <span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span> instance for this destroy job</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       <div class="method_details ">
@@ -1991,7 +2127,7 @@
       <div class="method_details ">
   <h3 class="signature " id="update_many!-class_method">
   
-    + (<tt>Object</tt>) <strong>update_many!</strong>(client, ids, attributes) 
+    + (<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>) <strong>update_many!</strong>(client, ids, attributes) 
   
 
   
@@ -2002,7 +2138,88 @@
         <span class='object_link'><a href="UpdateMany.html#update_many%21-class_method" title="ZendeskAPI::UpdateMany#update_many! (method)">UpdateMany</a></span>
     </span>
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Updates multiple resources using the update_many endpoint.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>client</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Client.html" title="ZendeskAPI::Client (class)">Client</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The <span class='object_link'><a href="Client.html" title="ZendeskAPI::Client (class)">Client</a></span> object to be used</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ids</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>An array of ids to update</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>attributes</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The attributes to update resources with</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the <span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span> instance for this destroy job</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
   </div>
@@ -4528,7 +4745,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue Oct 20 22:40:02 2015 by
+  Generated on Wed Oct 21 18:12:54 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
