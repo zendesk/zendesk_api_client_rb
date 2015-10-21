@@ -90,6 +90,7 @@ module ZendeskAPI
       base.extend(ClassMethods)
     end
 
+    # Reloads a resource.
     def reload!
       response = @client.connection.get(path) do |req|
         yield req if block_given?
@@ -124,6 +125,8 @@ module ZendeskAPI
       end
 
       # Finds, returning nil if it fails
+      # @param [Client] client The {Client} object to be used
+      # @param [Hash] options Any additional GET parameters to be added
       def find(client, options = {}, &block)
         find!(client, options, &block)
       rescue ZendeskAPI::Error::ClientError => e
@@ -151,6 +154,9 @@ module ZendeskAPI
         end
       end
 
+      # Creates, returning nil if it fails
+      # @param [Client] client The {Client} object to be used
+      # @param [Hash] options Any additional GET parameters to be added
       def create(client, attributes = {}, &block)
         create!(client, attributes, &block)
       rescue ZendeskAPI::Error::ClientError
@@ -160,6 +166,10 @@ module ZendeskAPI
   end
 
   module CreateMany
+    # Creates multiple resources using the create_many endpoint.
+    # @param [Client] client The {Client} object to be used
+    # @param [Array] attributes_array An array of resources to be created.
+    # @return [JobStatus] the {JobStatus} instance for this create job
     def create_many!(client, attributes_array, association = Association.new(:class => self))
       response = client.connection.post("#{association.generate_path}/create_many") do |req|
         req.body = { resource_name => attributes_array }
@@ -193,6 +203,7 @@ module ZendeskAPI
       @destroyed = true
     end
 
+    # Destroys, returning false on error.
     def destroy(&block)
       destroy!(&block)
     rescue ZendeskAPI::Error::ClientError
@@ -209,6 +220,7 @@ module ZendeskAPI
         true
       end
 
+      # Destroys, returning false on error.
       def destroy(client, attributes = {}, &block)
         destroy!(client, attributes, &block)
       rescue ZendeskAPI::Error::ClientError
@@ -218,6 +230,10 @@ module ZendeskAPI
   end
 
   module DestroyMany
+    # Destroys multiple resources using the destroy_many endpoint.
+    # @param [Client] client The {Client} object to be used
+    # @param [Array] ids An array of ids to destroy
+    # @return [JobStatus] the {JobStatus} instance for this destroy job
     def destroy_many!(client, ids, association = Association.new(:class => self))
       response = client.connection.delete("#{association.generate_path}/destroy_many") do |req|
         req.params = { :ids => ids.join(',') }
@@ -237,15 +253,16 @@ module ZendeskAPI
     end
 
     module ClassMethod
-      # Updates  a resource given the id passed in.
-      # @param [Client] client The {Client} object to be used
-      # @param [Hash] attributes The attributes to update. Default to {}
+      # Updates, returning false on error.
       def update(client, attributes = {}, &block)
         update!(client, attributes, &block)
       rescue ZendeskAPI::Error::ClientError
         false
       end
 
+      # Updates a resource given the id passed in.
+      # @param [Client] client The {Client} object to be used
+      # @param [Hash] attributes The attributes to update. Default to {
       def update!(client, attributes = {}, &block)
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
         resource = new(client, :id => attributes.delete(:id), :global => attributes.delete(:global), :association => attributes.delete(:association))
@@ -257,6 +274,11 @@ module ZendeskAPI
   end
 
   module UpdateMany
+    # Updates multiple resources using the update_many endpoint.
+    # @param [Client] client The {Client} object to be used
+    # @param [Array] ids An array of ids to update
+    # @param [Hash] attributes The attributes to update resources with
+    # @return [JobStatus] the {JobStatus} instance for this destroy job
     def update_many!(client, ids, attributes)
       association = attributes.delete(:association) || Association.new(:class => self)
 
