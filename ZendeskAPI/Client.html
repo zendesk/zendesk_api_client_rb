@@ -905,9 +905,7 @@ subclass to add additional middleware and make other configuration changes.</p>
 174
 175
 176
-177
-178
-179</pre>
+177</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/zendesk_api/client.rb', line 140</span>
@@ -923,8 +921,6 @@ subclass to add additional middleware and make other configuration changes.</p>
     <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>SanitizeResponse</span>
 
     <span class='id identifier rubyid_adapter'>adapter</span> <span class='op'>=</span> <span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_adapter'>adapter</span> <span class='op'>||</span> <span class='const'>Faraday</span><span class='period'>.</span><span class='id identifier rubyid_default_adapter'>default_adapter</span>
-
-    <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_adapter'>adapter</span>
 
     <span class='kw'>unless</span> <span class='const'>GZIP_EXCEPTIONS</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_adapter'>adapter</span><span class='rparen'>)</span>
       <span class='id identifier rubyid_builder'>builder</span><span class='period'>.</span><span class='id identifier rubyid_use'>use</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Middleware</span><span class='op'>::</span><span class='const'>Response</span><span class='op'>::</span><span class='const'>Gzip</span>
@@ -1321,7 +1317,7 @@ in the Faraday middleware stack.</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Nov 13 21:26:03 2015 by
+  Generated on Fri Nov 13 21:28:09 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
