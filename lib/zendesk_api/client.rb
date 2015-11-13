@@ -24,6 +24,8 @@ module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
   # Can also be used as an accessor to resource collections.
   class Client
+    GZIP_EXCEPTIONS = [:em_http, :httpclient]
+
     # @return [Configuration] Config instance
     attr_reader :config
     # @return [Array] Custom response callbacks
@@ -147,7 +149,9 @@ module ZendeskAPI
 
         adapter = config.adapter || Faraday.default_adapter
 
-        unless [:em_http, Faraday::Adapter::EMHttp].include?(adapter)
+        puts adapter
+
+        unless GZIP_EXCEPTIONS.include?(adapter)
           builder.use ZendeskAPI::Middleware::Response::Gzip
           builder.use ZendeskAPI::Middleware::Response::Deflate
         end
