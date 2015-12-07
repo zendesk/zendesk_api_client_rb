@@ -51,7 +51,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_json_request(:delete, %r{test_resources/#{id}})
+        stub_json_request(:delete, %r{test_resources/#{id}}).to_return(:status => 204)
       end
 
       it "should return instance of resource" do
@@ -73,7 +73,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource.new(client, :id => 1) }
 
       before(:each) do
-        stub_request(:delete, %r{test_resources}).to_return(:status => 200)
+        stub_request(:delete, %r{test_resources}).to_return(:status => 204)
       end
 
       it "should return true and set destroyed" do
