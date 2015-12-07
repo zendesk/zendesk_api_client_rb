@@ -1,19 +1,19 @@
-# -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib/', __FILE__)
-$:.unshift lib unless $:.include?(lib)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'zendesk_api/version'
 
 Gem::Specification.new do |s|
   s.name        = "zendesk_api"
   s.version     = ZendeskAPI::VERSION
-  s.platform    = Gem::Platform::RUBY
   s.authors     = ["Steven Davidovitz", "Michael Grosser"]
   s.email       = ["support@zendesk.com"]
-  s.homepage    = "http://developer.zendesk.com"
+  s.homepage    = "https://developer.zendesk.com"
   s.summary     = %q{Zendesk REST API Client}
-  s.description = %q{Ruby wrapper for the REST API at http://www.zendesk.com. Documentation at http://developer.zendesk.com.}
+  s.description = %q{Ruby wrapper for the REST API at https://www.zendesk.com. Documentation at https://developer.zendesk.com.}
   s.license     = 'Apache License Version 2.0'
+
+  s.files = Dir.glob('{lib,util}/**/*')
 
   s.required_ruby_version     = ">= 1.9.0"
   s.required_rubygems_version = ">= 1.3.6"
@@ -31,8 +31,4 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "multipart-post", "~> 2.0"
   s.add_runtime_dependency "mime-types", "~> 2.99"
   s.add_runtime_dependency "scrub_rb", "~> 1.0.1"
-
-  s.files              = `git ls-files -x Gemfile.lock`.split("\n") rescue ''
-  s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.require_paths      = ["lib"]
 end
