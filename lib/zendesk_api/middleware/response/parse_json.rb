@@ -10,7 +10,6 @@ module ZendeskAPI
         def on_complete(env)
           type = env[:response_headers][CONTENT_TYPE].to_s
           type = type.split(';', 2).first if type.index(';')
-          type
 
           return unless type == 'application/json'
 
