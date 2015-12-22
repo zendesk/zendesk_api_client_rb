@@ -1,10 +1,10 @@
 language: ruby
 
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1
   - 2.2
-  - jruby
+  - jruby-21mode
+  - jruby-head
 
 sudo: false

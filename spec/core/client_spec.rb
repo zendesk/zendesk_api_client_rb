@@ -48,12 +48,8 @@ describe ZendeskAPI::Client do
         end
       end
 
-      it "should build basic auth middleware" do
-        expect(subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to_not be_nil
-      end
-
-      it "should not build token middleware" do
-        expect(subject.connection.headers["Authorization"]).to be_nil
+      it "adds the authorization header" do
+        expect(subject.connection.headers["Authorization"]).to eq('Basic aGVsbG86dG9rZW4=')
       end
     end
 
@@ -63,10 +59,6 @@ describe ZendeskAPI::Client do
           config.url = "https://example.zendesk.com/api/v2"
           config.access_token = "hello"
         end
-      end
-
-      it "should not build basic auth middleware" do
-        expect(subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to be_nil
       end
 
       it "should build token middleware" do
@@ -86,29 +78,21 @@ describe ZendeskAPI::Client do
       subject { client.config }
       let(:username) { "hello" }
 
+      it "adds the authorization header" do
+        expect(client.connection.headers["Authorization"]).to eq('Basic aGVsbG8vdG9rZW46dG9rZW4=')
+      end
+
       context "with a username with /token" do
         let(:username) { "hello/token" }
 
         it "should not add /token to the username" do
-          expect(subject.username).to eq("hello/token")
+          expect(subject.username_with_token).to eq("hello/token")
         end
       end
 
       context "with no password" do
-        it "should build basic auth middleware" do
-          expect(client.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to_not be_nil
-        end
-
-        it "should not build token middleware" do
-          expect(client.connection.builder.handlers.index(Faraday::Request::TokenAuthentication)).to be_nil
-        end
-
-        it "should copy token to password" do
-          expect(subject.token).to eq(subject.password)
-        end
-
         it "should add /token to the username" do
-          expect(subject.username).to eq("hello/token")
+          expect(subject.username_with_token).to eq("hello/token")
         end
       end
     end
@@ -234,8 +218,8 @@ describe ZendeskAPI::Client do
     end
 
     it "should respond_to? for actual instance methods" do
-      expect(subject.respond_to?(:set_default_logger, true)).to eq(true)
-      expect(subject.respond_to?(:set_default_logger)).to eq(false)
+      expect(subject.respond_to?(:add_warning_callback, true)).to eq(true)
+      expect(subject.respond_to?(:add_warning_callback)).to eq(false)
     end
 
     it "should not respond_to? invalid resources" do
