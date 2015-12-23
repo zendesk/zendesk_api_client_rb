@@ -61,23 +61,21 @@ module ZendeskAPI
 
     # Returns the current user (aka me)
     # @return [ZendeskAPI::User] Current user or nil
-    def current_user(reload = false)
-      return @current_user if @current_user && !reload
-      @current_user = users.find(:id => 'me')
+    def current_user
+      users.find(:id => 'me')
     end
 
     # Returns the current account
     # @return [Hash] The attributes of the current account or nil
-    def current_account(reload = false)
-      return @current_account if @current_account && !reload
-      @current_account = Hashie::Mash.new(connection.get('account/resolve').body)
+    def current_account
+      # TODO
+      Hashie::Mash.new(connection.get('account/resolve').body)
     end
 
     # Returns the current locale
     # @return [ZendeskAPI::Locale] Current locale or nil
-    def current_locale(reload = false)
-      return @locale if @locale && !reload
-      @locale = locales.find(:id => 'current')
+    def current_locale
+      locales.find(:id => 'current')
     end
 
     # Creates a new {Client} instance and yields {#config}.
