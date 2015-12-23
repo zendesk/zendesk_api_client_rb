@@ -25,28 +25,36 @@ module ZendeskAPI
   class Client
     GZIP_EXCEPTIONS = [:em_http, :httpclient]
 
+    METHOD_TO_RESOURCE_LOOKUP = Hash.new do |h, k|
+      @@resource_classes ||= begin
+        subclasses_for = lambda do |klass|
+          klass.subclasses.flat_map do |subclass|
+            [subclass] + subclasses_for[subclass]
+          end
+        end
+
+        subclasses_for[ZendeskAPI::Data].select(&:resource_name)
+      end
+
+      h[k] = @@resource_classes.find {|x| x.resource_name == k}
+    end
+
     # @return [Configuration] Config instance
     attr_reader :config
 
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
     # @return [Collection] Collection instance for resource
-    def method_missing(method, *args, &block)
-      method = method.to_s
-      options = args.last.is_a?(Hash) ? args.pop : {}
-
-      @resource_cache[method] ||= { :class => nil, :cache => {} }
-      if !options.delete(:reload) && (cached = @resource_cache[method][:cache][options.hash])
-        cached
+    def method_missing(method, *args, **options, &block)
+      if klass = method_as_class(method)
+        ZendeskAPI::Collection.new(self, klass, options)
       else
-        @resource_cache[method][:class] ||= method_as_class(method)
-        raise "Resource for #{method} does not exist" unless @resource_cache[method][:class]
-        @resource_cache[method][:cache][options.hash] = ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options)
+        super
       end
     end
 
-    def respond_to?(method, *args)
-      ((cache = @resource_cache[method]) && cache[:class]) || !method_as_class(method).nil? || super
+    def respond_to?(method, *)
+      !method_as_class(method).nil? || super
     end
 
     # Returns the current user (aka me)
@@ -161,15 +169,8 @@ module ZendeskAPI
 
     private
 
-    subclasses_for = lambda {|x| x.subclasses.flat_map {|y| [y] + subclasses_for[y]}}
-    subclasses = subclasses_for[ZendeskAPI::Data] - [ZendeskAPI::Data, ZendeskAPI::ReadResource, ZendeskAPI::CreateResource, ZendeskAPI::UpdateResource, ZendeskAPI::DeleteResource, ZendeskAPI::Resource, ZendeskAPI::SingularResource, ZendeskAPI::DataResource]
-
-    LOOKUP = Hash.new do |h, k|
-      h[k] = subclasses.find {|x| x.resource_name == k}
-    end
-
     def method_as_class(method)
-      LOOKUP[method.to_s]
+      METHOD_TO_RESOURCE_LOOKUP[method.to_s]
     end
 
     def add_warning_callback

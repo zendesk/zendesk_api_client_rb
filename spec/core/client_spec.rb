@@ -169,15 +169,6 @@ describe ZendeskAPI::Client do
 
   context "resources" do
     it "should return an instance of ZendeskAPI::Collection if there is no method" do
-      expect(subject.instance_variable_get(:@resource_cache)["tickets"]).to be_nil
-
-      expect(subject.tickets).to be_instance_of(ZendeskAPI::Collection)
-
-      expect(subject.instance_variable_get(:@resource_cache)["tickets"]).to_not be_empty
-      expect(subject.instance_variable_get(:@resource_cache)["tickets"][:class]).to eq(ZendeskAPI::Ticket)
-      expect(subject.instance_variable_get(:@resource_cache)["tickets"][:cache]).to be_instance_of(Hash)
-
-      expect(ZendeskAPI).to_not receive(:const_get)
       expect(subject.tickets).to be_instance_of(ZendeskAPI::Collection)
     end
 
@@ -185,17 +176,8 @@ describe ZendeskAPI::Client do
       expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => '123'))
     end
 
-    it "should not cache calls with :reload => true options" do
-      expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => 'abc', :reload => true))
-    end
-
-    it "should not pass reload to the underlying collection" do
-      collection = subject.search(:query => 'abc', :reload => true)
-      expect(collection.options.key?(:reload)).to be(false)
-    end
-
-    it "should cache calls with the same options" do
-      expect(subject.search(:query => 'abc')).to eq(subject.search(:query => 'abc'))
+    it "should not cache calls with the same options" do
+      expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => 'abc'))
     end
 
     it "should respond_to? for valid resources" do
@@ -226,7 +208,7 @@ describe ZendeskAPI::Client do
     end
 
     it 'raises if the resource does not exist' do
-      expect { subject.random_resource }.to raise_error(RuntimeError)
+      expect { subject.random_resource }.to raise_error(NoMethodError)
     end
   end
 
