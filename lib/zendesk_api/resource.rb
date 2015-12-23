@@ -93,17 +93,14 @@ module ZendeskAPI
     def to_s
       "#{self.class.singular_resource_name}: #{attributes.inspect}"
     end
+
     alias :inspect :to_s
 
     # Compares resources by class and id. If id is nil, then by object_id
     def ==(other)
-      return true if other.object_id == self.object_id
-
-      if other && !(other.is_a?(Data) || other.is_a?(Integer))
-        warn "Trying to compare #{other.class} to a Resource from #{caller.first}"
-      end
-
-      if other.is_a?(Data)
+      if other.__id__ == self.__id__
+        true
+      elsif other.is_a?(Data)
         other.id && other.id == id
       elsif other.is_a?(Integer)
         id == other
@@ -111,6 +108,7 @@ module ZendeskAPI
         false
       end
     end
+
     alias :eql :==
 
     # @private

@@ -486,12 +486,6 @@ describe ZendeskAPI::Resource do
     it "is different when other is no resource" do
       expect(ZendeskAPI::TestResource.new(client, :id => 2)).to_not eq(nil)
     end
-
-    it "warns about weird comparissons" do
-      object = ZendeskAPI::TestResource.new(client, :id => 2)
-      expect(object).to receive(:warn)
-      expect(object).to_not eq("xxx")
-    end
   end
 
   context "SingularTestResource" do
