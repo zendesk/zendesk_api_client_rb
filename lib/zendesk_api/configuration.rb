@@ -14,7 +14,6 @@ module ZendeskAPI
 
       self.callbacks ||= []
       self.client_options ||= {}
-      self.cache ||= ZendeskAPI::LRUCache.new(1000)
       self.adapter ||= Faraday.default_adapter
 
       unless logger

@@ -175,7 +175,7 @@ describe ZendeskAPI::Client do
 
       expect(subject.instance_variable_get(:@resource_cache)["tickets"]).to_not be_empty
       expect(subject.instance_variable_get(:@resource_cache)["tickets"][:class]).to eq(ZendeskAPI::Ticket)
-      expect(subject.instance_variable_get(:@resource_cache)["tickets"][:cache]).to be_instance_of(ZendeskAPI::LRUCache)
+      expect(subject.instance_variable_get(:@resource_cache)["tickets"][:cache]).to be_instance_of(Hash)
 
       expect(ZendeskAPI).to_not receive(:const_get)
       expect(subject.tickets).to be_instance_of(ZendeskAPI::Collection)

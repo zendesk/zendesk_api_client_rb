@@ -1,13 +1,12 @@
 require 'faraday'
 require 'faraday_middleware'
+require 'faraday-http-cache'
 
 require 'zendesk_api/version'
 require 'zendesk_api/sideloading'
 require 'zendesk_api/configuration'
 require 'zendesk_api/collection'
-require 'zendesk_api/lru_cache'
 
-require 'zendesk_api/middleware/request/etag_cache'
 require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/request/url_based_access_token'
@@ -35,13 +34,13 @@ module ZendeskAPI
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
 
-      @resource_cache[method] ||= { :class => nil, :cache => ZendeskAPI::LRUCache.new }
-      if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
+      @resource_cache[method] ||= { :class => nil, :cache => {} }
+      if !options.delete(:reload) && (cached = @resource_cache[method][:cache][options.hash])
         cached
       else
         @resource_cache[method][:class] ||= method_as_class(method)
         raise "Resource for #{method} does not exist" unless @resource_cache[method][:class]
-        @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
+        @resource_cache[method][:cache][options.hash] = ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options)
       end
     end
 
@@ -145,7 +144,7 @@ module ZendeskAPI
         end
 
         if config.cache
-          builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+          builder.use :http_cache, store: config.cache
         end
 
         builder.use ZendeskAPI::Middleware::Request::Upload
@@ -153,7 +152,7 @@ module ZendeskAPI
         builder.request :json
 
         if config.retry # Should always be first in the stack
-          builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger
+          builder.use ZendeskAPI::Middleware::Request::Retry, logger: config.logger
         end
 
         builder.adapter *config.adapter
