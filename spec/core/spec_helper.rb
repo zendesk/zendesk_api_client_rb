@@ -68,7 +68,7 @@ def client
 
     client.config.logger.level = (ENV["LOG"] ? Logger::DEBUG : Logger::WARN)
     client.config.cache.size = 0
-    client.callbacks.clear
+    client.config.callbacks.clear
 
     client.insert_callback do |env|
       warning = env[:response_headers]["X-Zendesk-API-Warn"]

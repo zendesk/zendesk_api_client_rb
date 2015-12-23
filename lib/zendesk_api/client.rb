@@ -119,7 +119,7 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
-        builder.use ZendeskAPI::Middleware::Response::Callback, self
+        builder.use ZendeskAPI::Middleware::Response::Callback, config.callbacks
 
         if config.logger
           builder.use ZendeskAPI::Middleware::Response::Logger, config.logger
