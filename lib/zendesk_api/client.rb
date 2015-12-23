@@ -33,6 +33,8 @@ module ZendeskAPI
           end
         end
 
+        # TODO ?
+        # raise WAT if resources.uniq != resources
         subclasses_for[ZendeskAPI::Data].select(&:resource_name)
       end
 
