@@ -18,12 +18,9 @@ module ZendeskAPI
 
       # Updates a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
-      # @param [Hash] attributes The attributes to update. Default to {
+      # @param [Hash] attributes The attributes to update. Default to {}
       def update!(client, attributes = {}, &block)
-        resource = new(client, :id => attributes.delete(:id), :global => attributes.delete(:global), :association => attributes.delete(:association))
-        resource.attributes.merge!(attributes)
-        resource.save!(:force_update => resource.is_a?(SingularResource), &block)
-        resource
+        new(client, attributes).tap {|r| r.save!(&block)}
       end
     end
   end

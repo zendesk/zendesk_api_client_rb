@@ -14,7 +14,9 @@ module ZendeskAPI
       end
 
       handle_response(response)
+      resource.set_includes(resource, includes, response.body) if includes
       attributes.clear_changes
+
       self
     end
 
@@ -24,21 +26,7 @@ module ZendeskAPI
       # @param [Client] client The {Client} object to be used
       # @param [Hash] options Any additional GET parameters to be added
       def find!(client, options = {})
-        @client = client # so we can use client.logger in rescue
-
-        raise ArgumentError, "No :id given" unless options[:id] || options["id"] || ancestors.include?(SingularResource)
-        association = options.delete(:association) || Association.new(:class => self)
-
-        includes = Array(options[:include])
-        options[:include] = includes.join(",") if includes.any?
-
-        response = client.connection.get(association.generate_path(options)) do |req|
-          req.params = options
-
-          yield req if block_given?
-        end
-
-        new_from_response(client, response, includes)
+        new(client).tap(&:reload!)
       end
 
       # Finds, returning nil if it fails

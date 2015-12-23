@@ -31,10 +31,9 @@ module ZendeskAPI
       end
     end
 
-    # @return [Hash] The resource's attributes
+    # @return [Hashie::Mash] The resource's attributes
     attr_reader :attributes
-    # @return [ZendeskAPI::Association] The association
-    attr_accessor :association
+
     # Place to dump the last response
     attr_accessor :response
 
@@ -42,25 +41,17 @@ module ZendeskAPI
     # @param [Client] client The client to use
     # @param [Hash] attributes The optional attributes that describe the resource
     def initialize(client, attributes = {})
-      @association = attributes.delete(:association) || Association.new(:class => self.class)
       @global_params = attributes.delete(:global) || {}
       @client = client
       @attributes = ZendeskAPI::Trackie.new(attributes)
       @attributes.clear_changes unless new_record?
     end
 
-    def self.new_from_response(client, response, includes = nil)
-      new(client).tap do |resource|
-        resource.handle_response(response)
-        resource.set_includes(resource, includes, response.body) if includes
-        resource.attributes.clear_changes
-      end
-    end
+    # TODO raise NoMethod for actions
 
     # Passes the method onto the attributes hash.
     # If the attributes are nested (e.g. { :tickets => { :id => 1 } }), passes the method onto the nested hash.
     def method_missing(*args, &block)
-      raise NoMethodError, ":save is not defined" if args.first.to_sym == :save
       @attributes.send(*args, &block)
     end
 
@@ -79,7 +70,7 @@ module ZendeskAPI
 
     # Returns the path to the resource
     def path(options = {})
-      @association.generate_path(self, options)
+      # TODO
     end
 
     # Passes #to_json to the underlying attributes hash
@@ -107,7 +98,7 @@ module ZendeskAPI
       end
     end
 
-    alias :eql :==
+    alias :eql? :==
 
     # @private
     def inspect

@@ -14,7 +14,7 @@ module ZendeskAPI
     def destroy!
       return false if destroyed? || new_record?
 
-      @client.connection.delete(url || path) do |req|
+      @client.connection.delete(path) do |req|
         yield req if block_given?
       end
 
@@ -34,8 +34,6 @@ module ZendeskAPI
       # @param [Hash] opts The optional parameters to pass. Defaults to {}
       def destroy!(client, opts = {}, &block)
         new(client, opts).destroy!(&block)
-
-        true
       end
 
       # Destroys, returning false on error.

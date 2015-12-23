@@ -25,7 +25,6 @@ module ZendeskAPI
       end
     end
 
-
     private
 
     # Traverses the resource looking for associations
