@@ -1,4 +1,3 @@
-require 'zendesk_api/helpers'
 require 'zendesk_api/trackie'
 require 'zendesk_api/actions'
 require 'zendesk_api/association'
@@ -11,22 +10,14 @@ module ZendeskAPI
     include Associations
 
     class << self
+      attr_accessor :resource_name, :singular_resource_name
+
       def inherited(klass)
         subclasses.push(klass)
       end
 
       def subclasses
         @subclasses ||= []
-      end
-
-      # The singular resource name taken from the class name (e.g. ZendeskAPI::Ticket -> ticket)
-      def singular_resource_name
-        @singular_resource_name ||= ZendeskAPI::Helpers.snakecase_string(to_s.split("::").last)
-      end
-
-      # The resource name taken from the class name (e.g. ZendeskAPI::Ticket -> tickets)
-      def resource_name
-        @resource_name ||= Inflection.plural(singular_resource_name)
       end
 
       def resource_path
@@ -187,9 +178,12 @@ module ZendeskAPI
   module DataNamespace
     class << self
       def included(base)
+        base.singleton_class.send(:attr_accessor, :namespace)
+
         @descendants ||= []
         @descendants << base
       end
+
       def descendants
         @descendants || []
       end

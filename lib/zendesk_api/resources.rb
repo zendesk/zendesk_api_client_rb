@@ -1,12 +1,223 @@
 module ZendeskAPI
-# @internal The following are redefined later, but needed by some circular resources (e.g. Ticket -> User, User -> Ticket)
+  class User < Resource
+    self.resource_name = 'users'
+    self.singular_resource_name = 'user'
+    # TODO
+  end
 
+  class JobStatus < ReadResource
+    self.resource_name = 'job_statuses'
+    self.singular_resource_name = 'job_status'
+  end
 
-  class Ticket < Resource; end
-  class Forum < Resource; end
-  class User < Resource; end
-  class Category < Resource; end
-  class OrganizationMembership < ReadResource; end
+  class Ticket < Resource
+    self.resource_name = 'tickets'
+    self.singular_resource_name = 'ticket'
+  end
+
+  module Conditions
+    def all_conditions=(all_conditions)
+      self.conditions ||= {}
+      self.conditions[:all] = all_conditions
+    end
+
+    def any_conditions=(any_conditions)
+      self.conditions ||= {}
+      self.conditions[:any] = any_conditions
+    end
+
+    def add_all_condition(field, operator, value)
+      self.conditions ||= {}
+      self.conditions[:all] ||= []
+      self.conditions[:all] << { :field => field, :operator => operator, :value => value }
+    end
+
+    def add_any_condition(field, operator, value)
+      self.conditions ||= {}
+      self.conditions[:any] ||= []
+      self.conditions[:any] << { :field => field, :operator => operator, :value => value }
+    end
+  end
+
+  module Actions
+    def add_action(field, value)
+      self.actions ||= []
+      self.actions << { :field => field, :value => value }
+    end
+  end
+
+  class Rule < Resource
+    # TODO abstract base class?
+    self.resource_name = 'rules'
+    self.singular_resource_name = 'rule'
+
+    private
+
+    def attributes_for_save
+      to_save = [:conditions, :actions, :output].inject({}) {|h,k| h.merge(k => send(k))}
+      { self.class.singular_resource_name.to_sym => attributes.changes.merge(to_save) }
+    end
+  end
+
+  class Automation < Rule
+    include Conditions
+    include Actions
+
+    self.resource_name = 'automations'
+    self.singular_resource_name = 'automation'
+  end
+
+  class Macro < Rule
+    include Actions
+
+    self.resource_name = 'macros'
+    self.singular_resource_name = 'macro'
+
+    # has :execution, :class => RuleExecution
+
+    # Returns the update to a ticket that happens when a macro will be applied.
+    # @param [Ticket] ticket Optional {Ticket} to apply this macro to.
+    # @raise [Faraday::Error::ClientError] Raised for any non-200 response.
+    def apply!(ticket = nil)
+      path = "#{self.path}/apply"
+
+      if ticket
+        path = "#{ticket.path}/#{path}"
+      end
+
+      response = @client.connection.get(path)
+      Hashie::Mash.new(response.body.fetch("result", {}))
+    end
+
+    # Returns the update to a ticket that happens when a macro will be applied.
+    # @param [Ticket] ticket Optional {Ticket} to apply this macro to
+    def apply(ticket = nil)
+      apply!(ticket)
+    rescue Faraday::Error::ClientError => e
+      Hashie::Mash.new
+    end
+  end
+
+  class Trigger < Rule
+    include Conditions
+    include Actions
+
+    # has :execution, :class => RuleExecution
+  end
+
+  class View < Rule
+    include Conditions
+
+    self.resource_name = 'views'
+    self.singular_resource_name = 'view'
+
+    #has_many :tickets, :class => Ticket
+    #has_many :feed, :class => Ticket, :path => "feed"
+
+    #has_many :rows, :class => ViewRow, :path => "execute"
+    #has :execution, :class => RuleExecution
+    #has ViewCount, :path => "count"
+
+    def add_column(column)
+      columns = execution.columns.map(&:id)
+      columns << column
+      self.columns = columns
+    end
+
+    def columns=(columns)
+      self.output ||= {}
+      self.output[:columns] = columns
+    end
+
+    def self.preview(client, options = {})
+      Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
+    end
+  end
+
+  class Search < Data
+    class Result < Data; end
+
+    # Creates a search collection
+    def self.search(client, options = {})
+      unless (%w{query external_id} & options.keys.map(&:to_s)).any?
+        warn "you have not specified a query for this search"
+      end
+
+      ZendeskAPI::Collection.new(client, self, options)
+    end
+
+    # Quack like a Resource
+    # Creates the correct resource class from the result_type passed in
+    def self.new(client, attributes)
+      result_type = attributes["result_type"]
+
+      if result_type
+        result_type = result_type.capitalize
+        klass = ZendeskAPI.const_get(result_type) rescue nil
+      end
+
+      (klass || Result).new(client, attributes)
+    end
+
+    class << self
+      def resource_name
+        'search'
+      end
+
+      alias :resource_path :resource_name
+
+      def model_key
+        'results'
+      end
+    end
+  end
+
+  module Voice
+    include DataNamespace
+    self.namespace = 'voice'
+
+    class Address < Resource
+      self.resource_name = 'addresses'
+      self.singular_resource_name = 'address'
+
+      namespace "channels/voice"
+    end
+
+    class Greeting < Resource
+      self.resource_name = 'greetings'
+      self.singular_resource_name = 'greeting'
+
+      namespace "channels/voice"
+    end
+
+    class PhoneNumber < Resource
+      self.resource_name = 'phone_numbers'
+      self.singular_resource_name = 'phone_number'
+
+      namespace "channels/voice"
+    end
+
+    class GreetingCategory < Resource
+      self.resource_name = 'greeting_categories'
+      self.singular_resource_name = 'greeting_category'
+
+      namespace "channels/voice"
+    end
+  end
+end
+
+__END__
+  class Forum < Resource
+  end
+
+  class User < Resource
+  end
+
+  class Category < Resource
+  end
+
+  class OrganizationMembership < ReadResource
+  end
 
 # @internal Begin actual Resource definitions
 
@@ -25,7 +236,6 @@ module ZendeskAPI
   class Ability < DataResource; end
   class Group < Resource; end
   class SharingAgreement < ReadResource; end
-  class JobStatus < ReadResource; end
 
   class Session < ReadResource
     include Destroy
@@ -279,44 +489,6 @@ module ZendeskAPI
     has Group
   end
 
-  class Search
-    class Result < Data; end
-
-    # Creates a search collection
-    def self.search(client, options = {})
-      unless (%w{query external_id} & options.keys.map(&:to_s)).any?
-        warn "you have not specified a query for this search"
-      end
-
-      ZendeskAPI::Collection.new(client, self, options)
-    end
-
-    # Quack like a Resource
-    # Creates the correct resource class from the result_type passed in
-    def self.new(client, attributes)
-      result_type = attributes["result_type"]
-
-      if result_type
-        result_type = ZendeskAPI::Helpers.modulize_string(result_type)
-        klass = ZendeskAPI.const_get(result_type) rescue nil
-      end
-
-      (klass || Result).new(client, attributes)
-    end
-
-    class << self
-      def resource_name
-        "search"
-      end
-
-      alias :resource_path :resource_name
-
-      def model_key
-        "results"
-      end
-    end
-  end
-
   class Request < Resource
     class Comment < DataResource
       include Save
@@ -523,105 +695,6 @@ module ZendeskAPI
     end
   end
 
-  module Conditions
-    def all_conditions=(all_conditions)
-      self.conditions ||= {}
-      self.conditions[:all] = all_conditions
-    end
-
-    def any_conditions=(any_conditions)
-      self.conditions ||= {}
-      self.conditions[:any] = any_conditions
-    end
-
-    def add_all_condition(field, operator, value)
-      self.conditions ||= {}
-      self.conditions[:all] ||= []
-      self.conditions[:all] << { :field => field, :operator => operator, :value => value }
-    end
-
-    def add_any_condition(field, operator, value)
-      self.conditions ||= {}
-      self.conditions[:any] ||= []
-      self.conditions[:any] << { :field => field, :operator => operator, :value => value }
-    end
-  end
-
-  module Actions
-    def add_action(field, value)
-      self.actions ||= []
-      self.actions << { :field => field, :value => value }
-    end
-  end
-
-  class View < Rule
-    include Conditions
-
-    has_many :tickets, :class => Ticket
-    has_many :feed, :class => Ticket, :path => "feed"
-
-    has_many :rows, :class => ViewRow, :path => "execute"
-    has :execution, :class => RuleExecution
-    has ViewCount, :path => "count"
-
-    def add_column(column)
-      columns = execution.columns.map(&:id)
-      columns << column
-      self.columns = columns
-    end
-
-    def columns=(columns)
-      self.output ||= {}
-      self.output[:columns] = columns
-    end
-
-    def self.preview(client, options = {})
-      Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
-    end
-  end
-
-  class Trigger < Rule
-    include Conditions
-    include Actions
-
-    has :execution, :class => RuleExecution
-  end
-
-  class Automation < Rule
-    include Conditions
-    include Actions
-
-    has :execution, :class => RuleExecution
-  end
-
-  class Macro < Rule
-    include Actions
-
-    has :execution, :class => RuleExecution
-
-    # Returns the update to a ticket that happens when a macro will be applied.
-    # @param [Ticket] ticket Optional {Ticket} to apply this macro to.
-    # @raise [Faraday::Error::ClientError] Raised for any non-200 response.
-    def apply!(ticket = nil)
-      path = "#{self.path}/apply"
-
-      if ticket
-        path = "#{ticket.path}/#{path}"
-      end
-
-      response = @client.connection.get(path)
-      Hashie::Mash.new(response.body.fetch("result", {}))
-    end
-
-    # Returns the update to a ticket that happens when a macro will be applied.
-    # @param [Ticket] ticket Optional {Ticket} to apply this macro to
-    def apply(ticket = nil)
-      apply!(ticket)
-    rescue Faraday::Error::ClientError => e
-      Hashie::Mash.new
-    end
-  end
-
   class UserView < Rule
     def self.preview(client, options = {})
       Collection.new(client, UserViewRow, options.merge!(:path => "user_views/preview", :verb => :post))
@@ -785,22 +858,6 @@ module ZendeskAPI
 
   module Voice
     include DataNamespace
-
-    class PhoneNumber < Resource
-      namespace "channels/voice"
-    end
-
-    class Address < Resource
-      namespace "channels/voice"
-    end
-
-    class Greeting < Resource
-      namespace "channels/voice"
-    end
-
-    class GreetingCategory < Resource
-      namespace "channels/voice"
-    end
 
     class Ticket < CreateResource
       namespace "channels/voice"

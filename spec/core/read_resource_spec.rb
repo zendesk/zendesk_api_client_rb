@@ -24,9 +24,8 @@ describe ZendeskAPI::ReadResource do
     context "with overriden handle_response" do
       subject do
         Class.new(ZendeskAPI::TestResource) do
-          def self.singular_resource_name
-            'hello'
-          end
+          self.resource_name = 'hellos'
+          self.singular_resource_name = 'hello'
 
           def handle_response(response)
             @attributes.replace(response.body)

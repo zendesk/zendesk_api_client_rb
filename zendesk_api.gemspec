@@ -28,8 +28,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'faraday_middleware', '~> 0.10'
   s.add_runtime_dependency 'faraday-http-cache', '~> 1.2'
   s.add_runtime_dependency 'hashie', '>= 1.2', '< 4.0'
-  s.add_runtime_dependency 'inflection'
-  s.add_runtime_dependency 'mime-types'
+  s.add_runtime_dependency 'mime-types', '~> 3.0'
 
   s.files = Dir.glob('lib/**/*')
 end

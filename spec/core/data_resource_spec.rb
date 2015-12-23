@@ -1,17 +1,6 @@
 require 'core/spec_helper'
 
 describe ZendeskAPI::DataResource do
-  specify "singular resource name" do
-    expect(ZendeskAPI::Ticket.singular_resource_name).to eq("ticket")
-    expect(ZendeskAPI::TicketField.singular_resource_name).to eq("ticket_field")
-  end
-
-  specify "resource name" do
-    expect(ZendeskAPI::Ticket.resource_name).to eq("tickets")
-    expect(ZendeskAPI::TicketField.resource_name).to eq("ticket_fields")
-    expect(ZendeskAPI::Category.resource_name).to eq("categories")
-  end
-
   context "association" do
     subject { ZendeskAPI::TestResource.new(client, :id => 1) }
     let(:options) {{}}

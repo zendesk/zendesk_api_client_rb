@@ -98,8 +98,7 @@ module ZendeskAPI
     end
 
     ZendeskAPI::DataNamespace.descendants.each do |namespace|
-      delegator = ZendeskAPI::Helpers.snakecase_string(namespace.to_s.split("::").last)
-      define_method delegator do |*| # takes arguments, but doesn't do anything with them
+      define_method namespace.namespace do |*| # takes arguments, but doesn't do anything with them
         Delegator.new(self)
       end
     end
@@ -162,9 +161,15 @@ module ZendeskAPI
 
     private
 
+    subclasses_for = lambda {|x| x.subclasses.flat_map {|y| [y] + subclasses_for[y]}}
+    subclasses = subclasses_for[ZendeskAPI::Data] - [ZendeskAPI::Data, ZendeskAPI::ReadResource, ZendeskAPI::CreateResource, ZendeskAPI::UpdateResource, ZendeskAPI::DeleteResource, ZendeskAPI::Resource, ZendeskAPI::SingularResource, ZendeskAPI::DataResource]
+
+    LOOKUP = Hash.new do |h, k|
+      h[k] = subclasses.find {|x| x.resource_name == k}
+    end
+
     def method_as_class(method)
-      klass_as_string = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
-      ZendeskAPI::Association.class_from_namespace(klass_as_string)
+      LOOKUP[method.to_s]
     end
 
     def add_warning_callback

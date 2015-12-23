@@ -1,5 +1,3 @@
-require 'zendesk_api/helpers'
-
 module ZendeskAPI
   # This module holds association method for resources.
   # Associations can be loaded in three ways:
@@ -165,7 +163,7 @@ module ZendeskAPI
 
             # find and cache association
             instance_association = Association.new(association.merge(:parent => self))
-            singular_resource_name = Inflection.singular(association[:name].to_s)
+            singular_resource_name = klass.singular_resource_name
 
             resources = if (ids = method_missing("#{singular_resource_name}_ids")) && ids.any?
               ids.map do |id|

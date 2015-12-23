@@ -1,5 +1,3 @@
-require 'zendesk_api/helpers'
-
 module ZendeskAPI
   # Represents an association between two resources
   # @private
@@ -64,7 +62,7 @@ module ZendeskAPI
       has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
 
       if has_parent
-        parent_class = @options.parent ? @options.parent.class : Association.class_from_namespace(ZendeskAPI::Helpers.modulize_string(namespace[0]))
+        parent_class = @options.parent ? @options.parent.class : Association.class_from_namespace(namespace[0])
         parent_namespace = build_parent_namespace(parent_class, instance, options, original_options)
         namespace[1..1] = parent_namespace if parent_namespace
         namespace[0] = parent_class.resource_path
@@ -82,7 +80,7 @@ module ZendeskAPI
     # Tries to place side loads onto given resources.
     def side_load(resources, side_loads)
       key = "#{options.name}_id"
-      plural_key = "#{Inflection.singular options.name.to_s}_ids"
+      plural_key = "#{@options[:class].singular_resource_name}_ids"
 
       resources.each do |resource|
         if resource.key?(plural_key) # Grab associations from child_ids field on resource

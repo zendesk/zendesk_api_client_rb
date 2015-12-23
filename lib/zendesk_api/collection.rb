@@ -445,7 +445,7 @@ module ZendeskAPI
 
     # Two special cases, and all namespaced classes
     def with_association?
-      [Tag, Setting].include?(@resource_class) ||
+      # [Tag, Setting].include?(@resource_class) ||
         @resource_class.to_s.split("::").size > 2
     end
 
