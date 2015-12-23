@@ -1,3 +1,5 @@
+require 'scrub_rb'
+
 module ZendeskAPI
   module Middleware
     module Response
