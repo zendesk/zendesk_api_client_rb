@@ -27,8 +27,6 @@ module ZendeskAPI
 
     # @return [Configuration] Config instance
     attr_reader :config
-    # @return [Array] Custom response callbacks
-    attr_reader :callbacks
 
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
@@ -81,11 +79,9 @@ module ZendeskAPI
       yield config if block_given?
 
       config.check_values!
-
-      @callbacks = []
-      @resource_cache = {}
-
       add_warning_callback
+
+      @resource_cache = {}
     end
 
     # Creates a connection if there is none, otherwise returns the existing connection.
@@ -98,7 +94,7 @@ module ZendeskAPI
     # Pushes a callback onto the stack. Callbacks are executed on responses, last in the Faraday middleware stack.
     # @param [Proc] block The block to execute. Takes one parameter, env.
     def insert_callback(&block)
-      @callbacks << block
+      config.callbacks << block
     end
 
     ZendeskAPI::DataNamespace.descendants.each do |namespace|

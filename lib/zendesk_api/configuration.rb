@@ -5,13 +5,14 @@ module ZendeskAPI
   class Configuration < Struct.new(
     :username, :password, :token, :url, :retry,
     :logger, :client_options, :adapter,
-    :access_token, :url_based_access_token, :cache
+    :access_token, :url_based_access_token, :cache, :callbacks
   )
     def initialize(options = {})
       super()
 
       options.each {|k, v| self[k] = v}
 
+      self.callbacks ||= []
       self.client_options ||= {}
       self.cache ||= ZendeskAPI::LRUCache.new(1000)
       self.adapter ||= Faraday.default_adapter
@@ -61,6 +62,18 @@ module ZendeskAPI
         },
         url: url
       }.merge(client_options)
+    end
+
+    private
+
+    def add_warning_callback
+      return unless logger
+
+      insert_callback do |env|
+        if warning = env[:response_headers]['X-Zendesk-API-Warn']
+          logger.warn "WARNING: #{warning}"
+        end
+      end
     end
   end
 end
