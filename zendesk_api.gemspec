@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'faraday', '~> 0.9'
   s.add_runtime_dependency 'faraday_middleware', '~> 0.10'
   s.add_runtime_dependency 'faraday-http-cache', '~> 1.2'
-  s.add_runtime_dependency 'hashie', '>= 1.2', '< 4.0'
+  s.add_runtime_dependency 'hashie', '~> 3.0'
   s.add_runtime_dependency 'mime-types', '~> 3.0'
   s.add_runtime_dependency 'scrub_rb', '~> 1.0'
 

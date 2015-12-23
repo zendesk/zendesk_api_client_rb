@@ -66,11 +66,6 @@ module ZendeskAPI
       @attributes.send(*args, &block)
     end
 
-    # Returns the resource id of the object or nil
-    def id
-      key?(:id) ? method_missing(:id) : nil
-    end
-
     # Has this been object been created server-side? Does this by checking for an id.
     def new_record?
       id.nil?
