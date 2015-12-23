@@ -75,9 +75,6 @@ module ZendeskAPI
     # Creates a new {Client} instance and yields {#config}.
     #
     # Requires a block to be given.
-    #
-    # Does basic configuration constraints:
-    # * {Configuration#url} must be https unless {Configuration#allow_http} is set.
     def initialize(options = {})
       @config = ZendeskAPI::Configuration.new(options)
 

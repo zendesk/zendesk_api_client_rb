@@ -4,7 +4,7 @@ module ZendeskAPI
   # Holds the configuration options for the client and connection
   class Configuration < Struct.new(
     :username, :password, :token, :url, :retry,
-    :logger, :client_options, :adapter, :allow_http,
+    :logger, :client_options, :adapter,
     :access_token, :url_based_access_token, :cache
   )
     def initialize(options = {})
@@ -41,7 +41,7 @@ module ZendeskAPI
     end
 
     def check_values!
-      if !allow_http && url !~ /^https/
+      if url !~ /^https/
         raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
       end
     end

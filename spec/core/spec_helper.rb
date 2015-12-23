@@ -61,10 +61,6 @@ def client
         end
 
         config.url = data["url"]
-
-        if data["url"].start_with?("http://")
-          config.allow_http = true
-        end
       else
         unless $credentials_warning
           STDERR.puts "using default credentials: live specs will fail."

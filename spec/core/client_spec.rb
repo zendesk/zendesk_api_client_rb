@@ -22,15 +22,6 @@ describe ZendeskAPI::Client do
       end.to raise_error(ArgumentError)
     end
 
-    it "should not raise an exception when url isn't ssl and allow_http is set to true" do
-      expect do
-        ZendeskAPI::Client.new do |config|
-          config.allow_http = true
-          config.url = "http://www.google.com/"
-        end
-      end.to_not raise_error
-    end
-
     it "should handle valid url" do
       expect do
         ZendeskAPI::Client.new do |config|
@@ -241,9 +232,10 @@ describe ZendeskAPI::Client do
 
   it "can be subclassed" do
     client = SimpleClient.new do |config|
-      config.allow_http = true
+      config.url = 'https://test.example.com'
     end
-    expect(client.config.allow_http).to eq(true)
+
+    expect(client.config.url).to eq('https://test.example.com')
     expect(client.connection).to eq("FOO")
     expect(client.connection.object_id).to eq(client.connection.object_id) # it's cached
   end
