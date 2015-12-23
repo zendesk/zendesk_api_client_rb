@@ -102,13 +102,6 @@ module ZendeskAPI
       @callbacks << block
     end
 
-    # show a nice warning for people using the old style api
-    def self.check_deprecated_namespace_usage(attributes, name)
-      if attributes[name].is_a?(Hash)
-        raise "un-nest '#{name}' from the attributes"
-      end
-    end
-
     ZendeskAPI::DataNamespace.descendants.each do |namespace|
       delegator = ZendeskAPI::Helpers.snakecase_string(namespace.to_s.split("::").last)
       define_method delegator do |*| # takes arguments, but doesn't do anything with them
@@ -136,7 +129,6 @@ module ZendeskAPI
         if config.logger
           builder.use ZendeskAPI::Middleware::Response::Logger, config.logger
         end
-
 
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.response :json, content_type: /\bjson\z/

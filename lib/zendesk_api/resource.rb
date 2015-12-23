@@ -58,11 +58,6 @@ module ZendeskAPI
       @global_params = attributes.delete(:global) || {}
       @client = client
       @attributes = ZendeskAPI::Trackie.new(attributes)
-
-      if self.class.associations.none? {|a| a[:name] == self.class.singular_resource_name}
-        ZendeskAPI::Client.check_deprecated_namespace_usage @attributes, self.class.singular_resource_name
-      end
-
       @attributes.clear_changes unless new_record?
     end
 

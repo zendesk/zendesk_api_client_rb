@@ -147,8 +147,6 @@ module ZendeskAPI
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to create.
       def create!(client, attributes = {}, &block)
-        ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-
         new(client, attributes).tap do |resource|
           resource.save!(&block)
         end
@@ -264,7 +262,6 @@ module ZendeskAPI
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to update. Default to {
       def update!(client, attributes = {}, &block)
-        ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
         resource = new(client, :id => attributes.delete(:id), :global => attributes.delete(:global), :association => attributes.delete(:association))
         resource.attributes.merge!(attributes)
         resource.save!(:force_update => resource.is_a?(SingularResource), &block)
