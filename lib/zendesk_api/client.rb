@@ -179,7 +179,7 @@ module ZendeskAPI
     private
 
     def method_as_class(method)
-      klass_as_string = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s))
+      klass_as_string = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s.gsub(/\W/, '')))
       ZendeskAPI::Association.class_from_namespace(klass_as_string)
     end
 
