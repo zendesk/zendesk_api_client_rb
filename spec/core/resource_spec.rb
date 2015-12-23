@@ -531,11 +531,5 @@ describe ZendeskAPI::Resource do
       object = ZendeskAPI::TestResource.new(client, {})
       expect(object.attributes).to eq({})
     end
-
-    it "fails to build with nil (e.g. empty response from server)" do
-      expect{
-        ZendeskAPI::TestResource.new(client, nil)
-      }.to raise_error(/Expected a Hash/i)
-    end
   end
 end
