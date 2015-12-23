@@ -1,3 +1,5 @@
+# TODO parse out error code i.e. body['error'] and body['description']
+
 module ZendeskAPI
   module Error
     class ClientError < Faraday::Error::ClientError
@@ -11,14 +13,14 @@ module ZendeskAPI
         @response = response
 
         if response[:body].is_a?(Hash)
-          @errors = response[:body]["details"] || response[:body]["description"]
+          @errors = response[:body]['details'] || response[:body]['description']
         end
 
         @errors ||= {}
       end
 
       def to_s
-        "#{self.class.name}: #{@errors.to_s}"
+        "#{self.class.name}: #{errors.to_s}"
       end
     end
 
