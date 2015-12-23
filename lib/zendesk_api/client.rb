@@ -10,6 +10,7 @@ require 'zendesk_api/collection'
 require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/request/url_based_access_token'
+
 require 'zendesk_api/middleware/response/callback'
 require 'zendesk_api/middleware/response/sanitize_response'
 require 'zendesk_api/middleware/response/parse_iso_dates'
@@ -22,7 +23,7 @@ module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
   # Can also be used as an accessor to resource collections.
   class Client
-    GZIP_EXCEPTIONS = [:em_http, :httpclient, :net_http, :net_http_persistent]
+    GZIP_EXCEPTIONS = [:em_http, :httpclient]
 
     # @return [Configuration] Config instance
     attr_reader :config
@@ -129,7 +130,7 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::SanitizeResponse
 
         unless GZIP_EXCEPTIONS.include?(config.adapter)
-          builder.response :gzip
+          builder.use :gzip
         end
 
         # request
