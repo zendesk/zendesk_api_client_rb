@@ -1,18 +1,12 @@
-$:.unshift(File.join(File.dirname(__FILE__), "macros"))
+# $:.unshift(File.join(File.dirname(__FILE__), "macros"))
 
 ENV['TZ'] = 'CET' # something that is not local and not utc so we find all the bugs
 
-if RUBY_VERSION =~ /1.9/ && ENV["COVERAGE"]
-  require 'simplecov'
-  SimpleCov.start do
-    add_filter "spec/"
-  end
-end
-
 require 'zendesk_api'
+
 require 'vcr'
-require 'logger'
 require 'stringio'
+require 'webmock/rspec'
 
 begin
   require 'byebug'
@@ -23,15 +17,16 @@ class String
   def encoding_aware?; false; end
 end
 
-require File.join(File.dirname(__FILE__), '..', 'macros', 'resource_macros')
-require File.join(File.dirname(__FILE__), '..', 'fixtures', 'zendesk')
-require File.join(File.dirname(__FILE__), '..', 'fixtures', 'test_resources')
+require_relative '../macros/resource_macros'
+require_relative '../fixtures/zendesk'
+require_relative '../fixtures/test_resources'
 
 $credentials_warning = false
 
 # tests fail when this is included in a Module (someone else also defines client)
 def client
   credentials = File.join(File.dirname(__FILE__), '..', 'fixtures', 'credentials.yml')
+
   @client ||= begin
     client = ZendeskAPI::Client.new do |config|
       if File.exist?(credentials)
@@ -101,13 +96,6 @@ module TestHelper
     client.config.logger.level = old_level
   end
 
-  def silence_stderr
-    $stderr = File.new( '/dev/null', 'w' )
-    yield
-  ensure
-    $stderr = STDERR
-  end
-
   def json(body = {})
     JSON.dump(body)
   end
@@ -125,12 +113,8 @@ RSpec.configure do |c|
     ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
   end
 
-  c.before(:each) do
-    WebMock.reset!
-  end
-
   c.around(:each, :silence_logger) do |example|
-    silence_logger{ example.call }
+    silence_logger { example.call }
   end
 
   c.around(:each, :prevent_logger_changes) do |example|
@@ -154,5 +138,3 @@ VCR.configure do |c|
   c.hook_into :webmock
   c.configure_rspec_metadata!
 end
-
-include WebMock::API

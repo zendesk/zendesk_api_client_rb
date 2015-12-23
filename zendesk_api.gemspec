@@ -18,11 +18,11 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'bump'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'vcr'
+  s.add_development_dependency 'rspec', '~> 3.4'
+  s.add_development_dependency 'vcr', '~> 3.0'
   s.add_development_dependency 'multi_json' # For VCR's JSON format
-  s.add_development_dependency 'webmock'
-  s.add_development_dependency 'yard'
+  s.add_development_dependency 'webmock', '~> 1.22'
+  s.add_development_dependency 'yard', '~> 0.8'
 
   s.add_runtime_dependency 'faraday', '~> 0.9'
   s.add_runtime_dependency 'faraday_middleware', '~> 0.10'
