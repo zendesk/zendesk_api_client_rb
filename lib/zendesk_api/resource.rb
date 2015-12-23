@@ -35,8 +35,6 @@ module ZendeskAPI
     attr_reader :attributes
     # @return [ZendeskAPI::Association] The association
     attr_accessor :association
-    # @return [Array] The last received errors
-    attr_accessor :errors
     # Place to dump the last response
     attr_accessor :response
 
@@ -116,6 +114,7 @@ module ZendeskAPI
       "#<#{self.class.name} #{@attributes.to_hash.inspect}>"
     end
 
+    # TODO :id?
     alias :to_param :attributes
 
     private
@@ -128,6 +127,7 @@ module ZendeskAPI
   # Indexable resource
   class DataResource < Data
     attr_accessor :error, :error_message
+
     extend Verbs
   end
 
