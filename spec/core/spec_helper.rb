@@ -1,7 +1,6 @@
-# $:.unshift(File.join(File.dirname(__FILE__), "macros"))
-
 ENV['TZ'] = 'CET' # something that is not local and not utc so we find all the bugs
 
+require 'bundler/setup'
 require 'zendesk_api'
 
 require 'vcr'
