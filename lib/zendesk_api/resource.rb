@@ -29,6 +29,11 @@ module ZendeskAPI
       def namespace(namespace)
         @namespace = namespace
       end
+
+      def path(attributes = {})
+        Association.new(class: self).generate_path(attributes.dup)
+        # resource_path
+      end
     end
 
     # @return [Hashie::Mash] The resource's attributes
@@ -50,9 +55,8 @@ module ZendeskAPI
     # TODO raise NoMethod for actions
 
     # Passes the method onto the attributes hash.
-    # If the attributes are nested (e.g. { :tickets => { :id => 1 } }), passes the method onto the nested hash.
     def method_missing(*args, &block)
-      @attributes.send(*args, &block)
+      attributes.send(*args, &block)
     end
 
     # Has this been object been created server-side? Does this by checking for an id.
@@ -63,13 +67,14 @@ module ZendeskAPI
     # @private
     def loaded_associations
       self.class.associations.select do |association|
-        loaded = @attributes.method_missing(association[:name])
+        loaded = attributes.method_missing(association[:name])
         loaded && !(loaded.respond_to?(:empty?) && loaded.empty?)
       end
     end
 
     # Returns the path to the resource
-    def path(options = {})
+    def path
+      self.class.path(attributes)
       # TODO
     end
 
@@ -102,7 +107,7 @@ module ZendeskAPI
 
     # @private
     def inspect
-      "#<#{self.class.name} #{@attributes.to_hash.inspect}>"
+      "#<#{self.class.name} #{attributes.to_hash.inspect}>"
     end
 
     # TODO :id?
@@ -152,6 +157,12 @@ module ZendeskAPI
   end
 
   class SingularResource < Resource
+    protected
+
+    def save_method
+      :put
+    end
+
     def attributes_for_save
       { self.class.resource_name.to_sym => attributes.changes }
     end

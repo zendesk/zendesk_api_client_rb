@@ -13,7 +13,9 @@ module ZendeskAPI
         yield req if block_given?
       end
 
-      JobStatus.new_from_response(client, response)
+      JobStatus.new(client).tap do |job_status|
+        job_status.handle_response(response)
+      end
     end
   end
 end

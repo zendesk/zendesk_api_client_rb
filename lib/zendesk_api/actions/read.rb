@@ -13,6 +13,7 @@ module ZendeskAPI
         yield req if block_given?
       end
 
+      # TODO JobStatus -> All of this in handle_response?
       handle_response(response)
       resource.set_includes(resource, includes, response.body) if includes
       attributes.clear_changes
@@ -26,7 +27,7 @@ module ZendeskAPI
       # @param [Client] client The {Client} object to be used
       # @param [Hash] options Any additional GET parameters to be added
       def find!(client, options = {})
-        new(client).tap(&:reload!)
+        new(client, options).tap(&:reload!)
       end
 
       # Finds, returning nil if it fails

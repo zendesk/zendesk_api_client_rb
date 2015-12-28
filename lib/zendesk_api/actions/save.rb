@@ -9,19 +9,9 @@ module ZendeskAPI
     def save!(options = {})
       return false if respond_to?(:destroyed?) && destroyed?
 
-      if new_record? && !options[:force_update]
-        method = :post
-        req_path = path
-      else
-        method = :put
-        req_path = url || path
-      end
-
-      req_path = options[:path] if options[:path]
-
       save_associations
 
-      @response = @client.connection.send(method, req_path) do |req|
+      @response = @client.connection.public_send(save_method, path) do |req|
         req.body = attributes_for_save.merge(@global_params)
 
         yield req if block_given?
@@ -29,8 +19,9 @@ module ZendeskAPI
 
       handle_response(@response)
 
-      @attributes.clear_changes
+      attributes.clear_changes
       clear_associations
+
       true
     end
 
@@ -70,6 +61,16 @@ module ZendeskAPI
         if (association_data[:inline] == true || inline_creation) && changed
           attributes[association_name] = association.to_param
         end
+      end
+    end
+
+    protected
+
+    def save_method
+      if new_record?
+        :post
+      else
+        :put
       end
     end
   end
