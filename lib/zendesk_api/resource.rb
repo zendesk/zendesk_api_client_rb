@@ -1,7 +1,7 @@
 require 'zendesk_api/trackie'
 require 'zendesk_api/actions'
-require 'zendesk_api/association'
 require 'zendesk_api/associations'
+require 'zendesk_api/path'
 require 'zendesk_api/verbs'
 
 module ZendeskAPI
@@ -10,8 +10,8 @@ module ZendeskAPI
     include Associations
 
     class << self
-      attr_accessor :resource_name, :singular_resource_name,
-        :collection_paths, :resource_paths
+      attr_accessor :resource_name, :singular_resource_name
+      attr_reader :collection_paths, :resource_paths
 
       def inherited(klass)
         # TODO just a default
@@ -31,28 +31,27 @@ module ZendeskAPI
         @namespace = namespace
       end
 
-      def collection_path(options = {})
-        if options[:collection_path] && collection_paths.include?(options[:collection_path])
-          options[:collection_path]
-        else
-          collection_paths.lazy.map {|path|
-            begin
-              path % Hashie.symbolize_keys(options.to_hash)
-            rescue KeyError => e
-              nil
-            end
-          }.reject(&:nil?).first
-        end
+      def collection_paths=(paths)
+        @collection_paths = paths.map {|p| Path.new(p)}
       end
 
-      def path(options = {})
-        resource_paths.lazy.map {|path|
-          begin
-            path % Hashie.symbolize_keys(options.to_hash)
-          rescue KeyError => e
-            nil
-          end
-        }.reject(&:nil?).first
+      def resource_paths=(paths)
+        @resource_paths = paths.map {|p| Path.new(p)}
+      end
+
+      def collection_path(options = {})
+        collection_path = options[:collection_path]
+
+        if collection_path
+          collection_path = Path.new(collection_path)
+          return collection_path if collection_paths.include?(collection_path)
+        end
+
+        collection_paths.find {|p| p.matches?(options)}
+      end
+
+      def resource_path(options = {})
+        resource_paths.find {|p| p.matches?(options)}
       end
     end
 
@@ -62,12 +61,19 @@ module ZendeskAPI
     # Place to dump the last response
     attr_accessor :response
 
+    # TODO
+    attr_reader :includes
+    attr_reader :global_params
+
     # Create a new resource instance.
     # @param [Client] client The client to use
     # @param [Hash] attributes The optional attributes that describe the resource
     def initialize(client, attributes = {})
       @global_params = attributes.delete(:global) || {}
+      @includes = Array(attributes.delete(:include))
+
       @client = client
+
       @attributes = ZendeskAPI::Trackie.new(attributes)
       @attributes.clear_changes unless new_record?
     end
@@ -94,8 +100,12 @@ module ZendeskAPI
 
     # Returns the path to the resource
     def path
-      self.class.path(attributes)
+      self.class.resource_path(attributes)
       # TODO
+    end
+
+    def collection_path
+      self.class.collection_path
     end
 
     # Passes #to_json to the underlying attributes hash
@@ -180,7 +190,7 @@ module ZendeskAPI
     protected
 
     def save_options
-      [:put, path]
+      [:put, path.format(attributes)]
     end
 
     def attributes_for_save

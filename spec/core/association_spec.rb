@@ -1,4 +1,5 @@
 require 'core/spec_helper'
+require 'zendesk_api/association'
 
 describe ZendeskAPI::Association do
   let(:instance) { ZendeskAPI::TestResource.new(client, :id => 1) }

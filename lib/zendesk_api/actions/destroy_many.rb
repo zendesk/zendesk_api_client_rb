@@ -5,7 +5,7 @@ module ZendeskAPI
     # @param [Array] ids An array of ids to destroy
     # @return [JobStatus] the {JobStatus} instance for this destroy job
     def destroy_many!(client, ids)
-      response = client.connection.delete("#{path}/destroy_many") do |req|
+      response = client.connection.delete("#{collection_path}/destroy_many") do |req|
         req.params = { ids: ids.join(',') }
 
         yield req if block_given?

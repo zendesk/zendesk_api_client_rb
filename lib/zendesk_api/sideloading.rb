@@ -1,3 +1,5 @@
+require 'zendesk_api/association' # TODO
+
 module ZendeskAPI
   # @private
   module Sideloading

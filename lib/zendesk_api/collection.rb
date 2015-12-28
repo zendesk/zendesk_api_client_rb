@@ -35,6 +35,7 @@ module ZendeskAPI
       collection_path = @options.fetch(:collection_path, [resource.collection_path])
       collection_path = collection_path.join("/") if collection_path
       @path = resource.collection_path(collection_path: collection_path)
+      @path = @path.format({}) if @path # TODO
 
       @verb = @options.delete(:verb) # TODO part of path spec?
       @includes = Array(@options.delete(:include))
@@ -64,7 +65,7 @@ module ZendeskAPI
     # add it to the collection. Fetches the collection as well.
     # @param [Hash] opts Options or attributes to pass
     def build(opts = {})
-      wrap_resource(opts, true).tap do |res|
+      wrap_resource(opts).tap do |res|
         self << res
       end
     end
@@ -73,7 +74,7 @@ module ZendeskAPI
     # add it to the collection. Fetches the collection as well.
     # @param [Hash] opts Options or attributes to pass
     def build!(opts = {})
-      wrap_resource(opts, true).tap do |res|
+      wrap_resource(opts).tap do |res|
         fetch!
 
         # << does a fetch too
@@ -148,7 +149,7 @@ module ZendeskAPI
           raise "this collection is for #{@resource_class}"
         end
       else
-        @resources << wrap_resource(item, true)
+        @resources << wrap_resource(item)
       end
     end
 

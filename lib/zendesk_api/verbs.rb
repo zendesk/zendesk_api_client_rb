@@ -22,7 +22,7 @@ module ZendeskAPI
               verb = method_verb
             end
 
-            @response = @client.connection.send(verb, "#{path}/#{method}") do |req|
+            @response = @client.connection.send(verb, "#{path.format(attributes)}/#{method}") do |req|
               req.body = opts
             end
 

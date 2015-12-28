@@ -6,7 +6,7 @@ module ZendeskAPI
     # @param [Hash] attributes The attributes to update resources with
     # @return [JobStatus] the {JobStatus} instance for this destroy job
     def update_many!(client, ids, attributes)
-      response = client.connection.put("#{path}/update_many") do |req|
+      response = client.connection.put("#{collection_path}/update_many") do |req|
         req.params = { ids: ids.join(',') }
         req.body = { singular_resource_name => attributes }
 

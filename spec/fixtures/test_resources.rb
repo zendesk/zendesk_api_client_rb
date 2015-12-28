@@ -32,10 +32,10 @@ class ZendeskAPI::BulkTestResource < ZendeskAPI::DataResource
   self.singular_resource_name = 'bulk_test_resource'
 
   self.collection_paths = [
+    'bulk_test_resources'
   ]
 
   self.resource_paths = [
-    'bulk_test_resources'
   ]
 
   extend ZendeskAPI::CreateMany

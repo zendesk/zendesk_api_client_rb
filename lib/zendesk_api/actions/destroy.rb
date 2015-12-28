@@ -14,7 +14,7 @@ module ZendeskAPI
     def destroy!
       return false if destroyed? || new_record?
 
-      @client.connection.delete(path) do |req|
+      @client.connection.delete(path.format(attributes)) do |req|
         yield req if block_given?
       end
 
