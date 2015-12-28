@@ -10,18 +10,19 @@ module ZendeskAPI
     include Associations
 
     class << self
-      attr_accessor :resource_name, :singular_resource_name
+      attr_accessor :resource_name, :singular_resource_name,
+        :collection_paths, :resource_paths
 
       def inherited(klass)
+        # TODO just a default
+        klass.collection_paths = []
+        klass.resource_paths = []
+
         subclasses.push(klass)
       end
 
       def subclasses
         @subclasses ||= []
-      end
-
-      def resource_path
-        [@namespace, resource_name].compact.join("/")
       end
 
       alias :model_key :resource_name
@@ -30,9 +31,28 @@ module ZendeskAPI
         @namespace = namespace
       end
 
-      def path(attributes = {})
-        Association.new(class: self).generate_path(attributes.dup)
-        # resource_path
+      def collection_path(options = {})
+        if options[:collection_path] && collection_paths.include?(options[:collection_path])
+          options[:collection_path]
+        else
+          collection_paths.lazy.map {|path|
+            begin
+              path % Hashie.symbolize_keys(options.to_hash)
+            rescue KeyError => e
+              nil
+            end
+          }.reject(&:nil?).first
+        end
+      end
+
+      def path(options = {})
+        resource_paths.lazy.map {|path|
+          begin
+            path % Hashie.symbolize_keys(options.to_hash)
+          rescue KeyError => e
+            nil
+          end
+        }.reject(&:nil?).first
       end
     end
 
@@ -159,8 +179,8 @@ module ZendeskAPI
   class SingularResource < Resource
     protected
 
-    def save_method
-      :put
+    def save_options
+      [:put, path]
     end
 
     def attributes_for_save

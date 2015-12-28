@@ -203,7 +203,7 @@ describe ZendeskAPI::Client do
       expect(subject.voice.greetings).to be_instance_of(ZendeskAPI::Collection)
     end
 
-    it "looks in the appropriate namespaces" do
+    xit "looks in the appropriate namespaces" do
       expect(subject.greetings.association.options['class']).to eq(ZendeskAPI::Voice::Greeting)
     end
 
@@ -228,7 +228,7 @@ describe ZendeskAPI::Client do
       subject.voice.phone_numbers
     end
 
-    it "manages namespace correctly" do
+    xit "manages namespace correctly" do
       expect(client.addresses.path).to match(/channels\/voice\/addresses/)
       expect(client.phone_numbers.path).to match(/channels\/voice\/phone_numbers/)
       expect(client.greetings.path).to match(/channels\/voice\/greetings/)

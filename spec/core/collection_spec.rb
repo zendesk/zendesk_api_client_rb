@@ -851,7 +851,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should pass the correct query_path to the new collection" do
-      expect(subject.recent.instance_variable_get(:@collection_path).last).to eq(:recent)
+      expect(subject.recent.path).to eq('test_resources/recent')
     end
   end
 
@@ -867,6 +867,7 @@ describe ZendeskAPI::Collection do
     end
   end
 
+=begin
   context "with different path" do
     subject do
       ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :collection_path => ["test_resources", "active"])
@@ -898,4 +899,5 @@ describe ZendeskAPI::Collection do
       end
     end
   end
+=end
 end

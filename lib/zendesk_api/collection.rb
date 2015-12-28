@@ -10,9 +10,6 @@ module ZendeskAPI
     # Options passed in that are automatically converted from an array to a comma-separated list.
     SPECIALLY_JOINED_PARAMS = [:ids, :only]
 
-    # @return [ZendeskAPI::Association] The class association
-    attr_reader :association
-
     # @return [Faraday::Response] The last response
     attr_reader :response
 
@@ -22,21 +19,27 @@ module ZendeskAPI
     # @return [ZendeskAPI::ClientError] The last response error
     attr_reader :error
 
+    attr_reader :path
+
     # Creates a new Collection instance. Does not fetch resources.
     # Additional options are: verb (default: GET), path (default: resource param), page, per_page.
     # @param [Client] client The {Client} to use.
     # @param [String] resource The resource being collected.
     # @param [Hash] options Any additional options to be passed in.
     def initialize(client, resource, options = {})
-      @client, @resource_class, @resource = client, resource, resource.resource_name
+      @client, @resource_class = client, resource
       @options = Hashie::Mash.new(options)
 
-      set_association_from_options
       join_special_params
 
-      @verb = @options.delete(:verb)
+      collection_path = @options.fetch(:collection_path, [resource.collection_path])
+      collection_path = collection_path.join("/") if collection_path
+      @path = resource.collection_path(collection_path: collection_path)
+
+      @verb = @options.delete(:verb) # TODO part of path spec?
       @includes = Array(@options.delete(:include))
 
+      # TODO subclass?
       # Used for Attachments, TicketComment
       if @resource_class.is_a?(Class) && @resource_class.superclass == ZendeskAPI::Data
         @resources = []
@@ -53,10 +56,6 @@ module ZendeskAPI
       # Passes arguments and the proper path to the resource class method.
       # @param [Hash] options Options or attributes to pass
       define_method deferrable do |*args|
-        unless @resource_class.respond_to?(deferrable)
-          raise NoMethodError.new("undefined method \"#{deferrable}\" for #{@resource_class}", deferrable, args)
-        end
-
         @resource_class.send(deferrable, @client, *args)
       end
     end
@@ -153,21 +152,17 @@ module ZendeskAPI
       end
     end
 
-    # The API path to this collection
-    def path
-      @association.generate_path(:with_parent => true)
-    end
-
     # Executes actual GET from API and loads resources into proper class.
     # @param [Boolean] reload Whether to disregard cache
     def fetch!(reload = false)
       if @resources && (!@fetchable || !reload)
         return @resources
-      elsif association && association.options.parent && association.options.parent.new_record?
+      # TODO there is no path to this record?
+      elsif false # association && association.options.parent && association.options.parent.new_record?
         return (@resources = [])
       end
 
-      @response = get_response(@query || self.path)
+      @response = get_response(path)
       handle_response(@response.body)
 
       @resources
@@ -203,16 +198,6 @@ module ZendeskAPI
       _all(start_page, &block)
     end
 
-    def each_page!(*args, &block)
-      warn "ZendeskAPI::Collection#each_page! is deprecated, please use ZendeskAPI::Collection#all!"
-      all!(*args, &block)
-    end
-
-    def each_page(*args, &block)
-      warn "ZendeskAPI::Collection#each_page is deprecated, please use ZendeskAPI::Collection#all"
-      all(*args, &block)
-    end
-
     # Replaces the current (loaded or not) resources with the passed in collection
     # @option collection [Array] The collection to replace this one with
     # @raise [ArgumentError] if any resources passed in don't belong in this collection
@@ -229,7 +214,7 @@ module ZendeskAPI
       if @options["page"]
         clear_cache
         @options["page"] += 1
-      elsif @query = @next_page
+      elsif @path = @next_page
         fetch(true)
       else
         clear_cache
@@ -245,7 +230,7 @@ module ZendeskAPI
       if @options["page"] && @options["page"] > 1
         clear_cache
         @options["page"] -= 1
-      elsif @query = @prev_page
+      elsif @path = @prev_page
         fetch(true)
       else
         clear_cache
@@ -356,27 +341,17 @@ module ZendeskAPI
     def join_special_params
       # some params use comma-joined strings instead of query-based arrays for multiple values
       @options.each do |k, v|
-        if SPECIALLY_JOINED_PARAMS.include?(k.to_sym) && v.is_a?(Array)
-          @options[k] = v.join(',')
+        if SPECIALLY_JOINED_PARAMS.include?(k.to_sym)
+          @options[k] = Array(v).join(',')
         end
       end
-    end
-
-    def set_association_from_options
-      @collection_path = @options.delete(:collection_path)
-
-      association_options = { :path => @options.delete(:path) }
-      association_options[:path] ||= @collection_path.join("/") if @collection_path
-      @association = @options.delete(:association) || Association.new(association_options.merge(:class => @resource_class))
-
-      @collection_path ||= [@resource]
     end
 
     ## Fetch
 
     def get_response(path)
       @error = nil
-      @response = @client.connection.send(@verb || "get", path) do |req|
+      @response = @client.connection.public_send(@verb || "get", path) do |req|
         opts = @options.delete_if {|_, v| v.nil?}
 
         req.params.merge!(:include => @includes.join(",")) if @includes.any?
@@ -410,24 +385,16 @@ module ZendeskAPI
     end
 
     # Simplified Associations#wrap_resource
-    def wrap_resource(res, with_association = with_association?)
+    # TODO push somewhere else
+    def wrap_resource(res)
       case res
       when Array
-        wrap_resource(Hash[*res], with_association)
+        wrap_resource(Hash[*res])
       when Hash
-        res = res.merge(:association => @association) if with_association
         @resource_class.new(@client, res)
       else
-        res = { :id => res }
-        res.merge!(:association => @association) if with_association
-        @resource_class.new(@client, res)
+        @resource_class.new(@client, id: res)
       end
-    end
-
-    # Two special cases, and all namespaced classes
-    def with_association?
-      # [Tag, Setting].include?(@resource_class) ||
-        @resource_class.to_s.split("::").size > 2
     end
 
     ## Method missing
@@ -438,7 +405,7 @@ module ZendeskAPI
 
     def next_collection(name, *args, &block)
       opts = args.last.is_a?(Hash) ? args.last : {}
-      opts.merge!(:collection_path => @collection_path.dup.push(name))
+      opts.merge!(:collection_path => [path, name])
       self.class.new(@client, @resource_class, @options.merge(opts))
     end
 

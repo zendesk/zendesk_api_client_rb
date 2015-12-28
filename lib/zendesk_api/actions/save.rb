@@ -11,7 +11,7 @@ module ZendeskAPI
 
       save_associations
 
-      @response = @client.connection.public_send(save_method, path) do |req|
+      @response = @client.connection.public_send(*save_options) do |req|
         req.body = attributes_for_save.merge(@global_params)
 
         yield req if block_given?
@@ -66,11 +66,11 @@ module ZendeskAPI
 
     protected
 
-    def save_method
+    def save_options
       if new_record?
-        :post
+        [:post, self.class.collection_path]
       else
-        :put
+        [:put, path]
       end
     end
   end
