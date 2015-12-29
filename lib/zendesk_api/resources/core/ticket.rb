@@ -28,6 +28,11 @@ module ZendeskAPI
     extend UpdateMany
     extend DestroyMany
 
+    self.resource_name = 'tickets'
+    self.singular_resource_name = 'ticket'
+    self.collection_paths = ['tickets']
+    self.resource_paths = ['tickets/%{id}']
+
     class Audit < DataResource
       class Event < Data
         has :author, class: 'User'
