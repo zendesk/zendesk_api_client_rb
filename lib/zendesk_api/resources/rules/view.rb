@@ -8,12 +8,12 @@ module ZendeskAPI
     self.resource_name = 'views'
     self.singular_resource_name = 'view'
 
-    #has_many :tickets, :class => Ticket
-    #has_many :feed, :class => Ticket, :path => "feed"
+    has_many :tickets, class: 'Ticket'
+    has_many :feed, class: 'Ticket', :path => "feed"
 
-    #has_many :rows, :class => ViewRow, :path => "execute"
-    #has :execution, :class => RuleExecution
-    #has ViewCount, :path => "count"
+    has_many :rows, class: 'ViewRow', :path => "execute"
+    has :execution, class: 'RuleExecution'
+    has :view_count, class: 'ViewCount', :path => "count"
 
     def add_column(column)
       columns = execution.columns.map(&:id)

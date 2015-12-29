@@ -7,6 +7,6 @@ module ZendeskAPI
     include Conditions
     include Actions
 
-    # has :execution, :class => RuleExecution
+    has :execution, class: 'RuleExecution'
   end
 end

@@ -5,7 +5,9 @@ module ZendeskAPI
   end
 end
 
-require_relative 'voice/address'
-require_relative 'voice/phone_number'
-require_relative 'voice/greeting'
-require_relative 'voice/greeting_category'
+require 'zendesk_api/resources/voice/address'
+require 'zendesk_api/resources/voice/agent'
+require 'zendesk_api/resources/voice/greeting'
+require 'zendesk_api/resources/voice/greeting_category'
+require 'zendesk_api/resources/voice/phone_number'
+require 'zendesk_api/resources/voice/ticket'

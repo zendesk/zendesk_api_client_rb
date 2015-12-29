@@ -39,7 +39,8 @@ module ZendeskAPI
         end
 
         if options[:extensions].any?
-          collection.extend(*options[:extensions])
+          # TODO error handling
+          collection.extend(*options[:extensions].map {|ex| ZendeskAPI.const_get(ex)})
         end
       end
     end

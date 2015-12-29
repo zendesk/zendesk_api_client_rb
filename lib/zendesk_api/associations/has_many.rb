@@ -24,9 +24,9 @@ module ZendeskAPI
 
           # TODO merge up
           class_level_association.merge!(
-            #key: "#{resource_name}_ids",
+            key: "#{resource_name}_ids",
             # TODO fuck this
-            key: options.fetch(:key, "#{class_level_association.fetch(:class).singular_resource_name}_ids")
+            # key: options.fetch(:key, "#{class_level_association.fetch(:class).singular_resource_name}_ids")
           )
 
           define_used(class_level_association)

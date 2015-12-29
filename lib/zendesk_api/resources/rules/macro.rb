@@ -8,7 +8,7 @@ module ZendeskAPI
     self.resource_name = 'macros'
     self.singular_resource_name = 'macro'
 
-    # has :execution, :class => RuleExecution
+    has :execution, class: 'RuleExecution'
 
     # Returns the update to a ticket that happens when a macro will be applied.
     # @param [Ticket] ticket Optional {Ticket} to apply this macro to.
