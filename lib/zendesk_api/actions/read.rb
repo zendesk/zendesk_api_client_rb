@@ -1,6 +1,5 @@
 module ZendeskAPI
   module Read
-    include ResponseHandler
     include ZendeskAPI::Sideloading
 
     def self.included(base)

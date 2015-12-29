@@ -1,7 +1,5 @@
 module ZendeskAPI
   module Save
-    include ResponseHandler
-
     # If this resource hasn't been deleted, then create or save it.
     # Executes a POST if it is a {Data#new_record?}, otherwise a PUT.
     # Merges returned attributes on success.

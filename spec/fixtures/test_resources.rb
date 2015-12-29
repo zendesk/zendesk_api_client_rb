@@ -15,7 +15,7 @@ class ZendeskAPI::TestResource < ZendeskAPI::Resource
     "hi"
   end
 
-  class TestChild < ZendeskAPI::Resource
+  class TestChild < ZendeskAPI::DataResource
     self.resource_name = 'test_children'
     self.singular_resource_name = 'test_child'
 

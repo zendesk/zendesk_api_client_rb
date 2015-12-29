@@ -28,10 +28,12 @@ module ZendeskAPI
       path = options[:path].format(attributes)
 
       ZendeskAPI::Collection.new(client, options[:class], path: path).tap do |collection|
-        collection.replace(mapped_resources)
+        if mapped_resources.any?
+          collection.replace(mapped_resources)
+        end
 
-        if resources && has_key?(options[:plural_key])
-          public_send("#{options[:plural_key]}=", resources.map(&:id))
+        if has_key?(options[:plural_key])
+          public_send("#{options[:plural_key]}=", mapped_resources.map(&:id))
         end
 
         if options[:extensions].any?
@@ -51,7 +53,7 @@ module ZendeskAPI
       end
 
       if wrapped_resource && has_key?(options[:singular_key])
-        send("#{options[:singular_key]}=", wrapped_resource.id)
+        public_send("#{options[:singular_key]}=", wrapped_resource.id)
       end
 
       wrapped_resource
@@ -70,7 +72,7 @@ module ZendeskAPI
 
       def associated_with(name)
         associations.lazy.select {|association|
-          association[:include] == name.to_s
+          association[:sideload] && association[:sideload][:include].to_s == name.to_s
         }.map {|association|
           Association.new(association)
         }.to_a
@@ -82,16 +84,23 @@ module ZendeskAPI
         {
           name: resource_name,
           class: options.fetch(:class),
-          singular_key: "#{resource_name}_id", # This is the association's "resource name"
-          plural_key: "#{options.fetch(:class).singular_resource_name}_ids", # TODO
-          parent_key: "#{singular_resource_name}_id", # This is RESOURCE CLASSES singular_resource_name
+
+          # should this be saved in the parent record?
+          inline: options.fetch(:inline, false),
+
+          # sideload options for .includes
+          sideload: options.fetch(:sideload, false),
+
+          # really only used for Role
           include_key: options.fetch(:include_key, :id),
 
-          inline: options.fetch(:inline, false), # this is used for saving
+          # collection objects can be extended
+          extensions: Array(options.delete(:extend)),
 
-          include: options.fetch(:include, options.fetch(:class).resource_name), # ??
-          # TODO ?
-          extensions: Array(options.delete(:extend))
+          singular_key: options.fetch(:singular_key, "#{resource_name}_id"),
+          #plural_key: "#{resource_name}_ids",
+          # TODO fuck this
+          plural_key: options.fetch(:plural_key, "#{options.fetch(:class).singular_resource_name}_ids")
         }
       end
 

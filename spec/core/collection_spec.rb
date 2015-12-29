@@ -83,6 +83,7 @@ describe ZendeskAPI::Collection do
       end
     end
 
+=begin
     context "with a class with a parent" do
       let(:association) do
         ZendeskAPI::Association.new(:class => ZendeskAPI::TestResource::TestChild,
@@ -137,6 +138,7 @@ describe ZendeskAPI::Collection do
         end
       end
     end
+=end
   end
 
   context "pagination with data" do
@@ -520,7 +522,7 @@ describe ZendeskAPI::Collection do
 
       it "should call create with those options" do
         expect(ZendeskAPI::TestResource).to receive(:new).
-          with(client, options.merge(:association => subject.association)).
+          with(client, options).
           and_return(object)
 
         subject << options
@@ -552,7 +554,7 @@ describe ZendeskAPI::Collection do
       it "should pass to new, since this is how attachment handles it" do
         attachment = double(:changes => [:xxx], :changed? => true, :destroyed? => false)
         expect(ZendeskAPI::TestResource).to receive(:new).
-          with(client, :id => "img.jpg", :association => instance_of(ZendeskAPI::Association)).
+          with(client, :id => "img.jpg").
           and_return attachment
 
         subject << "img.jpg"
@@ -654,7 +656,11 @@ describe ZendeskAPI::Collection do
 
     context "singular id on resource" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+          include: :nil_resources,
+          using: :nil_resource_id,
+          from: :child_id
+        }
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
@@ -675,10 +681,13 @@ describe ZendeskAPI::Collection do
       end
     end
 
-
     context "multiple resources" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+          include: :nil_resources,
+          using: :nil_resource_id,
+          from: :child_id
+        }
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_id => 4 }, { :id => 2, :nil_resource_id => 1 }],
@@ -686,7 +695,6 @@ describe ZendeskAPI::Collection do
         ))
 
         subject.fetch(true)
-
       end
 
       context "first resource" do
@@ -716,7 +724,12 @@ describe ZendeskAPI::Collection do
 
     context "plural ids on resource" do
       before(:each) do
-        ZendeskAPI::TestResource.has_many :nil_resources, class: ZendeskAPI::NilResource, path: 'test_resources/%{id}/nil_resources'
+        ZendeskAPI::TestResource.has_many :nil_resources, class: ZendeskAPI::NilResource,
+          path: 'test_resources/%{id}/nil_resources', sideload: {
+            include: :nil_resources,
+            using: :nil_resource_ids,
+            from: :child_ids
+          }
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_ids => [1, 4] }],
@@ -739,7 +752,12 @@ describe ZendeskAPI::Collection do
 
     context "ids in side load" do
       before(:each) do
-        ZendeskAPI::TestResource.has_many :nil_resources, class: ZendeskAPI::NilResource, path: 'test_resources/%{id}/nil_resources'
+        ZendeskAPI::TestResource.has_many :nil_resources, class: ZendeskAPI::NilResource,
+          path: 'test_resources/%{id}/nil_resources', sideload: {
+            include: :nil_resources,
+            using: :test_resource_id,
+            from: :parent_ids
+          }
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1 }],
@@ -761,7 +779,11 @@ describe ZendeskAPI::Collection do
 
     context "id in side load" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+          include: :nil_resources,
+          using: :test_resource_id,
+          from: :parent_id
+        }
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1 }],
@@ -783,7 +805,12 @@ describe ZendeskAPI::Collection do
 
     context "with name as key" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, include_key: :name
+        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+          include: :nil_resources,
+          using: :nil_resource_id,
+          from: :child_id,
+          key: :name
+        }
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
@@ -807,7 +834,11 @@ describe ZendeskAPI::Collection do
     context "sub-loading" do
       before(:each) do
         ZendeskAPI::TestResource.has :test_child, class: ZendeskAPI::TestResource::TestChild
-        ZendeskAPI::TestResource::TestChild.has :nil_resource, class: ZendeskAPI::NilResource
+        ZendeskAPI::TestResource::TestChild.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+          include: :nil_resources,
+          using: :nil_resource_id,
+          from: :child_id
+        }
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :test_child => { :nil_resource_id => 4 } }],

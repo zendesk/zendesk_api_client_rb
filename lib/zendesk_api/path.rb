@@ -1,6 +1,6 @@
 class Path < Struct.new(:fragment)
   def format(options)
-    fragment % Hashie.symbolize_keys(options.to_hash)
+    fragment % Hashie.symbolize_keys(options.to_hash.select {|_, v| v})
   end
 
   # May raise KeyError?

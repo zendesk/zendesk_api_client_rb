@@ -4,26 +4,29 @@ module ZendeskAPI
   class Association
     # Options to pass in
     # * name - Required
-    #
-    # * singular_key - Required
-    # * plural_key - Required
-    # * include_key - Required
-    # * association_class - Required
-    #
-    # * parent_key - Required
+    # * sideload - Required
+    #   * key - Optional (defaults to id)
+    #   * from - Required
+    #   * using - Required
     def initialize(options = {})
       @options = options
+      @options[:sideload] = { key: :id }.merge(@options[:sideload])
     end
 
     # Tries to place side loads onto given resources.
     def side_load(resources, side_loads)
       resources.each do |resource|
-        if resource.key?(@options[:plural_key]) # Grab associations from child_ids field on resource
-          side_load_from_child_ids(resource, side_loads)
-        elsif resource.key?(@options[:singular_key])
-          side_load_from_child_or_parent_id(resource, side_loads)
-        else # Grab associations from parent_id field from multiple child resources
+        case @options[:sideload][:from]
+        when :parent_id
           side_load_from_parent_id(resource, side_loads)
+        when :parent_ids
+          side_load_from_parent_ids(resource, side_loads)
+        when :child_id
+          side_load_from_child_id(resource, side_loads)
+        when :child_ids
+          side_load_from_child_ids(resource, side_loads)
+        else
+          # raise
         end
       end
     end
@@ -34,34 +37,39 @@ module ZendeskAPI
       resource.wrap_plural_resource(side_loads, @options)
     end
 
-    def side_load_from_parent_id(resource, side_loads)
+    def side_load_from_parent_ids(resource, side_loads)
       resource.public_send("#{@options[:name]}=", _side_load(resource, side_loads.select {|side_load|
-        side_load[@options[:parent_key]] == resource.id
+        side_load[@options[:sideload][:using].to_s] == resource.public_send(@options[:sideload][:key])
       }))
     end
 
-    def side_load_from_child_ids(resource, side_loads)
-      ids = resource.public_send(@options[:plural_key])
-
-      resource.send("#{@options[:name]}=", _side_load(resource, side_loads.select {|side_load|
-        ids.include?(side_load[@options[:include_key]])
-      }))
-    end
-
-    def side_load_from_child_or_parent_id(resource, side_loads)
-      # Either grab association from child_id field on resource or parent_id on child resource
-      if resource.key?(@options[:singular_key])
-        id = resource.public_send(@options[:singular_key])
-        include_key = @options[:include_key]
-      else
-        id = resource.id
-        include_key = @options[:parent_key]
-      end
+    def side_load_from_parent_id(resource, side_loads)
+      id = resource.public_send(@options[:sideload][:key])
 
       return unless id
 
       side_load = side_loads.detect do |side_load|
-        id == side_load[include_key.to_s]
+        id == side_load[@options[:sideload][:using].to_s]
+      end
+
+      resource.send("#{@options[:name]}=", side_load) if side_load
+    end
+
+    def side_load_from_child_ids(resource, side_loads)
+      ids = resource.public_send(@options[:sideload][:using])
+
+      resource.send("#{@options[:name]}=", _side_load(resource, side_loads.select {|side_load|
+        ids.include?(side_load[@options[:sideload][:key].to_s])
+      }))
+    end
+
+    def side_load_from_child_id(resource, side_loads)
+      id = resource.public_send(@options[:sideload][:using])
+
+      return unless id
+
+      side_load = side_loads.detect do |side_load|
+        id == side_load[@options[:sideload][:key].to_s]
       end
 
       resource.send("#{@options[:name]}=", side_load) if side_load

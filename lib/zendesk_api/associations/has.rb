@@ -30,7 +30,7 @@ module ZendeskAPI
               options[:class].find(@client, id: resource_id)
             elsif loaded_resource = attributes[options[:name]]
               loaded_resource
-            elsif options[:class].superclass == DataResource && !options[:inline]
+            elsif options[:class].superclass == DataResource && !options[:inline] && options[:path].matches?(attributes)
               response = @client.connection.get(options[:path].format(attributes))
               loaded_resource = options[:class].new(@client)
               # TODO what about wrap_singular_resource?

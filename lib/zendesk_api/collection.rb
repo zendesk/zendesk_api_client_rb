@@ -32,7 +32,7 @@ module ZendeskAPI
 
       join_special_params
 
-      @path = options[:path]
+      @path = @options.delete(:path)
 
       unless @path
         collection_path = @options.fetch(:collection_path, [resource.collection_path])
@@ -119,7 +119,7 @@ module ZendeskAPI
     end
 
     def last_page?
-      !@next_page || @next_page == @query
+      !@next_page || @next_page == @path
     end
 
     # Saves all newly created resources stored in this collection.
@@ -249,7 +249,6 @@ module ZendeskAPI
       @count = nil
       @next_page = nil
       @prev_page = nil
-      @query = nil
     end
 
     # @private
