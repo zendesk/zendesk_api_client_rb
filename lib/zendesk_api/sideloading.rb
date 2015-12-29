@@ -40,7 +40,7 @@ module ZendeskAPI
       resources.each do |resource|
         loaded_associations = resource.loaded_associations
         loaded_associations.each do |association|
-          loaded = resource.send(association[:name])
+          loaded = resource.public_send(association[:name])
           next unless loaded
           _side_load(name, association[:class], to_array(loaded))
         end

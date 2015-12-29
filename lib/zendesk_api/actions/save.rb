@@ -35,10 +35,7 @@ module ZendeskAPI
 
     # Removes all cached associations
     def clear_associations
-      self.class.associations.each do |association_data|
-        name = association_data[:name]
-        instance_variable_set("@#{name}", nil) if instance_variable_defined?("@#{name}")
-      end
+      associations.clear
     end
 
     # Saves associations
@@ -47,7 +44,7 @@ module ZendeskAPI
       self.class.associations.each do |association_data|
         association_name = association_data[:name]
 
-        next unless send("#{association_name}_used?") && association = send(association_name)
+        next unless association = associations[association_name]
 
         inline_creation = association_data[:inline] == :create && new_record?
         changed = association.is_a?(Collection) || association.changed?
