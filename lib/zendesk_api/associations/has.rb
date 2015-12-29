@@ -18,9 +18,6 @@ module ZendeskAPI
         # @param [Symbol] resource_name_or_class The underlying resource name or a class to get it from
         # @param [Hash] class_level_options The options to pass to the method definition.
         def has(resource_name, options = {})
-          # TODO maybe...
-          # if klass = class_level_options.delete(:class)
-
           class_level_association = build_association(
             resource_name, options,
             key: options.fetch(:key, "#{resource_name}_id")
