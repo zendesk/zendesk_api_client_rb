@@ -13,6 +13,11 @@ module ZendeskAPI
   module Associations
     def self.included(base)
       base.extend(ClassMethods)
+
+      base.class_eval do
+        include ZendeskAPI::Associations::Has
+        include ZendeskAPI::Associations::HasMany
+      end
     end
 
     def associations
@@ -20,7 +25,7 @@ module ZendeskAPI
     end
 
     def wrap_plural_resource(resources, options = {})
-      mapped_resources = Array(resources).map do |resource|
+      wrapped_resources = Array(resources).map do |resource|
         wrap_singular_resource(resource, options)
       end
 
@@ -28,12 +33,8 @@ module ZendeskAPI
       path = options[:path].format(attributes)
 
       ZendeskAPI::Collection.new(client, options[:class], path: path).tap do |collection|
-        if mapped_resources.any?
-          collection.replace(mapped_resources)
-        end
-
-        if has_key?(options[:plural_key])
-          public_send("#{options[:plural_key]}=", mapped_resources.map(&:id))
+        if wrapped_resources.any?
+          collection.replace(wrapped_resources)
         end
 
         if options[:extensions].any?
@@ -52,20 +53,11 @@ module ZendeskAPI
         resource
       end
 
-      if wrapped_resource && has_key?(options[:singular_key])
-        public_send("#{options[:singular_key]}=", wrapped_resource.id)
-      end
-
       wrapped_resource
     end
 
     # @private
     module ClassMethods
-      def self.extended(klass)
-        klass.extend(ZendeskAPI::Associations::Has)
-        klass.extend(ZendeskAPI::Associations::HasMany)
-      end
-
       def associations
         @associations ||= []
       end
@@ -80,7 +72,7 @@ module ZendeskAPI
 
       private
 
-      def build_association(resource_name, options)
+      def build_association(resource_name, options, extras)
         {
           name: resource_name,
           class: options.fetch(:class),
@@ -96,12 +88,13 @@ module ZendeskAPI
 
           # collection objects can be extended
           extensions: Array(options.delete(:extend)),
+        }.merge(extras).tap do |association|
+          if path = options[:path]
+            association[:path] = Path.new(path)
+          end
 
-          singular_key: options.fetch(:singular_key, "#{resource_name}_id"),
-          #plural_key: "#{resource_name}_ids",
-          # TODO fuck this
-          plural_key: options.fetch(:plural_key, "#{options.fetch(:class).singular_resource_name}_ids")
-        }
+          associations << association
+        end
       end
 
       def define_used(options)
