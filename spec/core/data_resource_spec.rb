@@ -7,7 +7,7 @@ describe ZendeskAPI::DataResource do
     let(:options) {{}}
 
     before(:each) do
-      ZendeskAPI::TestResource.has :nil, options.merge(class: ZendeskAPI::NilDataResource, path: 'test_resources/%{id}/nil' )
+      ZendeskAPI::TestResource.has :nil, options.merge(class: 'ZendeskAPI::NilDataResource', path: 'test_resources/%{id}/nil' )
     end
 
     it "should try and find non-existent object" do
@@ -70,13 +70,13 @@ describe ZendeskAPI::DataResource do
   end
 
   context "has" do
-    before(:each) { ZendeskAPI::TestResource.has :test_resource, class: ZendeskAPI::TestResource }
+    before(:each) { ZendeskAPI::TestResource.has :test_resource, class: 'ZendeskAPI::TestResource' }
 
     context "class methods" do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        ZendeskAPI::TestResource.has :baz, :class => ZendeskAPI::TestResource
+        ZendeskAPI::TestResource.has :baz, class: ZendeskAPI::TestResource
       end
 
       it "should define a method with the same name" do
@@ -108,7 +108,7 @@ describe ZendeskAPI::DataResource do
 
         context "with an explicit path set" do
           before(:each) do
-            ZendeskAPI::TestResource.has :test_resource, class: ZendeskAPI::TestResource, path: 'blergh/%{id}'
+            ZendeskAPI::TestResource.has :test_resource, class: 'ZendeskAPI::TestResource', path: 'blergh/%{id}'
             stub_json_request(:get, %r{blergh/\d+}, json(:test_resource => {}))
           end
 
@@ -152,7 +152,7 @@ describe ZendeskAPI::DataResource do
 
   context "has_many" do
     before(:each) do
-      ZendeskAPI::TestResource.has_many :test_resources, class: ZendeskAPI::TestResource, path: 'test_resources/%{id}/test_resources',
+      ZendeskAPI::TestResource.has_many :test_resources, class: 'ZendeskAPI::TestResource', path: 'test_resources/%{id}/test_resources',
         key: :test_resource_ids
     end
 
@@ -160,7 +160,7 @@ describe ZendeskAPI::DataResource do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        ZendeskAPI::TestResource.has_many :cats, class: ZendeskAPI::TestResource, path: 'test_resources/%{id}/cats'
+        ZendeskAPI::TestResource.has_many :cats, class: 'ZendeskAPI::TestResource', path: 'test_resources/%{id}/cats'
       end
 
       it "should define a method with the same name" do
@@ -182,7 +182,7 @@ describe ZendeskAPI::DataResource do
 
         context "with an explicit path set" do
           before(:each) do
-            ZendeskAPI::TestResource.has_many :test_resources, class: ZendeskAPI::TestResource, path: 'test_resources/%{id}/blargh'
+            ZendeskAPI::TestResource.has_many :test_resources, class: 'ZendeskAPI::TestResource', path: 'test_resources/%{id}/blargh'
           end
 
           it "should call the right path" do

@@ -104,7 +104,7 @@ end
 RSpec.configure do |c|
   c.before(:each) do
     ZendeskAPI::TestResource.associations.clear
-    ZendeskAPI::TestResource.has_many :children, class: ZendeskAPI::TestResource::TestChild, path: 'test_resources/%{id}/children',
+    ZendeskAPI::TestResource.has_many :children, class: 'ZendeskAPI::TestResource::TestChild', path: 'test_resources/%{id}/children',
       key: :children_ids
   end
 

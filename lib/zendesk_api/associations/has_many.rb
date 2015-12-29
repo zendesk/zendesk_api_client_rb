@@ -19,10 +19,14 @@ module ZendeskAPI
         # @param [Hash] class_level_options The options to pass to the method definition.
         def has_many(resource_name, options = {})
           class_level_association = build_association(
-            resource_name, options,
+            resource_name, options, {}
+          )
+
+          # TODO merge up
+          class_level_association.merge!(
             #key: "#{resource_name}_ids",
             # TODO fuck this
-            key: options.fetch(:key, "#{options.fetch(:class).singular_resource_name}_ids")
+            key: options.fetch(:key, "#{class_level_association.fetch(:class).singular_resource_name}_ids")
           )
 
           define_used(class_level_association)

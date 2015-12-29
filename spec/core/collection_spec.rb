@@ -656,7 +656,7 @@ describe ZendeskAPI::Collection do
 
     context "singular id on resource" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+        ZendeskAPI::TestResource.has :nil_resource, class: 'ZendeskAPI::NilResource', sideload: {
           include: :nil_resources,
           using: :nil_resource_id,
           from: :child_id
@@ -683,7 +683,7 @@ describe ZendeskAPI::Collection do
 
     context "multiple resources" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+        ZendeskAPI::TestResource.has :nil_resource, class: 'ZendeskAPI::NilResource', sideload: {
           include: :nil_resources,
           using: :nil_resource_id,
           from: :child_id
@@ -724,7 +724,7 @@ describe ZendeskAPI::Collection do
 
     context "plural ids on resource" do
       before(:each) do
-        ZendeskAPI::TestResource.has_many :nil_resources, class: ZendeskAPI::NilResource,
+        ZendeskAPI::TestResource.has_many :nil_resources, class: 'ZendeskAPI::NilResource',
           path: 'test_resources/%{id}/nil_resources', sideload: {
             include: :nil_resources,
             using: :nil_resource_ids,
@@ -752,7 +752,7 @@ describe ZendeskAPI::Collection do
 
     context "ids in side load" do
       before(:each) do
-        ZendeskAPI::TestResource.has_many :nil_resources, class: ZendeskAPI::NilResource,
+        ZendeskAPI::TestResource.has_many :nil_resources, class: 'ZendeskAPI::NilResource',
           path: 'test_resources/%{id}/nil_resources', sideload: {
             include: :nil_resources,
             using: :test_resource_id,
@@ -779,7 +779,7 @@ describe ZendeskAPI::Collection do
 
     context "id in side load" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+        ZendeskAPI::TestResource.has :nil_resource, class: 'ZendeskAPI::NilResource', sideload: {
           include: :nil_resources,
           using: :test_resource_id,
           from: :parent_id
@@ -805,7 +805,7 @@ describe ZendeskAPI::Collection do
 
     context "with name as key" do
       before(:each) do
-        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+        ZendeskAPI::TestResource.has :nil_resource, class: 'ZendeskAPI::NilResource', sideload: {
           include: :nil_resources,
           using: :nil_resource_id,
           from: :child_id,
@@ -833,8 +833,8 @@ describe ZendeskAPI::Collection do
 
     context "sub-loading" do
       before(:each) do
-        ZendeskAPI::TestResource.has :test_child, class: ZendeskAPI::TestResource::TestChild
-        ZendeskAPI::TestResource::TestChild.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+        ZendeskAPI::TestResource.has :test_child, class: 'ZendeskAPI::TestResource::TestChild'
+        ZendeskAPI::TestResource::TestChild.has :nil_resource, class: 'ZendeskAPI::NilResource', sideload: {
           include: :nil_resources,
           using: :nil_resource_id,
           from: :child_id

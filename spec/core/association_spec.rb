@@ -9,7 +9,7 @@ describe ZendeskAPI::Association do
     context "has" do
       before do
         ZendeskAPI::TestResource.associations.clear
-        ZendeskAPI::TestResource.has :child, class: ZendeskAPI::TestResource::TestChild, path: 'test_resources/%{id}/child/%{child_id}'
+        ZendeskAPI::TestResource.has :child, class: 'ZendeskAPI::TestResource::TestChild', path: 'test_resources/%{id}/child/%{child_id}'
       end
 
       it "should not try and fetch nil child" do

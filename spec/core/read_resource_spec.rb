@@ -54,7 +54,7 @@ describe ZendeskAPI::ReadResource do
           "nil_resources" => [{ :id => 1, :name => :bye }, { :id => 2, :name => :hi }]
         ))
 
-        subject.has :nil_resource, class: ZendeskAPI::NilResource, sideload: {
+        subject.has :nil_resource, class: 'ZendeskAPI::NilResource', sideload: {
           include: :nil_resources,
           using: :nil_resource_id,
           from: :child_id

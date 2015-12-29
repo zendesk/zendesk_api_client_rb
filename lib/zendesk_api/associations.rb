@@ -1,6 +1,7 @@
 require 'zendesk_api/association'
 require 'zendesk_api/associations/has'
 require 'zendesk_api/associations/has_many'
+require 'zendesk_api/resource_class_delegator'
 
 module ZendeskAPI
   # This module holds association method for resources.
@@ -32,7 +33,7 @@ module ZendeskAPI
       # TODO pass in proper path ?
       path = options[:path].format(attributes)
 
-      ZendeskAPI::Collection.new(client, options[:class], path: path).tap do |collection|
+      ZendeskAPI::Collection.new(client, options[:class].__getobj__, path: path).tap do |collection|
         if wrapped_resources.any?
           collection.replace(wrapped_resources)
         end
@@ -75,7 +76,7 @@ module ZendeskAPI
       def build_association(resource_name, options, extras)
         {
           name: resource_name,
-          class: options.fetch(:class),
+          class: ResourceClassDelegator.new(options.fetch(:class)),
 
           # should this be saved in the parent record?
           inline: options.fetch(:inline, false),
