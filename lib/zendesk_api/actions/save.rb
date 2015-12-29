@@ -50,7 +50,7 @@ module ZendeskAPI
         changed = association.is_a?(Collection) || association.changed?
 
         if association.respond_to?(:save) && changed && !inline_creation && association.save
-          self.send("#{association_name}=", association) # set id/ids columns
+          public_send("#{association_name}=", association) # set id/ids columns
         end
 
         if (association_data[:inline] == true || inline_creation) && changed

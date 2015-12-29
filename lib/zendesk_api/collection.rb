@@ -61,7 +61,7 @@ module ZendeskAPI
       # Passes arguments and the proper path to the resource class method.
       # @param [Hash] options Options or attributes to pass
       define_method deferrable do |*args|
-        @resource_class.send(deferrable, @client, *args)
+        @resource_class.public_send(deferrable, @client, *args)
       end
     end
 
@@ -331,7 +331,7 @@ module ZendeskAPI
 
       @resources.map! do |item|
         if item.respond_to?(method) && !item.destroyed? && item.changed?
-          result &&= item.send(method)
+          result &&= item.public_send(method)
         end
 
         item
@@ -404,7 +404,7 @@ module ZendeskAPI
     ## Method missing
 
     def array_method(name, *args, &block)
-      to_a.send(name, *args, &block)
+      to_a.public_send(name, *args, &block)
     end
 
     def next_collection(name, *args, &block)
@@ -414,7 +414,7 @@ module ZendeskAPI
     end
 
     def collection_method(name, *args, &block)
-      @resource_class.send(name, @client, *args, &block)
+      @resource_class.public_send(name, @client, *args, &block)
     end
 
     def resource_methods
