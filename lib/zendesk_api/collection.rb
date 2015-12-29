@@ -32,10 +32,14 @@ module ZendeskAPI
 
       join_special_params
 
-      collection_path = @options.fetch(:collection_path, [resource.collection_path])
-      collection_path = collection_path.join("/") if collection_path
-      @path = resource.collection_path(collection_path: collection_path)
-      @path = @path.format({}) if @path # TODO
+      @path = options[:path]
+
+      unless @path
+        collection_path = @options.fetch(:collection_path, [resource.collection_path])
+        collection_path = collection_path.join("/") if collection_path
+        @path = resource.collection_path(collection_path: collection_path)
+        @path = @path.format({}) if @path # TODO
+      end
 
       @verb = @options.delete(:verb) # TODO part of path spec?
       @includes = Array(@options.delete(:include))

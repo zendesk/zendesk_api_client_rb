@@ -20,7 +20,13 @@ module ZendeskAPI
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to update. Default to {}
       def update!(client, attributes = {}, &block)
-        new(client, attributes).tap {|r| r.save!(&block)}
+        attrs = attributes.dup
+
+        # FML
+        new(client, id: attrs.delete(:id), global: attrs.delete(:global)).tap do |resource|
+          resource.attributes.merge!(attrs)
+          resource.save!(&block)
+        end
       end
     end
   end

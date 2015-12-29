@@ -12,14 +12,14 @@ module ZendeskAPI
       # raise unless path
 
       response = @client.connection.get(path.format(attributes)) do |req|
-        req.params.merge!(include: includes.join(',')) if includes
+        req.params.merge!(include: includes.join(',')) if includes.any?
 
         yield req if block_given?
       end
 
       # TODO JobStatus -> All of this in handle_response?
       handle_response(response)
-      set_includes(self, includes, response.body) if includes
+      set_includes(self, includes, response.body) if includes.any?
       attributes.clear_changes
 
       self

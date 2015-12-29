@@ -2,11 +2,12 @@ require 'core/spec_helper'
 
 describe ZendeskAPI::DataResource do
   context "association" do
-    subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+    subject { ZendeskAPI::TestResource.new(client, id: 1) }
+
     let(:options) {{}}
 
     before(:each) do
-      ZendeskAPI::TestResource.has :nil, options.merge(:class => ZendeskAPI::NilDataResource)
+      ZendeskAPI::TestResource.has :nil, options.merge(class: ZendeskAPI::NilDataResource, path: 'test_resources/%{id}/nil' )
     end
 
     it "should try and find non-existent object" do
@@ -16,7 +17,7 @@ describe ZendeskAPI::DataResource do
     end
 
     context "inline => true" do
-      let(:options) {{ :inline => true }}
+      let(:options) {{ inline: true }}
 
       it "should not try and find non-existent object" do
         subject.nil
@@ -69,35 +70,32 @@ describe ZendeskAPI::DataResource do
   end
 
   context "has" do
-    before(:each) { ZendeskAPI::TestResource.has ZendeskAPI::TestResource }
+    before(:each) { ZendeskAPI::TestResource.has :test_resource, class: ZendeskAPI::TestResource }
 
     context "class methods" do
       subject { ZendeskAPI::TestResource }
 
-      it "should define a method with the same name" do
-        expect(subject.instance_methods.map(&:to_s)).to include("test_resource")
+      before(:each) do
+        ZendeskAPI::TestResource.has :baz, :class => ZendeskAPI::TestResource
       end
 
-      context "with explicit class name" do
-        before(:all) { ZendeskAPI::TestResource.has :baz, :class => ZendeskAPI::TestResource }
-
-        it "should define a method with the same name" do
-          expect(subject.instance_methods.map(&:to_s)).to include("baz")
-        end
+      it "should define a method with the same name" do
+        expect(subject.instance_methods.map(&:to_s)).to include("baz")
       end
     end
 
     context "instance method" do
       context "with no side-loading" do
-        subject { ZendeskAPI::TestResource.new(client, :id => 1, :test_resource_id => 1) }
-        before(:each) { stub_json_request(:get, %r{test_resources/\d+}, json(:test_resource => {})) }
+        subject { ZendeskAPI::TestResource.new(client, id: 1, test_resource_id: 1) }
+        before(:each) { stub_json_request(:get, %r{test_resources/\d+}, json(test_resource: {})) }
 
         it "should attempt to grab the resource from the host" do
           expect(subject.test_resource).to be_instance_of(ZendeskAPI::TestResource)
         end
 
         it "should pass the path on to the resource" do
-          expect(subject.test_resource.path).to eq("test_resources")
+          # TODO what is this testing?
+          expect(subject.test_resource.path).to eq(Path.new('test_resources/%{id}'))
         end
 
         context "with a client error" do
@@ -110,7 +108,7 @@ describe ZendeskAPI::DataResource do
 
         context "with an explicit path set" do
           before(:each) do
-            ZendeskAPI::TestResource.has ZendeskAPI::TestResource, :path => "blergh"
+            ZendeskAPI::TestResource.has :test_resource, class: ZendeskAPI::TestResource, path: 'blergh/%{id}'
             stub_json_request(:get, %r{blergh/\d+}, json(:test_resource => {}))
           end
 
@@ -153,21 +151,19 @@ describe ZendeskAPI::DataResource do
   end
 
   context "has_many" do
-    before(:each) { ZendeskAPI::TestResource.has_many ZendeskAPI::TestResource }
+    before(:each) do
+      ZendeskAPI::TestResource.has_many :test_resources, class: ZendeskAPI::TestResource, path: 'test_resources/%{id}/test_resources'
+    end
 
     context "class methods" do
       subject { ZendeskAPI::TestResource }
 
-      it "should define a method with the same name" do
-        expect(subject.instance_methods.map(&:to_s)).to include("test_resources")
+      before(:each) do
+        ZendeskAPI::TestResource.has_many :cats, class: ZendeskAPI::TestResource, path: 'test_resources/%{id}/cats'
       end
 
-      context "with explicit class name" do
-        before(:each) { ZendeskAPI::TestResource.has_many :cats, :class => ZendeskAPI::TestResource }
-
-        it "should define a method with the same name" do
-          expect(subject.instance_methods.map(&:to_s)).to include("cats")
-        end
+      it "should define a method with the same name" do
+        expect(subject.instance_methods.map(&:to_s)).to include("cats")
       end
     end
 
@@ -185,7 +181,7 @@ describe ZendeskAPI::DataResource do
 
         context "with an explicit path set" do
           before(:each) do
-            ZendeskAPI::TestResource.has_many ZendeskAPI::TestResource, :path => "blargh"
+            ZendeskAPI::TestResource.has_many :test_resources, class: ZendeskAPI::TestResource, path: 'test_resources/%{id}/blargh'
           end
 
           it "should call the right path" do
@@ -196,7 +192,7 @@ describe ZendeskAPI::DataResource do
 
       context "with side-loading of resource" do
         let(:test_resources) { [{ :message => "FOO_OBJ" }] }
-        subject { ZendeskAPI::TestResource.new(client, :test_resources => test_resources).test_resources.first }
+        subject { ZendeskAPI::TestResource.new(client, id: 1, test_resources: test_resources).test_resources.first }
 
         it "should properly create instance" do
           expect(subject.message).to eq("FOO_OBJ")
@@ -209,7 +205,7 @@ describe ZendeskAPI::DataResource do
 
       context "with side-loading of id" do
         let(:test_resource_ids) { [1, 2, 3] }
-        subject { ZendeskAPI::TestResource.new(client, :test_resource_ids => test_resource_ids) }
+        subject { ZendeskAPI::TestResource.new(client, id: 1, test_resource_ids: test_resource_ids) }
 
         it "should find foo_id and load it from the api" do
           expect(ZendeskAPI::TestResource).to receive(:find).with(client, kind_of(Hash)).exactly(test_resource_ids.length).times

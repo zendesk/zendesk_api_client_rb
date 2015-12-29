@@ -1,3 +1,7 @@
+require 'zendesk_api/association'
+require 'zendesk_api/associations/has'
+require 'zendesk_api/associations/has_many'
+
 module ZendeskAPI
   # This module holds association method for resources.
   # Associations can be loaded in three ways:
@@ -8,29 +12,56 @@ module ZendeskAPI
   # @private
   module Associations
     def self.included(base)
-      base.extend ClassMethods
+      base.extend(ClassMethods)
     end
 
-    def wrap_resource(resource, class_level_association, options = {})
-      instance_association = Association.new(class_level_association.merge(:parent => self))
-      klass = class_level_association[:class]
+    def associations
+      @associations ||= {}
+    end
 
-      case resource
+    def wrap_plural_resource(resources, options = {})
+      mapped_resources = Array(resources).map do |resource|
+        wrap_singular_resource(resource, options)
+      end
+
+      # TODO pass in proper path ?
+      path = options[:path].format(attributes)
+
+      ZendeskAPI::Collection.new(client, options[:class], path: path).tap do |collection|
+        collection.replace(mapped_resources)
+
+        if resources && has_key?(options[:plural_key])
+          public_send("#{options[:plural_key]}=", resources.map(&:id))
+        end
+
+        if options[:extensions].any?
+          collection.extend(*options[:extensions])
+        end
+      end
+    end
+
+    def wrap_singular_resource(resource, options = {})
+      wrapped_resource = case resource
       when Hash
-        klass.new(@client, resource.merge(:association => instance_association))
+        options[:class].new(@client, resource)
       when String, Fixnum
-        klass.new(@client, (options[:include_key] || :id) => resource, :association => instance_association)
+        options[:class].new(@client, options[:include_key] => resource)
       else
-        resource.association = instance_association
         resource
       end
+
+      if wrapped_resource && has_key?(options[:singular_key])
+        send("#{options[:singular_key]}=", wrapped_resource.id)
+      end
+
+      wrapped_resource
     end
 
     # @private
     module ClassMethods
       def self.extended(klass)
-        klass.extend Has
-        klass.extend HasMany
+        klass.extend(ZendeskAPI::Associations::Has)
+        klass.extend(ZendeskAPI::Associations::HasMany)
       end
 
       def associations
@@ -38,171 +69,35 @@ module ZendeskAPI
       end
 
       def associated_with(name)
-        associations.inject([]) do |associated_with, association|
-          if association[:include] == name.to_s
-            associated_with.push(Association.new(association))
-          end
-
-          associated_with
-        end
+        associations.lazy.select {|association|
+          association[:include] == name.to_s
+        }.map {|association|
+          Association.new(association)
+        }.to_a
       end
 
       private
 
-      def build_association(klass, resource_name, options)
+      def build_association(resource_name, options)
         {
-          :class => klass,
-          :name => resource_name,
-          :inline => options.delete(:inline),
-          :path => options.delete(:path),
-          :include => (options.delete(:include) || klass.resource_name).to_s,
-          :include_key => (options.delete(:include_key) || :id).to_s,
-          :singular => options.delete(:singular),
-          :extensions => Array(options.delete(:extend))
+          name: resource_name,
+          class: options.fetch(:class),
+          singular_key: "#{resource_name}_id", # This is the association's "resource name"
+          plural_key: "#{options.fetch(:class).singular_resource_name}_ids", # TODO
+          parent_key: "#{singular_resource_name}_id", # This is RESOURCE CLASSES singular_resource_name
+          include_key: options.fetch(:include_key, :id),
+
+          inline: options.fetch(:inline, false), # this is used for saving
+
+          include: options.fetch(:include, options.fetch(:class).resource_name), # ??
+          # TODO ?
+          extensions: Array(options.delete(:extend))
         }
       end
 
-      def define_used(association)
-        define_method "#{association[:name]}_used?" do
-          !!instance_variable_get("@#{association[:name]}")
-        end
-      end
-
-      module Has
-        # Represents a parent-to-child association between resources. Options to pass in are: class, path.
-        # @param [Symbol] resource_name_or_class The underlying resource name or a class to get it from
-        # @param [Hash] class_level_options The options to pass to the method definition.
-        def has(resource_name_or_class, class_level_options = {})
-          if klass = class_level_options.delete(:class)
-            resource_name = resource_name_or_class
-          else
-            klass = resource_name_or_class
-            resource_name = klass.singular_resource_name
-          end
-
-          class_level_association = build_association(klass, resource_name, class_level_options)
-          class_level_association.merge!(:singular => true, :id_column => "#{resource_name}_id")
-
-          associations << class_level_association
-
-          define_used(class_level_association)
-          define_has_getter(class_level_association)
-          define_has_setter(class_level_association)
-        end
-
-        private
-
-        def define_has_getter(association)
-          klass = association[:class] # shorthand
-
-          define_method association[:name] do |*args|
-            instance_options = args.last.is_a?(Hash) ? args.pop : {}
-
-            # return if cached
-            cached = instance_variable_get("@#{association[:name]}")
-            return cached if cached && !instance_options[:reload]
-
-            # find and cache association
-            instance_association = Association.new(association.merge(:parent => self))
-            resource = if klass.respond_to?(:find) && resource_id = method_missing(association[:id_column])
-              klass.find(@client, :id => resource_id, :association => instance_association)
-            elsif found = method_missing(association[:name].to_sym)
-              wrap_resource(found, association, :include_key => association[:include_key])
-            elsif klass.superclass == DataResource && !association[:inline]
-              response = @client.connection.get(instance_association.generate_path(:with_parent => true))
-              klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
-            end
-
-            send("#{association[:id_column]}=", resource.id) if resource && has_key?(association[:id_column])
-            instance_variable_set("@#{association[:name]}", resource)
-          end
-        end
-
-        def define_has_setter(association)
-          define_method "#{association[:name]}=" do |resource|
-            resource = wrap_resource(resource, association)
-            send("#{association[:id_column]}=", resource.id) if has_key?(association[:id_column])
-            instance_variable_set("@#{association[:name]}", resource)
-          end
-        end
-      end
-
-      module HasMany
-        # Represents a parent-to-children association between resources. Options to pass in are: class, path.
-        # @param [Symbol] resource_name_or_class The underlying resource name or class to get it from
-        # @param [Hash] class_level_options The options to pass to the method definition.
-        def has_many(resource_name_or_class, class_level_options = {})
-          if klass = class_level_options.delete(:class)
-            resource_name = resource_name_or_class
-          else
-            klass = resource_name_or_class
-            resource_name = klass.resource_name
-          end
-
-          class_level_association = build_association(klass, resource_name, class_level_options)
-          class_level_association.merge!(:singular => false, :id_column => "#{resource_name}_ids")
-
-          associations << class_level_association
-
-          define_used(class_level_association)
-          define_has_many_getter(class_level_association)
-          define_has_many_setter(class_level_association)
-        end
-
-        private
-
-        def define_has_many_getter(association)
-          klass = association[:class]
-
-          define_method association[:name] do |*args|
-            instance_opts = args.last.is_a?(Hash) ? args.pop : {}
-
-            # return if cached
-            cached = instance_variable_get("@#{association[:name]}")
-            return cached if cached && !instance_opts[:reload]
-
-            # find and cache association
-            instance_association = Association.new(association.merge(:parent => self))
-            singular_resource_name = klass.singular_resource_name
-
-            resources = if (ids = method_missing("#{singular_resource_name}_ids")) && ids.any?
-              ids.map do |id|
-                klass.find(@client, :id => id, :association => instance_association)
-              end.compact
-            elsif (resources = method_missing(association[:name].to_sym)) && resources.any?
-              resources.map {|res| wrap_resource(res, association)}
-            else
-              []
-            end
-
-            collection = ZendeskAPI::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
-
-            if association[:extensions].any?
-              collection.extend(*association[:extensions])
-            end
-
-            if resources.any?
-              collection.replace(resources)
-            end
-
-            send("#{association[:id_column]}=", resources.map(&:id)) if has_key?(association[:id_column])
-            instance_variable_set("@#{association[:name]}", collection)
-          end
-        end
-
-        def define_has_many_setter(association)
-          define_method "#{association[:name]}=" do |resources|
-            if resources.is_a?(Array)
-              wrapped = resources.map { |attr| wrap_resource(attr, association) }
-              send(association[:name]).replace(wrapped)
-            else
-              resources.association = Association.new(association.merge(:parent => self))
-              instance_variable_set("@#{association[:name]}", resources)
-            end
-
-            send("#{association[:id_column]}=", resources.map(&:id)) if resources && has_key?(association[:id_column])
-            resource
-          end
+      def define_used(options)
+        define_method "#{options[:name]}_used?" do
+          associations.key?(options[:name])
         end
       end
     end

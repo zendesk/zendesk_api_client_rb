@@ -654,7 +654,7 @@ describe ZendeskAPI::Collection do
 
     context "singular id on resource" do
       before(:each) do
-        ZendeskAPI::TestResource.has ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
@@ -678,7 +678,7 @@ describe ZendeskAPI::Collection do
 
     context "multiple resources" do
       before(:each) do
-        ZendeskAPI::TestResource.has ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_id => 4 }, { :id => 2, :nil_resource_id => 1 }],
@@ -716,7 +716,7 @@ describe ZendeskAPI::Collection do
 
     context "plural ids on resource" do
       before(:each) do
-        ZendeskAPI::TestResource.has_many ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has_many :nil_resources, class: ZendeskAPI::NilResource, path: 'test_resources/%{id}/nil_resources'
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_ids => [1, 4] }],
@@ -739,7 +739,7 @@ describe ZendeskAPI::Collection do
 
     context "ids in side load" do
       before(:each) do
-        ZendeskAPI::TestResource.has_many ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has_many :nil_resources, class: ZendeskAPI::NilResource, path: 'test_resources/%{id}/nil_resources'
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1 }],
@@ -761,7 +761,7 @@ describe ZendeskAPI::Collection do
 
     context "id in side load" do
       before(:each) do
-        ZendeskAPI::TestResource.has ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1 }],
@@ -783,7 +783,7 @@ describe ZendeskAPI::Collection do
 
     context "with name as key" do
       before(:each) do
-        ZendeskAPI::TestResource.has ZendeskAPI::NilResource, :include_key => :name
+        ZendeskAPI::TestResource.has :nil_resource, class: ZendeskAPI::NilResource, include_key: :name
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
@@ -806,8 +806,8 @@ describe ZendeskAPI::Collection do
 
     context "sub-loading" do
       before(:each) do
-        ZendeskAPI::TestResource.has ZendeskAPI::TestResource::TestChild
-        ZendeskAPI::TestResource::TestChild.has ZendeskAPI::NilResource
+        ZendeskAPI::TestResource.has :test_child, class: ZendeskAPI::TestResource::TestChild
+        ZendeskAPI::TestResource::TestChild.has :nil_resource, class: ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
           :test_resources => [{ :id => 1, :test_child => { :nil_resource_id => 4 } }],
