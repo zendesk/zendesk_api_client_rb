@@ -1,8 +1,11 @@
 module ZendeskAPI
   class AnonymousRequest < CreateResource
-    def self.singular_resource_name
-      'request'
-    end
+    self.resource_name = 'anonymous_requests'
+
+    # TODO model key?!
+    self.singular_resource_name = 'request'
+
+    self.collection_paths = ['portal/requests']
 
     namespace 'portal'
   end

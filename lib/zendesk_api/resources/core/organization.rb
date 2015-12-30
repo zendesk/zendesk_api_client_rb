@@ -2,6 +2,12 @@ module ZendeskAPI
   class OrganizationField < Resource; end
 
   class Organization < Resource
+    self.resource_name = 'organizations'
+    self.singular_resource_name = 'organization'
+
+    self.resource_paths = ['organizations/%{id}']
+    self.collection_paths = ['organizations']
+
     has :ability, class: 'Ability', inline: true
     has :group, class: 'Group'
 

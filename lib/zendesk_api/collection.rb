@@ -35,7 +35,7 @@ module ZendeskAPI
       @path = @options.delete(:path)
 
       unless @path
-        collection_path = @options.fetch(:collection_path, [resource.collection_path])
+        collection_path = @options.delete(:collection_path) || [resource.collection_path]
         collection_path = collection_path.join("/") if collection_path
         @path = resource.collection_path(collection_path: collection_path)
         @path = @path.format({}) if @path # TODO
