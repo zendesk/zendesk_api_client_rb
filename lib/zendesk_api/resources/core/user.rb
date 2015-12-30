@@ -115,8 +115,19 @@ module ZendeskAPI
       false
     end
 
-    has :custom_role, class: 'CustomRole', inline: true, include: :roles
-    has :role, class: 'Role', inline: true, include_key: :name
+    has :custom_role, class: 'CustomRole', inline: true, sideload: {
+      include: :roles,
+      using: :custom_role_id,
+      from: :child_id
+    }
+
+    has :role, class: 'Role', inline: true, include_key: :name, sideload: {
+      include: :roles,
+      using: :role,
+      from: :child_id,
+      key: :name
+    }
+
     has :ability, class: 'Ability', inline: true
 
     has_many :identities, class: 'Identity'

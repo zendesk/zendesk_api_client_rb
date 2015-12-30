@@ -5,6 +5,7 @@ module ZendeskAPI
     self.collection_paths = ['custom_roles']
   end
 
+  # TODO Data?
   class Role < DataResource
     # TODO?
     def to_param

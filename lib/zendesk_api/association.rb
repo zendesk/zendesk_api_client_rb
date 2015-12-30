@@ -39,12 +39,12 @@ module ZendeskAPI
 
     def side_load_from_parent_ids(resource, side_loads)
       resource.public_send("#{@options[:name]}=", _side_load(resource, side_loads.select {|side_load|
-        side_load[@options[:sideload][:using].to_s] == resource.public_send(@options[:sideload][:key])
+        side_load[@options[:sideload][:using].to_s] == resource.attributes[@options[:sideload][:key]]
       }))
     end
 
     def side_load_from_parent_id(resource, side_loads)
-      id = resource.public_send(@options[:sideload][:key])
+      id = resource.attributes[@options[:sideload][:key]]
 
       return unless id
 
@@ -56,7 +56,7 @@ module ZendeskAPI
     end
 
     def side_load_from_child_ids(resource, side_loads)
-      ids = resource.public_send(@options[:sideload][:using])
+      ids = resource.attributes[@options[:sideload][:using]]
 
       resource.public_send("#{@options[:name]}=", _side_load(resource, side_loads.select {|side_load|
         ids.include?(side_load[@options[:sideload][:key].to_s])
@@ -64,7 +64,7 @@ module ZendeskAPI
     end
 
     def side_load_from_child_id(resource, side_loads)
-      id = resource.public_send(@options[:sideload][:using])
+      id = resource.attributes[@options[:sideload][:using]]
 
       return unless id
 

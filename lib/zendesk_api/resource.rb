@@ -146,13 +146,14 @@ module ZendeskAPI
     # TODO :id?
     alias :to_param :attributes
 
-    protected
-
+    # Public because it's called by bulk actions
     def handle_response(response)
       if response.body.is_a?(Hash) && response.body[self.class.singular_resource_name]
         @attributes.replace(@attributes.deep_merge(response.body[self.class.singular_resource_name]))
       end
     end
+
+    protected
 
     def attributes_for_save
       { self.class.singular_resource_name.to_sym => attributes.changes }
