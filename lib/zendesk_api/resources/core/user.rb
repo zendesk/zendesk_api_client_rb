@@ -108,7 +108,7 @@ module ZendeskAPI
     has_many :requested_tickets, class: 'Ticket', :path => 'tickets/requested'
     has_many :ccd_tickets, class: 'Ticket', :path => 'tickets/ccd'
 
-    has_many :groups, class: 'Group'
+    has_many :groups, class: 'Group', path: 'users/%{id}/groups'
     has_many :group_memberships, class: 'GroupMembership', path: 'users/%{id}/group_memberships'
 
     has_many :organization_memberships, class: 'OrganizationMembership'

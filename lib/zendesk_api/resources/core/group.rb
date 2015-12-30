@@ -3,7 +3,11 @@ module ZendeskAPI
     self.resource_name = 'groups'
     self.singular_resource_name = 'group'
 
-    self.collection_paths = ['groups']
+    self.collection_paths = [
+      'groups',
+      'groups/assignable'
+    ]
+
     self.resource_paths = ['groups/%{id}']
   end
 
