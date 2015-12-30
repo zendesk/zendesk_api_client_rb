@@ -10,10 +10,67 @@ module ZendeskAPI
     has :user, class: 'User'
   end
 
-  class TopicComment < Data
+  class TopicComment < Resource
+    self.resource_name = 'topic_comments'
+    self.singular_resource_name = 'topic_comment'
+
+    self.collection_paths = [
+      'topics/%{topic_id}/comments',
+      'users/%{user_id}/topic_comments'
+    ]
+
+    self.resource_paths = [
+      'topics/%{topic_id}/comments/%{id}',
+      'users/%{user_id}/topic_comments/%{id}'
+    ]
+
     has :topic, class: 'Topic'
     has :user, class: 'User'
     has_many :attachments, class: 'Attachment', path: '' # TODO
+    has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
+
+    def self.import!(client, attributes)
+      new(client, attributes).tap do |comment|
+        comment.save!(:path => 'import/' + comment.path)
+      end
+    end
+
+    def self.import(client, attributes)
+      comment = new(client, attributes)
+      return unless comment.save(:path => 'import/' + comment.path)
+      comment
+    end
+  end
+
+  class TopicVote < DataResource
+    include Read
+    include Create
+    include Destroy
+
+    self.resource_name = 'topic_votes'
+    self.singular_resource_name = 'topic_vote'
+
+    self.collection_paths = [
+      'topics/%{topic_id}/votes',
+      'users/%{user_id}/topic_votes'
+    ]
+
+    self.resource_paths = [
+      'topics/%{topic_id}/vote'
+    ]
+
+    has :topic, class: 'Topic'
+    has :user, class: 'User'
+
+    protected
+
+    def save_options
+      [:post, path.format(attributes)]
+    end
+
+    def attributes_for_save
+      attributes.changes
+    end
   end
 
   class Topic < Resource
@@ -23,63 +80,14 @@ module ZendeskAPI
     self.collection_paths = ['topics']
     self.resource_paths = ['topics/%{id}']
 
-    class TopicComment < TopicComment
-      include Read
-      include Create
-      include Update
-      include Destroy
-
-      self.resource_name = 'topic_comments'
-      self.singular_resource_name = 'topic_comment'
-
-      self.collection_paths = [
-        'topics/%{topic_id}/comments'
-      ]
-
-      self.resource_paths = [
-        'topics/%{topic_id}/comments/%{id}'
-      ]
-
-      has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
-
-      def self.import!(client, attributes)
-        new(client, attributes).tap do |comment|
-          comment.save!(:path => 'import/' + comment.path)
-        end
-      end
-
-      def self.import(client, attributes)
-        comment = new(client, attributes)
-        return unless comment.save(:path => 'import/' + comment.path)
-        comment
-      end
-    end
-
-    class TopicVote < SingularResource
-      has :topic, class: 'Topic'
-      has :user, class: 'User'
-
-      private
-
-      def attributes_for_save
-        attributes.changes
-      end
-    end
-
     has :forum, class: 'Forum'
     has_many :comments, class: 'TopicComment', path: 'topics/%{id}/comments'
     has_many :subscriptions, class: 'TopicSubscription', path: 'topics/%{id}/subscriptions'
     has :vote, class: 'TopicVote'
+    has_many :votes, class: 'TopicVote', path: 'topics/%{id}/votes'
     has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: '' # TODO
     has_many :attachments, class: 'Attachment', path: 'attachments' # TODO
     has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
-
-    def votes(opts = {})
-      return @votes if @votes && !opts[:reload]
-
-      association = ZendeskAPI::Association.new(:class => TopicVote, :parent => self, :path => 'votes')
-      @votes = ZendeskAPI::Collection.new(@client, TopicVote, opts.merge(:association => association))
-    end
 
     def self.import!(client, attributes)
       new(client, attributes).tap do |topic|

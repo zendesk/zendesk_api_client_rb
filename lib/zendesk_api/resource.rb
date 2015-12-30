@@ -199,10 +199,6 @@ module ZendeskAPI
     def save_options
       [:put, path.format(attributes)]
     end
-
-    def attributes_for_save
-      { self.class.resource_name.to_sym => attributes.changes }
-    end
   end
 
   # Namespace parent class for Data/Resource classes

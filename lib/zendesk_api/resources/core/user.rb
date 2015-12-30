@@ -26,10 +26,6 @@ module ZendeskAPI
     extend UpdateMany
     extend DestroyMany
 
-    class TopicComment < TopicComment
-      include Read
-    end
-
     class Identity < Resource
       self.resource_name = 'identities'
       self.singular_resource_name = 'identity'
@@ -145,8 +141,8 @@ module ZendeskAPI
     has_many :topic_subscriptions, class: 'TopicSubscription', path: 'users/%{id}/topic_subscriptions'
 
     has_many :topics, class: 'Topic', path: 'users/%{id}/topics'
-    has_many :topic_comments, class: 'User::TopicComment', path: 'users/%{id}/topic_comments'
-    has_many :topic_votes, class: 'Topic::TopicVote'
+    has_many :topic_comments, class: 'TopicComment', path: 'users/%{id}/topic_comments'
+    has_many :topic_votes, class: 'TopicVote', path: 'users/%{id}/topic_votes'
 
     has_many :settings, class: 'Setting', path: 'users/%{id}/settings'
     has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create

@@ -1,6 +1,6 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::Topic::TopicComment do
+describe ZendeskAPI::TopicComment do
   def valid_attributes
     { :body => "Texty-text, text." }
   end
@@ -16,21 +16,21 @@ describe ZendeskAPI::Topic::TopicComment do
     it "can import" do
       VCR.use_cassette("topic_comment_import_can_import") do
         old = Time.now - 4*365*24*60*60
-        comment = ZendeskAPI::Topic::TopicComment.import(client, valid_attributes.merge(:created_at => old, :topic_id => topic.id))
-        expect(ZendeskAPI::Topic::TopicComment.find(client, comment).created_at.year).to eq(old.year)
+        comment = ZendeskAPI::TopicComment.import(client, valid_attributes.merge(:created_at => old, :topic_id => topic.id))
+        expect(ZendeskAPI::TopicComment.find(client, comment).created_at.year).to eq(old.year)
       end
     end
 
     it "returns nothing if import fails" do
       VCR.use_cassette("topic_comment_import_cannot_import") do
-        silence_logger { expect(ZendeskAPI::Topic::TopicComment.import(client, {})).to eq(nil) }
+        silence_logger { expect(ZendeskAPI::TopicComment.import(client, {})).to eq(nil) }
       end
     end
   end
 
   it "can upload while creating" do
     VCR.use_cassette("topic_comment_inline_uploads") do
-      comment = ZendeskAPI::Topic::TopicComment.new(client, valid_attributes.merge(:topic_id => topic.id))
+      comment = ZendeskAPI::TopicComment.new(client, valid_attributes.merge(:topic_id => topic.id))
       comment.uploads << "spec/fixtures/Argentina.gif"
       comment.uploads << File.new("spec/fixtures/Argentina.gif")
 
@@ -41,7 +41,7 @@ describe ZendeskAPI::Topic::TopicComment do
   end
 end
 
-describe ZendeskAPI::User::TopicComment do
+describe ZendeskAPI::TopicComment do
   def valid_attributes
     { :body => "Texty-text, text."}
   end
