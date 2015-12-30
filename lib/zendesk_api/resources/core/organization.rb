@@ -38,6 +38,12 @@ module ZendeskAPI
     extend CreateMany
     extend DestroyMany
 
+    self.resource_name = 'organization_memberships'
+    self.singular_resource_name = 'organization_membership'
+
+    self.collection_paths = ['organization_memberships']
+    self.resource_paths = ['organization_memberships/%{id}']
+
     has :user, class: 'User'
     has :organization, class: 'Organization'
   end
