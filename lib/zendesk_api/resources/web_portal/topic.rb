@@ -12,8 +12,10 @@ module ZendeskAPI
 
   class Topic < Resource
     self.resource_name = 'topics'
-    self.singular_resource_name = 'topics'
-    # self.collection_paths = ['topics']
+    self.singular_resource_name = 'topic'
+
+    self.collection_paths = ['topics']
+    self.resource_paths = ['topics/%{id}']
 
     class TopicComment < TopicComment
       include Read
