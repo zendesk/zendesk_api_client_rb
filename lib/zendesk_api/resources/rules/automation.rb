@@ -9,5 +9,10 @@ module ZendeskAPI
 
     self.resource_name = 'automations'
     self.singular_resource_name = 'automation'
+    self.collection_paths = [
+      'automations',
+      'automations/active',
+    ]
+    self.resource_paths = ['automations/%{id}']
   end
 end
