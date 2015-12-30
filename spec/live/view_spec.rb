@@ -18,5 +18,6 @@ describe ZendeskAPI::View, :delete_after do
     "any" => [],
     "all" => [{ "field" => "status", "operator" => "is", "value" => "solved" }]
   }
+
   it_should_be_deletable
 end

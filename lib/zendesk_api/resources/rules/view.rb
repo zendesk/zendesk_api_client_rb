@@ -8,6 +8,13 @@ module ZendeskAPI
     self.resource_name = 'views'
     self.singular_resource_name = 'view'
 
+    self.collection_paths = [
+      'views',
+      'views/active',
+    ]
+
+    self.resource_paths = ['views/%{id}']
+
     has_many :tickets, class: 'Ticket'
     has_many :feed, class: 'Ticket', :path => "feed"
 
