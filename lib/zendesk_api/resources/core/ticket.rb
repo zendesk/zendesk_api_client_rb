@@ -1,5 +1,10 @@
 module ZendeskAPI
-  class TicketField < Resource; end
+  class TicketField < Resource
+    self.resource_name = 'ticket_fields'
+    self.singular_resource_name = 'ticket_field'
+    self.collection_paths = ['ticket_fields']
+    self.resource_paths = ['ticket_fields/%{id}']
+  end
 
   class TicketMetric < DataResource
     include Read
