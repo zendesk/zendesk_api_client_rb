@@ -131,7 +131,7 @@ module ZendeskAPI
     has_many :topic_comments, class: 'User::TopicComment', path: 'users/%{id}/topic_comments'
     has_many :topic_votes, class: 'Topic::TopicVote'
 
-    has_many :settings, class: 'Setting', path: '' # TODO
+    has_many :settings, class: 'Setting', path: 'users/%{id}/settings'
     has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create
 
     def attributes_for_save

@@ -1,9 +1,18 @@
 module ZendeskAPI
   class Setting < UpdateResource
+    self.resource_name = 'settings'
+    self.singular_resource_name = 'settings'
+
+    self.resource_paths = [
+      'users/me/settings',
+      'account/settings'
+    ]
+
     attr_reader :on
 
     def initialize(client, attributes = {})
       # Try and find the root key
+      # TODO?
       @on = (attributes.keys.map(&:to_s) - %w{association options}).first
 
       # Make what's inside that key the root attributes
@@ -14,10 +23,6 @@ module ZendeskAPI
 
     def new_record?
       false
-    end
-
-    def path(options = {})
-      super(options.merge(:with_parent => true))
     end
 
     def attributes_for_save
