@@ -5,6 +5,8 @@ module ZendeskAPI
     self.namespace = 'dynamic_content'
 
     class Item < ZendeskAPI::Resource
+      # TODO support moving this out
+      # right now the fixtures don't allow it
       class Variant < ZendeskAPI::Resource
         self.resource_name = 'variants'
         self.singular_resource_name = 'variant'
