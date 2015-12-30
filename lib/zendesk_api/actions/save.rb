@@ -63,7 +63,7 @@ module ZendeskAPI
 
     def save_options
       if new_record?
-        [:post, collection_path.to_s]
+        [:post, collection_path.format(attributes)]
       else
         [:put, path.format(attributes)]
       end

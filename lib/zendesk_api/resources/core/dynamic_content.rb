@@ -4,10 +4,14 @@ module ZendeskAPI
 
     self.namespace = 'dynamic_content'
 
-    class Variant < ZendeskAPI::Resource
-    end
-
     class Item < ZendeskAPI::Resource
+      class Variant < ZendeskAPI::Resource
+        self.resource_name = 'variants'
+        self.singular_resource_name = 'variant'
+        self.resource_paths = ['dynamic_content/items/%{item_id}/variants/%{id}']
+        self.collection_paths = ['dynamic_content/items/%{item_id}/variants']
+      end
+
       self.resource_name = 'items'
       self.singular_resource_name = 'item'
       self.resource_paths = ['dynamic_content/items/%{id}']
@@ -15,7 +19,7 @@ module ZendeskAPI
 
       namespace 'dynamic_content'
 
-      has_many :variants, class: 'DynamicContent::Variant', path: 'dynamic_content/items/%{id}/variants'
+      has_many :variants, class: 'DynamicContent::Item::Variant', path: 'dynamic_content/items/%{id}/variants'
     end
   end
 end

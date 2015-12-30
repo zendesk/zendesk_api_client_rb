@@ -105,7 +105,7 @@ module ZendeskAPI
     end
 
     def collection_path
-      self.class.collection_path
+      self.class.collection_path(attributes)
     end
 
     # Passes #to_json to the underlying attributes hash

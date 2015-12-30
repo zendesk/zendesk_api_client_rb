@@ -1,6 +1,6 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::DynamicContent::Variant, :delete_after do
+describe ZendeskAPI::DynamicContent::Item::Variant, :delete_after do
   def valid_attributes
     {
       :locale_id => 43,
