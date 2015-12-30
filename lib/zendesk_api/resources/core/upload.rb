@@ -25,7 +25,7 @@ module ZendeskAPI
     self.resource_name = 'uploads'
     self.singular_resource_name = 'upload'
     self.collection_paths = ['uploads']
-    self.resource_paths = ['uploads/%{id}'] # TODO %{token}?
+    self.resource_paths = ['uploads/%{token}']
 
     has_many :attachments, class: 'Attachment'
 
