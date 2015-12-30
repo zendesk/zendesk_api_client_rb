@@ -1,5 +1,10 @@
 module ZendeskAPI
   class Request < Resource
+    self.resource_name = 'requests'
+    self.singular_resource_name = 'request'
+    self.collection_paths = ['requests']
+    self.resource_paths = ['requests/%{id}']
+
     class Comment < DataResource
       include Save
 

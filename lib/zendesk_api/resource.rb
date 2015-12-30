@@ -9,6 +9,8 @@ module ZendeskAPI
   class Data
     include Associations
 
+    extend Verbs
+
     class << self
       attr_accessor :resource_name, :singular_resource_name
       attr_reader :collection_paths, :resource_paths
@@ -64,6 +66,7 @@ module ZendeskAPI
     # TODO
     attr_reader :includes
     attr_reader :global_params
+    attr_accessor :error, :error_message
 
     # Create a new resource instance.
     # @param [Client] client The client to use
@@ -143,7 +146,13 @@ module ZendeskAPI
     # TODO :id?
     alias :to_param :attributes
 
-    private
+    protected
+
+    def handle_response(response)
+      if response.body.is_a?(Hash) && response.body[self.class.singular_resource_name]
+        @attributes.replace(@attributes.deep_merge(response.body[self.class.singular_resource_name]))
+      end
+    end
 
     def attributes_for_save
       { self.class.singular_resource_name.to_sym => attributes.changes }
@@ -152,15 +161,6 @@ module ZendeskAPI
 
   # Indexable resource
   class DataResource < Data
-    attr_accessor :error, :error_message
-
-    extend Verbs
-
-    def handle_response(response)
-      if response.body.is_a?(Hash) && response.body[self.class.singular_resource_name]
-        @attributes.replace(@attributes.deep_merge(response.body[self.class.singular_resource_name]))
-      end
-    end
   end
 
   # Represents a resource that can only GET
