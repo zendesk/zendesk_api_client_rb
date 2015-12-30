@@ -30,6 +30,7 @@ module ZendeskAPI
         wrap_singular_resource(resource, options)
       end
 
+      debugger if options[:path].nil?
       # TODO pass in proper path ?
       path = options[:path].format(attributes)
 

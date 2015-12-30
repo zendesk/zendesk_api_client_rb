@@ -6,6 +6,6 @@ module ZendeskAPI
     self.resource_paths = ['categories/%{id}']
     self.collection_paths = ['categories']
 
-    has_many :forums, class: 'Forum'
+    has_many :forums, class: 'Forum', path: 'categories/%{id}/forums'
   end
 end

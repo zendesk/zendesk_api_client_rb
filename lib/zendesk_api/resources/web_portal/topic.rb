@@ -7,17 +7,21 @@ module ZendeskAPI
   class TopicComment < Data
     has :topic, class: 'Topic'
     has :user, class: 'User'
-    has_many :attachments, class: 'Attachment'
+    has_many :attachments, class: 'Attachment', path: '' # TODO
   end
 
   class Topic < Resource
+    self.resource_name = 'topics'
+    self.singular_resource_name = 'topics'
+    # self.collection_paths = ['topics']
+
     class TopicComment < TopicComment
       include Read
       include Create
       include Update
       include Destroy
 
-      has_many :uploads, class: 'Attachment', inline: true
+      has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
 
       def self.import!(client, attributes)
         new(client, attributes).tap do |comment|
@@ -44,12 +48,12 @@ module ZendeskAPI
     end
 
     has :forum, class: 'Forum'
-    has_many :comments, class: 'TopicComment'
+    has_many :comments, class: 'TopicComment', path: 'topics/%{id}/comments'
     has_many :subscriptions, class: 'TopicSubscription'
     has :vote, class: 'TopicVote'
-    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create
-    has_many :attachments, class: 'Attachment'
-    has_many :uploads, class: 'Attachment', inline: true
+    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: '' # TODO
+    has_many :attachments, class: 'Attachment', path: 'attachments' # TODO
+    has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
 
     def votes(opts = {})
       return @votes if @votes && !opts[:reload]

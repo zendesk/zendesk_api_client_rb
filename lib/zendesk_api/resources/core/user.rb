@@ -12,7 +12,8 @@ module ZendeskAPI
     ]
 
     self.collection_paths = [
-      'users'
+      'users',
+      'users/search'
     ]
 
     extend CreateMany
@@ -103,23 +104,23 @@ module ZendeskAPI
 
     has_many :identities, class: 'Identity'
 
-    has_many :requests, class: 'Request'
+    has_many :requests, class: 'Request', path: 'users/%{id}/requests'
     has_many :requested_tickets, class: 'Ticket', :path => 'tickets/requested'
     has_many :ccd_tickets, class: 'Ticket', :path => 'tickets/ccd'
 
     has_many :groups, class: 'Group'
-    has_many :group_memberships, class: 'GroupMembership'
+    has_many :group_memberships, class: 'GroupMembership', path: 'users/%{id}/group_memberships'
 
     has_many :organization_memberships, class: 'OrganizationMembership'
 
     has_many :forum_subscriptions, class: 'ForumSubscription'
     has_many :topic_subscriptions, class: 'TopicSubscription'
 
-    has_many :topics, class: 'Topic'
-    has_many :topic_comments, class: 'User::TopicComment'
+    has_many :topics, class: 'Topic', path: 'users/%{id}/topics'
+    has_many :topic_comments, class: 'User::TopicComment', path: 'users/%{id}/topic_comments'
     has_many :topic_votes, class: 'Topic::TopicVote'
 
-    has_many :settings, class: 'Setting'
+    has_many :settings, class: 'Setting', path: '' # TODO
     has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create
 
     def attributes_for_save

@@ -3,7 +3,7 @@ module ZendeskAPI
     class Comment < DataResource
       include Save
 
-      has_many :uploads, class: 'Attachment', inline: true
+      has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
       has :author, class: 'User'
 
       # TODO?

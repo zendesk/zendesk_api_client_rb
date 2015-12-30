@@ -49,7 +49,7 @@ module ZendeskAPI
     class Comment < DataResource
       include Save
 
-      has_many :uploads, class: 'Attachment', inline: true
+      has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
       has :author, class: 'User'
 
       # TODO
@@ -85,7 +85,7 @@ module ZendeskAPI
       end
     end)
 
-    has_many :audits, class: 'Ticket::Audit'
+    has_many :audits, class: 'Ticket::Audit', path: 'tickets/%{id}/audits'
     has :metrics, class: 'TicketMetric'
     has :group, class: 'Group'
     has :forum_topic, class: 'Topic'
@@ -99,7 +99,7 @@ module ZendeskAPI
     has :last_comment, class: 'Ticket::Comment', inline: true
     has_many :last_comments, class: 'Ticket::Comment', inline: true
 
-    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create
+    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: '' # TODO
 
     has_many :incidents, class: 'Ticket'
 
