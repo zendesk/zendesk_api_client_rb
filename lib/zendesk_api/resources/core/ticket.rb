@@ -41,7 +41,12 @@ module ZendeskAPI
 
     self.resource_name = 'tickets'
     self.singular_resource_name = 'ticket'
-    self.collection_paths = ['tickets']
+
+    self.collection_paths = [
+      'tickets',
+      'tickets/recent'
+    ]
+
     self.resource_paths = ['tickets/%{id}']
 
     class Audit < DataResource
