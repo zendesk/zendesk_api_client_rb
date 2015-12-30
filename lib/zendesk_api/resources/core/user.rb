@@ -1,7 +1,13 @@
 require 'zendesk_api/resources/web_portal/topic'
 
 module ZendeskAPI
-  class UserField < Resource; end
+  class UserField < Resource
+    self.resource_name = 'user_fields'
+    self.singular_resource_name = 'user_field'
+
+    self.collection_paths = ['user_fields']
+    self.resource_paths = ['user_fields/%{id}']
+  end
 
   class User < Resource
     self.resource_name = 'users'
