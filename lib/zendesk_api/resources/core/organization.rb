@@ -1,5 +1,11 @@
 module ZendeskAPI
-  class OrganizationField < Resource; end
+  class OrganizationField < Resource
+    self.resource_name = 'organization_fields'
+    self.singular_resource_name = 'organization_field'
+
+    self.collection_paths = ['organization_fields']
+    self.resource_paths = ['organization_fields/%{id}']
+  end
 
   class Organization < Resource
     self.resource_name = 'organizations'
