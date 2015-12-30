@@ -21,6 +21,17 @@ module ZendeskAPI
       include Update
       include Destroy
 
+      self.resource_name = 'topic_comments'
+      self.singular_resource_name = 'topic_comment'
+
+      self.collection_paths = [
+        'topics/%{topic_id}/comments'
+      ]
+
+      self.resource_paths = [
+        'topics/%{topic_id}/comments/%{id}'
+      ]
+
       has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
 
       def self.import!(client, attributes)
