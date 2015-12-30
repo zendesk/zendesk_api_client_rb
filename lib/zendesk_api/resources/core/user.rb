@@ -113,7 +113,7 @@ module ZendeskAPI
 
     has_many :organization_memberships, class: 'OrganizationMembership'
 
-    has_many :forum_subscriptions, class: 'ForumSubscription'
+    has_many :forum_subscriptions, class: 'ForumSubscription', path: 'users/%{id}/forum_subscriptions'
     has_many :topic_subscriptions, class: 'TopicSubscription'
 
     has_many :topics, class: 'Topic', path: 'users/%{id}/topics'
