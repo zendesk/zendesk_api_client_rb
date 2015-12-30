@@ -34,7 +34,7 @@ module ZendeskAPI
       # TODO pass in proper path ?
       path = options[:path].format(attributes)
 
-      ZendeskAPI::Collection.new(client, options[:class].__getobj__, path: path).tap do |collection|
+      ZendeskAPI::Collection.new(client, options[:class].__getobj__, path: path, include: options[:include]).tap do |collection|
         if wrapped_resources.any?
           collection.replace(wrapped_resources)
         end

@@ -105,6 +105,11 @@ module ZendeskAPI
       config.callbacks << block
     end
 
+    # TODO
+    def app
+      Delegator.new(self)
+    end
+
     ZendeskAPI::DataNamespace.descendants.each do |namespace|
       define_method namespace.namespace do |*| # takes arguments, but doesn't do anything with them
         Delegator.new(self)

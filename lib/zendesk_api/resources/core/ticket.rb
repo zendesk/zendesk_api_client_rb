@@ -34,16 +34,27 @@ module ZendeskAPI
     self.resource_paths = ['tickets/%{id}']
 
     class Audit < DataResource
+      self.resource_name = 'audits'
+      self.singular_resource_name = 'audit'
+
       class Event < Data
-        has :author, class: 'User'
+        has :author, class: 'User', path: '', sideload: {
+          include: :users,
+          using: :author_id,
+          from: :child_id
+        } # TODO
       end
 
       put :trust
 
       # need this to support SideLoading
-      has :author, class: 'User'
+      has :author, class: 'User', path: '', sideload: {
+        include: :users,
+        using: :author_id,
+        from: :child_id
+      } # TODO
 
-      has_many :events, class: 'Ticket::Audit::Event'
+      has_many :events, class: 'Ticket::Audit::Event', path: '' # TODO
     end
 
     class Comment < DataResource

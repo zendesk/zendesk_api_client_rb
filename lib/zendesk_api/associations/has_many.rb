@@ -37,7 +37,7 @@ module ZendeskAPI
         private
 
         def define_has_many_getter(options)
-          define_method options[:name] do |*|
+          define_method options[:name] do |**method_options|
             associations[options[:name]] ||= begin
               resources = if (ids = public_send(options[:key])) && ids.any?
                 ids.map {|id| options[:class].find(@client, id: id)}.compact
@@ -47,7 +47,7 @@ module ZendeskAPI
                 []
               end
 
-              wrap_has_many_resource(resources, options)
+              wrap_has_many_resource(resources, options.merge(method_options))
             end
           end
         end

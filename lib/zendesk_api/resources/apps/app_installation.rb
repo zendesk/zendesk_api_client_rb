@@ -1,10 +1,12 @@
 module ZendeskAPI
   class AppInstallation < Resource
-    namespace "apps"
+    self.resource_name = 'installations'
+    self.singular_resource_name = 'installation'
 
-    def self.singular_resource_name
-      "installation"
-    end
+    self.collection_paths = ['apps/installations']
+    self.resource_paths = ['apps/installations/%{id}']
+
+    namespace "apps"
 
     # Don't nest attributes
     def attributes_for_save

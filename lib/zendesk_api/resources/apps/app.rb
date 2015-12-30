@@ -30,7 +30,7 @@ module ZendeskAPI
     class Upload < Data
       self.resource_name = 'uploads'
       self.singular_resource_name = 'upload'
-      self.collection_paths = ['uploads']
+      self.collection_paths = ['apps/uploads']
 
       include Create
 
