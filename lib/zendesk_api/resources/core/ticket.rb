@@ -7,7 +7,13 @@ module ZendeskAPI
   end
 
   class TicketMetric < DataResource
+    # TODO this is the special case in has.rb with superclass == DataResource, fuck that
     include Read
+
+    self.resource_name = 'ticket_metrics'
+    self.singular_resource_name = 'ticket_metric'
+    self.collection_paths = ['ticket_metrics']
+    self.resource_paths = ['ticket_metrics/%{id}']
   end
 
   class TicketRelated < DataResource; end
@@ -102,7 +108,7 @@ module ZendeskAPI
     end)
 
     has_many :audits, class: 'Ticket::Audit', path: 'tickets/%{id}/audits'
-    has :metrics, class: 'TicketMetric'
+    has :metrics, class: 'TicketMetric', path: 'tickets/%{id}/metrics'
     has :group, class: 'Group'
     has :forum_topic, class: 'Topic'
     has :organization, class: 'Organization'
