@@ -25,6 +25,17 @@ module ZendeskAPI
     end
 
     class Identity < Resource
+      self.resource_name = 'identities'
+      self.singular_resource_name = 'identity'
+
+      self.collection_paths = [
+        'users/%{user_id}/identities'
+      ]
+
+      self.resource_paths = [
+        'users/%{user_id}/identities/%{id}'
+      ]
+
       # Makes this identity the primary one bumping all other identities down one
       put :make_primary
 
