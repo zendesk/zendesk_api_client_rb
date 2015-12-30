@@ -19,7 +19,7 @@ module ZendeskAPI
 
     has_many :tickets, class: 'Ticket', path: 'organizations/%{id}/tickets'
     has_many :users, class: 'User', path: 'organizations/%{id}/users'
-    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: '' # TODO
+    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: 'organizations/%{id}/tags'
     has_many :memberships, class: 'OrganizationMembership'
 
     # Gets a incremental export of organizations from the start_time until now.

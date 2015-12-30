@@ -3,13 +3,18 @@ module ZendeskAPI
     include Update
     include Destroy
 
+    self.resource_name = 'tags'
+    self.singular_resource_name = 'tag'
+
+    self.collection_paths = [
+      'tags',
+      'topics/%{topic_id}/tags',
+      'organizations/%{organization_id}/tags',
+      'users/%{user_id}/tags'
+    ]
+
     def name; id; end
     def to_param; id; end
-
-    def path(opts = {})
-      raise "tags must have parent resource" unless association.options.parent
-      super(opts.merge(:with_parent => true, :with_id => false))
-    end
 
     def changed?
       true
@@ -37,6 +42,14 @@ module ZendeskAPI
           raise e
         end
       end
+    end
+
+    def path
+      collection_path
+    end
+
+    def save_options
+      [:put. path.format(attributes)]
     end
 
     def attributes_for_save

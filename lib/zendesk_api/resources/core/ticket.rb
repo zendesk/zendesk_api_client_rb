@@ -126,7 +126,7 @@ module ZendeskAPI
     has :last_comment, class: 'Ticket::Comment', inline: true
     has_many :last_comments, class: 'Ticket::Comment', inline: true
 
-    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: '' # TODO
+    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: 'tickets/%{id}/tags'
 
     has_many :incidents, class: 'Ticket'
 

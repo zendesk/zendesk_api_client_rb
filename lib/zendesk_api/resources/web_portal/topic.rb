@@ -11,7 +11,7 @@ module ZendeskAPI
     has_many :subscriptions, class: 'TopicSubscription', path: 'topics/%{id}/subscriptions'
     has :vote, class: 'TopicVote'
     has_many :votes, class: 'TopicVote', path: 'topics/%{id}/votes'
-    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: '' # TODO
+    has_many :tags, class: 'Tag', extend: 'Tag::Update', inline: :create, path: 'topics/%{id}/tags'
     has_many :attachments, class: 'Attachment', path: 'attachments' # TODO
     has_many :uploads, class: 'Attachment', inline: true, path: '' # TODO
 
