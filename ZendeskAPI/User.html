@@ -117,7 +117,7 @@
     
   
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="User/CurrentSession.html" title="ZendeskAPI::User::CurrentSession (class)">CurrentSession</a></span>, <span class='object_link'><a href="User/Identity.html" title="ZendeskAPI::User::Identity (class)">Identity</a></span>, <span class='object_link'><a href="User/Session.html" title="ZendeskAPI::User::Session (class)">Session</a></span>, <span class='object_link'><a href="User/TopicComment.html" title="ZendeskAPI::User::TopicComment (class)">TopicComment</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="User/CurrentSession.html" title="ZendeskAPI::User::CurrentSession (class)">CurrentSession</a></span>, <span class='object_link'><a href="User/GroupMembership.html" title="ZendeskAPI::User::GroupMembership (class)">GroupMembership</a></span>, <span class='object_link'><a href="User/Identity.html" title="ZendeskAPI::User::Identity (class)">Identity</a></span>, <span class='object_link'><a href="User/Session.html" title="ZendeskAPI::User::Session (class)">Session</a></span>, <span class='object_link'><a href="User/TopicComment.html" title="ZendeskAPI::User::TopicComment (class)">TopicComment</a></span>
     
   
 </p>
@@ -2117,12 +2117,12 @@
       <pre class="lines">
 
 
-685
-686
-687</pre>
+689
+690
+691</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 685</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 689</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_incremental_export'>incremental_export</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_start_time'>start_time</span><span class='rparen'>)</span>
   <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Collection</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>incremental/users?start_time=</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_start_time'>start_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -2280,10 +2280,10 @@
       <pre class="lines">
 
 
-724</pre>
+728</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 724</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 728</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Ability</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
     </td>
@@ -2355,10 +2355,10 @@
       <pre class="lines">
 
 
-724</pre>
+728</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 724</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 728</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Ability</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
     </td>
@@ -2381,19 +2381,19 @@
       <pre class="lines">
 
 
-745
-746
-747
-748
 749
 750
 751
 752
 753
-754</pre>
+754
+755
+756
+757
+758</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 745</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 749</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_attributes_for_save'>attributes_for_save</span>
   <span class='comment'># Don&#39;t send role_id, it&#39;s necessary
@@ -2476,10 +2476,10 @@
       <pre class="lines">
 
 
-730</pre>
+734</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 730</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 734</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:ccd_tickets</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tickets/ccd</span><span class='tstring_end'>&#39;</span></span></pre>
     </td>
@@ -2551,10 +2551,10 @@
       <pre class="lines">
 
 
-730</pre>
+734</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 730</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 734</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:ccd_tickets</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tickets/ccd</span><span class='tstring_end'>&#39;</span></span></pre>
     </td>
@@ -2588,12 +2588,12 @@
       <pre class="lines">
 
 
-667
-668
-669</pre>
+671
+672
+673</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 667</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 671</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_change_password'>change_password</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_password'>password</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='symbol'>:verb</span> <span class='op'>=&gt;</span> <span class='symbol'>:put</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -2629,12 +2629,12 @@
       <pre class="lines">
 
 
-677
-678
-679</pre>
+681
+682
+683</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 677</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 681</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_change_password!'>change_password!</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_password!'>password!</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='symbol'>:verb</span> <span class='op'>=&gt;</span> <span class='symbol'>:put</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -2659,14 +2659,14 @@
       <pre class="lines">
 
 
-716
-717
-718
-719
-720</pre>
+720
+721
+722
+723
+724</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 716</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 720</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_clear_sessions'>clear_sessions</span>
   <span class='id identifier rubyid_clear_sessions!'>clear_sessions!</span>
@@ -2693,12 +2693,12 @@
       <pre class="lines">
 
 
-712
-713
-714</pre>
+716
+717
+718</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 712</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 716</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_clear_sessions!'>clear_sessions!</span>
   <span class='ivar'>@client</span><span class='period'>.</span><span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/sessions</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -2723,12 +2723,12 @@
       <pre class="lines">
 
 
-706
-707
-708</pre>
+710
+711
+712</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 706</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 710</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_session'>current_session</span>
   <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>User</span><span class='op'>::</span><span class='const'>CurrentSession</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='ivar'>@client</span><span class='comma'>,</span> <span class='symbol'>:user_id</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>me</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -2782,10 +2782,10 @@
       <pre class="lines">
 
 
-722</pre>
+726</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 722</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 726</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>CustomRole</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:include</span> <span class='op'>=&gt;</span> <span class='symbol'>:roles</span></pre>
     </td>
@@ -2857,10 +2857,10 @@
       <pre class="lines">
 
 
-722</pre>
+726</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 722</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 726</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>CustomRole</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:include</span> <span class='op'>=&gt;</span> <span class='symbol'>:roles</span></pre>
     </td>
@@ -2934,10 +2934,10 @@
       <pre class="lines">
 
 
-737</pre>
+741</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 737</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 741</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>ForumSubscription</span></pre>
     </td>
@@ -3009,10 +3009,10 @@
       <pre class="lines">
 
 
-737</pre>
+741</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 737</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 741</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>ForumSubscription</span></pre>
     </td>
@@ -3086,10 +3086,10 @@
       <pre class="lines">
 
 
-733</pre>
+737</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 733</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 737</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>GroupMembership</span></pre>
     </td>
@@ -3161,10 +3161,10 @@
       <pre class="lines">
 
 
-733</pre>
+737</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 733</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 737</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>GroupMembership</span></pre>
     </td>
@@ -3238,10 +3238,10 @@
       <pre class="lines">
 
 
-732</pre>
+736</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 732</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 736</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Group</span></pre>
     </td>
@@ -3313,10 +3313,10 @@
       <pre class="lines">
 
 
-732</pre>
+736</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 732</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 736</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Group</span></pre>
     </td>
@@ -3339,15 +3339,15 @@
       <pre class="lines">
 
 
-756
-757
-758
-759
 760
-761</pre>
+761
+762
+763
+764
+765</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 756</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 760</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_handle_response'>handle_response</span><span class='lparen'>(</span><span class='op'>*</span><span class='rparen'>)</span>
   <span class='kw'>super</span>
@@ -3426,10 +3426,10 @@
       <pre class="lines">
 
 
-726</pre>
+730</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 726</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 730</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Identity</span></pre>
     </td>
@@ -3501,10 +3501,10 @@
       <pre class="lines">
 
 
-726</pre>
+730</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 726</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 730</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Identity</span></pre>
     </td>
@@ -3556,10 +3556,10 @@
       <pre class="lines">
 
 
-689</pre>
+693</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 689</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 693</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Organization</span></pre>
     </td>
@@ -3631,10 +3631,10 @@
       <pre class="lines">
 
 
-689</pre>
+693</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 689</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 693</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Organization</span></pre>
     </td>
@@ -3708,10 +3708,10 @@
       <pre class="lines">
 
 
-735</pre>
+739</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 735</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 739</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>OrganizationMembership</span></pre>
     </td>
@@ -3783,10 +3783,10 @@
       <pre class="lines">
 
 
-735</pre>
+739</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 735</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 739</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>OrganizationMembership</span></pre>
     </td>
@@ -3860,10 +3860,10 @@
       <pre class="lines">
 
 
-729</pre>
+733</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 729</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 733</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:requested_tickets</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tickets/requested</span><span class='tstring_end'>&#39;</span></span></pre>
     </td>
@@ -3935,10 +3935,10 @@
       <pre class="lines">
 
 
-729</pre>
+733</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 729</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 733</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:requested_tickets</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>tickets/requested</span><span class='tstring_end'>&#39;</span></span></pre>
     </td>
@@ -4012,10 +4012,10 @@
       <pre class="lines">
 
 
-728</pre>
+732</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 728</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 732</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Request</span></pre>
     </td>
@@ -4087,10 +4087,10 @@
       <pre class="lines">
 
 
-728</pre>
+732</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 728</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 732</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Request</span></pre>
     </td>
@@ -4142,10 +4142,10 @@
       <pre class="lines">
 
 
-723</pre>
+727</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 723</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 727</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Role</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:include_key</span> <span class='op'>=&gt;</span> <span class='symbol'>:name</span></pre>
     </td>
@@ -4217,10 +4217,10 @@
       <pre class="lines">
 
 
-723</pre>
+727</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 723</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 727</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Role</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:include_key</span> <span class='op'>=&gt;</span> <span class='symbol'>:name</span></pre>
     </td>
@@ -4294,10 +4294,10 @@
       <pre class="lines">
 
 
-704</pre>
+708</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 704</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 708</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Session</span></pre>
     </td>
@@ -4369,10 +4369,10 @@
       <pre class="lines">
 
 
-704</pre>
+708</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 704</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 708</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Session</span></pre>
     </td>
@@ -4406,12 +4406,12 @@
       <pre class="lines">
 
 
-662
-663
-664</pre>
+666
+667
+668</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 662</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 666</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_set_password'>set_password</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_password'>password</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='symbol'>:verb</span> <span class='op'>=&gt;</span> <span class='symbol'>:post</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -4447,12 +4447,12 @@
       <pre class="lines">
 
 
-672
-673
-674</pre>
+676
+677
+678</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 672</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 676</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_set_password!'>set_password!</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_password!'>password!</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='symbol'>:verb</span> <span class='op'>=&gt;</span> <span class='symbol'>:post</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -4528,10 +4528,10 @@
       <pre class="lines">
 
 
-742</pre>
+746</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 742</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 746</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Setting</span></pre>
     </td>
@@ -4603,10 +4603,10 @@
       <pre class="lines">
 
 
-742</pre>
+746</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 742</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 746</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Setting</span></pre>
     </td>
@@ -4680,10 +4680,10 @@
       <pre class="lines">
 
 
-743</pre>
+747</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 743</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 747</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Tag</span><span class='comma'>,</span> <span class='symbol'>:extend</span> <span class='op'>=&gt;</span> <span class='const'>Tag</span><span class='op'>::</span><span class='const'>Update</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='symbol'>:create</span></pre>
     </td>
@@ -4755,10 +4755,10 @@
       <pre class="lines">
 
 
-743</pre>
+747</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 743</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 747</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Tag</span><span class='comma'>,</span> <span class='symbol'>:extend</span> <span class='op'>=&gt;</span> <span class='const'>Tag</span><span class='op'>::</span><span class='const'>Update</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='symbol'>:create</span></pre>
     </td>
@@ -4832,10 +4832,10 @@
       <pre class="lines">
 
 
-739</pre>
+743</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 739</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 743</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:topic_comments</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>TopicComment</span></pre>
     </td>
@@ -4907,10 +4907,10 @@
       <pre class="lines">
 
 
-739</pre>
+743</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 739</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 743</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:topic_comments</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>TopicComment</span></pre>
     </td>
@@ -4984,10 +4984,10 @@
       <pre class="lines">
 
 
-738</pre>
+742</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 738</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 742</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>TopicSubscription</span></pre>
     </td>
@@ -5059,10 +5059,10 @@
       <pre class="lines">
 
 
-738</pre>
+742</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 738</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 742</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>TopicSubscription</span></pre>
     </td>
@@ -5136,10 +5136,10 @@
       <pre class="lines">
 
 
-740</pre>
+744</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 740</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 744</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:topic_votes</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Topic</span><span class='op'>::</span><span class='const'>TopicVote</span></pre>
     </td>
@@ -5211,10 +5211,10 @@
       <pre class="lines">
 
 
-740</pre>
+744</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 740</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 744</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:topic_votes</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Topic</span><span class='op'>::</span><span class='const'>TopicVote</span></pre>
     </td>
@@ -5288,10 +5288,10 @@
       <pre class="lines">
 
 
-734</pre>
+738</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 734</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 738</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Topic</span></pre>
     </td>
@@ -5363,10 +5363,10 @@
       <pre class="lines">
 
 
-734</pre>
+738</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 734</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 738</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Topic</span></pre>
     </td>
@@ -5379,7 +5379,7 @@
 </div>
 
     <div id="footer">
-  Generated on Wed Dec 23 21:42:58 2015 by
+  Generated on Tue Jan  5 23:19:10 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
