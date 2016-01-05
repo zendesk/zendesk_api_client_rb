@@ -645,6 +645,10 @@ module ZendeskAPI
       include Read
     end
 
+    class GroupMembership < Resource
+      put :make_default
+    end
+
     class Identity < Resource
       # Makes this identity the primary one bumping all other identities down one
       put :make_primary
