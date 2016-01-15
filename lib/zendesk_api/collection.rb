@@ -284,15 +284,15 @@ module ZendeskAPI
     # @private
     def to_ary; nil; end
 
-    def respond_to?(name)
-      super || Array.new.respond_to?(name)
+    def respond_to_missing?(name, include_all)
+      Array.new.respond_to?(name, include_all)
     end
 
     # Sends methods to underlying array of resources.
     def method_missing(name, *args, &block)
       if resource_methods.include?(name)
         collection_method(name, *args, &block)
-      elsif Array.new.respond_to?(name)
+      elsif Array.new.respond_to?(name, false)
         array_method(name, *args, &block)
       else
         next_collection(name, *args, &block)
@@ -452,7 +452,7 @@ module ZendeskAPI
     ## Method missing
 
     def array_method(name, *args, &block)
-      to_a.send(name, *args, &block)
+      to_a.public_send(name, *args, &block)
     end
 
     def next_collection(name, *args, &block)
