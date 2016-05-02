@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem "jruby-openssl", :platforms => :jruby
-gem "mime-types", "~> 2.99", :platforms => :ruby_19
+gem "mime-types", "~> 2.99", :platforms => [:ruby_19, :jruby]
 
 group :test do
   gem "simplecov"
