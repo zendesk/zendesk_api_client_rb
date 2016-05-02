@@ -22,13 +22,13 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
   s.add_development_dependency "vcr"
-  s.add_development_dependency "webmock"
+  s.add_development_dependency "webmock", "< 2"
   s.add_development_dependency "yard"
 
   s.add_runtime_dependency "faraday", "~> 0.9"
   s.add_runtime_dependency "hashie", ">= 1.2", "< 4.0", "!= 3.3.0"
   s.add_runtime_dependency "inflection"
   s.add_runtime_dependency "multipart-post", "~> 2.0"
-  s.add_runtime_dependency "mime-types", "~> 2.99"
+  s.add_runtime_dependency "mime-types"
   s.add_runtime_dependency "scrub_rb", "~> 1.0.1"
 end
