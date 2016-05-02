@@ -1,0 +1,7 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 1.9
+  Exclude:
+    - .git/**/*
+    - spec/core/middleware/response/sanitize_response_spec.rb
