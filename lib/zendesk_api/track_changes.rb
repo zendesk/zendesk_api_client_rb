@@ -10,7 +10,7 @@ module ZendeskAPI
           base.send :alias_method, :store, :regular_writer
           base.send :alias_method, :[]=, :store
           base.send :define_method, :update do |other|
-            other.each{|key, value| store key, value}
+            other.each { |key, value| store key, value }
           end
           base.send :alias_method, :merge!, :update
         end
@@ -41,7 +41,7 @@ module ZendeskAPI
       end
 
       def clear
-        keys.each{|key| delete key}
+        keys.each { |key| delete key }
       end
 
       def regular_writer(key, value)
@@ -64,7 +64,7 @@ module ZendeskAPI
           each do |k, v|
             if v.respond_to?(:changed?) && v.changed?
               changes[k] = v.changes
-            elsif v.is_a?(Array) && v.any? {|val| val.respond_to?(:changed?) && val.changed?}
+            elsif v.is_a?(Array) && v.any? { |val| val.respond_to?(:changed?) && val.changed? }
               changes[k] = v
             end
           end
@@ -73,7 +73,7 @@ module ZendeskAPI
 
       def changed?(key = nil)
         if key.nil?
-          !changes.empty? || any? {|_, v| v.respond_to?(:changed?) && v.changed?}
+          !changes.empty? || any? { |_, v| v.respond_to?(:changed?) && v.changed? }
         else
           changes.key?(key)
         end

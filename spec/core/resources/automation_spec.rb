@@ -5,10 +5,10 @@ describe ZendeskAPI::Automation do
     {
       :title => "my test automation",
       :conditions => {
-        :any => [{ :field => "assignee_id", :operator => "is", :value => 1}],
+        :any => [{ :field => "assignee_id", :operator => "is", :value => 1 }],
         :all => [{ :field => "status", :operator => "is", :value => "open" }]
       },
-      :actions => [{ :field => "priority", :value => "urgent" }],
+      :actions => [{ :field => "priority", :value => "urgent" }]
     }
   end
 

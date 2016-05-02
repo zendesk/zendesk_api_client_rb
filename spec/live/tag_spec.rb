@@ -44,7 +44,7 @@ describe ZendeskAPI::Tag, :vcr, :not_findable do
 
         expect(tags).to eq(%w{tag3})
 
-        parent.tags.delete_if {|tag| tag.id == "tag3"}
+        parent.tags.delete_if { |tag| tag.id == "tag3" }
         parent.tags.save!
 
         expect(tags).to be_empty

@@ -14,12 +14,12 @@ describe ZendeskAPI::Topic do
   it_should_be_readable :topics
   it_should_be_readable current_user, :topics
   it_should_be_readable forum, :topics
-  #it_should_be_readable :topics, :show_many, :verb => :post, :ids =>
+  # it_should_be_readable :topics, :show_many, :verb => :post, :ids =>
 
   describe ".import" do
     it "can import" do
       VCR.use_cassette("topic_import_can_import") do
-        old = Time.now - 5*365*24*60*60
+        old = Time.now - 5 * 365 * 24 * 60 * 60
         topic = ZendeskAPI::Topic.import(client, valid_attributes.merge(:created_at => old))
         expect(ZendeskAPI::Topic.find(client, topic).created_at.year).to eq(old.year)
       end

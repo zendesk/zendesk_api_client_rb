@@ -33,12 +33,12 @@ describe ZendeskAPI::Middleware::Response::ParseIsoDates do
   end
 
   it "should leave arrays with ids alone" do
-    expect(fake_response('{"x":[1,2,3]}').body).to eq({"x" => [1,2,3]})
+    expect(fake_response('{"x":[1,2,3]}').body).to eq({ "x" => [1, 2, 3] })
   end
 
   it "should not parse date-like things" do
     expect(fake_response('{"x":"2012-02-01T13:14:15Z bla"}').body["x"].to_s).to eq("2012-02-01T13:14:15Z bla")
     expect(fake_response('{"x":"12012-02-01T13:14:15Z"}').body["x"].to_s).to eq("12012-02-01T13:14:15Z")
-    expect(fake_response(%Q{{"x":"2012-02-01T13:14:15Z\\nfoo"}}).body["x"].to_s).to eq("2012-02-01T13:14:15Z\nfoo")
+    expect(fake_response('{"x":"2012-02-01T13:14:15Z\\nfoo"}').body["x"].to_s).to eq("2012-02-01T13:14:15Z\nfoo")
   end
 end

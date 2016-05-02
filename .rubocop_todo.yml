@@ -107,7 +107,7 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Max: 12
 
-# Offense count: 424
+# Offense count: 425
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes.
 # URISchemes: http, https
 Metrics/LineLength:
@@ -181,14 +181,6 @@ Style/AlignParameters:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: percent_q, bare_percent
-Style/BarePercentLiterals:
-  Exclude:
-    - 'spec/core/middleware/response/parse_iso_dates_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
 Style/BlockComments:
   Exclude:
     - 'spec/core/trackie_spec.rb'
@@ -244,12 +236,6 @@ Style/ClosingParenthesisIndentation:
     - 'spec/core/bulk_actions_spec.rb'
     - 'spec/core/collection_spec.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/CommentIndentation:
-  Exclude:
-    - 'lib/zendesk_api/resources.rb'
-
 # Offense count: 6
 # Cop supports --auto-correct.
 Style/DeprecatedHashMethods:
@@ -302,38 +288,6 @@ Style/ElseAlignment:
   Exclude:
     - 'lib/zendesk_api/associations.rb'
     - 'lib/zendesk_api/middleware/request/upload.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAdjacentOneLineDefs.
-Style/EmptyLineBetweenDefs:
-  Exclude:
-    - 'lib/zendesk_api/resource.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/EmptyLines:
-  Exclude:
-    - 'lib/zendesk_api/resources.rb'
-    - 'lib/zendesk_api/sideloading.rb'
-    - 'spec/core/collection_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty_lines, no_empty_lines
-Style/EmptyLinesAroundBlockBody:
-  Exclude:
-    - 'spec/core/collection_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty_lines, no_empty_lines
-Style/EmptyLinesAroundClassBody:
-  Exclude:
-    - 'lib/zendesk_api/middleware/response/raise_error.rb'
-    - 'lib/zendesk_api/trackie.rb'
 
 # Offense count: 22
 # Cop supports --auto-correct.
@@ -398,13 +352,6 @@ Style/Lambda:
     - 'spec/core/middleware/request/encode_json_spec.rb'
     - 'spec/core/middleware/request/upload_spec.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/LeadingCommentSpace:
-  Exclude:
-    - 'lib/zendesk_api/helpers.rb'
-    - 'spec/live/topic_spec.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/MultilineBlockLayout:
@@ -451,7 +398,7 @@ Style/ParenthesesAroundCondition:
   Exclude:
     - 'lib/zendesk_api/collection.rb'
 
-# Offense count: 20
+# Offense count: 17
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredDelimiters.
 Style/PercentLiteralDelimiters:
@@ -460,20 +407,10 @@ Style/PercentLiteralDelimiters:
     - 'lib/zendesk_api/resources.rb'
     - 'spec/core/collection_spec.rb'
     - 'spec/core/middleware/request/etag_cache_spec.rb'
-    - 'spec/core/middleware/response/parse_iso_dates_spec.rb'
     - 'spec/core/resource_spec.rb'
     - 'spec/live/app_installation_spec.rb'
     - 'spec/live/app_spec.rb'
     - 'spec/live/tag_spec.rb'
-    - 'zendesk_api.gemspec'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: lower_case_q, upper_case_q
-Style/PercentQLiterals:
-  Exclude:
-    - 'spec/core/middleware/response/parse_iso_dates_spec.rb'
 
 # Offense count: 7
 # Cop supports --auto-correct.
@@ -571,73 +508,6 @@ Style/SingleLineMethods:
     - 'spec/core/resource_spec.rb'
     - 'spec/core/spec_helper.rb'
 
-# Offense count: 20
-# Cop supports --auto-correct.
-Style/SpaceAfterComma:
-  Exclude:
-    - 'Rakefile'
-    - 'lib/zendesk_api/helpers.rb'
-    - 'lib/zendesk_api/middleware/response/parse_iso_dates.rb'
-    - 'lib/zendesk_api/resources.rb'
-    - 'spec/core/association_spec.rb'
-    - 'spec/core/bulk_actions_spec.rb'
-    - 'spec/core/collection_spec.rb'
-    - 'spec/core/middleware/response/parse_iso_dates_spec.rb'
-    - 'spec/core/resource_spec.rb'
-    - 'util/resource_handler.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: space, no_space
-Style/SpaceAroundEqualsInParameterDefault:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/SpaceAroundKeyword:
-  Exclude:
-    - 'spec/live/app_installation_spec.rb'
-
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment.
-Style/SpaceAroundOperators:
-  Exclude:
-    - 'spec/core/middleware/request/etag_cache_spec.rb'
-    - 'spec/core/resources/view_spec.rb'
-    - 'spec/live/target_spec.rb'
-    - 'spec/live/ticket_spec.rb'
-    - 'spec/live/topic_comment_spec.rb'
-    - 'spec/live/topic_spec.rb'
-
-# Offense count: 20
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: space, no_space
-Style/SpaceBeforeBlockBraces:
-  Enabled: false
-
-# Offense count: 84
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
-# SupportedStyles: space, no_space
-Style/SpaceInsideBlockBraces:
-  Enabled: false
-
-# Offense count: 97
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
-# SupportedStyles: space, no_space
-Style/SpaceInsideHashLiteralBraces:
-  Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/SpaceInsideParens:
-  Exclude:
-    - 'spec/core/spec_helper.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -645,41 +515,12 @@ Style/SpaceInsideParens:
 Style/SpecialGlobalVars:
   Enabled: false
 
-# Offense count: 1404
+# Offense count: 1397
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
 # SupportedStyles: single_quotes, double_quotes
 Style/StringLiterals:
   Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiteralsInInterpolation:
-  Enabled: false
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: final_newline, final_blank_line
-Style/TrailingBlankLines:
-  Exclude:
-    - 'spec/core/create_resource_spec.rb'
-    - 'spec/core/data_resource_spec.rb'
-    - 'spec/core/read_resource_spec.rb'
-    - 'spec/fixtures/test_resources.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-# SupportedStyles: comma, consistent_comma, no_comma
-Style/TrailingCommaInLiteral:
-  Exclude:
-    - 'spec/core/resources/automation_spec.rb'
-    - 'spec/core/resources/macro_spec.rb'
-    - 'spec/core/resources/trigger_spec.rb'
-    - 'spec/live/user_view_spec.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -688,23 +529,3 @@ Style/TrailingCommaInLiteral:
 Style/TrivialAccessors:
   Exclude:
     - 'lib/zendesk_api/resource.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/UnneededInterpolation:
-  Exclude:
-    - 'spec/core/resource_spec.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/UnneededPercentQ:
-  Exclude:
-    - 'spec/core/middleware/response/parse_iso_dates_spec.rb'
-    - 'zendesk_api.gemspec'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, MinSize, WordRegex.
-# SupportedStyles: percent, brackets
-Style/WordArray:
-  Enabled: false

@@ -80,7 +80,7 @@ describe ZendeskAPI::ReadResource do
     subject { ZendeskAPI::TestResource.new(client, :id => id, :name => 'Old Name') }
 
     before(:each) do
-      stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => {:id => id, :name => "New Name" }))
+      stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => { :id => id, :name => "New Name" }))
     end
 
     it "reloads the data" do
@@ -94,4 +94,3 @@ describe ZendeskAPI::ReadResource do
     end
   end
 end
-

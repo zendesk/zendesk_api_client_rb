@@ -5,11 +5,11 @@ describe ZendeskAPI::View do
     {
       :title => "my test view",
       :conditions => {
-        :any => [{ :field => "assignee_id", :operator => "is", :value => 1}],
+        :any => [{ :field => "assignee_id", :operator => "is", :value => 1 }],
         :all => [{ :field => "status", :operator => "is", :value => "open" }]
       },
       :execution => {
-        :columns => [:id => "status", :title=> "Status"]
+        :columns => [:id => "status", :title => "Status"]
       }
     }
   end
@@ -27,7 +27,7 @@ describe ZendeskAPI::View do
     end
 
     it "should set columns on output" do
-      new_columns = ["type", "priority"]
+      new_columns = %w(type priority)
       subject.columns = new_columns
 
       expect(subject.output["columns"]).to eq(new_columns)
@@ -36,7 +36,7 @@ describe ZendeskAPI::View do
 
   describe "#add_column" do
     it "should add a column to the existing columns" do
-      existing_columns = subject.execution.columns.map {|c| c["id"]}
+      existing_columns = subject.execution.columns.map { |c| c["id"] }
       expect(existing_columns.include?("type")).to eq(false)
 
       subject.add_column("type")

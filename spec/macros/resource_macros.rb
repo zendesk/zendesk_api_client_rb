@@ -1,6 +1,6 @@
 module ResourceMacros
   def self.extended(klass)
-    klass.send(:define_method, :default_options) {{}}
+    klass.send(:define_method, :default_options) { {} }
   end
 
   def under(object, &blk)
@@ -15,7 +15,7 @@ module ResourceMacros
     end
   end
 
-  def it_should_be_creatable(options={})
+  def it_should_be_creatable(options = {})
     context "creation", :vcr do
       subject { described_class }
 
@@ -54,7 +54,7 @@ module ResourceMacros
 
       before(:each) do
         @object.send("#{attribute}=", value)
-        extra.each {|k, v| @object.send("#{k}=", v)}
+        extra.each { |k, v| @object.send("#{k}=", v) }
       end
 
       it "should be savable" do
@@ -120,7 +120,7 @@ module ResourceMacros
     options = args.last.is_a?(Hash) ? args.pop : {}
     create = !!options.delete(:create)
     klass = args.first.is_a?(ZendeskAPI::DataResource) ? args.shift : client
-    context_name = "read_#{klass.class}_#{args.join("_")}"
+    context_name = "read_#{klass.class}_#{args.join('_')}"
 
     context context_name, :vcr do
       before(:all) do
@@ -137,7 +137,7 @@ module ResourceMacros
 
       it "should be findable" do |example|
         result = klass
-        args.each {|a| result = result.send(a, options) }
+        args.each { |a| result = result.send(a, options) }
 
         if result.is_a?(ZendeskAPI::Collection)
           if create

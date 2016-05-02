@@ -106,7 +106,7 @@ module TestHelper
   end
 
   def silence_stderr
-    $stderr = File.new( '/dev/null', 'w' )
+    $stderr = File.new('/dev/null', 'w')
     yield
   ensure
     $stderr = STDERR
@@ -134,7 +134,7 @@ RSpec.configure do |c|
   end
 
   c.around(:each, :silence_logger) do |example|
-    silence_logger{ example.call }
+    silence_logger { example.call }
   end
 
   c.around(:each, :prevent_logger_changes) do |example|

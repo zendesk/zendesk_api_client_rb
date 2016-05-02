@@ -5,9 +5,9 @@ describe ZendeskAPI::Trigger do
     {
       :title => "my test trigger",
       :conditions => {
-        :any => [{ :field => "assignee_id", :operator => "is", :value => 1}],
+        :any => [{ :field => "assignee_id", :operator => "is", :value => 1 }],
         :all => [{ :field => "status", :operator => "is", :value => "open" }]
-      },
+      }
     }
   end
 

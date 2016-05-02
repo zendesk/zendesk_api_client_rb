@@ -4,7 +4,6 @@ module ZendeskAPI
   module Middleware
     module Response
       class RaiseError < Faraday::Response::RaiseError
-
         def call(env)
           super
         rescue Faraday::Error::TimeoutError, Faraday::Error::ConnectionFailed => e

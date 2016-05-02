@@ -1,6 +1,5 @@
 module ZendeskAPI
-# @internal The following are redefined later, but needed by some circular resources (e.g. Ticket -> User, User -> Ticket)
-
+  # @internal The following are redefined later, but needed by some circular resources (e.g. Ticket -> User, User -> Ticket)
 
   class Ticket < Resource; end
   class Forum < Resource; end
@@ -8,7 +7,7 @@ module ZendeskAPI
   class Category < Resource; end
   class OrganizationMembership < ReadResource; end
 
-# @internal Begin actual Resource definitions
+  # @internal Begin actual Resource definitions
 
   class Locale < ReadResource; end
 
@@ -518,7 +517,7 @@ module ZendeskAPI
     private
 
     def attributes_for_save
-      to_save = [:conditions, :actions, :output].inject({}) {|h,k| h.merge(k => send(k))}
+      to_save = [:conditions, :actions, :output].inject({}) { |h, k| h.merge(k => send(k)) }
       { self.class.singular_resource_name.to_sym => attributes.changes.merge(to_save) }
     end
   end
@@ -956,7 +955,7 @@ module ZendeskAPI
   class PushNotificationDevice < DataResource
     def self.destroy_many(client, tokens)
       ZendeskAPI::Collection.new(
-        client, self,"push_notification_devices" => tokens,
+        client, self, "push_notification_devices" => tokens,
         :path => "push_notification_devices/destroy_many",
         :verb => :post
       )

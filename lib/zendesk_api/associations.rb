@@ -172,7 +172,7 @@ module ZendeskAPI
                 klass.find(@client, :id => id, :association => instance_association)
               end.compact
             elsif (resources = method_missing(association[:name].to_sym)) && resources.any?
-              resources.map {|res| wrap_resource(res, association)}
+              resources.map { |res| wrap_resource(res, association) }
             else
               []
             end

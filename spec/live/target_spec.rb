@@ -5,7 +5,7 @@ describe ZendeskAPI::Target, :delete_after do
     {
       :type => "email_target",
       :title => "Test Email Target",
-      :email =>  "hello@example.com",
+      :email => "hello@example.com",
       :subject => "Test Target"
     }
   end

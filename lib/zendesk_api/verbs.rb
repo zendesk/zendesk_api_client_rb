@@ -33,7 +33,7 @@ module ZendeskAPI
 
             if @response.body.is_a?(Hash)
               resource = @response.body[self.class.singular_resource_name]
-              resource ||= @response.body.fetch(self.class.resource_name, []).detect {|res| res["id"] == id}
+              resource ||= @response.body.fetch(self.class.resource_name, []).detect { |res| res["id"] == id }
             end
 
             @attributes.replace @attributes.deep_merge(resource || {})

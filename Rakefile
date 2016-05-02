@@ -38,7 +38,7 @@ end
 # extracted from https://github.com/grosser/project_template
 rule /^version:bump:.*/ do |t|
   sh "git status | grep 'nothing to commit'" # ensure we are not dirty
-  index = ['major', 'minor','patch'].index(t.name.split(':').last)
+  index = %w(major minor patch).index(t.name.split(':').last)
   file = 'lib/zendesk_api/version.rb'
 
   version_file = File.read(file)
@@ -47,7 +47,7 @@ rule /^version:bump:.*/ do |t|
   version_parts[2] = 0 if index < 2 # remove patch for minor
   version_parts[1] = 0 if index < 1 # remove minor for major
   new_version = version_parts * '.'
-  File.open(file,'w'){|f| f.write(version_file.sub(old_version, new_version)) }
+  File.open(file, 'w') { |f| f.write(version_file.sub(old_version, new_version)) }
 
   sh "bundle && git add #{file} Gemfile.lock && git commit -m 'bump version to #{new_version}'"
 end

@@ -14,7 +14,7 @@ describe ZendeskAPI::DataResource do
 
   context "association" do
     subject { ZendeskAPI::TestResource.new(client, :id => 1) }
-    let(:options) {{}}
+    let(:options) { {} }
 
     before(:each) do
       ZendeskAPI::TestResource.has :nil, options.merge(:class => ZendeskAPI::NilDataResource)
@@ -27,7 +27,7 @@ describe ZendeskAPI::DataResource do
     end
 
     context "inline => true" do
-      let(:options) {{ :inline => true }}
+      let(:options) { { :inline => true } }
 
       it "should not try and find non-existent object" do
         subject.nil
@@ -115,7 +115,7 @@ describe ZendeskAPI::DataResource do
           before(:each) { stub_request(:get, %r{test_resources/\d+}).to_return(:status => 500) }
 
           it "should handle it properly" do
-            expect { silence_logger{ expect(subject.test_resource).to be_nil } }.to_not raise_error
+            expect { silence_logger { expect(subject.test_resource).to be_nil } }.to_not raise_error
           end
         end
 
@@ -236,4 +236,3 @@ describe ZendeskAPI::DataResource do
     end
   end
 end
-
