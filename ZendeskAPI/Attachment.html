@@ -359,14 +359,14 @@
       <pre class="lines">
 
 
+79
 80
 81
 82
-83
-84</pre>
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 80</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='symbol'>:file</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='rparen'>)</span>
@@ -593,13 +593,13 @@
       <pre class="lines">
 
 
+85
 86
 87
-88
-89</pre>
+88</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_save'>save</span>
   <span class='id identifier rubyid_upload'>upload</span> <span class='op'>=</span> <span class='const'>Upload</span><span class='period'>.</span><span class='id identifier rubyid_create!'>create!</span><span class='lparen'>(</span><span class='ivar'>@client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span>
@@ -625,12 +625,12 @@
       <pre class="lines">
 
 
+90
 91
-92
-93</pre>
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_param'>to_param</span>
   <span class='id identifier rubyid_token'>token</span>
@@ -645,7 +645,7 @@
 </div>
 
     <div id="footer">
-  Generated on Mon May  2 15:23:25 2016 by
+  Generated on Tue May  3 07:46:18 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
