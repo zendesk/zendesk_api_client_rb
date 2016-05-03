@@ -28,7 +28,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should build a object set via hash" do
-        instance.child = {:id => 2}
+        instance.child = { :id => 2 }
         expect(instance.child.id).to eq(2)
       end
 
@@ -42,7 +42,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should fetch an object known by id" do
-        stub_json_request(:get, %r{test_resources/1/child/5}, json(:test_child => {:id => 5}))
+        stub_json_request(:get, %r{test_resources/1/child/5}, json(:test_child => { :id => 5 }))
         instance.child_id = 5
         expect(instance.child.id).to eq(5)
       end
@@ -56,7 +56,7 @@ describe ZendeskAPI::Association do
       it "should handle resource not found errors" do
         stub_request(:get, %r{test_resources/1/child/5}).to_return(:status => 404)
         instance.child_id = 5
-        silence_logger{ expect(instance.child).to be_nil }
+        silence_logger { expect(instance.child).to be_nil }
       end
 
       it "is not used when not used" do
@@ -84,7 +84,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should build and cache objects set via hash" do
-        instance.children = [{:id => 2}]
+        instance.children = [{ :id => 2 }]
         expect(instance.children.map(&:id)).to eq([2])
         expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
@@ -96,8 +96,8 @@ describe ZendeskAPI::Association do
       end
 
       it "should fetch unknown objects" do
-        stub_json_request(:get, %r{test_resources/1/children}, json(:test_children => [{:id => 2}, {:id => 3}]))
-        expect(instance.children.map(&:id)).to eq([2,3])
+        stub_json_request(:get, %r{test_resources/1/children}, json(:test_children => [{ :id => 2 }, { :id => 3 }]))
+        expect(instance.children.map(&:id)).to eq([2, 3])
         expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
 
@@ -204,7 +204,7 @@ describe ZendeskAPI::Association do
 
     context "with a path on the association" do
       before(:each) do
-        association = ZendeskAPI::TestResource.associations.detect {|a| a[:name] == :children}
+        association = ZendeskAPI::TestResource.associations.detect { |a| a[:name] == :children }
         association[:path] = "blergh"
       end
 

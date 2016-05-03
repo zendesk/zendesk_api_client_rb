@@ -5,7 +5,7 @@ describe ZendeskAPI::UserView, :delete_after do
     {
       :title => "Overseas gold member",
       :all   => [
-        { field: "name", operator: "is", value: "abcd" },
+        { field: "name", operator: "is", value: "abcd" }
       ]
     }
   end

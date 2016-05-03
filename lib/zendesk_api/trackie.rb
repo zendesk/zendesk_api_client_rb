@@ -9,6 +9,5 @@ module ZendeskAPI
     def size
       self['size']
     end
-
   end
 end

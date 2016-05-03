@@ -41,7 +41,7 @@ module ZendeskAPI
 
     def forum
       VCR.use_cassette('valid_forum') do
-        @forum ||= client.forums.detect {|f| f.topics.any? }
+        @forum ||= client.forums.detect { |f| f.topics.any? }
         @forum ||= client.forums.create(:name => "Test Forum", :access => "everybody")
       end
     end
@@ -55,7 +55,7 @@ module ZendeskAPI
 
     def ticket
       VCR.use_cassette('valid_ticket') do
-        @ticket ||= client.tickets.detect {|t| t.status != 'closed'}
+        @ticket ||= client.tickets.detect { |t| t.status != 'closed' }
         @ticket ||= client.tickets.create(
           :subject => "Test Ticket",
           :description => "This is a test of the emergency alert system.",
@@ -80,7 +80,7 @@ module ZendeskAPI
 
     def group
       VCR.use_cassette('valid_group') do
-        @ticket ||= client.groups.detect {|g| !g.default}
+        @ticket ||= client.groups.detect { |g| !g.default }
         @ticket ||= client.groups.create(:name => "Test Group")
       end
     end

@@ -19,4 +19,3 @@ class ZendeskAPI::SingularTestResource < ZendeskAPI::SingularResource; end
 
 # `client.greetings` should ignore this class, as it's not in the right namespace
 class Greeting; end
-

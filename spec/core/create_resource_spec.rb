@@ -36,4 +36,3 @@ describe ZendeskAPI::CreateResource do
     end
   end
 end
-

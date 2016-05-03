@@ -4,7 +4,7 @@ describe ZendeskAPI::Macro do
   def valid_attributes
     {
       :title => "my test macro",
-      :actions => [{ :field => "priority", :value => "urgent" }],
+      :actions => [{ :field => "priority", :value => "urgent" }]
     }
   end
 

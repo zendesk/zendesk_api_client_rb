@@ -10,7 +10,7 @@ describe ZendeskAPI::Ticket do
       :requester_id => user.id,
       :submitter_id => user.id,
       :collaborator_ids => [agent.id],
-      :tags => ["awesome", "blossom"]
+      :tags => %w(awesome blossom)
     }
   end
 
@@ -64,7 +64,7 @@ describe ZendeskAPI::Ticket do
   describe ".import" do
     it "can import" do
       VCR.use_cassette("ticket_import_can_import") do
-        old = Time.now - 5*365*24*60*60
+        old = Time.now - 5 * 365 * 24 * 60 * 60
         ticket = ZendeskAPI::Ticket.import(client, valid_attributes.merge(:created_at => old.iso8601))
         expect(ZendeskAPI::Ticket.find(client, :id => ticket.id).created_at.year).to eq(old.year)
       end
@@ -96,7 +96,7 @@ describe ZendeskAPI::Ticket do
       ticket.save!
 
       expect(ticket.changes).to eq({}) # comment was set before save
-      expect(ticket.attributes[:comment]).to eq({"value" => "My comment", "public" => false})
+      expect(ticket.attributes[:comment]).to eq({ "value" => "My comment", "public" => false })
     end
   end
 
@@ -123,13 +123,13 @@ describe ZendeskAPI::Ticket do
           thread[:response][:status]
         end
 
-        user = client.users.detect {|user| user.email == email}
+        user = client.users.detect { |user| user.email == email }
         expect(user).to_not be_nil
 
         user.requested_tickets.each(&:destroy)
         user.destroy
 
-        expect(threads.all? {|st| [201, 422, 409].include?(st)}).to be(true)
+        expect(threads.all? { |st| [201, 422, 409].include?(st) }).to be(true)
       end
     end
   end

@@ -4,7 +4,7 @@ describe ZendeskAPI::Resource do
   context "initialize" do
     context "with :global as part of attributes" do
       it "should set @global_params" do
-        resource = ZendeskAPI::TestResource.new(client, { :global => { :something => 'hey' }})
+        resource = ZendeskAPI::TestResource.new(client, { :global => { :something => 'hey' } })
         expect(resource.instance_variable_get(:@global_params)).to eq({ :something => 'hey' })
       end
     end
@@ -25,11 +25,11 @@ describe ZendeskAPI::Resource do
 
       context "with global params" do
         before(:each) do
-          stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({ :test_resource => { :test => :hello }, :something => "something"}))
+          stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({ :test_resource => { :test => :hello }, :something => "something" }))
         end
 
         it "should return instance of resource" do
-          expect(subject.update(client, :id => id, :test => :hello, :global => {:something => "something"})).to be_truthy
+          expect(subject.update(client, :id => id, :test => :hello, :global => { :something => "something" })).to be_truthy
         end
       end
 
@@ -39,7 +39,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should handle it properly" do
-          expect { silence_logger{ expect(subject.update(client, :id => id)).to be(false) } }.to_not raise_error
+          expect { silence_logger { expect(subject.update(client, :id => id)).to be(false) } }.to_not raise_error
         end
       end
     end
@@ -64,7 +64,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should handle it properly" do
-          expect { silence_logger{ expect(subject.destroy(client, :id => id)).to be(false) } }.to_not raise_error
+          expect { silence_logger { expect(subject.destroy(client, :id => id)).to be(false) } }.to_not raise_error
         end
       end
     end
@@ -88,7 +88,7 @@ describe ZendeskAPI::Resource do
         end
 
         it "should return false and not set destroyed" do
-          silence_logger{ expect(subject.destroy).to be(false) }
+          silence_logger { expect(subject.destroy).to be(false) }
           expect(subject.destroyed?).to be(false)
         end
       end
@@ -210,7 +210,7 @@ describe ZendeskAPI::Resource do
           subject.children = [2, 3]
           subject.children_ids = [1]
           subject.save
-          expect(subject.children_ids).to eq([2,3])
+          expect(subject.children_ids).to eq([2, 3])
           expect(subject.instance_variable_get(:@children)).to be_nil
         end
 
@@ -222,21 +222,21 @@ describe ZendeskAPI::Resource do
         end
 
         it "should save the associated objects when it is new" do
-          subject.children = [{:foo => "bar"}]
+          subject.children = [{ :foo => "bar" }]
           expect(subject.children.first).to receive(:save)
           subject.save
           expect(subject.instance_variable_get(:@children)).to be_nil
         end
 
         it "should not save the associated objects when it is set via full hash" do
-          subject.children = [{:id => 1, :foo => "bar"}]
+          subject.children = [{ :id => 1, :foo => "bar" }]
           expect(subject.children.first).to_not receive(:save)
           subject.save
           expect(subject.instance_variable_get(:@children)).to be_nil
         end
 
         it "should save the associated objects when it is changes" do
-          subject.children = [{:id => 1}]
+          subject.children = [{ :id => 1 }]
           subject.children.first.foo = "bar"
           expect(subject.children.first).to receive(:save)
           subject.save
@@ -363,11 +363,11 @@ describe ZendeskAPI::Resource do
         end
 
         it "doesn't raise without bang" do
-          silence_logger { expect(subject.send("#{method}", :verb => :put)).to be(false) }
+          silence_logger { expect(subject.send(method.to_s, :verb => :put)).to be(false) }
         end
 
         it "raises with bang" do
-          expect { silence_logger{ subject.send("#{method}!", :verb => :put) } }.to raise_error(ZendeskAPI::Error::ClientError)
+          expect { silence_logger { subject.send("#{method}!", :verb => :put) } }.to raise_error(ZendeskAPI::Error::ClientError)
         end
       end
     end
@@ -427,11 +427,11 @@ describe ZendeskAPI::Resource do
           end
 
           it "doesn't raise without bang" do
-            silence_logger { expect(subject.send("#{method}")).to be(false) }
+            silence_logger { expect(subject.send(method.to_s)).to be(false) }
           end
 
           it "raises with bang" do
-            expect { silence_logger{ subject.send("#{method}!") } }.to raise_error(ZendeskAPI::Error::ClientError)
+            expect { silence_logger { subject.send("#{method}!") } }.to raise_error(ZendeskAPI::Error::ClientError)
           end
         end
       end

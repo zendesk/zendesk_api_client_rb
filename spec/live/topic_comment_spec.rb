@@ -15,7 +15,7 @@ describe ZendeskAPI::Topic::TopicComment do
   describe ".import" do
     it "can import" do
       VCR.use_cassette("topic_comment_import_can_import") do
-        old = Time.now - 4*365*24*60*60
+        old = Time.now - 4 * 365 * 24 * 60 * 60
         comment = ZendeskAPI::Topic::TopicComment.import(client, valid_attributes.merge(:created_at => old, :topic_id => topic.id))
         expect(ZendeskAPI::Topic::TopicComment.find(client, comment).created_at.year).to eq(old.year)
       end
@@ -43,7 +43,7 @@ end
 
 describe ZendeskAPI::User::TopicComment do
   def valid_attributes
-    { :body => "Texty-text, text."}
+    { :body => "Texty-text, text." }
   end
 
   under current_user do

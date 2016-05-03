@@ -48,7 +48,7 @@ module ZendeskAPI
 
     # Methods that take a Hash argument
     methods = %w{create find update update_many destroy}
-    methods += methods.map {|method| method + "!"}
+    methods += methods.map { |method| method + "!" }
     methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
       # @param [Hash] options Options or attributes to pass
@@ -236,7 +236,7 @@ module ZendeskAPI
     # @option collection [Array] The collection to replace this one with
     # @raise [ArgumentError] if any resources passed in don't belong in this collection
     def replace(collection)
-      raise "this collection is for #{@resource_class}" if collection.any?{|r| !r.is_a?(@resource_class) }
+      raise "this collection is for #{@resource_class}" if collection.any? { |r| !r.is_a?(@resource_class) }
       @resources = collection
     end
 
@@ -309,7 +309,7 @@ module ZendeskAPI
         inspect = []
         inspect << "options=#{@options.inspect}" if @options.any?
         inspect << "path=#{path}"
-        "#{Inflection.singular(@resource)} collection [#{inspect.join(",")}]"
+        "#{Inflection.singular(@resource)} collection [#{inspect.join(',')}]"
       end
     end
 
@@ -398,7 +398,7 @@ module ZendeskAPI
     def get_response(path)
       @error = nil
       @response = @client.connection.send(@verb || "get", path) do |req|
-        opts = @options.delete_if {|_, v| v.nil?}
+        opts = @options.delete_if { |_, v| v.nil? }
 
         req.params.merge!(:include => @includes.join(",")) if @includes.any?
 

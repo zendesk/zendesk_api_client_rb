@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Steven Davidovitz", "Michael Grosser"]
   s.email       = ["support@zendesk.com"]
   s.homepage    = "https://developer.zendesk.com"
-  s.summary     = %q{Zendesk REST API Client}
-  s.description = %q{Ruby wrapper for the REST API at https://www.zendesk.com. Documentation at https://developer.zendesk.com.}
+  s.summary     = 'Zendesk REST API Client'
+  s.description = 'Ruby wrapper for the REST API at https://www.zendesk.com. Documentation at https://developer.zendesk.com.'
   s.license     = 'Apache License Version 2.0'
 
   s.files = Dir.glob('{lib,util}/**/*')
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "bump"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
+  s.add_development_dependency "rubocop", "0.39.0"
   s.add_development_dependency "vcr"
   s.add_development_dependency "webmock", "< 2"
   s.add_development_dependency "yard"

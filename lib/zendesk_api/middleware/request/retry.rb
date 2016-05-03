@@ -10,7 +10,7 @@ module ZendeskAPI
         DEFAULT_RETRY_AFTER = 10
         ERROR_CODES = [429, 503]
 
-        def initialize(app, options={})
+        def initialize(app, options = {})
           super(app)
           @logger = options[:logger]
         end

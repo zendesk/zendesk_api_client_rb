@@ -155,7 +155,7 @@ describe ZendeskAPI::Client do
       end
 
       context "with a logger" do
-        let(:out){ StringIO.new }
+        let(:out) { StringIO.new }
         subject { Logger.new(out) }
 
         it "should log" do

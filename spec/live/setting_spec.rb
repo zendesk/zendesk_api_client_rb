@@ -9,7 +9,7 @@ describe ZendeskAPI::Setting do
     describe 'updating', :vcr do
       it 'should be updatable' do
         settings = user.settings
-        lotus = settings.detect {|set| set.on == "lotus"}
+        lotus = settings.detect { |set| set.on == "lotus" }
 
         original_setting = lotus.keyboard_shortcuts_enabled
         lotus.keyboard_shortcuts_enabled = !original_setting
@@ -17,7 +17,7 @@ describe ZendeskAPI::Setting do
         settings.save!
         settings.fetch!(true)
 
-        lotus = settings.detect {|set| set.on == "lotus"}
+        lotus = settings.detect { |set| set.on == "lotus" }
         expect(lotus.keyboard_shortcuts_enabled).to eq(!original_setting)
       end
     end

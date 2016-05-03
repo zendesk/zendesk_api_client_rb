@@ -1,7 +1,7 @@
 require 'core/spec_helper'
 
 describe ZendeskAPI::AppInstallation do
-  it "should work "do
+  it "should work" do
     upload = VCR.use_cassette("app_installations_upload_create") do
       ZendeskAPI::App::Upload.new(client, :id => "spec/fixtures/sample_app.zip").tap(&:save!)
     end

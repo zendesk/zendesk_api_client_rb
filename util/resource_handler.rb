@@ -10,7 +10,7 @@ class ResourceHandler < YARD::Handlers::Ruby::Base
 
     if klass
       begin
-        klass = klass.split("::").inject(ZendeskAPI) do |p,k|
+        klass = klass.split("::").inject(ZendeskAPI) do |p, k|
           p.const_get(k)
         end
       rescue NameError
