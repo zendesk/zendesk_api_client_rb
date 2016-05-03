@@ -20,7 +20,9 @@ rescue LoadError
 end
 
 class String
-  def encoding_aware?; false; end
+  def encoding_aware?
+    false
+  end
 end
 
 require File.join(File.dirname(__FILE__), '..', 'macros', 'resource_macros')

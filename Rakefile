@@ -36,7 +36,7 @@ if defined?(RSpec)
 end
 
 # extracted from https://github.com/grosser/project_template
-rule /^version:bump:.*/ do |t|
+rule(/^version:bump:.*/) do |t|
   sh "git status | grep 'nothing to commit'" # ensure we are not dirty
   index = %w(major minor patch).index(t.name.split(':').last)
   file = 'lib/zendesk_api/version.rb'
