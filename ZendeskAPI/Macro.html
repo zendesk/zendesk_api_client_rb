@@ -811,18 +811,18 @@
       <pre class="lines">
 
 
-617
-618
 619
 620
-621</pre>
+621
+622
+623</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 617</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 619</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_apply'>apply</span><span class='lparen'>(</span><span class='id identifier rubyid_ticket'>ticket</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_apply!'>apply!</span><span class='lparen'>(</span><span class='id identifier rubyid_ticket'>ticket</span><span class='rparen'>)</span>
-<span class='kw'>rescue</span> <span class='const'>Faraday</span><span class='op'>::</span><span class='const'>Error</span><span class='op'>::</span><span class='const'>ClientError</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+<span class='kw'>rescue</span> <span class='const'>Faraday</span><span class='op'>::</span><span class='const'>Error</span><span class='op'>::</span><span class='const'>ClientError</span>
   <span class='const'>Hashie</span><span class='op'>::</span><span class='const'>Mash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -896,8 +896,6 @@
       <pre class="lines">
 
 
-604
-605
 606
 607
 608
@@ -905,10 +903,12 @@
 610
 611
 612
-613</pre>
+613
+614
+615</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 604</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 606</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_apply!'>apply!</span><span class='lparen'>(</span><span class='id identifier rubyid_ticket'>ticket</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_path'>path</span><span class='embexpr_end'>}</span><span class='tstring_content'>/apply</span><span class='tstring_end'>&quot;</span></span>
@@ -969,10 +969,10 @@
       <pre class="lines">
 
 
-599</pre>
+601</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 599</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 601</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:execution</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>RuleExecution</span></pre>
     </td>
@@ -1044,10 +1044,10 @@
       <pre class="lines">
 
 
-599</pre>
+601</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 599</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 601</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:execution</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>RuleExecution</span></pre>
     </td>
@@ -1060,7 +1060,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue May  3 07:46:22 2016 by
+  Generated on Tue May  3 17:59:57 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
