@@ -5,3 +5,31 @@ AllCops:
   Exclude:
     - .git/**/*
     - spec/core/middleware/response/sanitize_response_spec.rb
+
+# Align ends correctly.
+Lint/EndAlignment:
+  AlignWith: variable
+
+# Align the elements of a hash literal if they span more than one line.
+Style/AlignHash:
+  EnforcedLastArgumentHashStyle: ignore_implicit
+
+# Align the parameters of a method call if they span more than one line.
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+# Checks the indentation of hanging closing parentheses.
+Style/ClosingParenthesisIndentation:
+  Enabled: false
+
+# Checks the indentation of the first parameter in a method call.
+Style/FirstParameterIndentation:
+  EnforcedStyle: consistent
+
+# Checks indentation of method calls with the dot operator that span more than one line.
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+# Checks indentation of binary operations that span more than one line.
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented

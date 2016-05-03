@@ -27,13 +27,6 @@ Lint/AssignmentInCondition:
     - 'lib/zendesk_api/collection.rb'
     - 'lib/zendesk_api/resources.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: AlignWith, SupportedStyles, AutoCorrect.
-# SupportedStyles: keyword, variable, start_of_line
-Lint/EndAlignment:
-  Enabled: false
-
 # Offense count: 3
 Lint/HandleExceptions:
   Exclude:
@@ -160,25 +153,6 @@ Style/Alias:
     - 'lib/zendesk_api/resources.rb'
     - 'lib/zendesk_api/track_changes.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle, SupportedLastArgumentHashStyles.
-# SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
-Style/AlignHash:
-  Exclude:
-    - 'lib/zendesk_api/resources.rb'
-    - 'spec/core/collection_spec.rb'
-    - 'spec/core/middleware/response/raise_error_spec.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: with_first_parameter, with_fixed_indentation
-Style/AlignParameters:
-  Exclude:
-    - 'spec/core/bulk_actions_spec.rb'
-    - 'spec/core/collection_spec.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/BlockComments:
@@ -229,13 +203,6 @@ Style/ClassAndModuleChildren:
     - 'spec/core/data_namespace_spec.rb'
     - 'spec/core/resource_spec.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/ClosingParenthesisIndentation:
-  Exclude:
-    - 'spec/core/bulk_actions_spec.rb'
-    - 'spec/core/collection_spec.rb'
-
 # Offense count: 6
 # Cop supports --auto-correct.
 Style/DeprecatedHashMethods:
@@ -282,22 +249,6 @@ Style/EachWithObject:
   Exclude:
     - 'lib/zendesk_api/associations.rb'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Style/ElseAlignment:
-  Exclude:
-    - 'lib/zendesk_api/associations.rb'
-    - 'lib/zendesk_api/middleware/request/upload.rb'
-
-# Offense count: 22
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: consistent, special_for_inner_method_call, special_for_inner_method_call_in_parentheses
-Style/FirstParameterIndentation:
-  Exclude:
-    - 'spec/core/collection_spec.rb'
-    - 'spec/core/read_resource_spec.rb'
-
 # Offense count: 3
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
@@ -336,15 +287,6 @@ Style/IfUnlessModifier:
     - 'spec/live/app_installation_spec.rb'
     - 'spec/live/app_spec.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: Width.
-Style/IndentationWidth:
-  Exclude:
-    - 'lib/zendesk_api/associations.rb'
-    - 'lib/zendesk_api/middleware/request/upload.rb'
-    - 'spec/core/association_spec.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/Lambda:
@@ -357,13 +299,6 @@ Style/Lambda:
 Style/MultilineBlockLayout:
   Exclude:
     - 'spec/core/middleware/request/encode_json_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: aligned, indented
-Style/MultilineOperationIndentation:
-  Enabled: false
 
 # Offense count: 4
 # Cop supports --auto-correct.
@@ -515,7 +450,7 @@ Style/SingleLineMethods:
 Style/SpecialGlobalVars:
   Enabled: false
 
-# Offense count: 1397
+# Offense count: 1396
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
 # SupportedStyles: single_quotes, double_quotes

@@ -19,12 +19,12 @@ module ZendeskAPI
         email = "zendesk-api-client-ruby-#{role}-#{client.config.username}"
 
         client.users.search(query: "email:#{email}").first ||
-        client.users.create(
-          :name => "Test Valid with role #{role}",
-          :verified => true,
-          :email => email,
-          :role => role
-        )
+          client.users.create(
+            :name => "Test Valid with role #{role}",
+            :verified => true,
+            :email => email,
+            :role => role
+          )
       end
     end
 

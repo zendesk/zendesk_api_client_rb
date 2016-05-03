@@ -38,7 +38,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should not fetch an unknown object" do
-       expect(instance.child).to be_nil
+        expect(instance.child).to be_nil
       end
 
       it "should fetch an object known by id" do
