@@ -247,7 +247,9 @@ describe ZendeskAPI::Resource do
       context "inline" do
         before(:each) do
           class ZendeskAPI::NilResource
-            def to_param; "TESTDATA"; end
+            def to_param
+              "TESTDATA"
+            end
           end
 
           ZendeskAPI::TestResource.associations.clear

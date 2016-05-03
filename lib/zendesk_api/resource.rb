@@ -117,7 +117,7 @@ module ZendeskAPI
 
     # Compares resources by class and id. If id is nil, then by object_id
     def ==(other)
-      return true if other.object_id == self.object_id
+      return true if other.object_id == object_id
 
       if other && !(other.is_a?(Data) || other.is_a?(Integer))
         warn "Trying to compare #{other.class} to a Resource from #{caller.first}"

@@ -6,16 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-Lint/AmbiguousOperator:
-  Exclude:
-    - 'lib/zendesk_api/client.rb'
-
-# Offense count: 1
-Lint/AmbiguousRegexpLiteral:
-  Exclude:
-    - 'Rakefile'
-
 # Offense count: 11
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
@@ -33,11 +23,6 @@ Lint/HandleExceptions:
     - 'Rakefile'
     - 'spec/core/collection_spec.rb'
     - 'spec/core/spec_helper.rb'
-
-# Offense count: 1
-Lint/ParenthesesAsGroupedExpression:
-  Exclude:
-    - 'spec/live/setting_spec.rb'
 
 # Offense count: 6
 Lint/ShadowingOuterLocalVariable:
@@ -74,13 +59,6 @@ Lint/UnusedMethodArgument:
     - 'lib/zendesk_api/client.rb'
     - 'lib/zendesk_api/collection.rb'
     - 'spec/fixtures/test_resources.rb'
-
-# Offense count: 3
-Lint/UselessAssignment:
-  Exclude:
-    - 'lib/zendesk_api/actions.rb'
-    - 'lib/zendesk_api/resources.rb'
-    - 'util/resource_handler.rb'
 
 # Offense count: 1
 Lint/Void:
@@ -266,7 +244,7 @@ Style/GuardClause:
     - 'lib/zendesk_api/middleware/response/parse_json.rb'
     - 'lib/zendesk_api/resources.rb'
 
-# Offense count: 879
+# Offense count: 880
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, UseHashRocketsWithSymbolValues.
 # SupportedStyles: ruby19, ruby19_no_mixed_keys, hash_rockets
@@ -293,12 +271,6 @@ Style/Lambda:
   Exclude:
     - 'spec/core/middleware/request/encode_json_spec.rb'
     - 'spec/core/middleware/request/upload_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/MultilineBlockLayout:
-  Exclude:
-    - 'spec/core/middleware/request/encode_json_spec.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.
@@ -382,15 +354,6 @@ Style/RedundantReturn:
   Exclude:
     - 'lib/zendesk_api/client.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'lib/zendesk_api/actions.rb'
-    - 'lib/zendesk_api/collection.rb'
-    - 'lib/zendesk_api/resource.rb'
-    - 'lib/zendesk_api/track_changes.rb'
-
 # Offense count: 52
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, AllowInnerSlashes.
@@ -433,15 +396,6 @@ Style/SignalException:
 Style/SingleLineBlockParams:
   Exclude:
     - 'lib/zendesk_api/resources.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowIfMethodIsEmpty.
-Style/SingleLineMethods:
-  Exclude:
-    - 'lib/zendesk_api/resources.rb'
-    - 'spec/core/resource_spec.rb'
-    - 'spec/core/spec_helper.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

@@ -172,7 +172,7 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Request::EncodeJson
         builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
 
-        builder.adapter *adapter
+        builder.adapter(*adapter)
       end
     end
 

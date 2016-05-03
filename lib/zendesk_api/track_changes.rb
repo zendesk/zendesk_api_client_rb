@@ -45,7 +45,7 @@ module ZendeskAPI
       end
 
       def regular_writer(key, value)
-        if self.has_key?(key) && self[key] == value
+        if has_key?(key) && self[key] == value
           value
         else
           changes[key] = value

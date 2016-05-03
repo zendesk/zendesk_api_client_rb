@@ -37,12 +37,14 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
     end
 
     context 'application/json' do
-      let(:env) {{
-        :body => { :a => :b },
-        :request_headers => {
-          'Content-Type' => 'application/json'
+      let(:env) {
+        {
+          :body => { :a => :b },
+          :request_headers => {
+            'Content-Type' => 'application/json'
+          }
         }
-      }}
+      }
 
       it 'encodes json' do
         expect(response[:body]).to eq(JSON.dump(:a => :b))
@@ -54,12 +56,14 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
     end
 
     context 'application/json; encoding=utf-8' do
-      let(:env) {{
-        :body => { :a => :b },
-        :request_headers => {
-          'Content-Type' => 'application/json; encoding=utf-8'
+      let(:env) {
+        {
+          :body => { :a => :b },
+          :request_headers => {
+            'Content-Type' => 'application/json; encoding=utf-8'
+          }
         }
-      }}
+      }
 
       it 'encodes json' do
         expect(response[:body]).to eq(JSON.dump(:a => :b))

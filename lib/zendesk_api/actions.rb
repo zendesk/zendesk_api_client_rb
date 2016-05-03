@@ -72,7 +72,7 @@ module ZendeskAPI
         changed = association.is_a?(Collection) || association.changed?
 
         if association.respond_to?(:save) && changed && !inline_creation && association.save
-          self.send("#{association_name}=", association) # set id/ids columns
+          send("#{association_name}=", association) # set id/ids columns
         end
 
         if (association_data[:inline] == true || inline_creation) && changed
@@ -129,7 +129,7 @@ module ZendeskAPI
       # @param [Hash] options Any additional GET parameters to be added
       def find(client, options = {}, &block)
         find!(client, options, &block)
-      rescue ZendeskAPI::Error::ClientError => e
+      rescue ZendeskAPI::Error::ClientError
         nil
       end
     end

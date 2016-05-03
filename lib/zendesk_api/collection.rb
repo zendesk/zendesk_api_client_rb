@@ -152,7 +152,7 @@ module ZendeskAPI
     # Adds an item (or items) to the list of side-loaded resources to request
     # @option sideloads [Symbol or String] The item(s) to sideload
     def include(*sideloads)
-      self.tap { @includes.concat(sideloads.map(&:to_s)) }
+      tap { @includes.concat(sideloads.map(&:to_s)) }
     end
 
     # Adds an item to this collection
@@ -186,7 +186,7 @@ module ZendeskAPI
         return (@resources = [])
       end
 
-      @response = get_response(@query || self.path)
+      @response = get_response(@query || path)
       handle_response(@response.body)
 
       @resources

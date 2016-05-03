@@ -96,7 +96,9 @@ module ZendeskAPI
     include Create
     include Destroy
 
-    def id; token; end
+    def id
+      token
+    end
 
     has_many Attachment
 
@@ -616,7 +618,7 @@ module ZendeskAPI
     # @param [Ticket] ticket Optional {Ticket} to apply this macro to
     def apply(ticket = nil)
       apply!(ticket)
-    rescue Faraday::Error::ClientError => e
+    rescue Faraday::Error::ClientError
       Hashie::Mash.new
     end
   end
