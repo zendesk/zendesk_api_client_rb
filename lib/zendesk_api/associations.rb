@@ -20,7 +20,7 @@ module ZendeskAPI
       case resource
       when Hash
         klass.new(@client, resource.merge(:association => instance_association))
-      when String, Fixnum
+      when String, Integer
         klass.new(@client, (options[:include_key] || :id) => resource, :association => instance_association)
       else
         resource.association = instance_association
