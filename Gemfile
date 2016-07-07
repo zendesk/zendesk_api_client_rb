@@ -9,6 +9,7 @@ gem "rubocop", "0.39.0"
 gem "vcr"
 gem "webmock", "< 2"
 gem "yard"
+gem "json", "< 2.0", :platforms => :ruby_19
 
 group :test do
   gem "simplecov"
