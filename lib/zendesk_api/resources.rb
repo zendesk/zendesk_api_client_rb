@@ -6,6 +6,7 @@ module ZendeskAPI
   class User < Resource; end
   class Category < Resource; end
   class OrganizationMembership < ReadResource; end
+  class OrganizationSubscription < ReadResource; end
 
   # @internal Begin actual Resource definitions
 
@@ -122,6 +123,7 @@ module ZendeskAPI
     has_many User
     has_many Tag, :extend => Tag::Update, :inline => :create
     has_many OrganizationMembership
+    has_many :subscriptions, class: OrganizationSubscription
 
     # Gets a incremental export of organizations from the start_time until now.
     # @param [Client] client The {Client} object to be used
@@ -152,6 +154,14 @@ module ZendeskAPI
 
     extend CreateMany
     extend DestroyMany
+
+    has User
+    has Organization
+  end
+
+  class OrganizationSubscription < ReadResource
+    include Create
+    include Destroy
 
     has User
     has Organization
@@ -738,6 +748,7 @@ module ZendeskAPI
     has_many GroupMembership
     has_many Topic
     has_many OrganizationMembership
+    has_many OrganizationSubscription
 
     has_many ForumSubscription
     has_many TopicSubscription
