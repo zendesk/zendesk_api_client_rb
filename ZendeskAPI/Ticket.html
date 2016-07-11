@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
   Class: ZendeskAPI::Ticket
   
-    &mdash; Documentation by YARD 0.8.7.6
+    &mdash; Documentation by YARD 0.9.0
   
 </title>
 
@@ -15,9 +15,8 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  hasFrames = window.top.frames.main ? true : false;
+  pathId = "ZendeskAPI::Ticket";
   relpath = '../';
-  framesUrl = "../frames.html#!ZendeskAPI/Ticket.html";
 </script>
 
 
@@ -28,51 +27,50 @@
 
   </head>
   <body>
-    <div id="header">
-      <div id="menu">
+    <div class="nav_wrap">
+      <iframe id="nav" src="../class_list.html"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
   
     <a href="../_index.html">Index (T)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span>
      &raquo; 
     <span class="title">Ticket</span>
   
-
-  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
-      <div id="search">
+        <div id="search">
   
     <a class="full_list_link" id="class_list_link"
         href="../class_list.html">
-      Class List
-    </a>
-  
-    <a class="full_list_link" id="method_list_link"
-        href="../method_list.html">
-      Method List
-    </a>
-  
-    <a class="full_list_link" id="file_list_link"
-        href="../file_list.html">
-      File List
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
     </a>
   
 </div>
-      <div class="clear"></div>
-    </div>
+        <div class="clear"></div>
+      </div>
 
-    <iframe id="search_frame"></iframe>
+      <iframe id="search_frame" src="../class_list.html"></iframe>
 
-    <div id="content"><h1>Class: ZendeskAPI::Ticket
+      <div id="content"><h1>Class: ZendeskAPI::Ticket
   
   
   
 </h1>
-
-<dl class="box">
+<div class="box_info">
   
-    <dt class="r1">Inherits:</dt>
-    <dd class="r1">
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
       <span class="inheritName"><span class='object_link'><a href="Resource.html" title="ZendeskAPI::Resource (class)">Resource</a></span></span>
       
         <ul class="fullTree">
@@ -89,27 +87,32 @@
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
       
-      </dd>
-    
+    </dd>
+  </dl>
+  
+
   
   
-    
-      <dt class="r2">Extended by:</dt>
-      <dd class="r2"><span class='object_link'><a href="CreateMany.html" title="ZendeskAPI::CreateMany (module)">CreateMany</a></span>, <span class='object_link'><a href="DestroyMany.html" title="ZendeskAPI::DestroyMany (module)">DestroyMany</a></span>, <span class='object_link'><a href="UpdateMany.html" title="ZendeskAPI::UpdateMany (module)">UpdateMany</a></span></dd>
-      
-    
-  
-    
+  <dl>
+      <dt>Extended by:</dt>
+      <dd><span class='object_link'><a href="CreateMany.html" title="ZendeskAPI::CreateMany (module)">CreateMany</a></span>, <span class='object_link'><a href="DestroyMany.html" title="ZendeskAPI::DestroyMany (module)">DestroyMany</a></span>, <span class='object_link'><a href="UpdateMany.html" title="ZendeskAPI::UpdateMany (module)">UpdateMany</a></span></dd>
+  </dl>
   
   
   
-    <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/zendesk_api/resources.rb<span class="defines">,<br />
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/zendesk_api/resources.rb<span class="defines">,<br />
   lib/zendesk_api/resources.rb</span>
 </dd>
+  </dl>
   
-</dl>
-<div class="clear"></div>
+</div>
 
 <h2>Defined Under Namespace</h2>
 <p class="children">
@@ -125,13 +128,13 @@
 
 
 
-  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
   <ul class="summary">
     
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#association-instance_method" title="#association (instance method)">- (ZendeskAPI::Association) <strong>association</strong> </a>
+      <a href="#association-instance_method" title="#association (instance method)">#<strong>association</strong>  &#x21d2; ZendeskAPI::Association </a>
     
 
     
@@ -163,7 +166,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#attributes-instance_method" title="#attributes (instance method)">- (Hash) <strong>attributes</strong> </a>
+      <a href="#attributes-instance_method" title="#attributes (instance method)">#<strong>attributes</strong>  &#x21d2; Hash </a>
     
 
     
@@ -199,7 +202,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#error-instance_method" title="#error (instance method)">- (Object) <strong>error</strong> </a>
+      <a href="#error-instance_method" title="#error (instance method)">#<strong>error</strong>  &#x21d2; Object </a>
     
 
     
@@ -231,7 +234,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#error_message-instance_method" title="#error_message (instance method)">- (Object) <strong>error_message</strong> </a>
+      <a href="#error_message-instance_method" title="#error_message (instance method)">#<strong>error_message</strong>  &#x21d2; Object </a>
     
 
     
@@ -263,7 +266,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#errors-instance_method" title="#errors (instance method)">- (Array) <strong>errors</strong> </a>
+      <a href="#errors-instance_method" title="#errors (instance method)">#<strong>errors</strong>  &#x21d2; Array </a>
     
 
     
@@ -295,7 +298,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#response-instance_method" title="#response (instance method)">- (Object) <strong>response</strong> </a>
+      <a href="#response-instance_method" title="#response (instance method)">#<strong>response</strong>  &#x21d2; Object </a>
     
 
     
@@ -332,7 +335,7 @@
   
     <h2>
       Class Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+      <small><a href="#" class="summary_toggle">collapse</a></small>
     </h2>
 
     <ul class="summary">
@@ -340,7 +343,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#create_many%21-class_method" title="#create_many! (class method)">+ (JobStatus) <strong>create_many!</strong>(client, attributes_array, association = Association.new(:class =&gt; self)) </a>
+      <a href="#create_many%21-class_method" title="#create_many! (class method)">.<strong>create_many!</strong>(client, attributes_array, association = Association.new(:class =&gt; self))  &#x21d2; JobStatus </a>
     
 
     
@@ -369,7 +372,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#destroy_many%21-class_method" title="#destroy_many! (class method)">+ (JobStatus) <strong>destroy_many!</strong>(client, ids, association = Association.new(:class =&gt; self)) </a>
+      <a href="#destroy_many%21-class_method" title="#destroy_many! (class method)">.<strong>destroy_many!</strong>(client, ids, association = Association.new(:class =&gt; self))  &#x21d2; JobStatus </a>
     
 
     
@@ -398,7 +401,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#import-class_method" title="import (class method)">+ (Ticket) <strong>import</strong>(client, attributes) </a>
+      <a href="#import-class_method" title="import (class method)">.<strong>import</strong>(client, attributes)  &#x21d2; Ticket </a>
     
 
     
@@ -422,7 +425,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#import%21-class_method" title="import! (class method)">+ (Ticket) <strong>import!</strong>(client, attributes) </a>
+      <a href="#import%21-class_method" title="import! (class method)">.<strong>import!</strong>(client, attributes)  &#x21d2; Ticket </a>
     
 
     
@@ -446,7 +449,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#incremental_export-class_method" title="incremental_export (class method)">+ (Collection) <strong>incremental_export</strong>(client, start_time) </a>
+      <a href="#incremental_export-class_method" title="incremental_export (class method)">.<strong>incremental_export</strong>(client, start_time)  &#x21d2; Collection </a>
     
 
     
@@ -470,7 +473,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#update_many%21-class_method" title="#update_many! (class method)">+ (JobStatus) <strong>update_many!</strong>(client, ids, attributes) </a>
+      <a href="#update_many%21-class_method" title="#update_many! (class method)">.<strong>update_many!</strong>(client, ids, attributes)  &#x21d2; JobStatus </a>
     
 
     
@@ -500,7 +503,7 @@
   
     <h2>
       Instance Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+      <small><a href="#" class="summary_toggle">collapse</a></small>
     </h2>
 
     <ul class="summary">
@@ -508,7 +511,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#assignee-instance_method" title="#assignee (instance method)">- (ZendeskAPI::User) <strong>assignee</strong> </a>
+      <a href="#assignee-instance_method" title="#assignee (instance method)">#<strong>assignee</strong>  &#x21d2; ZendeskAPI::User </a>
     
 
     
@@ -532,7 +535,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#assignee%3D-instance_method" title="#assignee= (instance method)">- (ZendeskAPI::User) <strong>assignee=</strong>(value) </a>
+      <a href="#assignee%3D-instance_method" title="#assignee= (instance method)">#<strong>assignee=</strong>(value)  &#x21d2; ZendeskAPI::User </a>
     
 
     
@@ -556,7 +559,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#audits-instance_method" title="#audits (instance method)">- (ZendeskAPI::Ticket::Audit) <strong>audits</strong>(options = {}) </a>
+      <a href="#audits-instance_method" title="#audits (instance method)">#<strong>audits</strong>(options = {})  &#x21d2; ZendeskAPI::Ticket::Audit </a>
     
 
     
@@ -580,7 +583,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#audits%3D-instance_method" title="#audits= (instance method)">- (ZendeskAPI::Ticket::Audit) <strong>audits=</strong>(value) </a>
+      <a href="#audits%3D-instance_method" title="#audits= (instance method)">#<strong>audits=</strong>(value)  &#x21d2; ZendeskAPI::Ticket::Audit </a>
     
 
     
@@ -604,7 +607,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#brand-instance_method" title="#brand (instance method)">- (ZendeskAPI::Brand) <strong>brand</strong> </a>
+      <a href="#brand-instance_method" title="#brand (instance method)">#<strong>brand</strong>  &#x21d2; ZendeskAPI::Brand </a>
     
 
     
@@ -628,7 +631,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#brand%3D-instance_method" title="#brand= (instance method)">- (ZendeskAPI::Brand) <strong>brand=</strong>(value) </a>
+      <a href="#brand%3D-instance_method" title="#brand= (instance method)">#<strong>brand=</strong>(value)  &#x21d2; ZendeskAPI::Brand </a>
     
 
     
@@ -652,7 +655,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#collaborators-instance_method" title="#collaborators (instance method)">- (ZendeskAPI::User) <strong>collaborators</strong>(options = {}) </a>
+      <a href="#collaborators-instance_method" title="#collaborators (instance method)">#<strong>collaborators</strong>(options = {})  &#x21d2; ZendeskAPI::User </a>
     
 
     
@@ -676,7 +679,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#collaborators%3D-instance_method" title="#collaborators= (instance method)">- (ZendeskAPI::User) <strong>collaborators=</strong>(value) </a>
+      <a href="#collaborators%3D-instance_method" title="#collaborators= (instance method)">#<strong>collaborators=</strong>(value)  &#x21d2; ZendeskAPI::User </a>
     
 
     
@@ -700,7 +703,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#comment-instance_method" title="#comment (instance method)">- (ZendeskAPI::Ticket::Comment) <strong>comment</strong> </a>
+      <a href="#comment-instance_method" title="#comment (instance method)">#<strong>comment</strong>  &#x21d2; ZendeskAPI::Ticket::Comment </a>
     
 
     
@@ -724,7 +727,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#comment%3D-instance_method" title="#comment= (instance method)">- (ZendeskAPI::Ticket::Comment) <strong>comment=</strong>(value) </a>
+      <a href="#comment%3D-instance_method" title="#comment= (instance method)">#<strong>comment=</strong>(value)  &#x21d2; ZendeskAPI::Ticket::Comment </a>
     
 
     
@@ -748,7 +751,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#comments-instance_method" title="#comments (instance method)">- (ZendeskAPI::Ticket::Comment) <strong>comments</strong>(options = {}) </a>
+      <a href="#comments-instance_method" title="#comments (instance method)">#<strong>comments</strong>(options = {})  &#x21d2; ZendeskAPI::Ticket::Comment </a>
     
 
     
@@ -772,7 +775,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#comments%3D-instance_method" title="#comments= (instance method)">- (ZendeskAPI::Ticket::Comment) <strong>comments=</strong>(value) </a>
+      <a href="#comments%3D-instance_method" title="#comments= (instance method)">#<strong>comments=</strong>(value)  &#x21d2; ZendeskAPI::Ticket::Comment </a>
     
 
     
@@ -796,7 +799,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#forum_topic-instance_method" title="#forum_topic (instance method)">- (ZendeskAPI::Topic) <strong>forum_topic</strong> </a>
+      <a href="#forum_topic-instance_method" title="#forum_topic (instance method)">#<strong>forum_topic</strong>  &#x21d2; ZendeskAPI::Topic </a>
     
 
     
@@ -820,7 +823,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#forum_topic%3D-instance_method" title="#forum_topic= (instance method)">- (ZendeskAPI::Topic) <strong>forum_topic=</strong>(value) </a>
+      <a href="#forum_topic%3D-instance_method" title="#forum_topic= (instance method)">#<strong>forum_topic=</strong>(value)  &#x21d2; ZendeskAPI::Topic </a>
     
 
     
@@ -844,7 +847,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#group-instance_method" title="#group (instance method)">- (ZendeskAPI::Group) <strong>group</strong> </a>
+      <a href="#group-instance_method" title="#group (instance method)">#<strong>group</strong>  &#x21d2; ZendeskAPI::Group </a>
     
 
     
@@ -868,7 +871,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#group%3D-instance_method" title="#group= (instance method)">- (ZendeskAPI::Group) <strong>group=</strong>(value) </a>
+      <a href="#group%3D-instance_method" title="#group= (instance method)">#<strong>group=</strong>(value)  &#x21d2; ZendeskAPI::Group </a>
     
 
     
@@ -892,7 +895,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#incidents-instance_method" title="#incidents (instance method)">- (ZendeskAPI::Ticket) <strong>incidents</strong>(options = {}) </a>
+      <a href="#incidents-instance_method" title="#incidents (instance method)">#<strong>incidents</strong>(options = {})  &#x21d2; ZendeskAPI::Ticket </a>
     
 
     
@@ -916,7 +919,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#incidents%3D-instance_method" title="#incidents= (instance method)">- (ZendeskAPI::Ticket) <strong>incidents=</strong>(value) </a>
+      <a href="#incidents%3D-instance_method" title="#incidents= (instance method)">#<strong>incidents=</strong>(value)  &#x21d2; ZendeskAPI::Ticket </a>
     
 
     
@@ -940,7 +943,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#last_comment-instance_method" title="#last_comment (instance method)">- (ZendeskAPI::Ticket::Comment) <strong>last_comment</strong> </a>
+      <a href="#last_comment-instance_method" title="#last_comment (instance method)">#<strong>last_comment</strong>  &#x21d2; ZendeskAPI::Ticket::Comment </a>
     
 
     
@@ -964,7 +967,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#last_comment%3D-instance_method" title="#last_comment= (instance method)">- (ZendeskAPI::Ticket::Comment) <strong>last_comment=</strong>(value) </a>
+      <a href="#last_comment%3D-instance_method" title="#last_comment= (instance method)">#<strong>last_comment=</strong>(value)  &#x21d2; ZendeskAPI::Ticket::Comment </a>
     
 
     
@@ -988,7 +991,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#last_comments-instance_method" title="#last_comments (instance method)">- (ZendeskAPI::Ticket::Comment) <strong>last_comments</strong>(options = {}) </a>
+      <a href="#last_comments-instance_method" title="#last_comments (instance method)">#<strong>last_comments</strong>(options = {})  &#x21d2; ZendeskAPI::Ticket::Comment </a>
     
 
     
@@ -1012,7 +1015,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#last_comments%3D-instance_method" title="#last_comments= (instance method)">- (ZendeskAPI::Ticket::Comment) <strong>last_comments=</strong>(value) </a>
+      <a href="#last_comments%3D-instance_method" title="#last_comments= (instance method)">#<strong>last_comments=</strong>(value)  &#x21d2; ZendeskAPI::Ticket::Comment </a>
     
 
     
@@ -1036,7 +1039,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#mark_as_spam-instance_method" title="#mark_as_spam (instance method)">- (Boolean) <strong>mark_as_spam</strong>(options = {}) </a>
+      <a href="#mark_as_spam-instance_method" title="#mark_as_spam (instance method)">#<strong>mark_as_spam</strong>(options = {})  &#x21d2; Boolean </a>
     
 
     
@@ -1060,7 +1063,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#merge-instance_method" title="#merge (instance method)">- (Boolean) <strong>merge</strong>(options = {}) </a>
+      <a href="#merge-instance_method" title="#merge (instance method)">#<strong>merge</strong>(options = {})  &#x21d2; Boolean </a>
     
 
     
@@ -1084,7 +1087,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#metrics-instance_method" title="#metrics (instance method)">- (ZendeskAPI::TicketMetric) <strong>metrics</strong> </a>
+      <a href="#metrics-instance_method" title="#metrics (instance method)">#<strong>metrics</strong>  &#x21d2; ZendeskAPI::TicketMetric </a>
     
 
     
@@ -1108,7 +1111,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#metrics%3D-instance_method" title="#metrics= (instance method)">- (ZendeskAPI::TicketMetric) <strong>metrics=</strong>(value) </a>
+      <a href="#metrics%3D-instance_method" title="#metrics= (instance method)">#<strong>metrics=</strong>(value)  &#x21d2; ZendeskAPI::TicketMetric </a>
     
 
     
@@ -1132,7 +1135,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#organization-instance_method" title="#organization (instance method)">- (ZendeskAPI::Organization) <strong>organization</strong> </a>
+      <a href="#organization-instance_method" title="#organization (instance method)">#<strong>organization</strong>  &#x21d2; ZendeskAPI::Organization </a>
     
 
     
@@ -1156,7 +1159,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#organization%3D-instance_method" title="#organization= (instance method)">- (ZendeskAPI::Organization) <strong>organization=</strong>(value) </a>
+      <a href="#organization%3D-instance_method" title="#organization= (instance method)">#<strong>organization=</strong>(value)  &#x21d2; ZendeskAPI::Organization </a>
     
 
     
@@ -1180,7 +1183,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#related-instance_method" title="#related (instance method)">- (ZendeskAPI::TicketRelated) <strong>related</strong> </a>
+      <a href="#related-instance_method" title="#related (instance method)">#<strong>related</strong>  &#x21d2; ZendeskAPI::TicketRelated </a>
     
 
     
@@ -1204,7 +1207,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#related%3D-instance_method" title="#related= (instance method)">- (ZendeskAPI::TicketRelated) <strong>related=</strong>(value) </a>
+      <a href="#related%3D-instance_method" title="#related= (instance method)">#<strong>related=</strong>(value)  &#x21d2; ZendeskAPI::TicketRelated </a>
     
 
     
@@ -1228,7 +1231,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#requester-instance_method" title="#requester (instance method)">- (ZendeskAPI::User) <strong>requester</strong> </a>
+      <a href="#requester-instance_method" title="#requester (instance method)">#<strong>requester</strong>  &#x21d2; ZendeskAPI::User </a>
     
 
     
@@ -1252,7 +1255,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#requester%3D-instance_method" title="#requester= (instance method)">- (ZendeskAPI::User) <strong>requester=</strong>(value) </a>
+      <a href="#requester%3D-instance_method" title="#requester= (instance method)">#<strong>requester=</strong>(value)  &#x21d2; ZendeskAPI::User </a>
     
 
     
@@ -1276,7 +1279,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#submitter-instance_method" title="#submitter (instance method)">- (ZendeskAPI::User) <strong>submitter</strong> </a>
+      <a href="#submitter-instance_method" title="#submitter (instance method)">#<strong>submitter</strong>  &#x21d2; ZendeskAPI::User </a>
     
 
     
@@ -1300,7 +1303,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#submitter%3D-instance_method" title="#submitter= (instance method)">- (ZendeskAPI::User) <strong>submitter=</strong>(value) </a>
+      <a href="#submitter%3D-instance_method" title="#submitter= (instance method)">#<strong>submitter=</strong>(value)  &#x21d2; ZendeskAPI::User </a>
     
 
     
@@ -1324,7 +1327,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#tags-instance_method" title="#tags (instance method)">- (ZendeskAPI::Tag) <strong>tags</strong>(options = {}) </a>
+      <a href="#tags-instance_method" title="#tags (instance method)">#<strong>tags</strong>(options = {})  &#x21d2; ZendeskAPI::Tag </a>
     
 
     
@@ -1348,7 +1351,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#tags%3D-instance_method" title="#tags= (instance method)">- (ZendeskAPI::Tag) <strong>tags=</strong>(value) </a>
+      <a href="#tags%3D-instance_method" title="#tags= (instance method)">#<strong>tags=</strong>(value)  &#x21d2; ZendeskAPI::Tag </a>
     
 
     
@@ -1427,7 +1430,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="association-instance_method">
   
-    - (<tt><span class='object_link'>ZendeskAPI::Association</span></tt>) <strong>association</strong> 
+    #<strong>association</strong>  &#x21d2; <tt><span class='object_link'>ZendeskAPI::Association</span></tt> 
   
 
   
@@ -1475,7 +1478,7 @@
       <div class="method_details ">
   <h3 class="signature " id="attributes-instance_method">
   
-    - (<tt>Hash</tt>) <strong>attributes</strong>  <span class="extras">(readonly)</span>
+    #<strong>attributes</strong>  &#x21d2; <tt>Hash</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1527,7 +1530,7 @@
       <div class="method_details ">
   <h3 class="signature " id="error-instance_method">
   
-    - (<tt>Object</tt>) <strong>error</strong> 
+    #<strong>error</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1557,7 +1560,7 @@
       <div class="method_details ">
   <h3 class="signature " id="error_message-instance_method">
   
-    - (<tt>Object</tt>) <strong>error_message</strong> 
+    #<strong>error_message</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1587,7 +1590,7 @@
       <div class="method_details ">
   <h3 class="signature " id="errors-instance_method">
   
-    - (<tt>Array</tt>) <strong>errors</strong> 
+    #<strong>errors</strong>  &#x21d2; <tt>Array</tt> 
   
 
   
@@ -1635,7 +1638,7 @@
       <div class="method_details ">
   <h3 class="signature " id="response-instance_method">
   
-    - (<tt>Object</tt>) <strong>response</strong> 
+    #<strong>response</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1670,7 +1673,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="create_many!-class_method">
   
-    + (<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>) <strong>create_many!</strong>(client, attributes_array, association = Association.new(:class =&gt; self)) 
+    .<strong>create_many!</strong>(client, attributes_array, association = Association.new(:class =&gt; self))  &#x21d2; <tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt> 
   
 
   
@@ -1752,7 +1755,7 @@
       <div class="method_details ">
   <h3 class="signature " id="destroy_many!-class_method">
   
-    + (<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>) <strong>destroy_many!</strong>(client, ids, association = Association.new(:class =&gt; self)) 
+    .<strong>destroy_many!</strong>(client, ids, association = Association.new(:class =&gt; self))  &#x21d2; <tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt> 
   
 
   
@@ -1834,7 +1837,7 @@
       <div class="method_details ">
   <h3 class="signature " id="import-class_method">
   
-    + (<tt><span class='object_link'><a href="" title="ZendeskAPI::Ticket (class)">Ticket</a></span></tt>) <strong>import</strong>(client, attributes) 
+    .<strong>import</strong>(client, attributes)  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Ticket (class)">Ticket</a></span></tt> 
   
 
   
@@ -1911,14 +1914,14 @@
       <pre class="lines">
 
 
-475
-476
-477
-478
-479</pre>
+485
+486
+487
+488
+489</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 475</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 485</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_import'>import</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_ticket'>ticket</span> <span class='op'>=</span> <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span>
@@ -1933,7 +1936,7 @@
       <div class="method_details ">
   <h3 class="signature " id="import!-class_method">
   
-    + (<tt><span class='object_link'><a href="" title="ZendeskAPI::Ticket (class)">Ticket</a></span></tt>) <strong>import!</strong>(client, attributes) 
+    .<strong>import!</strong>(client, attributes)  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Ticket (class)">Ticket</a></span></tt> 
   
 
   
@@ -2010,14 +2013,14 @@
       <pre class="lines">
 
 
-465
-466
-467
-468
-469</pre>
+475
+476
+477
+478
+479</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 465</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 475</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_import!'>import!</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_ticket'>ticket</span><span class='op'>|</span>
@@ -2032,7 +2035,7 @@
       <div class="method_details ">
   <h3 class="signature " id="incremental_export-class_method">
   
-    + (<tt><span class='object_link'><a href="Collection.html" title="ZendeskAPI::Collection (class)">Collection</a></span></tt>) <strong>incremental_export</strong>(client, start_time) 
+    .<strong>incremental_export</strong>(client, start_time)  &#x21d2; <tt><span class='object_link'><a href="Collection.html" title="ZendeskAPI::Collection (class)">Collection</a></span></tt> 
   
 
   
@@ -2109,12 +2112,12 @@
       <pre class="lines">
 
 
-457
-458
-459</pre>
+467
+468
+469</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 457</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 467</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_incremental_export'>incremental_export</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_start_time'>start_time</span><span class='rparen'>)</span>
   <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Collection</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='symbol'>:path</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>exports/tickets?start_time=</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_start_time'>start_time</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -2127,7 +2130,7 @@
       <div class="method_details ">
   <h3 class="signature " id="update_many!-class_method">
   
-    + (<tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt>) <strong>update_many!</strong>(client, ids, attributes) 
+    .<strong>update_many!</strong>(client, ids, attributes)  &#x21d2; <tt><span class='object_link'><a href="JobStatus.html" title="ZendeskAPI::JobStatus (class)">JobStatus</a></span></tt> 
   
 
   
@@ -2231,7 +2234,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="assignee-instance_method">
   
-    - (<tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt>) <strong>assignee</strong> 
+    #<strong>assignee</strong>  &#x21d2; <tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt> 
   
 
   
@@ -2272,10 +2275,10 @@
       <pre class="lines">
 
 
-427</pre>
+437</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 427</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 437</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:assignee</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>User</span></pre>
     </td>
@@ -2286,7 +2289,7 @@
       <div class="method_details ">
   <h3 class="signature " id="assignee=-instance_method">
   
-    - (<tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt>) <strong>assignee=</strong>(value) 
+    #<strong>assignee=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt> 
   
 
   
@@ -2347,10 +2350,10 @@
       <pre class="lines">
 
 
-427</pre>
+437</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 427</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 437</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:assignee</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>User</span></pre>
     </td>
@@ -2361,7 +2364,7 @@
       <div class="method_details ">
   <h3 class="signature " id="audits-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Audit.html" title="ZendeskAPI::Ticket::Audit (class)">ZendeskAPI::Ticket::Audit</a></span></tt>) <strong>audits</strong>(options = {}) 
+    #<strong>audits</strong>(options = {})  &#x21d2; <tt><span class='object_link'><a href="Ticket/Audit.html" title="ZendeskAPI::Ticket::Audit (class)">ZendeskAPI::Ticket::Audit</a></span></tt> 
   
 
   
@@ -2424,10 +2427,10 @@
       <pre class="lines">
 
 
-435</pre>
+445</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 435</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 445</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Audit</span></pre>
     </td>
@@ -2438,7 +2441,7 @@
       <div class="method_details ">
   <h3 class="signature " id="audits=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Audit.html" title="ZendeskAPI::Ticket::Audit (class)">ZendeskAPI::Ticket::Audit</a></span></tt>) <strong>audits=</strong>(value) 
+    #<strong>audits=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Ticket/Audit.html" title="ZendeskAPI::Ticket::Audit (class)">ZendeskAPI::Ticket::Audit</a></span></tt> 
   
 
   
@@ -2499,10 +2502,10 @@
       <pre class="lines">
 
 
-435</pre>
+445</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 435</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 445</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Audit</span></pre>
     </td>
@@ -2513,7 +2516,7 @@
       <div class="method_details ">
   <h3 class="signature " id="brand-instance_method">
   
-    - (<tt><span class='object_link'><a href="Brand.html" title="ZendeskAPI::Brand (class)">ZendeskAPI::Brand</a></span></tt>) <strong>brand</strong> 
+    #<strong>brand</strong>  &#x21d2; <tt><span class='object_link'><a href="Brand.html" title="ZendeskAPI::Brand (class)">ZendeskAPI::Brand</a></span></tt> 
   
 
   
@@ -2554,10 +2557,10 @@
       <pre class="lines">
 
 
-440</pre>
+450</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 440</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 450</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Brand</span></pre>
     </td>
@@ -2568,7 +2571,7 @@
       <div class="method_details ">
   <h3 class="signature " id="brand=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Brand.html" title="ZendeskAPI::Brand (class)">ZendeskAPI::Brand</a></span></tt>) <strong>brand=</strong>(value) 
+    #<strong>brand=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Brand.html" title="ZendeskAPI::Brand (class)">ZendeskAPI::Brand</a></span></tt> 
   
 
   
@@ -2629,10 +2632,10 @@
       <pre class="lines">
 
 
-440</pre>
+450</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 440</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 450</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Brand</span></pre>
     </td>
@@ -2643,7 +2646,7 @@
       <div class="method_details ">
   <h3 class="signature " id="collaborators-instance_method">
   
-    - (<tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt>) <strong>collaborators</strong>(options = {}) 
+    #<strong>collaborators</strong>(options = {})  &#x21d2; <tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt> 
   
 
   
@@ -2706,14 +2709,14 @@
       <pre class="lines">
 
 
-429
-430
-431
-432
-433</pre>
+439
+440
+441
+442
+443</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 429</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 439</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:collaborators</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>User</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:extend</span> <span class='op'>=&gt;</span> <span class='lparen'>(</span><span class='const'>Module</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
   <span class='kw'>def</span> <span class='id identifier rubyid_to_param'>to_param</span>
@@ -2728,7 +2731,7 @@
       <div class="method_details ">
   <h3 class="signature " id="collaborators=-instance_method">
   
-    - (<tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt>) <strong>collaborators=</strong>(value) 
+    #<strong>collaborators=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt> 
   
 
   
@@ -2789,14 +2792,14 @@
       <pre class="lines">
 
 
-429
-430
-431
-432
-433</pre>
+439
+440
+441
+442
+443</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 429</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 439</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:collaborators</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>User</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='symbol'>:extend</span> <span class='op'>=&gt;</span> <span class='lparen'>(</span><span class='const'>Module</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
   <span class='kw'>def</span> <span class='id identifier rubyid_to_param'>to_param</span>
@@ -2811,7 +2814,7 @@
       <div class="method_details ">
   <h3 class="signature " id="comment-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt>) <strong>comment</strong> 
+    #<strong>comment</strong>  &#x21d2; <tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt> 
   
 
   
@@ -2852,10 +2855,10 @@
       <pre class="lines">
 
 
-443</pre>
+453</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 443</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 453</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Comment</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
     </td>
@@ -2866,7 +2869,7 @@
       <div class="method_details ">
   <h3 class="signature " id="comment=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt>) <strong>comment=</strong>(value) 
+    #<strong>comment=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt> 
   
 
   
@@ -2927,10 +2930,10 @@
       <pre class="lines">
 
 
-443</pre>
+453</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 443</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 453</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Comment</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
     </td>
@@ -2941,7 +2944,7 @@
       <div class="method_details ">
   <h3 class="signature " id="comments-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt>) <strong>comments</strong>(options = {}) 
+    #<strong>comments</strong>(options = {})  &#x21d2; <tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt> 
   
 
   
@@ -3004,10 +3007,10 @@
       <pre class="lines">
 
 
-444</pre>
+454</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 444</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 454</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Comment</span></pre>
     </td>
@@ -3018,7 +3021,7 @@
       <div class="method_details ">
   <h3 class="signature " id="comments=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt>) <strong>comments=</strong>(value) 
+    #<strong>comments=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt> 
   
 
   
@@ -3079,10 +3082,10 @@
       <pre class="lines">
 
 
-444</pre>
+454</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 444</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 454</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Comment</span></pre>
     </td>
@@ -3093,7 +3096,7 @@
       <div class="method_details ">
   <h3 class="signature " id="forum_topic-instance_method">
   
-    - (<tt><span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt>) <strong>forum_topic</strong> 
+    #<strong>forum_topic</strong>  &#x21d2; <tt><span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt> 
   
 
   
@@ -3134,10 +3137,10 @@
       <pre class="lines">
 
 
-438</pre>
+448</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 438</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 448</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:forum_topic</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Topic</span></pre>
     </td>
@@ -3148,7 +3151,7 @@
       <div class="method_details ">
   <h3 class="signature " id="forum_topic=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt>) <strong>forum_topic=</strong>(value) 
+    #<strong>forum_topic=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Topic.html" title="ZendeskAPI::Topic (class)">ZendeskAPI::Topic</a></span></tt> 
   
 
   
@@ -3209,10 +3212,10 @@
       <pre class="lines">
 
 
-438</pre>
+448</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 438</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 448</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:forum_topic</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Topic</span></pre>
     </td>
@@ -3223,7 +3226,7 @@
       <div class="method_details ">
   <h3 class="signature " id="group-instance_method">
   
-    - (<tt><span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt>) <strong>group</strong> 
+    #<strong>group</strong>  &#x21d2; <tt><span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt> 
   
 
   
@@ -3264,10 +3267,10 @@
       <pre class="lines">
 
 
-437</pre>
+447</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 437</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 447</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Group</span></pre>
     </td>
@@ -3278,7 +3281,7 @@
       <div class="method_details ">
   <h3 class="signature " id="group=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt>) <strong>group=</strong>(value) 
+    #<strong>group=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Group.html" title="ZendeskAPI::Group (class)">ZendeskAPI::Group</a></span></tt> 
   
 
   
@@ -3339,10 +3342,10 @@
       <pre class="lines">
 
 
-437</pre>
+447</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 437</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 447</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Group</span></pre>
     </td>
@@ -3353,7 +3356,7 @@
       <div class="method_details ">
   <h3 class="signature " id="incidents-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>) <strong>incidents</strong>(options = {}) 
+    #<strong>incidents</strong>(options = {})  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt> 
   
 
   
@@ -3416,10 +3419,10 @@
       <pre class="lines">
 
 
-451</pre>
+461</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 451</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 461</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:incidents</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span></pre>
     </td>
@@ -3430,7 +3433,7 @@
       <div class="method_details ">
   <h3 class="signature " id="incidents=-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt>) <strong>incidents=</strong>(value) 
+    #<strong>incidents=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Ticket (class)">ZendeskAPI::Ticket</a></span></tt> 
   
 
   
@@ -3491,10 +3494,10 @@
       <pre class="lines">
 
 
-451</pre>
+461</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 451</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 461</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:incidents</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Ticket</span></pre>
     </td>
@@ -3505,7 +3508,7 @@
       <div class="method_details ">
   <h3 class="signature " id="last_comment-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt>) <strong>last_comment</strong> 
+    #<strong>last_comment</strong>  &#x21d2; <tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt> 
   
 
   
@@ -3546,10 +3549,10 @@
       <pre class="lines">
 
 
-446</pre>
+456</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 446</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 456</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:last_comment</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Comment</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
     </td>
@@ -3560,7 +3563,7 @@
       <div class="method_details ">
   <h3 class="signature " id="last_comment=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt>) <strong>last_comment=</strong>(value) 
+    #<strong>last_comment=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt> 
   
 
   
@@ -3621,10 +3624,10 @@
       <pre class="lines">
 
 
-446</pre>
+456</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 446</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 456</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:last_comment</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Comment</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
     </td>
@@ -3635,7 +3638,7 @@
       <div class="method_details ">
   <h3 class="signature " id="last_comments-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt>) <strong>last_comments</strong>(options = {}) 
+    #<strong>last_comments</strong>(options = {})  &#x21d2; <tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt> 
   
 
   
@@ -3698,10 +3701,10 @@
       <pre class="lines">
 
 
-447</pre>
+457</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 447</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 457</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:last_comments</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Comment</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
     </td>
@@ -3712,7 +3715,7 @@
       <div class="method_details ">
   <h3 class="signature " id="last_comments=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt>) <strong>last_comments=</strong>(value) 
+    #<strong>last_comments=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Ticket/Comment.html" title="ZendeskAPI::Ticket::Comment (class)">ZendeskAPI::Ticket::Comment</a></span></tt> 
   
 
   
@@ -3773,10 +3776,10 @@
       <pre class="lines">
 
 
-447</pre>
+457</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 447</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 457</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='symbol'>:last_comments</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>Comment</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='kw'>true</span></pre>
     </td>
@@ -3787,7 +3790,7 @@
       <div class="method_details ">
   <h3 class="signature " id="mark_as_spam-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>mark_as_spam</strong>(options = {}) 
+    #<strong>mark_as_spam</strong>(options = {})  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -3850,10 +3853,10 @@
       <pre class="lines">
 
 
-422</pre>
+432</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 422</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 432</span>
 
 <span class='id identifier rubyid_put'>put</span> <span class='symbol'>:mark_as_spam</span></pre>
     </td>
@@ -3864,7 +3867,7 @@
       <div class="method_details ">
   <h3 class="signature " id="merge-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>merge</strong>(options = {}) 
+    #<strong>merge</strong>(options = {})  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -3927,10 +3930,10 @@
       <pre class="lines">
 
 
-423</pre>
+433</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 423</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 433</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='symbol'>:merge</span></pre>
     </td>
@@ -3941,7 +3944,7 @@
       <div class="method_details ">
   <h3 class="signature " id="metrics-instance_method">
   
-    - (<tt><span class='object_link'><a href="TicketMetric.html" title="ZendeskAPI::TicketMetric (class)">ZendeskAPI::TicketMetric</a></span></tt>) <strong>metrics</strong> 
+    #<strong>metrics</strong>  &#x21d2; <tt><span class='object_link'><a href="TicketMetric.html" title="ZendeskAPI::TicketMetric (class)">ZendeskAPI::TicketMetric</a></span></tt> 
   
 
   
@@ -3982,10 +3985,10 @@
       <pre class="lines">
 
 
-436</pre>
+446</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 436</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 446</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:metrics</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>TicketMetric</span></pre>
     </td>
@@ -3996,7 +3999,7 @@
       <div class="method_details ">
   <h3 class="signature " id="metrics=-instance_method">
   
-    - (<tt><span class='object_link'><a href="TicketMetric.html" title="ZendeskAPI::TicketMetric (class)">ZendeskAPI::TicketMetric</a></span></tt>) <strong>metrics=</strong>(value) 
+    #<strong>metrics=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="TicketMetric.html" title="ZendeskAPI::TicketMetric (class)">ZendeskAPI::TicketMetric</a></span></tt> 
   
 
   
@@ -4057,10 +4060,10 @@
       <pre class="lines">
 
 
-436</pre>
+446</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 436</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 446</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:metrics</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>TicketMetric</span></pre>
     </td>
@@ -4071,7 +4074,7 @@
       <div class="method_details ">
   <h3 class="signature " id="organization-instance_method">
   
-    - (<tt><span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt>) <strong>organization</strong> 
+    #<strong>organization</strong>  &#x21d2; <tt><span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt> 
   
 
   
@@ -4112,10 +4115,10 @@
       <pre class="lines">
 
 
-439</pre>
+449</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 439</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 449</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Organization</span></pre>
     </td>
@@ -4126,7 +4129,7 @@
       <div class="method_details ">
   <h3 class="signature " id="organization=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt>) <strong>organization=</strong>(value) 
+    #<strong>organization=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Organization.html" title="ZendeskAPI::Organization (class)">ZendeskAPI::Organization</a></span></tt> 
   
 
   
@@ -4187,10 +4190,10 @@
       <pre class="lines">
 
 
-439</pre>
+449</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 439</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 449</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='const'>Organization</span></pre>
     </td>
@@ -4201,7 +4204,7 @@
       <div class="method_details ">
   <h3 class="signature " id="related-instance_method">
   
-    - (<tt><span class='object_link'><a href="TicketRelated.html" title="ZendeskAPI::TicketRelated (class)">ZendeskAPI::TicketRelated</a></span></tt>) <strong>related</strong> 
+    #<strong>related</strong>  &#x21d2; <tt><span class='object_link'><a href="TicketRelated.html" title="ZendeskAPI::TicketRelated (class)">ZendeskAPI::TicketRelated</a></span></tt> 
   
 
   
@@ -4242,10 +4245,10 @@
       <pre class="lines">
 
 
-441</pre>
+451</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 441</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 451</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:related</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>TicketRelated</span></pre>
     </td>
@@ -4256,7 +4259,7 @@
       <div class="method_details ">
   <h3 class="signature " id="related=-instance_method">
   
-    - (<tt><span class='object_link'><a href="TicketRelated.html" title="ZendeskAPI::TicketRelated (class)">ZendeskAPI::TicketRelated</a></span></tt>) <strong>related=</strong>(value) 
+    #<strong>related=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="TicketRelated.html" title="ZendeskAPI::TicketRelated (class)">ZendeskAPI::TicketRelated</a></span></tt> 
   
 
   
@@ -4317,10 +4320,10 @@
       <pre class="lines">
 
 
-441</pre>
+451</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 441</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 451</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:related</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>TicketRelated</span></pre>
     </td>
@@ -4331,7 +4334,7 @@
       <div class="method_details ">
   <h3 class="signature " id="requester-instance_method">
   
-    - (<tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt>) <strong>requester</strong> 
+    #<strong>requester</strong>  &#x21d2; <tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt> 
   
 
   
@@ -4372,10 +4375,10 @@
       <pre class="lines">
 
 
-425</pre>
+435</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 425</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 435</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:requester</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>User</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='symbol'>:create</span></pre>
     </td>
@@ -4386,7 +4389,7 @@
       <div class="method_details ">
   <h3 class="signature " id="requester=-instance_method">
   
-    - (<tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt>) <strong>requester=</strong>(value) 
+    #<strong>requester=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt> 
   
 
   
@@ -4447,10 +4450,10 @@
       <pre class="lines">
 
 
-425</pre>
+435</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 425</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 435</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:requester</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>User</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='symbol'>:create</span></pre>
     </td>
@@ -4461,7 +4464,7 @@
       <div class="method_details ">
   <h3 class="signature " id="submitter-instance_method">
   
-    - (<tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt>) <strong>submitter</strong> 
+    #<strong>submitter</strong>  &#x21d2; <tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt> 
   
 
   
@@ -4502,10 +4505,10 @@
       <pre class="lines">
 
 
-426</pre>
+436</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 426</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 436</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:submitter</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>User</span></pre>
     </td>
@@ -4516,7 +4519,7 @@
       <div class="method_details ">
   <h3 class="signature " id="submitter=-instance_method">
   
-    - (<tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt>) <strong>submitter=</strong>(value) 
+    #<strong>submitter=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="User.html" title="ZendeskAPI::User (class)">ZendeskAPI::User</a></span></tt> 
   
 
   
@@ -4577,10 +4580,10 @@
       <pre class="lines">
 
 
-426</pre>
+436</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 426</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 436</span>
 
 <span class='id identifier rubyid_has'>has</span> <span class='symbol'>:submitter</span><span class='comma'>,</span> <span class='symbol'>:class</span> <span class='op'>=&gt;</span> <span class='const'>User</span></pre>
     </td>
@@ -4591,7 +4594,7 @@
       <div class="method_details ">
   <h3 class="signature " id="tags-instance_method">
   
-    - (<tt><span class='object_link'><a href="Tag.html" title="ZendeskAPI::Tag (class)">ZendeskAPI::Tag</a></span></tt>) <strong>tags</strong>(options = {}) 
+    #<strong>tags</strong>(options = {})  &#x21d2; <tt><span class='object_link'><a href="Tag.html" title="ZendeskAPI::Tag (class)">ZendeskAPI::Tag</a></span></tt> 
   
 
   
@@ -4654,10 +4657,10 @@
       <pre class="lines">
 
 
-449</pre>
+459</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 449</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 459</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Tag</span><span class='comma'>,</span> <span class='symbol'>:extend</span> <span class='op'>=&gt;</span> <span class='const'>Tag</span><span class='op'>::</span><span class='const'>Update</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='symbol'>:create</span></pre>
     </td>
@@ -4668,7 +4671,7 @@
       <div class="method_details ">
   <h3 class="signature " id="tags=-instance_method">
   
-    - (<tt><span class='object_link'><a href="Tag.html" title="ZendeskAPI::Tag (class)">ZendeskAPI::Tag</a></span></tt>) <strong>tags=</strong>(value) 
+    #<strong>tags=</strong>(value)  &#x21d2; <tt><span class='object_link'><a href="Tag.html" title="ZendeskAPI::Tag (class)">ZendeskAPI::Tag</a></span></tt> 
   
 
   
@@ -4729,10 +4732,10 @@
       <pre class="lines">
 
 
-449</pre>
+459</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 449</span>
+      <pre class="code"><span class="info file"># File 'lib/zendesk_api/resources.rb', line 459</span>
 
 <span class='id identifier rubyid_has_many'>has_many</span> <span class='const'>Tag</span><span class='comma'>,</span> <span class='symbol'>:extend</span> <span class='op'>=&gt;</span> <span class='const'>Tag</span><span class='op'>::</span><span class='const'>Update</span><span class='comma'>,</span> <span class='symbol'>:inline</span> <span class='op'>=&gt;</span> <span class='symbol'>:create</span></pre>
     </td>
@@ -4744,11 +4747,12 @@
 
 </div>
 
-    <div id="footer">
-  Generated on Mon Jun 27 07:10:55 2016 by
+      <div id="footer">
+  Generated on Mon Jul 11 07:37:07 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.3).
+  0.9.0 (ruby-2.2.3).
 </div>
 
+    </div>
   </body>
 </html>

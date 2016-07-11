@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
   Class: ZendeskAPI::Collection
   
-    &mdash; Documentation by YARD 0.8.7.6
+    &mdash; Documentation by YARD 0.9.0
   
 </title>
 
@@ -15,9 +15,8 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  hasFrames = window.top.frames.main ? true : false;
+  pathId = "ZendeskAPI::Collection";
   relpath = '../';
-  framesUrl = "../frames.html#!ZendeskAPI/Collection.html";
 </script>
 
 
@@ -28,51 +27,50 @@
 
   </head>
   <body>
-    <div id="header">
-      <div id="menu">
+    <div class="nav_wrap">
+      <iframe id="nav" src="../class_list.html"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
   
     <a href="../_index.html">Index (C)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span>
      &raquo; 
     <span class="title">Collection</span>
   
-
-  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
-      <div id="search">
+        <div id="search">
   
     <a class="full_list_link" id="class_list_link"
         href="../class_list.html">
-      Class List
-    </a>
-  
-    <a class="full_list_link" id="method_list_link"
-        href="../method_list.html">
-      Method List
-    </a>
-  
-    <a class="full_list_link" id="file_list_link"
-        href="../file_list.html">
-      File List
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
     </a>
   
 </div>
-      <div class="clear"></div>
-    </div>
+        <div class="clear"></div>
+      </div>
 
-    <iframe id="search_frame"></iframe>
+      <iframe id="search_frame" src="../class_list.html"></iframe>
 
-    <div id="content"><h1>Class: ZendeskAPI::Collection
+      <div id="content"><h1>Class: ZendeskAPI::Collection
   
   
   
 </h1>
-
-<dl class="box">
+<div class="box_info">
   
-    <dt class="r1">Inherits:</dt>
-    <dd class="r1">
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
       <span class="inheritName">Object</span>
       
         <ul class="fullTree">
@@ -83,21 +81,25 @@
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
       
-      </dd>
-    
+    </dd>
+  </dl>
   
-  
-    
-  
-    
+
   
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/zendesk_api/collection.rb</dd>
   
-</dl>
-<div class="clear"></div>
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/zendesk_api/collection.rb</dd>
+  </dl>
+  
+</div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
@@ -113,11 +115,10 @@ actually fetched until explicitly needed (e.g. #each, <span class='object_link'>
 
 </div>
   <h2>Constant Summary</h2>
-  
-    <dl class="constants">
-      
-        <dt id="SPECIALLY_JOINED_PARAMS-constant" class="">SPECIALLY_JOINED_PARAMS =
-          <div class="docstring">
+  <dl class="constants">
+    
+      <dt id="SPECIALLY_JOINED_PARAMS-constant" class="">SPECIALLY_JOINED_PARAMS =
+        <div class="docstring">
   <div class="discussion">
     
 <p>Options passed in that are automatically converted from an array to a
@@ -130,22 +131,21 @@ comma-separated list.</p>
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:ids</span><span class='comma'>,</span> <span class='symbol'>:only</span><span class='rbracket'>]</span></pre></dd>
-      
-    </dl>
-  
+      </dt>
+      <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:ids</span><span class='comma'>,</span> <span class='symbol'>:only</span><span class='rbracket'>]</span></pre></dd>
+    
+  </dl>
 
 
 
 
-  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
   <ul class="summary">
     
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#association-instance_method" title="#association (instance method)">- (ZendeskAPI::Association) <strong>association</strong> </a>
+      <a href="#association-instance_method" title="#association (instance method)">#<strong>association</strong>  &#x21d2; ZendeskAPI::Association </a>
     
 
     
@@ -174,7 +174,7 @@ comma-separated list.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#error-instance_method" title="#error (instance method)">- (ZendeskAPI::ClientError) <strong>error</strong> </a>
+      <a href="#error-instance_method" title="#error (instance method)">#<strong>error</strong>  &#x21d2; ZendeskAPI::ClientError </a>
     
 
     
@@ -203,7 +203,7 @@ comma-separated list.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#options-instance_method" title="#options (instance method)">- (Hash) <strong>options</strong> </a>
+      <a href="#options-instance_method" title="#options (instance method)">#<strong>options</strong>  &#x21d2; Hash </a>
     
 
     
@@ -232,7 +232,7 @@ comma-separated list.</p>
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#response-instance_method" title="#response (instance method)">- (Faraday::Response) <strong>response</strong> </a>
+      <a href="#response-instance_method" title="#response (instance method)">#<strong>response</strong>  &#x21d2; Faraday::Response </a>
     
 
     
@@ -266,7 +266,7 @@ comma-separated list.</p>
   
     <h2>
       Instance Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+      <small><a href="#" class="summary_toggle">collapse</a></small>
     </h2>
 
     <ul class="summary">
@@ -274,7 +274,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#%3C%3C-instance_method" title="#&lt;&lt; (instance method)">- (Object) <strong>&lt;&lt;</strong>(item) </a>
+      <a href="#%3C%3C-instance_method" title="#&lt;&lt; (instance method)">#<strong>&lt;&lt;</strong>(item)  &#x21d2; Object </a>
     
 
     
@@ -298,7 +298,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#all-instance_method" title="#all (instance method)">- (Object) <strong>all</strong>(start_page = @options[&quot;page&quot;], &amp;block) </a>
+      <a href="#all-instance_method" title="#all (instance method)">#<strong>all</strong>(start_page = @options[&quot;page&quot;], &amp;block)  &#x21d2; Object </a>
     
 
     
@@ -322,7 +322,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#all%21-instance_method" title="#all! (instance method)">- (Object) <strong>all!</strong>(start_page = @options[&quot;page&quot;], &amp;block) </a>
+      <a href="#all%21-instance_method" title="#all! (instance method)">#<strong>all!</strong>(start_page = @options[&quot;page&quot;], &amp;block)  &#x21d2; Object </a>
     
 
     
@@ -346,7 +346,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#build-instance_method" title="#build (instance method)">- (Object) <strong>build</strong>(opts = {}) </a>
+      <a href="#build-instance_method" title="#build (instance method)">#<strong>build</strong>(opts = {})  &#x21d2; Object </a>
     
 
     
@@ -370,7 +370,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#build%21-instance_method" title="#build! (instance method)">- (Object) <strong>build!</strong>(opts = {}) </a>
+      <a href="#build%21-instance_method" title="#build! (instance method)">#<strong>build!</strong>(opts = {})  &#x21d2; Object </a>
     
 
     
@@ -394,7 +394,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#clear_cache-instance_method" title="#clear_cache (instance method)">- (Object) <strong>clear_cache</strong> </a>
+      <a href="#clear_cache-instance_method" title="#clear_cache (instance method)">#<strong>clear_cache</strong>  &#x21d2; Object </a>
     
 
     
@@ -418,7 +418,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#count-instance_method" title="#count (instance method)">- (Number) <strong>count</strong> </a>
+      <a href="#count-instance_method" title="#count (instance method)">#<strong>count</strong>  &#x21d2; Number </a>
     
 
     
@@ -442,7 +442,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#count%21-instance_method" title="#count! (instance method)">- (Number) <strong>count!</strong> </a>
+      <a href="#count%21-instance_method" title="#count! (instance method)">#<strong>count!</strong>  &#x21d2; Number </a>
     
 
     
@@ -466,7 +466,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#each_page-instance_method" title="#each_page (instance method)">- (Object) <strong>each_page</strong>(*args, &amp;block) </a>
+      <a href="#each_page-instance_method" title="#each_page (instance method)">#<strong>each_page</strong>(*args, &amp;block)  &#x21d2; Object </a>
     
 
     
@@ -488,7 +488,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#each_page%21-instance_method" title="#each_page! (instance method)">- (Object) <strong>each_page!</strong>(*args, &amp;block) </a>
+      <a href="#each_page%21-instance_method" title="#each_page! (instance method)">#<strong>each_page!</strong>(*args, &amp;block)  &#x21d2; Object </a>
     
 
     
@@ -510,7 +510,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fetch-instance_method" title="#fetch (instance method)">- (Object) <strong>fetch</strong>(*args) </a>
+      <a href="#fetch-instance_method" title="#fetch (instance method)">#<strong>fetch</strong>(*args)  &#x21d2; Object </a>
     
 
     
@@ -532,7 +532,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fetch%21-instance_method" title="#fetch! (instance method)">- (Object) <strong>fetch!</strong>(reload = false) </a>
+      <a href="#fetch%21-instance_method" title="#fetch! (instance method)">#<strong>fetch!</strong>(reload = false)  &#x21d2; Object </a>
     
 
     
@@ -556,7 +556,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#first_page%3F-instance_method" title="#first_page? (instance method)">- (Boolean) <strong>first_page?</strong> </a>
+      <a href="#first_page%3F-instance_method" title="#first_page? (instance method)">#<strong>first_page?</strong>  &#x21d2; Boolean </a>
     
 
     
@@ -578,7 +578,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#include-instance_method" title="#include (instance method)">- (Object) <strong>include</strong>(*sideloads) </a>
+      <a href="#include-instance_method" title="#include (instance method)">#<strong>include</strong>(*sideloads)  &#x21d2; Object </a>
     
 
     
@@ -602,7 +602,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Collection) <strong>initialize</strong>(client, resource, options = {}) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(client, resource, options = {})  &#x21d2; Collection </a>
     
 
     
@@ -628,7 +628,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#last_page%3F-instance_method" title="#last_page? (instance method)">- (Boolean) <strong>last_page?</strong> </a>
+      <a href="#last_page%3F-instance_method" title="#last_page? (instance method)">#<strong>last_page?</strong>  &#x21d2; Boolean </a>
     
 
     
@@ -650,7 +650,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#method_missing-instance_method" title="#method_missing (instance method)">- (Object) <strong>method_missing</strong>(name, *args, &amp;block) </a>
+      <a href="#method_missing-instance_method" title="#method_missing (instance method)">#<strong>method_missing</strong>(name, *args, &amp;block)  &#x21d2; Object </a>
     
 
     
@@ -674,7 +674,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#next-instance_method" title="#next (instance method)">- (Object) <strong>next</strong> </a>
+      <a href="#next-instance_method" title="#next (instance method)">#<strong>next</strong>  &#x21d2; Object </a>
     
 
     
@@ -698,7 +698,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#page-instance_method" title="#page (instance method)">- (Collection) <strong>page</strong>(number) </a>
+      <a href="#page-instance_method" title="#page (instance method)">#<strong>page</strong>(number)  &#x21d2; Collection </a>
     
 
     
@@ -722,7 +722,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#path-instance_method" title="#path (instance method)">- (Object) <strong>path</strong> </a>
+      <a href="#path-instance_method" title="#path (instance method)">#<strong>path</strong>  &#x21d2; Object </a>
     
 
     
@@ -746,7 +746,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#per_page-instance_method" title="#per_page (instance method)">- (Collection) <strong>per_page</strong>(count) </a>
+      <a href="#per_page-instance_method" title="#per_page (instance method)">#<strong>per_page</strong>(count)  &#x21d2; Collection </a>
     
 
     
@@ -770,7 +770,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#prev-instance_method" title="#prev (instance method)">- (Object) <strong>prev</strong> </a>
+      <a href="#prev-instance_method" title="#prev (instance method)">#<strong>prev</strong>  &#x21d2; Object </a>
     
 
     
@@ -794,7 +794,7 @@ comma-separated list.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#replace-instance_method" title="#replace (instance method)">- (Object) <strong>replace</strong>(collection) </a>
+      <a href="#replace-instance_method" title="#replace (instance method)">#<strong>replace</strong>(collection)  &#x21d2; Object </a>
     
 
     
@@ -819,7 +819,7 @@ collection.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#respond_to_missing%3F-instance_method" title="#respond_to_missing? (instance method)">- (Boolean) <strong>respond_to_missing?</strong>(name, include_all) </a>
+      <a href="#respond_to_missing%3F-instance_method" title="#respond_to_missing? (instance method)">#<strong>respond_to_missing?</strong>(name, include_all)  &#x21d2; Boolean </a>
     
 
     
@@ -841,7 +841,7 @@ collection.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#save-instance_method" title="#save (instance method)">- (Collection) <strong>save</strong> </a>
+      <a href="#save-instance_method" title="#save (instance method)">#<strong>save</strong>  &#x21d2; Collection </a>
     
 
     
@@ -865,7 +865,7 @@ collection.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#save%21-instance_method" title="#save! (instance method)">- (Collection) <strong>save!</strong> </a>
+      <a href="#save%21-instance_method" title="#save! (instance method)">#<strong>save!</strong>  &#x21d2; Collection </a>
     
 
     
@@ -889,7 +889,7 @@ collection.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#to_a-instance_method" title="#to_a (instance method)">- (Object) <strong>to_a</strong> </a>
+      <a href="#to_a-instance_method" title="#to_a (instance method)">#<strong>to_a</strong>  &#x21d2; Object </a>
     
 
     
@@ -913,7 +913,7 @@ collection.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#to_a%21-instance_method" title="#to_a! (instance method)">- (Object) <strong>to_a!</strong> </a>
+      <a href="#to_a%21-instance_method" title="#to_a! (instance method)">#<strong>to_a!</strong>  &#x21d2; Object </a>
     
 
     
@@ -937,7 +937,7 @@ collection.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#to_param-instance_method" title="#to_param (instance method)">- (Object) <strong>to_param</strong> </a>
+      <a href="#to_param-instance_method" title="#to_param (instance method)">#<strong>to_param</strong>  &#x21d2; Object </a>
     
 
     
@@ -967,7 +967,7 @@ collection.</p>
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt>) <strong>initialize</strong>(client, resource, options = {}) 
+    #<strong>initialize</strong>(client, resource, options = {})  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt> 
   
 
   
@@ -1102,7 +1102,7 @@ per_page.</p>
     <div class="method_details first">
   <h3 class="signature first" id="method_missing-instance_method">
   
-    - (<tt>Object</tt>) <strong>method_missing</strong>(name, *args, &amp;block) 
+    #<strong>method_missing</strong>(name, *args, &amp;block)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1162,7 +1162,7 @@ per_page.</p>
       <div class="method_details first">
   <h3 class="signature first" id="association-instance_method">
   
-    - (<tt><span class='object_link'>ZendeskAPI::Association</span></tt>) <strong>association</strong>  <span class="extras">(readonly)</span>
+    #<strong>association</strong>  &#x21d2; <tt><span class='object_link'>ZendeskAPI::Association</span></tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1223,7 +1223,7 @@ per_page.</p>
       <div class="method_details ">
   <h3 class="signature " id="error-instance_method">
   
-    - (<tt>ZendeskAPI::ClientError</tt>) <strong>error</strong>  <span class="extras">(readonly)</span>
+    #<strong>error</strong>  &#x21d2; <tt>ZendeskAPI::ClientError</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1284,7 +1284,7 @@ per_page.</p>
       <div class="method_details ">
   <h3 class="signature " id="options-instance_method">
   
-    - (<tt>Hash</tt>) <strong>options</strong>  <span class="extras">(readonly)</span>
+    #<strong>options</strong>  &#x21d2; <tt>Hash</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1345,7 +1345,7 @@ per_page.</p>
       <div class="method_details ">
   <h3 class="signature " id="response-instance_method">
   
-    - (<tt>Faraday::Response</tt>) <strong>response</strong>  <span class="extras">(readonly)</span>
+    #<strong>response</strong>  &#x21d2; <tt>Faraday::Response</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1411,7 +1411,7 @@ per_page.</p>
       <div class="method_details first">
   <h3 class="signature first" id="<<-instance_method">
   
-    - (<tt>Object</tt>) <strong>&lt;&lt;</strong>(item) 
+    #<strong>&lt;&lt;</strong>(item)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1532,7 +1532,7 @@ per_page.</p>
       <div class="method_details ">
   <h3 class="signature " id="all-instance_method">
   
-    - (<tt>Object</tt>) <strong>all</strong>(start_page = @options[&quot;page&quot;], &amp;block) 
+    #<strong>all</strong>(start_page = @options[&quot;page&quot;], &amp;block)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1593,7 +1593,7 @@ per_page.</p>
       <div class="method_details ">
   <h3 class="signature " id="all!-instance_method">
   
-    - (<tt>Object</tt>) <strong>all!</strong>(start_page = @options[&quot;page&quot;], &amp;block) 
+    #<strong>all!</strong>(start_page = @options[&quot;page&quot;], &amp;block)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1654,7 +1654,7 @@ per_page.</p>
       <div class="method_details ">
   <h3 class="signature " id="build-instance_method">
   
-    - (<tt>Object</tt>) <strong>build</strong>(opts = {}) 
+    #<strong>build</strong>(opts = {})  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1722,7 +1722,7 @@ Fetches the collection as well.</p>
       <div class="method_details ">
   <h3 class="signature " id="build!-instance_method">
   
-    - (<tt>Object</tt>) <strong>build!</strong>(opts = {}) 
+    #<strong>build!</strong>(opts = {})  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1796,7 +1796,7 @@ Fetches the collection as well.</p>
       <div class="method_details ">
   <h3 class="signature " id="clear_cache-instance_method">
   
-    - (<tt>Object</tt>) <strong>clear_cache</strong> 
+    #<strong>clear_cache</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1845,7 +1845,7 @@ Fetches the collection as well.</p>
       <div class="method_details ">
   <h3 class="signature " id="count-instance_method">
   
-    - (<tt>Number</tt>) <strong>count</strong> 
+    #<strong>count</strong>  &#x21d2; <tt>Number</tt> 
   
 
   
@@ -1907,7 +1907,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="count!-instance_method">
   
-    - (<tt>Number</tt>) <strong>count!</strong> 
+    #<strong>count!</strong>  &#x21d2; <tt>Number</tt> 
   
 
   
@@ -1969,7 +1969,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="each_page-instance_method">
   
-    - (<tt>Object</tt>) <strong>each_page</strong>(*args, &amp;block) 
+    #<strong>each_page</strong>(*args, &amp;block)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2001,7 +2001,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="each_page!-instance_method">
   
-    - (<tt>Object</tt>) <strong>each_page!</strong>(*args, &amp;block) 
+    #<strong>each_page!</strong>(*args, &amp;block)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2033,7 +2033,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="fetch-instance_method">
   
-    - (<tt>Object</tt>) <strong>fetch</strong>(*args) 
+    #<strong>fetch</strong>(*args)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2071,7 +2071,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="fetch!-instance_method">
   
-    - (<tt>Object</tt>) <strong>fetch!</strong>(reload = false) 
+    #<strong>fetch!</strong>(reload = false)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2152,7 +2152,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="first_page?-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>first_page?</strong> 
+    #<strong>first_page?</strong>  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -2204,7 +2204,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="include-instance_method">
   
-    - (<tt>Object</tt>) <strong>include</strong>(*sideloads) 
+    #<strong>include</strong>(*sideloads)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2287,7 +2287,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="last_page?-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>last_page?</strong> 
+    #<strong>last_page?</strong>  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -2339,7 +2339,7 @@ pagination).</p>
       <div class="method_details ">
   <h3 class="signature " id="next-instance_method">
   
-    - (<tt>Object</tt>) <strong>next</strong> 
+    #<strong>next</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2405,7 +2405,7 @@ returns the results.</p>
       <div class="method_details ">
   <h3 class="signature " id="page-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt>) <strong>page</strong>(number) 
+    #<strong>page</strong>(number)  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt> 
   
 
   
@@ -2468,7 +2468,7 @@ returns the results.</p>
       <div class="method_details ">
   <h3 class="signature " id="path-instance_method">
   
-    - (<tt>Object</tt>) <strong>path</strong> 
+    #<strong>path</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2509,7 +2509,7 @@ returns the results.</p>
       <div class="method_details ">
   <h3 class="signature " id="per_page-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt>) <strong>per_page</strong>(count) 
+    #<strong>per_page</strong>(count)  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt> 
   
 
   
@@ -2573,7 +2573,7 @@ execution.</p>
       <div class="method_details ">
   <h3 class="signature " id="prev-instance_method">
   
-    - (<tt>Object</tt>) <strong>prev</strong> 
+    #<strong>prev</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2639,7 +2639,7 @@ returns the results.</p>
       <div class="method_details ">
   <h3 class="signature " id="replace-instance_method">
   
-    - (<tt>Object</tt>) <strong>replace</strong>(collection) 
+    #<strong>replace</strong>(collection)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2743,7 +2743,7 @@ collection</p>
       <div class="method_details ">
   <h3 class="signature " id="respond_to_missing?-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>respond_to_missing?</strong>(name, include_all) 
+    #<strong>respond_to_missing?</strong>(name, include_all)  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -2795,7 +2795,7 @@ collection</p>
       <div class="method_details ">
   <h3 class="signature " id="save-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt>) <strong>save</strong> 
+    #<strong>save</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt> 
   
 
   
@@ -2854,7 +2854,7 @@ collection</p>
       <div class="method_details ">
   <h3 class="signature " id="save!-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt>) <strong>save!</strong> 
+    #<strong>save!</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="ZendeskAPI::Collection (class)">Collection</a></span></tt> 
   
 
   
@@ -2913,7 +2913,7 @@ collection</p>
       <div class="method_details ">
   <h3 class="signature " id="to_a-instance_method">
   
-    - (<tt>Object</tt>) <strong>to_a</strong> 
+    #<strong>to_a</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2954,7 +2954,7 @@ collection</p>
       <div class="method_details ">
   <h3 class="signature " id="to_a!-instance_method">
   
-    - (<tt>Object</tt>) <strong>to_a!</strong> 
+    #<strong>to_a!</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -2995,7 +2995,7 @@ collection</p>
       <div class="method_details ">
   <h3 class="signature " id="to_param-instance_method">
   
-    - (<tt>Object</tt>) <strong>to_param</strong> 
+    #<strong>to_param</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -3026,11 +3026,12 @@ collection</p>
 
 </div>
 
-    <div id="footer">
-  Generated on Mon Jun 27 07:11:02 2016 by
+      <div id="footer">
+  Generated on Mon Jul 11 07:37:15 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.3).
+  0.9.0 (ruby-2.2.3).
 </div>
 
+    </div>
   </body>
 </html>
