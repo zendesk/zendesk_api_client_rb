@@ -295,7 +295,7 @@ module ZendeskAPI
 
     # Creates a search collection
     def self.search(client, options = {})
-      unless (%w{query external_id} & options.keys.map(&:to_s)).any?
+      unless options.keys.map(&:to_s).include?("query")
         warn "you have not specified a query for this search"
       end
 
