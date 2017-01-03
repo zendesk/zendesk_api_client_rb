@@ -13,6 +13,7 @@ require 'zendesk_api'
 require 'vcr'
 require 'logger'
 require 'stringio'
+require 'scrub_rb' if RUBY_VERSION < "2.1.0"
 
 begin
   require 'byebug'

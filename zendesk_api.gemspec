@@ -23,5 +23,4 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "inflection"
   s.add_runtime_dependency "multipart-post", "~> 2.0"
   s.add_runtime_dependency "mime-types"
-  s.add_runtime_dependency "scrub_rb", "~> 1.0.1"
 end

@@ -11,6 +11,7 @@ gem "webmock", "< 2"
 gem "addressable", "< 2.5.0", :platforms => [:ruby_19, :jruby]
 gem "yard"
 gem "json", "< 2.0", :platforms => :ruby_19
+gem "scrub_rb", :platforms => [:ruby_19, :ruby_20, :jruby]
 
 group :test do
   gem "simplecov"
