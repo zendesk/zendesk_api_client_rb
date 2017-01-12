@@ -116,6 +116,14 @@ The methods under ZendeskAPI::Client (such as .tickets) return an instance of Ze
 Actual requests may not be sent until an explicit ZendeskAPI::Collection#fetch!, ZendeskAPI::Collection#to_a!, or an applicable methods such
 as #each.
 
+You can also use the API methods and fields.
+For example, list all fields (TicketFields) that have already been configured for the ticket (https://developer.zendesk.com/rest_api/docs/core/ticket_fields)
+
+```ruby
+client.ticket_fields
+```
+Returns the list with all available fields. You just need to iterate them.
+
 ### Caveats
 
 Resource updating is implemented by sending only the `changed?` attributes to the server (see `ZendeskAPI::TrackChanges`).
@@ -236,6 +244,14 @@ Searching is done through the client. Returned is an instance of ZendeskAPI::Col
 client.search(:query => "my search query") # /api/v2/search.json?query=...
 client.users.search(:query => "my new query")  # /api/v2/users/search.json?query=...
 ```
+
+If you want search user by field, in this case “email”
+just put field inside query with “:”
+```ruby
+client.users.search(query: "email:youremail@email.com" )  
+=> #<ZendeskAPI::Collection:... 
+```
+
 
 ### Special case: Custom resources paths
 
