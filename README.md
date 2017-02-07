@@ -20,6 +20,7 @@ Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wik
 * Version 1.5.0 removed support for Ruby 1.8
 * Version 1.6.0 ZendeskAPI::Voice::CertificationAddress is now ZendeskAPI::Voice::Address
 * Version 1.8.0 no longer considers 1XX and 3XX (except 304) response status codes valid and will raise a NetworkError
+* Version 1.x.x requires you to install `scrub_rb` or `string-scrub` or similar implementation of `String#scrub!` if you're using Ruby 1.9 or 2.0.
 
 ## Installation
 
@@ -38,6 +39,10 @@ Add it to your Gemfile
     gem "zendesk_api"
 
 and follow normal [Bundler](http://gembundler.com/) installation and execution procedures.
+
+If you're using Ruby 1.9 or 2.0, you'll need an implementation of `String#scrub!`. You can use either `scrub_rb` or `string-scrub` or a similar gem to accomplish that:
+
+    gem "scrub_rb"
 
 ## Configuration
 
