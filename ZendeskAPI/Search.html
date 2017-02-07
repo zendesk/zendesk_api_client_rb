@@ -6,7 +6,7 @@
 <title>
   Class: ZendeskAPI::Search
   
-    &mdash; Documentation by YARD 0.9.0
+    &mdash; Documentation by YARD 0.9.8
   
 </title>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../class_list.html"></iframe>
+      <iframe id="nav" src="../class_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -58,8 +58,6 @@
 </div>
         <div class="clear"></div>
       </div>
-
-      <iframe id="search_frame" src="../class_list.html"></iframe>
 
       <div id="content"><h1>Class: ZendeskAPI::Search
   
@@ -305,11 +303,11 @@ result_type passed in</p>
   <span class='id identifier rubyid_result_type'>result_type</span> <span class='op'>=</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>result_type</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_result_type'>result_type</span>
-    <span class='id identifier rubyid_result_type'>result_type</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Helpers</span><span class='period'>.</span><span class='id identifier rubyid_modulize_string'>modulize_string</span><span class='lparen'>(</span><span class='id identifier rubyid_result_type'>result_type</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_klass'>klass</span> <span class='op'>=</span> <span class='const'>ZendeskAPI</span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span><span class='id identifier rubyid_result_type'>result_type</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
+    <span class='id identifier rubyid_result_type'>result_type</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span><span class='op'>::</span><span class='const'>Helpers</span><span class='period'>.</span><span class='id identifier rubyid_modulize_string'>modulize_string</span><span class='lparen'>(</span><span class='id identifier rubyid_result_type'>result_type</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_klass'>klass</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span><span class='id identifier rubyid_result_type'>result_type</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
   <span class='kw'>end</span>
 
-  <span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span> <span class='op'>||</span> <span class='const'>Result</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span>
+  <span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span> <span class='op'>||</span> <span class='const'><span class='object_link'><a href="Search/Result.html" title="ZendeskAPI::Search::Result (class)">Result</a></span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -392,7 +390,7 @@ result_type passed in</p>
     <span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>you have not specified a query for this search</span><span class='tstring_end'>&quot;</span></span>
   <span class='kw'>end</span>
 
-  <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Collection</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Collection.html" title="ZendeskAPI::Collection (class)">Collection</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Collection.html#initialize-instance_method" title="ZendeskAPI::Collection#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -404,9 +402,9 @@ result_type passed in</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Jul 11 14:43:30 2016 by
+  Generated on Tue Feb  7 09:26:33 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.0 (ruby-2.2.3).
+  0.9.8 (ruby-2.3.1).
 </div>
 
     </div>

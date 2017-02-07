@@ -6,7 +6,7 @@
 <title>
   Module: ZendeskAPI::Update::ClassMethod
   
-    &mdash; Documentation by YARD 0.9.0
+    &mdash; Documentation by YARD 0.9.8
   
 </title>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../../class_list.html"></iframe>
+      <iframe id="nav" src="../../class_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -58,8 +58,6 @@
 </div>
         <div class="clear"></div>
       </div>
-
-      <iframe id="search_frame" src="../../class_list.html"></iframe>
 
       <div id="content"><h1>Module: ZendeskAPI::Update::ClassMethod
   
@@ -127,7 +125,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#update%21-instance_method" title="#update! (instance method)">#<strong>update!</strong>(client, attributes = {}, &amp;block)  &#x21d2; Object </a>
+      <a href="#update!-instance_method" title="#update! (instance method)">#<strong>update!</strong>(client, attributes = {}, &amp;block)  &#x21d2; Object </a>
     
 
     
@@ -194,7 +192,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_update!'>update!</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-<span class='kw'>rescue</span> <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Error</span><span class='op'>::</span><span class='const'>ClientError</span>
+<span class='kw'>rescue</span> <span class='const'><span class='object_link'><a href="../../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Error.html" title="ZendeskAPI::Error (module)">Error</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Error/ClientError.html" title="ZendeskAPI::Error::ClientError (class)">ClientError</a></span></span>
   <span class='kw'>false</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -278,10 +276,10 @@
       <pre class="code"><span class="info file"># File 'lib/zendesk_api/actions.rb', line 266</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update!'>update!</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_attributes'>attributes</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
-  <span class='const'>ZendeskAPI</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id identifier rubyid_check_deprecated_namespace_usage'>check_deprecated_namespace_usage</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='comma'>,</span> <span class='id identifier rubyid_singular_resource_name'>singular_resource_name</span>
+  <span class='const'><span class='object_link'><a href="../../ZendeskAPI.html" title="ZendeskAPI (module)">ZendeskAPI</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Client.html" title="ZendeskAPI::Client (class)">Client</a></span></span><span class='period'>.</span><span class='id identifier rubyid_check_deprecated_namespace_usage'><span class='object_link'><a href="../Client.html#check_deprecated_namespace_usage-class_method" title="ZendeskAPI::Client.check_deprecated_namespace_usage (method)">check_deprecated_namespace_usage</a></span></span> <span class='id identifier rubyid_attributes'>attributes</span><span class='comma'>,</span> <span class='id identifier rubyid_singular_resource_name'>singular_resource_name</span>
   <span class='id identifier rubyid_resource'>resource</span> <span class='op'>=</span> <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='symbol'>:global</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:global</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='symbol'>:association</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:association</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='id identifier rubyid_attributes'>attributes</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_save!'>save!</span><span class='lparen'>(</span><span class='symbol'>:force_update</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>SingularResource</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_save!'>save!</span><span class='lparen'>(</span><span class='symbol'>:force_update</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="../SingularResource.html" title="ZendeskAPI::SingularResource (class)">SingularResource</a></span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_resource'>resource</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -294,9 +292,9 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Jul 11 14:43:25 2016 by
+  Generated on Tue Feb  7 09:26:28 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.0 (ruby-2.2.3).
+  0.9.8 (ruby-2.3.1).
 </div>
 
     </div>
