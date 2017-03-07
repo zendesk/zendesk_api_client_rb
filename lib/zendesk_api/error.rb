@@ -1,14 +1,19 @@
+# tested via spec/core/middleware/response/raise_error_spec.rb
 module ZendeskAPI
   module Error
     class ClientError < Faraday::Error::ClientError
       attr_reader :wrapped_exception
+
+      def to_s
+        "#{super} -- #{response.method} #{response.url}"
+      end
     end
 
     class RecordInvalid < ClientError
-      attr_accessor :response, :errors
+      attr_accessor :errors
 
-      def initialize(response)
-        @response = response
+      def initialize(*)
+        super
 
         if response[:body].is_a?(Hash)
           @errors = response[:body]["details"] || response[:body]["description"]
@@ -18,7 +23,7 @@ module ZendeskAPI
       end
 
       def to_s
-        "#{self.class.name}: #{@errors.to_s}"
+        "#{self.class.name}: #{@errors}"
       end
     end
 
