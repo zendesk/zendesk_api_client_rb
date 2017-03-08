@@ -65,39 +65,6 @@ Lint/Void:
   Exclude:
     - 'lib/zendesk_api/middleware/request/encode_json.rb'
 
-# Offense count: 27
-Metrics/AbcSize:
-  Max: 68
-
-# Offense count: 3
-# Configuration parameters: CountComments.
-Metrics/ClassLength:
-  Max: 309
-
-# Offense count: 19
-Metrics/CyclomaticComplexity:
-  Max: 12
-
-# Offense count: 425
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 158
-
-# Offense count: 37
-# Configuration parameters: CountComments.
-Metrics/MethodLength:
-  Max: 52
-
-# Offense count: 1
-# Configuration parameters: CountComments.
-Metrics/ModuleLength:
-  Max: 140
-
-# Offense count: 16
-Metrics/PerceivedComplexity:
-  Max: 14
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Performance/RedundantBlockCall:
