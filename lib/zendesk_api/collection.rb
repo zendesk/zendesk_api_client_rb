@@ -29,7 +29,7 @@ module ZendeskAPI
     # @param [Hash] options Any additional options to be passed in.
     def initialize(client, resource, options = {})
       @client, @resource_class, @resource = client, resource, resource.resource_name
-      @options = Hashie::Mash.new(options)
+      @options = SilentMash.new(options)
 
       set_association_from_options
       join_special_params

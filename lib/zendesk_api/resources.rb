@@ -621,7 +621,7 @@ module ZendeskAPI
       end
 
       response = @client.connection.get(path)
-      Hashie::Mash.new(response.body.fetch("result", {}))
+      SilentMash.new(response.body.fetch("result", {}))
     end
 
     # Returns the update to a ticket that happens when a macro will be applied.
@@ -629,7 +629,7 @@ module ZendeskAPI
     def apply(ticket = nil)
       apply!(ticket)
     rescue Faraday::Error::ClientError
-      Hashie::Mash.new
+      SilentMash.new
     end
   end
 
