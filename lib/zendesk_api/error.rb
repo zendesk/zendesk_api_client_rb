@@ -5,7 +5,11 @@ module ZendeskAPI
       attr_reader :wrapped_exception
 
       def to_s
-        "#{super} -- #{response.method} #{response.url}"
+        if response
+          "#{super} -- #{response.method} #{response.url}"
+        else
+          super
+        end
       end
     end
 
