@@ -1068,7 +1068,7 @@ per_page.</p>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_resource'>resource</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@client</span><span class='comma'>,</span> <span class='ivar'>@resource_class</span><span class='comma'>,</span> <span class='ivar'>@resource</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='comma'>,</span> <span class='id identifier rubyid_resource'>resource</span><span class='comma'>,</span> <span class='id identifier rubyid_resource'>resource</span><span class='period'>.</span><span class='id identifier rubyid_resource_name'>resource_name</span>
-  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='const'>Hashie</span><span class='op'>::</span><span class='const'>Mash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='const'>SilentMash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_set_association_from_options'>set_association_from_options</span>
   <span class='id identifier rubyid_join_special_params'>join_special_params</span>
@@ -3025,7 +3025,7 @@ collection</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Mar  9 05:29:39 2017 by
+  Generated on Thu Mar 23 17:39:19 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.3.3).
 </div>
