@@ -2,9 +2,11 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   TargetRubyVersion: 1.9
+  DisplayCopNames: true
   Exclude:
     - .git/**/*
     - spec/core/middleware/response/sanitize_response_spec.rb
+    - vendor/**/*
 
 # Align ends correctly.
 Lint/EndAlignment:
@@ -33,3 +35,6 @@ Style/MultilineMethodCallIndentation:
 # Checks indentation of binary operations that span more than one line.
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
+
+Metrics:
+  Enabled: false

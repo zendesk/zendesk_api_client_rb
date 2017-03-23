@@ -37,7 +37,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
     end
 
     it "should print to logger" do
-      expect(client.config.logger).to receive(:warn).at_least(:once)
+      expect(client.config.logger).to receive(:warn).exactly(4)
       client.connection.get("blergh")
     end
 

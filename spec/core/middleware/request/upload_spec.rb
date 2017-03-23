@@ -15,6 +15,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
   end
 
   it "should handle invalid types" do
+    expect(subject).to receive(:warn)
     expect(subject.call(:body => { :file => :invalid })[:body]).to eq({})
   end
 

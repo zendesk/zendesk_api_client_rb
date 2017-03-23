@@ -5,6 +5,7 @@ require 'zendesk_api/sideloading'
 require 'zendesk_api/configuration'
 require 'zendesk_api/collection'
 require 'zendesk_api/lru_cache'
+require 'zendesk_api/silent_mash'
 require 'zendesk_api/middleware/request/etag_cache'
 require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/upload'
@@ -63,7 +64,7 @@ module ZendeskAPI
     # @return [Hash] The attributes of the current account or nil
     def current_account(reload = false)
       return @current_account if @current_account && !reload
-      @current_account = Hashie::Mash.new(connection.get('account/resolve').body)
+      @current_account = SilentMash.new(connection.get('account/resolve').body)
     end
 
     # Returns the current locale

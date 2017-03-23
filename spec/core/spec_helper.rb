@@ -80,6 +80,8 @@ def client
         config.url = "https://my.zendesk.com/api/v2"
       end
 
+      config.logger = Logger.new("/dev/null")
+
       config.retry = true
     end
 
