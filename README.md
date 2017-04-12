@@ -1,5 +1,4 @@
-# Zendesk API Client
-
+# Zendesk API Client [![Build Status](https://travis-ci.org/zendesk/zendesk_api_client_rb.svg?branch=master)](https://travis-ci.org/zendesk/zendesk_api_client_rb)
 ## API version support
 
 This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
