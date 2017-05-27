@@ -901,9 +901,7 @@ describe ZendeskAPI::Collection do
     describe "##{method}" do
       context 'when resources fetched' do
         before do
-          stub_json_request(:get, %r{test_resources}, json(
-            test_resources: resources
-          ))
+          stub_json_request(:get, %r{test_resources}, json(test_resources: resources))
         end
 
         context 'when ressources present' do
