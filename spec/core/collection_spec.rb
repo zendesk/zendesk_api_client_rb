@@ -377,17 +377,20 @@ describe ZendeskAPI::Collection do
               @used = true
 
               probe = self
+              callback = @callback
               Proc.new do |arg|
                 probe.num_yields += 1
                 probe.yielded_args << [arg]
+                callback.call([arg])
+                nil
               end
             end
           end
 
           silence_logger { subject.all(&block) }
         end.to yield_successive_args(
-          ZendeskAPI::TestResource.new(client, :id => 1),
-          ZendeskAPI::TestResource.new(client, :id => 2)
+          [ZendeskAPI::TestResource.new(client, :id => 1)],
+          [ZendeskAPI::TestResource.new(client, :id => 2)]
         )
       end
 
