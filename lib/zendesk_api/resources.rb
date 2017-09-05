@@ -27,6 +27,16 @@ module ZendeskAPI
   class SharingAgreement < ReadResource; end
   class JobStatus < ReadResource; end
 
+  class Section < ReadResource
+    namespace 'help_center'
+
+    class Article < ReadResource
+      namespace 'help_center'
+    end
+
+    has_many Article
+  end
+
   class Session < ReadResource
     include Destroy
   end
