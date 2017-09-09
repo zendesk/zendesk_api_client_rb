@@ -8,6 +8,9 @@ rvm:
   - 2.3.0
   - jruby
 
+before_install:
+  - "gem install bundler"
+
 script:
   - bundle exec rake
   - bundle exec rubocop
