@@ -68,16 +68,16 @@ describe ZendeskAPI::CreateMany do
       end
 
       context "arity: 2" do
-        let(:attributes_array) { [{ :id => 1, :name => 'A' }, { :id => 2, :name => 'B' }] }
+        let(:attributes) { [{ :id => 1, :name => 'A' }, { :id => 2, :name => 'B' }] }
 
         before(:each) do
           stub_json_request(:put, %r{bulk_test_resources/update_many}, json(:job_status => { :id => 'jkl' }))
-          @response = subject.update_many!(client, attributes_array)
+          @response = subject.update_many!(client, attributes)
         end
 
         it 'calls the update_many endpoint' do
           assert_requested(:put, %r{bulk_test_resources/update_many$},
-            :body => json(:bulk_test_resources => attributes_array)
+            :body => json(:bulk_test_resources => attributes)
           )
         end
 
