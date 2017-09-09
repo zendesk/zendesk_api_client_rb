@@ -47,7 +47,7 @@ describe ZendeskAPI::CreateMany do
     subject { ZendeskAPI::BulkTestResource }
 
     context "update_many!" do
-      context "arity: 3" do
+      context "updating a list of ids" do
         let(:attributes) { { :name => 'A', :age => 25 } }
 
         before(:each) do
@@ -67,7 +67,7 @@ describe ZendeskAPI::CreateMany do
         end
       end
 
-      context "arity: 2" do
+      context "updating with multiple attribute hashes" do
         let(:attributes) { [{ :id => 1, :name => 'A' }, { :id => 2, :name => 'B' }] }
 
         before(:each) do
