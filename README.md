@@ -74,6 +74,11 @@ client = ZendeskAPI::Client.new do |config|
   # then retry the request.
   config.retry = true
 
+  # Raise error when hitting the rate limit.
+  # This is ignored and always set to false when `retry` is enabled.
+  # Disabled by default.
+  config.raise_error_when_rate_limited = false
+
   # Logger prints to STDERR by default, to e.g. print to stdout:
   require 'logger'
   config.logger = Logger.new(STDOUT)

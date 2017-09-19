@@ -8,6 +8,7 @@ require 'zendesk_api/lru_cache'
 require 'zendesk_api/silent_mash'
 require 'zendesk_api/middleware/request/etag_cache'
 require 'zendesk_api/middleware/request/retry'
+require 'zendesk_api/middleware/request/raise_rate_limited'
 require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/request/encode_json'
 require 'zendesk_api/middleware/request/url_based_access_token'
@@ -93,6 +94,8 @@ module ZendeskAPI
 
       config.retry = !!config.retry # nil -> false
 
+      set_raise_error_when_rated_limited
+
       set_token_auth
 
       set_default_logger
@@ -171,7 +174,12 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Request::Upload
         builder.request :multipart
         builder.use ZendeskAPI::Middleware::Request::EncodeJson
-        builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
+
+        # Should always be first in the stack
+        builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger if config.retry
+        if config.raise_error_when_rate_limited
+          builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger
+        end
 
         builder.adapter(*adapter)
       end
@@ -187,6 +195,14 @@ module ZendeskAPI
     def check_url
       if !config.allow_http && config.url !~ /^https/
         raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
+      end
+    end
+
+    def set_raise_error_when_rated_limited
+      config.raise_error_when_rate_limited = if config.retry
+        false
+      else
+        !!config.raise_error_when_rate_limited
       end
     end
 
