@@ -8,7 +8,7 @@ module ZendeskAPI
       # Faraday middleware to handle HTTP Status 429 (rate limiting) / 503 (maintenance)
       # @private
       class RaiseRateLimited < Faraday::Middleware
-        ERROR_CODES = [429, 503]
+        ERROR_CODES = [429, 503].freeze
 
         def initialize(app, options = {})
           super(app)
@@ -16,7 +16,6 @@ module ZendeskAPI
         end
 
         def call(env)
-          original_env = env.dup
           response = @app.call(env)
 
           if ERROR_CODES.include?(response.env[:status])
