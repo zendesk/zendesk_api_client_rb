@@ -8,6 +8,7 @@ require 'zendesk_api/lru_cache'
 require 'zendesk_api/silent_mash'
 require 'zendesk_api/middleware/request/etag_cache'
 require 'zendesk_api/middleware/request/retry'
+require 'zendesk_api/middleware/request/follow_redirects'
 require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/request/encode_json'
 require 'zendesk_api/middleware/request/url_based_access_token'
@@ -171,6 +172,7 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Request::Upload
         builder.request :multipart
         builder.use ZendeskAPI::Middleware::Request::EncodeJson
+        builder.use ZendeskAPI::Middleware::Request::FollowRedirects
         builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger if config.retry # Should always be first in the stack
 
         builder.adapter(*adapter)
