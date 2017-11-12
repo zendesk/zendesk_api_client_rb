@@ -18,7 +18,7 @@ module ZendeskAPI
           @logger.debug dump_debug(env, :request_headers)
 
           @app.call(env).on_complete do |env|
-            info = "Status #{env[:status].to_s}"
+            info = "Status #{env[:status]}"
             info.concat(" #{env[:body].inspect}") if (400..499).cover?(env[:status].to_i)
 
             @logger.info info
