@@ -4,6 +4,8 @@ module ZendeskAPI
       # Faraday middleware to handle logging
       # @private
       class Logger < Faraday::Middleware
+        LOG_LENGTH = 1000
+
         def initialize(app, logger = nil)
           super(app)
 
@@ -19,7 +21,7 @@ module ZendeskAPI
 
           @app.call(env).on_complete do |env|
             info = "Status #{env[:status]}"
-            info.concat(" #{env[:body].inspect}") if (400..499).cover?(env[:status].to_i)
+            info.concat(" #{env[:body].to_s[0, LOG_LENGTH]}") if (400..499).cover?(env[:status].to_i)
 
             @logger.info info
             @logger.debug dump_debug(env, :response_headers)
