@@ -899,4 +899,39 @@ describe ZendeskAPI::Collection do
       end
     end
   end
+
+  %w(count count!).each do |method|
+    describe "##{method}" do
+      context 'when resources fetched' do
+        before do
+          stub_json_request(:get, %r{test_resources}, json(test_resources: resources))
+        end
+
+        context 'when ressources present' do
+          let(:resources) { [{ id: 1 }, { id: 2 }] }
+
+          it { expect(subject.public_send(method)).to eq(2) }
+        end
+
+        context 'when no ressources present' do
+          let(:resources) { [] }
+
+          it { expect(subject.public_send(method)).to eq(0) }
+        end
+      end
+
+      context 'when resources not fetched' do
+        before do
+          stub_json_request(:get, %r{test_resources})
+        end
+
+        it do
+          expect(subject.public_send(method)).to eq(-1) if method == 'count'
+          expect { subject.public_send(method) }.to raise_error(
+            ZendeskAPI::Error::ClientError
+          ) if method == 'count!'
+        end
+      end
+    end
+  end
 end

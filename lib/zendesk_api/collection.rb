@@ -110,7 +110,7 @@ module ZendeskAPI
     # @return [Number] The total number of resources server-side (disregarding pagination).
     def count!
       fetch!
-      @count || -1
+      @count
     end
 
     # Changes the per_page option. Returns self, so it can be chained. No execution.
