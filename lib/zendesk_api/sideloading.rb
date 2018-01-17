@@ -18,6 +18,7 @@ module ZendeskAPI
       resource_class = resources.first.class
 
       return if resources.empty?
+      return if body.empty?
 
       body.keys.each do |name|
         @included[name] = body[name]
