@@ -1,4 +1,5 @@
 require 'faraday'
+require 'faraday_middleware'
 
 require 'zendesk_api/version'
 require 'zendesk_api/sideloading'
@@ -147,6 +148,7 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.use ZendeskAPI::Middleware::Response::ParseJson
         builder.use ZendeskAPI::Middleware::Response::SanitizeResponse
+        builder.use FaradayMiddleware::FollowRedirects
 
         adapter = config.adapter || Faraday.default_adapter
 
