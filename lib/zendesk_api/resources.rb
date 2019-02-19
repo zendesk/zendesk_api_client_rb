@@ -742,6 +742,7 @@ module ZendeskAPI
 
     has_many Request
     has_many :requested_tickets, :class => Ticket, :path => 'tickets/requested'
+    has_many :assigned_tickets, :class => Ticket, :path => 'tickets/assigned'
     has_many :ccd_tickets, :class => Ticket, :path => 'tickets/ccd'
 
     has_many Group
