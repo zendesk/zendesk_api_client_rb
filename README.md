@@ -1,5 +1,9 @@
 # Zendesk API Client
 
+[![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png?branch=master)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
+[![Gem Version](https://badge.fury.io/rb/zendesk_api.png)](http://badge.fury.io/rb/zendesk_api)
+[![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.png)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
+
 ## API version support
 
 This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
@@ -39,10 +43,6 @@ Add it to your Gemfile
     gem "zendesk_api"
 
 and follow normal [Bundler](http://gembundler.com/) installation and execution procedures.
-
-If you're using Ruby 1.9 or 2.0, you'll need an implementation of `String#scrub!`. You can use either `scrub_rb` or `string-scrub` or a similar gem to accomplish that:
-
-    gem "scrub_rb"
 
 ## Configuration
 
@@ -412,13 +412,6 @@ ZendeskAPI::AppInstallation.destroy!(client, :id => 123)
    your own version, that is fine but bump version in a commit by itself I can
    ignore when I pull)
 5. Send me a pull request. Bonus points for topic branches.
-
-## Supported Ruby Versions
-
-Tested with Ruby 1.9, 2.0, 2.1, 2.2 and jRuby.
-[![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png?branch=master)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
-[![Gem Version](https://badge.fury.io/rb/zendesk_api.png)](http://badge.fury.io/rb/zendesk_api)
-[![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.png)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
 
 ## Copyright and license
 
