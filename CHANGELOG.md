@@ -1,8 +1,22 @@
+# v1.17.0
+
+dropped support for Ruby 1.9.x, 2.0.x, 2.1.x and 2.2.x, all of which are EOL
+
+# v1.16.0
+
+log response body for 4xx errors (https://github.com/zendesk/zendesk_api_client_rb/pull/354)
+
+# v1.15.0
+
+support batch update resources (https://github.com/zendesk/zendesk_api_client_rb/pull/344)
+
 # v1.14.4
 
 document hashie dependency
 
 # v1.14.3
+
+silence logging spam (https://github.com/zendesk/zendesk_api_client_rb/pull/327)
 
 # v1.14.2
 
