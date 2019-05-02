@@ -33,5 +33,6 @@ module ZendeskAPI
 
     class NetworkError < ClientError; end
     class RecordNotFound < ClientError; end
+    class RateLimited < ClientError; end
   end
 end

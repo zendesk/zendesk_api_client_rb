@@ -16,6 +16,9 @@ module ZendeskAPI
     # @return [Boolean] Whether to attempt to retry when rate-limited (http status: 429).
     attr_accessor :retry
 
+    # @return [Boolean] Whether to raise error when rate-limited (http status: 429).
+    attr_accessor :raise_error_when_rate_limited
+
     # @return [Logger] Logger to use when logging requests.
     attr_accessor :logger
 
