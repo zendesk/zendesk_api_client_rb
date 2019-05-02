@@ -54,7 +54,7 @@ describe ZendeskAPI::Ticket do
 
     it "is able to do next" do
       first = results.to_a.first
-      stub_json_request(:get, %r{/api/v2/exports/tickets}, json(:results => []))
+      stub_json_request(:get, %r{/api/v2/incremental/tickets}, json(:results => []))
 
       results.next
       expect(results.first).to_not eq(first)

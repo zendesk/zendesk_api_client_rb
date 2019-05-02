@@ -9,6 +9,7 @@ end
 
 class ZendeskAPI::BulkTestResource < ZendeskAPI::DataResource
   extend ZendeskAPI::CreateMany
+  extend ZendeskAPI::CreateOrUpdateMany
   extend ZendeskAPI::DestroyMany
   extend ZendeskAPI::UpdateMany
 end

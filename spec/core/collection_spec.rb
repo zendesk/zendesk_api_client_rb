@@ -302,18 +302,18 @@ describe ZendeskAPI::Collection do
 
     context "incremental requests" do
       subject do
-        ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :path => 'exports/test_resources?start_time=0')
+        ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :path => 'incremental/test_resources?start_time=0')
       end
 
       before(:each) do
-        stub_json_request(:get, %r{exports/test_resources\?start_time=0$}, json(
+        stub_json_request(:get, %r{incremental/test_resources\?start_time=0$}, json(
           :test_resources => [{ :id => 1 }],
-          :next_page => "/exports/test_resources?start_time=200"
+          :next_page => "/incremental/test_resources?start_time=200"
         ))
 
-        stub_json_request(:get, %r{exports/test_resources\?start_time=200$}, json(
+        stub_json_request(:get, %r{incremental/test_resources\?start_time=200$}, json(
           :test_resources => [{ :id => 2 }],
-          :next_page => "/exports/test_resources?start_time=200"
+          :next_page => "/incremental/test_resources?start_time=200"
         ))
       end
 
