@@ -43,6 +43,19 @@ describe ZendeskAPI::Resource do
         end
       end
     end
+
+    context "instance method" do
+      subject(:resource) do
+        ZendeskAPI::TestResource.new(client, :id => 1)
+      end
+
+      it "is delegated to the attributes" do
+        expect(resource.attributes).to receive(:update).and_call_original
+        resource.update(subject: "Hello?")
+      end
+
+      it { is_expected.to respond_to(:update) }
+    end
   end
 
   context "#destroy" do
