@@ -649,7 +649,7 @@ module ZendeskAPI
 
   class User < Resource
     extend CreateMany
-    extend UpdateMany
+    extend CreateOrUpdateMany
     extend DestroyMany
 
     class TopicComment < TopicComment

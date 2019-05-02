@@ -89,3 +89,32 @@ describe ZendeskAPI::CreateMany do
     end
   end
 end
+
+RSpec.describe ZendeskAPI::CreateOrUpdateMany do
+  subject(:resource) { ZendeskAPI::BulkTestResource }
+
+  context "create_or_update_many!" do
+    context "creating or updating with multiple attribute hashes" do
+      let(:attributes) { [{ :id => 1, :name => 'A' }, { :id => 2, :name => 'B' }] }
+
+      subject { resource.create_or_update_many!(client, attributes) }
+
+      before do
+        stub_json_request(:post, %r{bulk_test_resources/create_or_update_many}, json(:job_status => { :id => 'jkl' }))
+      end
+
+      it 'calls the create_or_update_many endpoint' do
+        subject
+
+        assert_requested(:post, %r{bulk_test_resources/create_or_update_many$},
+          :body => json(:bulk_test_resources => attributes)
+        )
+      end
+
+      it 'returns a JobStatus' do
+        expect(subject).to be_a(ZendeskAPI::JobStatus)
+        expect(subject.id).to eq('jkl')
+      end
+    end
+  end
+end
