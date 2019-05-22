@@ -82,8 +82,8 @@ module ZendeskAPI
     end
   end
 
-  class Attachment < Data
-    def initialize(client, attributes)
+  class Attachment < ReadResource
+    def initialize(client, attributes = {})
       attributes[:file] ||= attributes.delete(:id)
 
       super
