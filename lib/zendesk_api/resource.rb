@@ -81,6 +81,10 @@ module ZendeskAPI
       @attributes.send(*args, &block)
     end
 
+    def respond_to_missing?(method, include_private = false)
+      @attributes.respond_to?(method) || super
+    end
+
     # Returns the resource id of the object or nil
     def id
       key?(:id) ? method_missing(:id) : nil

@@ -465,7 +465,7 @@ module ZendeskAPI
     # @param [Integer] start_time The start_time parameter
     # @return [Collection] Collection of {Ticket}
     def self.incremental_export(client, start_time)
-      ZendeskAPI::Collection.new(client, self, :path => "exports/tickets?start_time=#{start_time.to_i}")
+      ZendeskAPI::Collection.new(client, self, :path => "incremental/tickets?start_time=#{start_time.to_i}")
     end
 
     # Imports a ticket through the imports/tickets endpoint using save!
@@ -649,7 +649,8 @@ module ZendeskAPI
 
   class User < Resource
     extend CreateMany
-    extend UpdateMany
+    extend CreateOrUpdate
+    extend CreateOrUpdateMany
     extend DestroyMany
 
     class TopicComment < TopicComment
@@ -742,6 +743,7 @@ module ZendeskAPI
 
     has_many Request
     has_many :requested_tickets, :class => Ticket, :path => 'tickets/requested'
+    has_many :assigned_tickets, :class => Ticket, :path => 'tickets/assigned'
     has_many :ccd_tickets, :class => Ticket, :path => 'tickets/ccd'
 
     has_many Group

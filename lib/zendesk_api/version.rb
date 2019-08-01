@@ -1,3 +1,3 @@
 module ZendeskAPI
-  VERSION = "1.15.0"
+  VERSION = "1.19.0"
 end

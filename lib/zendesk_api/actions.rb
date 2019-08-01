@@ -181,6 +181,41 @@ module ZendeskAPI
     end
   end
 
+  module CreateOrUpdate
+    # Creates or updates resource using the create_or_update endpoint.
+    # @param [Client] client The {Client} object to be used
+    # @param [Hash] attributes The attributes to create.
+    def create_or_update!(client, attributes, association = Association.new(:class => self))
+      response = client.connection.post("#{association.generate_path}/create_or_update") do |req|
+        req.body = { resource_name => attributes }
+
+        yield req if block_given?
+      end
+
+      new_from_response(client, response, Array(association.options[:include]))
+    end
+  end
+
+  module CreateOrUpdateMany
+    # Creates or updates multiple resources using the create_or_update_many endpoint.
+    #
+    # @param [Client] client The {Client} object to be used
+    # @param [Array<Hash>] attributes The attributes to update resources with
+    #
+    # @return [JobStatus] the {JobStatus} instance for this destroy job
+    def create_or_update_many!(client, attributes)
+      association = Association.new(:class => self)
+
+      response = client.connection.post("#{association.generate_path}/create_or_update_many") do |req|
+        req.body = { resource_name => attributes }
+
+        yield req if block_given?
+      end
+
+      JobStatus.new_from_response(client, response)
+    end
+  end
+
   module Destroy
     def self.included(klass)
       klass.extend(ClassMethod)

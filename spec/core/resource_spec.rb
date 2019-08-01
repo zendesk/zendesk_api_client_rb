@@ -43,6 +43,19 @@ describe ZendeskAPI::Resource do
         end
       end
     end
+
+    context "instance method" do
+      subject(:resource) do
+        ZendeskAPI::TestResource.new(client, :id => 1)
+      end
+
+      it "is delegated to the attributes" do
+        expect(resource.attributes).to receive(:update).and_call_original
+        resource.update(subject: "Hello?")
+      end
+
+      it { is_expected.to respond_to(:update) }
+    end
   end
 
   context "#destroy" do
@@ -538,6 +551,30 @@ describe ZendeskAPI::Resource do
       expect{
         ZendeskAPI::TestResource.new(client, nil)
       }.to raise_error(/Expected a Hash/i)
+    end
+  end
+
+  context "#create_or_update!" do
+    let(:params) { { :email => "hello@example.local", :test => :hello } }
+
+    subject { ZendeskAPI::CreateOrUpdateTestResource }
+
+    before :each do
+      stub_json_request(:post, %r{create_or_update_test_resources/create_or_update}, json(:create_or_update_test_resource => { :param => "abc" }))
+    end
+
+    it "should return instance of resource" do
+      expect(subject.create_or_update!(client, params)).to be_truthy
+    end
+
+    context "with client error" do
+      before(:each) do
+        stub_request(:post, %r{create_or_update_test_resources/create_or_update}).to_return(:status => 500)
+      end
+
+      it "should raise" do
+        expect { subject.create_or_update!(client, params) }.to raise_error(ZendeskAPI::Error::ClientError)
+      end
     end
   end
 end
