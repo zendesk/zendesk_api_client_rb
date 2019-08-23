@@ -5,8 +5,7 @@ describe ZendeskAPI::Middleware::Request::RaiseRateLimited do
     client.config.retry = false
     client.config.raise_error_when_rate_limited = true
 
-    stub_request(:get, /blergh/).
-      to_return(status: 429)
+    stub_request(:get, /blergh/).to_return(status: 429)
   end
 
   it 'should raise RateLimited' do
