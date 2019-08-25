@@ -19,8 +19,8 @@ module ZendeskAPI
           response = @app.call(env)
 
           if ERROR_CODES.include?(response.env[:status])
-            @logger.warn 'You have been rate limited. Raising error...' if @logger
-            raise Error::RateLimited.new(env)
+            @logger&.warn 'You have been rate limited. Raising error...'
+            raise Error::RateLimited, env
           else
             response
           end
