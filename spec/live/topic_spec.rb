@@ -13,8 +13,6 @@ describe ZendeskAPI::Topic do
   it_should_be_deletable :create => true
   it_should_be_readable :topics
   it_should_be_readable current_user, :topics
-  it_should_be_readable forum, :topics
-  # it_should_be_readable :topics, :show_many, :verb => :post, :ids =>
 
   describe ".import" do
     it "can import" do

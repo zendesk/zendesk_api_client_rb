@@ -30,19 +30,11 @@ module ZendeskAPI
 
     def topic
       VCR.use_cassette('valid_topic') do
-        @topic ||= forum.topics.first
         @topic ||= client.topics.create(
           :title => "Test Topic",
           :body => "This is the body of a topic.",
           :forum_id => forum.id
         )
-      end
-    end
-
-    def forum
-      VCR.use_cassette('valid_forum') do
-        @forum ||= client.forums.detect { |f| f.topics.any? }
-        @forum ||= client.forums.create(:name => "Test Forum", :access => "everybody")
       end
     end
 
