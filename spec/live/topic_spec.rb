@@ -3,8 +3,8 @@ require 'core/spec_helper'
 describe ZendeskAPI::Topic do
   def valid_attributes
     {
-      :forum_id => forum.id, :title => "My Topic",
-      :body => "The mayan calendar ends December 31st. Coincidence? I think not."
+      :name => "My Topic",
+      :description => "The mayan calendar ends December 31st. Coincidence? I think not."
     }
   end
 

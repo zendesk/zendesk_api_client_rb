@@ -19,7 +19,14 @@ module ZendeskAPI
     end
   end
 
-  class Topic < Resource; end
+  class Topic < Resource
+    class << self
+      def resource_path
+        "community/topics"
+      end
+    end
+  end
+
   class Bookmark < Resource; end
   class Ability < DataResource; end
   class Group < Resource; end

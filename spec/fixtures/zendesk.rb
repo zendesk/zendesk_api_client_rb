@@ -31,9 +31,8 @@ module ZendeskAPI
     def topic
       VCR.use_cassette('valid_topic') do
         @topic ||= client.topics.create(
-          :title => "Test Topic",
-          :body => "This is the body of a topic.",
-          :forum_id => forum.id
+          :name => "Test Topic",
+          :description => "This is the body of a topic."
         )
       end
     end
