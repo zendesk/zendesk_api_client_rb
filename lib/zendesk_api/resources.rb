@@ -181,34 +181,7 @@ module ZendeskAPI
     has User
   end
 
-  class TopicComment < Data
-    has Topic
-    has User
-    has_many Attachment
-  end
-
   class Topic < Resource
-    class TopicComment < TopicComment
-      include Read
-      include Create
-      include Update
-      include Destroy
-
-      has_many :uploads, :class => Attachment, :inline => true
-
-      def self.import!(client, attributes)
-        new(client, attributes).tap do |comment|
-          comment.save!(:path => 'import/' + comment.path)
-        end
-      end
-
-      def self.import(client, attributes)
-        comment = new(client, attributes)
-        return unless comment.save(:path => 'import/' + comment.path)
-        comment
-      end
-    end
-
     class TopicVote < SingularResource
       has Topic
       has User
@@ -220,7 +193,6 @@ module ZendeskAPI
       end
     end
 
-    has_many :comments, :class => TopicComment
     has_many :subscriptions, :class => TopicSubscription
     has :vote, :class => TopicVote
     has_many Tag, :extend => Tag::Update, :inline => :create
@@ -647,10 +619,6 @@ module ZendeskAPI
     extend CreateOrUpdateMany
     extend DestroyMany
 
-    class TopicComment < TopicComment
-      include Read
-    end
-
     class GroupMembership < Resource
       put :make_default
     end
@@ -747,7 +715,6 @@ module ZendeskAPI
     has_many OrganizationSubscription
 
     has_many TopicSubscription
-    has_many :topic_comments, :class => TopicComment
     has_many :topic_votes, :class => Topic::TopicVote
 
     has_many Setting
