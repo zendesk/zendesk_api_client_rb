@@ -30,14 +30,12 @@ describe ZendeskAPI::Macro, :delete_after do
     describe "to a ticket" do
       it "should return a hash" do
         result = subject.apply(ticket)
-        expect(result).to be_instance_of(Hashie::Mash)
         expect(result.ticket).to_not be_nil
       end
     end
 
     it "should be appliable" do
       result = subject.apply
-      expect(result).to be_instance_of(Hashie::Mash)
       expect(result.ticket).to_not be_nil
     end
   end
