@@ -2,7 +2,6 @@ module ZendeskAPI
   # @internal The following are redefined later, but needed by some circular resources (e.g. Ticket -> User, User -> Ticket)
 
   class Ticket < Resource; end
-  class Forum < Resource; end
   class User < Resource; end
   class Category < Resource; end
   class OrganizationMembership < ReadResource; end
@@ -20,7 +19,14 @@ module ZendeskAPI
     end
   end
 
-  class Topic < Resource; end
+  class Topic < Resource
+    class << self
+      def resource_path
+        "community/topics"
+      end
+    end
+  end
+
   class Bookmark < Resource; end
   class Ability < DataResource; end
   class Group < Resource; end
@@ -143,11 +149,6 @@ module ZendeskAPI
     end
   end
 
-  class ForumSubscription < Resource
-    has Forum
-    has User
-  end
-
   class OrganizationMembership < ReadResource
     include Create
     include Destroy
@@ -167,17 +168,7 @@ module ZendeskAPI
     has Organization
   end
 
-  class Forum < Resource
-    has Category
-    has Organization
-    has Locale
-
-    has_many Topic
-    has_many :subscriptions, :class => ForumSubscription
-  end
-
   class Category < Resource
-    has_many Forum
   end
 
   class TopicSubscription < Resource
@@ -224,7 +215,6 @@ module ZendeskAPI
       end
     end
 
-    has Forum
     has_many :comments, :class => TopicComment
     has_many :subscriptions, :class => TopicSubscription
     has :vote, :class => TopicVote
@@ -445,7 +435,6 @@ module ZendeskAPI
     has_many Audit
     has :metrics, :class => TicketMetric
     has Group
-    has :forum_topic, :class => Topic
     has Organization
     has Brand
     has :related, :class => TicketRelated
@@ -752,7 +741,6 @@ module ZendeskAPI
     has_many OrganizationMembership
     has_many OrganizationSubscription
 
-    has_many ForumSubscription
     has_many TopicSubscription
     has_many :topic_comments, :class => TopicComment
     has_many :topic_votes, :class => Topic::TopicVote

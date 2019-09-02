@@ -463,11 +463,6 @@ describe ZendeskAPI::Collection do
       end
     end
 
-    it "does not fetch if associated is a new record" do
-      expect(ZendeskAPI::Category.new(client).forums.fetch).to eq([])
-      expect(ZendeskAPI::Category.new(client).forums.to_a).to eq([])
-    end
-
     context "with client error" do
       before(:each) do
         stub_request(:get, %r{test_resources}).to_return(:status => 500)

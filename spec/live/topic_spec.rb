@@ -3,8 +3,8 @@ require 'core/spec_helper'
 describe ZendeskAPI::Topic do
   def valid_attributes
     {
-      :forum_id => forum.id, :title => "My Topic",
-      :body => "The mayan calendar ends December 31st. Coincidence? I think not."
+      :name => "My Topic",
+      :description => "The mayan calendar ends December 31st. Coincidence? I think not."
     }
   end
 
@@ -13,8 +13,6 @@ describe ZendeskAPI::Topic do
   it_should_be_deletable :create => true
   it_should_be_readable :topics
   it_should_be_readable current_user, :topics
-  it_should_be_readable forum, :topics
-  # it_should_be_readable :topics, :show_many, :verb => :post, :ids =>
 
   describe ".import" do
     it "can import" do
