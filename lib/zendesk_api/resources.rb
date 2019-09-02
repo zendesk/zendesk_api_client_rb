@@ -169,6 +169,11 @@ module ZendeskAPI
   end
 
   class Category < Resource
+    class << self
+      def resource_path
+        "help_center/categories"
+      end
+    end
   end
 
   class TopicSubscription < Resource
