@@ -1,7 +1,7 @@
 require 'core/spec_helper'
 
 describe ZendeskAPI::Tag, :vcr, :not_findable do
-  [organization, topic, ticket].each do |object|
+  [organization, user, ticket].each do |object|
     under object do
       before(:each) do
         parent.tags = %w{tag2 tag3}
