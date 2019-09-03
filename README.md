@@ -4,17 +4,21 @@
 [![Gem Version](https://badge.fury.io/rb/zendesk_api.png)](http://badge.fury.io/rb/zendesk_api)
 [![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.png)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
 
-## API version support
-
-This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com) for more information.
-
 ## Documentation
+
+This Ruby gem is a wrapper around Zendesk's REST API. Please see our [API documentation](http://developer.zendesk.com) for more information.
 
 Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki), [class documentation](http://zendesk.github.io/zendesk_api_client_rb), and [issues](https://github.com/zendesk/zendesk_api_client_rb/issues) before reporting a bug or asking for help.
 
+## Product Support
+
+This Ruby gem supports the REST API's for Zendesk Support, Zendesk Guide,
+and Zendesk Talk. It does not yet support other Zendesk products such as
+Zendesk Chat, Zendesk Explore, and Zendesk Sell.
+
 ## Important Notices
 
-* Version 0.0.5 brings with it a change to the top-level namespace. All references to Zendesk should now use ZendeskAPI.
+* Version 0.0.5 brings with it a change to the top-level namespace. All references to `Zendesk` should now use `ZendeskAPI`.
 * Version 0.3.0 changed the license from MIT to Apache Version 2.
 * Version 0.3.2 introduced a regression when side-loading roles on users. This was fixed in 0.3.4.
 * Version 1.0.0 changes the way errors are handled. Please see the [wiki page](https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors) for more info.
@@ -46,8 +50,8 @@ and follow normal [Bundler](http://gembundler.com/) installation and execution p
 
 ## Configuration
 
-Configuration is done through a block returning an instance of ZendeskAPI::Client.
-The block is mandatory and if not passed, an ArgumentError will be thrown.
+Configuration is done through a block returning an instance of `ZendeskAPI::Client`.
+The block is mandatory and if not passed, an `ArgumentError` will be thrown.
 
 ```ruby
 require 'zendesk_api'
@@ -94,15 +98,13 @@ client = ZendeskAPI::Client.new do |config|
 end
 ```
 
-Note: This ZendeskAPI API client only supports basic authentication at the moment.
-
 ## Usage
 
-The result of configuration is an instance of ZendeskAPI::Client which can then be used in two different methods.
+The result of configuration is an instance of `ZendeskAPI::Client` which can then be used in two different methods.
 
 One way to use the client is to pass it in as an argument to individual classes.
 
-_note_: all method calls ending in `!` will raise an exception when an error occurs, see the [wiki page](https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors) for more info.
+_Note_: all method calls ending in `!` will raise an exception when an error occurs, see the [wiki page](https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors) for more info.
 
 ```ruby
 ZendeskAPI::Ticket.new(client, :id => 1, :priority => "urgent") # doesn't actually send a request, must explicitly call #save!
@@ -122,9 +124,9 @@ client.tickets.create!(:subject => "Test Ticket", :comment => { :value => "This 
 client.tickets.destroy!(:id => 1)
 ```
 
-The methods under ZendeskAPI::Client (such as .tickets) return an instance of ZendeskAPI::Collection a lazy-loaded list of that resource.
-Actual requests may not be sent until an explicit ZendeskAPI::Collection#fetch!, ZendeskAPI::Collection#to_a!, or an applicable methods such
-as #each.
+The methods under `ZendeskAPI::Client` (such as `.tickets`) return an instance of `ZendeskAPI::Collection`, a lazy-loaded list of that resource.
+Actual requests may not be sent until an explicit `ZendeskAPI::Collection#fetch!`, `ZendeskAPI::Collection#to_a!`, or an applicable methods such
+as `#each`.
 
 ### Caveats
 
@@ -148,7 +150,7 @@ zendesk_api_client_rb $ bundle console
 
 ### Pagination
 
-ZendeskAPI::Collections can be paginated:
+`ZendeskAPI::Collections` can be paginated:
 
 ```ruby
 tickets = client.tickets.page(2).per_page(3)
@@ -158,7 +160,7 @@ previous_page = tickets.prev # => 2
 tickets.fetch! # GET /api/v2/tickets?page=2&per_page=3
 ```
 
-Iteration over all resources and pages is handled by Collection#all
+Iteration over all resources and pages is handled by `Collection#all`:
 
 ```ruby
 client.tickets.all! do |resource|
@@ -176,7 +178,7 @@ end
 
 ### Callbacks
 
-Callbacks can be added to the ZendeskAPI::Client instance and will be called (with the response env) after all response middleware on a successful request.
+Callbacks can be added to the `ZendeskAPI::Client` instance and will be called (with the response env) after all response middleware on a successful request.
 
 ```ruby
 client.insert_callback do |env|
@@ -202,12 +204,10 @@ ticket.save! # Will POST
 
 ### Side-loading
 
-**Warning: this is an experimental feature. Abuse it and lose it.**
-
-To facilitate a smaller number of requests and easier manipulation of associated data we allow "side-loading", or inclusion, of selected resources.
+To facilitate a smaller number of requests and easier manipulation of associated data we allow "side-loading," or inclusion, of selected resources.
 
 For example:
-A ZendeskAPI::Ticket is associated with ZendeskAPI::User through the requester_id field.
+A `ZendeskAPI::Ticket` is associated with `ZendeskAPI::User` through the `requester_id` field.
 API requests for that ticket return a structure similar to this:
 ```json
 "ticket": {
@@ -218,7 +218,7 @@ API requests for that ticket return a structure similar to this:
 }
 ```
 
-Calling ZendeskAPI::Ticket#requester automatically fetches and loads the user referenced above (`/api/v2/users/7`).
+Calling `ZendeskAPI::Ticket#requester` automatically fetches and loads the user referenced above (`/api/v2/users/7`).
 Using side-loading, however, the user can be partially loaded in the same request as the ticket.
 
 ```ruby
@@ -240,7 +240,7 @@ They are documented on [developer.zendesk.com](http://developer.zendesk.com/docu
 
 ### Search
 
-Searching is done through the client. Returned is an instance of ZendeskAPI::Collection:
+Searching is done through the client. Returned is an instance of `ZendeskAPI::Collection`:
 
 ```ruby
 client.search(:query => "my search query") # /api/v2/search.json?query=...
@@ -249,8 +249,8 @@ client.users.search(:query => "my new query")  # /api/v2/users/search.json?query
 
 ### Special case: Custom resources paths
 
-API endpoints such as tickets/recent or topics/show_many can be accessed through chaining.
-They will too return an instance of ZendeskAPI::Collection.
+API endpoints such as `tickets/recent` or `topics/show_many` can be accessed through chaining.
+They will too return an instance of `ZendeskAPI::Collection`.
 
 ```ruby
 client.tickets.recent
@@ -411,16 +411,16 @@ ZendeskAPI::AppInstallation.destroy!(client, :id => 123)
 ## Note on Patches/Pull Requests
 1. Fork the project.
 2. Make your feature addition or bug fix.
-3. Add tests for it. This is important so I don't break it in a future version
-   unintentionally.
-4. Commit, do not mess with rakefile, version, or history. (if you want to have
-   your own version, that is fine but bump version in a commit by itself I can
-   ignore when I pull)
-5. Send me a pull request. Bonus points for topic branches.
+3. Add tests for it. This is important so that we don't break it in a future
+   version unintentionally.
+4. Commit. Do not alter `Rakefile`, version, or history. (If you want to have
+   your own version, that is fine, but bump version in a commit by itself that
+   we can ignore when we pull.)
+5. Submit a pull request.
 
 ## Copyright and license
 
-Copyright 2015 Zendesk
+Copyright 2015-2019 Zendesk
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
