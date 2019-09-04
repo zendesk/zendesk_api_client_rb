@@ -8,9 +8,13 @@ describe ZendeskAPI::Ticket do
       :comment => { :value => "Indeed it is!" },
       :priority => "normal",
       :requester_id => user.id,
+      :assignee_id => current_user.id,
       :submitter_id => user.id,
       :collaborator_ids => [agent.id],
-      :tags => %w(awesome blossom)
+      :tags => %w(awesome blossom),
+      :email_ccs => [
+        { :user_id => agent.id, "action": "put" }
+      ]
     }
   end
 
@@ -19,8 +23,8 @@ describe ZendeskAPI::Ticket do
   it_should_be_deletable
   it_should_be_readable :tickets
   it_should_be_readable user, :requested_tickets
-  it_should_be_readable user, :assigned_tickets
-  it_should_be_readable agent, :ccd_tickets
+  it_should_be_readable current_user, :assigned_tickets , create: true
+  it_should_be_readable agent, :ccd_tickets, create: true
   it_should_be_readable organization, :tickets
 
   context "recent tickets" do
