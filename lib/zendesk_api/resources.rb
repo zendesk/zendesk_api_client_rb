@@ -710,7 +710,6 @@ module ZendeskAPI
 
     has_many Group
     has_many GroupMembership
-    has_many Topic
     has_many OrganizationMembership
     has_many OrganizationSubscription
 
