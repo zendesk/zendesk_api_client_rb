@@ -205,18 +205,6 @@ module ZendeskAPI
       association = ZendeskAPI::Association.new(:class => TopicVote, :parent => self, :path => 'votes')
       @votes = ZendeskAPI::Collection.new(@client, TopicVote, opts.merge(:association => association))
     end
-
-    def self.import!(client, attributes)
-      new(client, attributes).tap do |topic|
-        topic.save!(:path => "import/topics")
-      end
-    end
-
-    def self.import(client, attributes)
-      topic = new(client, attributes)
-      return unless topic.save(:path => "import/topics")
-      topic
-    end
   end
 
   class Activity < Resource
