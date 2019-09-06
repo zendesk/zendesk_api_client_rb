@@ -3,7 +3,7 @@ require 'core/spec_helper'
 describe ZendeskAPI::DynamicContent::Item::Variant, :delete_after do
   def valid_attributes
     {
-      :locale_id => 43,
+      :locale_id => 2,
       :active => true,
       :default => false,
       :content => 'Mon dieu!'
