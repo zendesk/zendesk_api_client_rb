@@ -177,8 +177,18 @@ module ZendeskAPI
   end
 
   class TopicSubscription < Resource
+    class << self
+      def model_key
+        "subscriptions"
+      end
+    end
+
     has Topic
     has User
+
+    def path(options = {})
+      super(options.merge(:with_parent => true))
+    end
   end
 
   class Topic < Resource
@@ -193,7 +203,7 @@ module ZendeskAPI
       end
     end
 
-    has_many :subscriptions, :class => TopicSubscription
+    has_many :subscriptions, :class => TopicSubscription, :inline => true
     has :vote, :class => TopicVote
     has_many Tag, :extend => Tag::Update, :inline => :create
     has_many Attachment
@@ -701,7 +711,6 @@ module ZendeskAPI
     has_many OrganizationMembership
     has_many OrganizationSubscription
 
-    has_many TopicSubscription
     has_many :topic_votes, :class => Topic::TopicVote
 
     has_many Setting
