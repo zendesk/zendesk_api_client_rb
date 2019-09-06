@@ -5,7 +5,10 @@ describe ZendeskAPI::SuspendedTicket do
     {
       :subject => "Test Ticket",
       :comment => { :value => "Help! I need somebody." },
-      :requester =>  { :email => "zendesk-api-client-ruby-anonymous-#{client.config.username}", :name => 'Anonymous User' }
+      :requester => {
+        :email => "zendesk-api-client-ruby-anonymous-#{client.config.username}",
+        :name => 'Anonymous User'
+      }
     }
   end
 

@@ -12,7 +12,6 @@ describe ZendeskAPI::Voice::PhoneNumber, :delete_after do
     end
   end
 
-
   def valid_attributes
     {
       token: available_phone_token
