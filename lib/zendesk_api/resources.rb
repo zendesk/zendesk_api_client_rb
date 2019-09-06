@@ -192,29 +192,10 @@ module ZendeskAPI
   end
 
   class Topic < Resource
-    class TopicVote < SingularResource
-      has Topic
-      has User
-
-      private
-
-      def attributes_for_save
-        attributes.changes
-      end
-    end
-
     has_many :subscriptions, :class => TopicSubscription, :inline => true
-    has :vote, :class => TopicVote
     has_many Tag, :extend => Tag::Update, :inline => :create
     has_many Attachment
     has_many :uploads, :class => Attachment, :inline => true
-
-    def votes(opts = {})
-      return @votes if @votes && !opts[:reload]
-
-      association = ZendeskAPI::Association.new(:class => TopicVote, :parent => self, :path => 'votes')
-      @votes = ZendeskAPI::Collection.new(@client, TopicVote, opts.merge(:association => association))
-    end
   end
 
   class Activity < Resource
@@ -710,8 +691,6 @@ module ZendeskAPI
     has_many GroupMembership
     has_many OrganizationMembership
     has_many OrganizationSubscription
-
-    has_many :topic_votes, :class => Topic::TopicVote
 
     has_many Setting
     has_many Tag, :extend => Tag::Update, :inline => :create
