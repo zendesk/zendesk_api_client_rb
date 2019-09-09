@@ -7,7 +7,7 @@ gem "rake"
 gem "rspec"
 gem "rubocop", "~> 0.64.0"
 gem "vcr"
-gem "webmock", "< 2"
+gem "webmock"
 gem "addressable", "< 2.5.0", :platforms => [:ruby_19, :jruby]
 gem "yard"
 gem "json", "< 2.0", :platforms => :ruby_19
