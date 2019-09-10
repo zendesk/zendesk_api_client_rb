@@ -23,6 +23,17 @@ if defined?(RSpec)
     sh "rm -rf spec/fixtures/cassettes"
   end
 
+  task :set_travis_credentials do
+    File.open("spec/fixtures/credentials.yml", "w") do |f|
+      f.write(
+        File.read("spec/fixtures/credentials.yml.example")
+          .sub("your_username", ENV.fetch("SPEC_LIVE_USERNAME"))
+          .sub("your_password", ENV.fetch("SPEC_LIVE_PASSWORD"))
+          .sub("your_zendesk_host", ENV.fetch("SPEC_LIVE_ZENDESK_HOST"))
+        )
+    end
+  end
+
   if RUBY_VERSION =~ /1.9/
     desc "Find coverage"
     task "spec:coverage" do

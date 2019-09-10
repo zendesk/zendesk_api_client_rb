@@ -6,7 +6,7 @@ describe ZendeskAPI::Category, :delete_after do
   end
 
   it_should_be_creatable
-  it_should_be_updatable :name
+  it_should_be_updatable :position, 2
   it_should_be_deletable
   it_should_be_readable :categories, :create => true
 end

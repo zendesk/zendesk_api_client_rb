@@ -12,23 +12,6 @@ describe ZendeskAPI::Topic do
   it_should_be_updatable :title
   it_should_be_deletable :create => true
   it_should_be_readable :topics
-  it_should_be_readable current_user, :topics
-
-  describe ".import" do
-    it "can import" do
-      VCR.use_cassette("topic_import_can_import") do
-        old = Time.now - 5 * 365 * 24 * 60 * 60
-        topic = ZendeskAPI::Topic.import(client, valid_attributes.merge(:created_at => old))
-        expect(ZendeskAPI::Topic.find(client, topic).created_at.year).to eq(old.year)
-      end
-    end
-
-    it "returns nothing if import fails" do
-      VCR.use_cassette("topic_import_cannot_import") do
-        silence_logger { expect(ZendeskAPI::Topic.import(client, {})).to eq(nil) }
-      end
-    end
-  end
 
   it "can upload while creating" do
     VCR.use_cassette("topic_inline_uploads") do

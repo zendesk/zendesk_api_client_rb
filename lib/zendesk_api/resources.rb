@@ -169,77 +169,33 @@ module ZendeskAPI
   end
 
   class Category < Resource
+    class << self
+      def resource_path
+        "help_center/categories"
+      end
+    end
   end
 
   class TopicSubscription < Resource
-    has Topic
-    has User
-  end
+    class << self
+      def model_key
+        "subscriptions"
+      end
+    end
 
-  class TopicComment < Data
     has Topic
     has User
-    has_many Attachment
+
+    def path(options = {})
+      super(options.merge(:with_parent => true))
+    end
   end
 
   class Topic < Resource
-    class TopicComment < TopicComment
-      include Read
-      include Create
-      include Update
-      include Destroy
-
-      has_many :uploads, :class => Attachment, :inline => true
-
-      def self.import!(client, attributes)
-        new(client, attributes).tap do |comment|
-          comment.save!(:path => 'import/' + comment.path)
-        end
-      end
-
-      def self.import(client, attributes)
-        comment = new(client, attributes)
-        return unless comment.save(:path => 'import/' + comment.path)
-        comment
-      end
-    end
-
-    class TopicVote < SingularResource
-      has Topic
-      has User
-
-      private
-
-      def attributes_for_save
-        attributes.changes
-      end
-    end
-
-    has_many :comments, :class => TopicComment
-    has_many :subscriptions, :class => TopicSubscription
-    has :vote, :class => TopicVote
+    has_many :subscriptions, :class => TopicSubscription, :inline => true
     has_many Tag, :extend => Tag::Update, :inline => :create
     has_many Attachment
     has_many :uploads, :class => Attachment, :inline => true
-
-    def votes(opts = {})
-      return @votes if @votes && !opts[:reload]
-
-      association = ZendeskAPI::Association.new(:class => TopicVote, :parent => self, :path => 'votes')
-      @votes = ZendeskAPI::Collection.new(@client, TopicVote, opts.merge(:association => association))
-    end
-
-    def self.import!(client, attributes)
-      new(client, attributes).tap do |topic|
-        topic.save!(:path => "import/topics")
-      end
-    end
-
-    def self.import(client, attributes)
-      topic = new(client, attributes)
-      return unless topic.save(:path => "import/topics")
-      topic
-    end
   end
 
   class Activity < Resource
@@ -642,10 +598,6 @@ module ZendeskAPI
     extend CreateOrUpdateMany
     extend DestroyMany
 
-    class TopicComment < TopicComment
-      include Read
-    end
-
     class GroupMembership < Resource
       put :make_default
     end
@@ -737,13 +689,8 @@ module ZendeskAPI
 
     has_many Group
     has_many GroupMembership
-    has_many Topic
     has_many OrganizationMembership
     has_many OrganizationSubscription
-
-    has_many TopicSubscription
-    has_many :topic_comments, :class => TopicComment
-    has_many :topic_votes, :class => Topic::TopicVote
 
     has_many Setting
     has_many Tag, :extend => Tag::Update, :inline => :create
