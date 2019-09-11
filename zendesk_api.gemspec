@@ -13,6 +13,14 @@ Gem::Specification.new do |s|
   s.description = 'Ruby wrapper for the REST API at https://www.zendesk.com. Documentation at https://developer.zendesk.com.'
   s.license     = 'Apache License Version 2.0'
 
+  s.metadata = {
+    'bug_tracker_uri' => 'https://github.com/zendesk/zendesk_api_client_rb/issues',
+    'changelog_uri' => "https://github.com/zendesk/zendesk_api_client_rb/blob/v#{s.version}/CHANGELOG.md",
+    'documentation_uri' => "https://www.rubydoc.info/gems/zendesk_api/#{s.version}",
+    'source_code_uri' => "https://github.com/zendesk/zendesk_api_client_rb/tree/v#{s.version}",
+    'wiki_uri' => 'https://github.com/zendesk/zendesk_api_client_rb/wiki'
+  }
+
   s.files = Dir.glob('{lib,util}/**/*')
 
   s.required_ruby_version     = ">= 2.3"
