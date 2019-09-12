@@ -18,6 +18,7 @@ jobs:
       rvm: 2.6.4
       script: bundle exec rake clean_live set_travis_credentials spec:live
 
+
 script:
   - bundle exec rake
   - bundle exec rubocop
