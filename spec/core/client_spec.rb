@@ -80,6 +80,7 @@ describe ZendeskAPI::Client do
           config.url = "https://example.zendesk.com/api/v2"
           config.username = username
           config.token = "token"
+          config.client_options = { :request => {:timeout => 15}}
         end
       end
 
@@ -110,6 +111,10 @@ describe ZendeskAPI::Client do
         it "should add /token to the username" do
           expect(subject.username).to eq("hello/token")
         end
+      end
+
+      it "should have specified timeout when provided" do
+        expect(client.connection.options.timeout).to eq(15)
       end
     end
 
