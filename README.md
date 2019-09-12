@@ -1,8 +1,8 @@
 # Zendesk API Client
 
-[![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.png?branch=master)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
-[![Gem Version](https://badge.fury.io/rb/zendesk_api.png)](http://badge.fury.io/rb/zendesk_api)
-[![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.png)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
+[![Build Status](https://secure.travis-ci.org/zendesk/zendesk_api_client_rb.svg?branch=master)](http://travis-ci.org/zendesk/zendesk_api_client_rb)
+[![Gem Version](https://badge.fury.io/rb/zendesk_api.svg)](http://badge.fury.io/rb/zendesk_api)
+[![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.svg)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
 
 ## Documentation
 
