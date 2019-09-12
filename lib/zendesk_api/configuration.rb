@@ -59,7 +59,8 @@ module ZendeskAPI
           :user_agent => "ZendeskAPI Ruby #{ZendeskAPI::VERSION}"
         },
         :request => {
-          :open_timeout => 10
+          :open_timeout => 10,
+          :timeout => 30
         },
         :url => @url
       }.merge(client_options)
