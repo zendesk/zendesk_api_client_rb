@@ -91,7 +91,7 @@ client = ZendeskAPI::Client.new do |config|
   # config.adapter = :patron
 
   # Merged with the default client options hash
-  # config.client_options = {:ssl => {:verify => false}}
+  # config.client_options = {:ssl => {:verify => false}, :request => {:timeout => 30}}
 
   # When getting the error 'hostname does not match the server certificate'
   # use the API at https://yoursubdomain.zendesk.com/api/v2
