@@ -60,7 +60,7 @@ module ZendeskAPI
         },
         :request => {
           :open_timeout => 10,
-          :timeout => 30
+          :timeout => 60
         },
         :url => @url
       }.merge(client_options)

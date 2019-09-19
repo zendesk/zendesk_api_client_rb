@@ -22,7 +22,7 @@ describe ZendeskAPI::Configuration do
   end
 
   it "should set a default timeout" do
-    expect(subject.options[:request][:timeout]).to eq(30)
+    expect(subject.options[:request][:timeout]).to eq(60)
   end
 
   it "should merge options with client_options" do
