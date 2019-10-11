@@ -1,3 +1,23 @@
+# v1.20.0
+
+* Bring back spec live testing
+
+# v1.19.1
+
+* Remove forums resource and start using community topics
+* Add assigned tickets association
+
+# v1.19.0
+
+* Add option to raise error when rate limited
+
+# v1.18.0
+
+* Add support for create_or_update for user resource
+* Update ticket incremental export endpoint
+* Add support to create or update many users and remove unsupported update many users
+* Define respond_to_missing?
+
 # v1.17.0
 
 dropped support for Ruby 1.9.x, 2.0.x, 2.1.x and 2.2.x, all of which are EOL
@@ -245,5 +265,3 @@ add tests
 consider all 3XX and 1XX responses invalid except for 304
 
 AppNotification#handle_response: only call @attributes#replace if response is a hash
-
-
