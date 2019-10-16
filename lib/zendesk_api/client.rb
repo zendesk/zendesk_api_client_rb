@@ -207,7 +207,11 @@ module ZendeskAPI
     end
 
     def set_token_auth
-      if config.token && !config.password
+      return if config.password || config.token.nil?
+
+      if config.username.nil?
+        raise ArgumentError, "you need to provide a username when using API token auth"
+      else
         config.password = config.token
         config.username += "/token" unless config.username.end_with?("/token")
       end

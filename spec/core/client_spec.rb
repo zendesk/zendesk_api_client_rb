@@ -113,6 +113,16 @@ describe ZendeskAPI::Client do
         end
       end
 
+      context "when username is nil" do
+        let(:username) { nil }
+
+        it "raises an exception" do
+          expect { subject }.to raise_error(
+            ArgumentError, "you need to provide a username when using API token auth"
+          )
+        end
+      end
+
       it "should have specified timeout when provided" do
         expect(client.connection.options.timeout).to eq(30)
       end
