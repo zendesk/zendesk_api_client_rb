@@ -1,3 +1,10 @@
+# v1.21.0
+
+* Add support for `.find` attachments
+* Set default request timeout of 60 seconds
+* Add gem project metadata
+* Add meaningful error when the username is not set using basic token auth
+
 # v1.20.0
 
 * Bring back spec live testing
