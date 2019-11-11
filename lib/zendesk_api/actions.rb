@@ -187,7 +187,7 @@ module ZendeskAPI
     # @param [Hash] attributes The attributes to create.
     def create_or_update!(client, attributes, association = Association.new(:class => self))
       response = client.connection.post("#{association.generate_path}/create_or_update") do |req|
-        req.body = { resource_name => attributes }
+        req.body = { singular_resource_name => attributes }
 
         yield req if block_given?
       end

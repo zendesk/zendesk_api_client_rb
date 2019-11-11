@@ -48,6 +48,34 @@ describe ZendeskAPI::User, :delete_after do
       end
     end
 
+    context "create_or_update" do
+      after do
+        VCR.use_cassette("create_or_update_destroy_user") do
+          user.destroy
+        end
+      end
+
+      context "when the user already exist" do
+        let!(:user) do
+          VCR.use_cassette("create_or_update_create_user") do
+            client.users.create(name: "Existing", email: "unkown@example.org")
+          end
+        end
+
+        before do
+          VCR.use_cassette("create_or_update_existing_user") do
+            ZendeskAPI::User.create_or_update!(client, name: "Updated!", email: "unkown@example.org")
+          end
+        end
+
+        it "updates the existing user" do
+          VCR.use_cassette("create_or_update_find_existing_user") do
+            expect(client.users.find(id: user.id).name).to eql "Updated!"
+          end
+        end
+      end
+    end
+
     context "permission set" do
       subject do
         VCR.use_cassette("user_permission_set") { client.users.find(:id => 20014327, :include => :roles) }
