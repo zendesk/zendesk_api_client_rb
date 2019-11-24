@@ -1,3 +1,8 @@
+# v1.22.0
+
+* Fix `CreateOrUpdate` action to use singular resource name
+* Add `CreateMany`, `CreateOrUpdate` and `DestroyMany` to Organizations
+
 # v1.21.0
 
 * Add support for `.find` attachments
