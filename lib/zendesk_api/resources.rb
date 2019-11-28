@@ -68,7 +68,7 @@ module ZendeskAPI
         end
 
         true
-      rescue Faraday::Error::ClientError => e
+      rescue Faraday::ClientError => e
         if method == :save
           false
         else
@@ -561,7 +561,7 @@ module ZendeskAPI
 
     # Returns the update to a ticket that happens when a macro will be applied.
     # @param [Ticket] ticket Optional {Ticket} to apply this macro to.
-    # @raise [Faraday::Error::ClientError] Raised for any non-200 response.
+    # @raise [Faraday::ClientError] Raised for any non-200 response.
     def apply!(ticket = nil)
       path = "#{self.path}/apply"
 
@@ -577,7 +577,7 @@ module ZendeskAPI
     # @param [Ticket] ticket Optional {Ticket} to apply this macro to
     def apply(ticket = nil)
       apply!(ticket)
-    rescue Faraday::Error::ClientError
+    rescue Faraday::ClientError
       SilentMash.new
     end
   end
