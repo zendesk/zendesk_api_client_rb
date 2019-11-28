@@ -194,7 +194,7 @@ module ZendeskAPI
 
     def fetch(*args)
       fetch!(*args)
-    rescue Faraday::Error::ClientError => e
+    rescue Faraday::ClientError => e
       @error = e
 
       []

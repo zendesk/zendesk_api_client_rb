@@ -1,7 +1,7 @@
 # tested via spec/core/middleware/response/raise_error_spec.rb
 module ZendeskAPI
   module Error
-    class ClientError < Faraday::Error::ClientError
+    class ClientError < Faraday::ClientError
       attr_reader :wrapped_exception
 
       def to_s
