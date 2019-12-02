@@ -3,6 +3,7 @@ module ZendeskAPI
 
   class Ticket < Resource; end
   class User < Resource; end
+  class UserRelated < DataResource; end
   class Category < Resource; end
   class OrganizationMembership < ReadResource; end
   class OrganizationSubscription < ReadResource; end
@@ -683,6 +684,7 @@ module ZendeskAPI
     has CustomRole, :inline => true, :include => :roles
     has Role, :inline => true, :include_key => :name
     has Ability, :inline => true
+    has :related, :class => UserRelated
 
     has_many Identity
 
