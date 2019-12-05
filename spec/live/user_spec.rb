@@ -17,6 +17,15 @@ describe ZendeskAPI::User, :delete_after do
     end
   end
 
+  describe "related" do
+    it "shows realated users" do
+      VCR.use_cassette("current_user_related_users") do
+        client.users.search(:query => current_user.email).first
+        expect(current_user.related).to be_a ZendeskAPI::UserRelated
+      end
+    end
+  end
+
   context "passwords", :vcr do
     let(:password) { client.config.password || ENV['PASSWORD'] }
 
