@@ -1,3 +1,7 @@
+# v1.23.0
+
+* Fix Faraday deprecation notice and relax required version
+
 # v1.22.0
 
 * Fix `CreateOrUpdate` action to use singular resource name
