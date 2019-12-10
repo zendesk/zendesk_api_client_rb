@@ -599,6 +599,7 @@ module ZendeskAPI
 
   class User < Resource
     extend CreateMany
+    extend UpdateMany
     extend CreateOrUpdate
     extend CreateOrUpdateMany
     extend DestroyMany
