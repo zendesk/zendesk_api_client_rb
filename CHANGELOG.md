@@ -1,3 +1,8 @@
+# v1.24.0
+
+* Added support for `UserRelated` operation on users resource
+* Bring back `UpdateMany` on users resource
+
 # v1.23.0
 
 * Fix Faraday deprecation notice and relax required version
