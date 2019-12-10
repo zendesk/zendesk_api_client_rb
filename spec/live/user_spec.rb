@@ -85,6 +85,61 @@ describe ZendeskAPI::User, :delete_after do
       end
     end
 
+    describe "create_many, update_many and destroy_many" do
+      let(:create_many_users_job) do
+        VCR.use_cassette("create_many_users_job") do
+          ZendeskAPI::User.create_many!(
+            client,
+            [
+              { name: "one", email: "1@example.org" },
+              { name: "two", email: "2@example.org" }
+            ]
+          ).tap do |job|
+            job.reload! while job.status != "completed"
+          end
+        end
+      end
+
+      let(:destroy_many_users_job) do
+        VCR.use_cassette("destroy_many_users_job") do
+          ZendeskAPI::User.destroy_many!(
+            client,
+            created_user_ids
+          ).tap do |job|
+            job.reload! while job.status != "completed"
+          end
+        end
+      end
+
+      let(:created_user_ids) do
+        create_many_users_job.results.filter do |item|
+          item["status"] == "Created"
+        end.map(&:id)
+      end
+
+      let(:created_user_objects) do
+        VCR.use_cassette("created_users_objects") do
+          created_user_ids.map do |user_id|
+            client.users.find(id: user_id)
+          end
+        end
+      end
+
+      before do
+        VCR.use_cassette("update_many_users") do
+          ZendeskAPI::User.update_many!(client, created_user_ids, notes: "this is a note")
+        end
+      end
+
+      it "updates all the users, and then, it deletes them properly" do
+        created_user_objects.each do |user|
+          expect(user.notes).to eq "this is a note"
+        end
+
+        expect(destroy_many_users_job["total"]).to be 2
+      end
+    end
+
     context "permission set" do
       subject do
         VCR.use_cassette("user_permission_set") { client.users.find(:id => 20014327, :include => :roles) }
