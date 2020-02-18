@@ -30,7 +30,11 @@ module ZendeskAPI
 
           @app.call(environment).on_complete do |env|
             if cached && env[:status] == 304 # not modified
+              # Handle differences in serialized env keys in Faraday < 1.0 and 1.0
+              # See https://github.com/lostisland/faraday/pull/847
               env[:body] = cached[:body]
+              env[:response_body] = cached[:response_body]
+
               env[:response_headers].merge!(
                 :etag => cached[:response_headers][:etag],
                 :content_type => cached[:response_headers][:content_type],
