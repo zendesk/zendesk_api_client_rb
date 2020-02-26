@@ -4,7 +4,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
   context "with a failed connection" do
     context "connection failed" do
       before(:each) do
-        stub_request(:any, /.*/).to_raise(Faraday::Error::ConnectionFailed)
+        stub_request(:any, /.*/).to_raise(Faraday::ConnectionFailed)
       end
 
       it "should raise NetworkError" do

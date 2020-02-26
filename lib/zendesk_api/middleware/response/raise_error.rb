@@ -6,7 +6,7 @@ module ZendeskAPI
       class RaiseError < Faraday::Response::RaiseError
         def call(env)
           super
-        rescue Faraday::Error::TimeoutError, Faraday::Error::ConnectionFailed => e
+        rescue Faraday::TimeoutError, Faraday::ConnectionFailed => e
           raise Error::NetworkError.new(e, env)
         end
 
