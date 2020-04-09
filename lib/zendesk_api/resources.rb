@@ -682,6 +682,8 @@ module ZendeskAPI
       false
     end
 
+    put :merge
+
     has CustomRole, :inline => true, :include => :roles
     has Role, :inline => true, :include_key => :name
     has Ability, :inline => true
