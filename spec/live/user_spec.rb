@@ -127,7 +127,9 @@ describe ZendeskAPI::User, :delete_after do
 
       before do
         VCR.use_cassette("update_many_users") do
-          ZendeskAPI::User.update_many!(client, created_user_ids, notes: "this is a note")
+          ZendeskAPI::User.update_many!(client, created_user_ids, notes: "this is a note").tap do |job|
+            job.reload! while job.status != "completed"
+          end
         end
       end
 
