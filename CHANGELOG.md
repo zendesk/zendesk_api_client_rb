@@ -1,3 +1,12 @@
+# v1.26.0
+
+* Allow using hashie 4.x
+* Add support to merge user API
+
+# v1.25.0
+
+* Allow using Faraday 1.x release in gemspec
+
 # v1.24.0
 
 * Added support for `UserRelated` operation on users resource
