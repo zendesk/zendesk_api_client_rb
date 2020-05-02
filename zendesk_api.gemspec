@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://developer.zendesk.com"
   s.summary     = 'Zendesk REST API Client'
   s.description = 'Ruby wrapper for the REST API at https://www.zendesk.com. Documentation at https://developer.zendesk.com.'
-  s.license     = 'Apache License Version 2.0'
+  s.license     = 'Apache-2.0'
 
   s.metadata = {
     'bug_tracker_uri' => 'https://github.com/zendesk/zendesk_api_client_rb/issues',
