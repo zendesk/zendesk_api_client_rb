@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
     'wiki_uri' => 'https://github.com/zendesk/zendesk_api_client_rb/wiki'
   }
 
-  s.files = Dir.glob('{lib,util}/**/*')
+  s.files = Dir.glob('{lib,util}/**/*') << 'LICENSE'
 
   s.required_ruby_version     = ">= 2.3"
   s.required_rubygems_version = ">= 1.3.6"
