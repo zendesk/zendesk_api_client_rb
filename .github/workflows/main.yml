@@ -39,8 +39,12 @@ jobs:
           bundle exec rake
           bundle exec rubocop
   spec-live:
-    runs-on: ubuntu-latest
     if: github.repository == '$REPO_OWNER/$REPO_NAME' && github.repository_owner == $REPO_OWNER
+    env:
+      SPEC_LIVE_USERNAME: ${{ secrets.SPEC_LIVE_USERNAME }}
+      SPEC_LIVE_PASSWORD: ${{ secrets.SPEC_LIVE_PASSWORD }}
+      SPEC_LIVE_ZENDESK_HOST: ${{ secrets.SPEC_LIVE_ZENDESK_HOST }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
