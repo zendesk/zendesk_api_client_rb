@@ -10,12 +10,9 @@ on:
       - master
       - spec_live
 
-env:
-  REPO_OWNER: zendesk
-  REPO_NAME: zendesk_api_client_rb
-
 jobs:
   test-and-lint:
+    name: Test and lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,9 +25,9 @@ jobs:
           - jruby-9.2
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: zendesk/checkout@v2
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: zendesk/setup-ruby@v1
         with:
           bundler-cache: true
           ruby-version: ${{ matrix.ruby }}
@@ -39,7 +36,8 @@ jobs:
           bundle exec rake
           bundle exec rubocop
   spec-live:
-    if: github.repository == '$REPO_OWNER/$REPO_NAME' && github.repository_owner == $REPO_OWNER
+    name: Spec live
+    if: github.repository == 'zendesk/zendesk_api_client_rb'
     env:
       SPEC_LIVE_USERNAME: ${{ secrets.SPEC_LIVE_USERNAME }}
       SPEC_LIVE_PASSWORD: ${{ secrets.SPEC_LIVE_PASSWORD }}
@@ -47,9 +45,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: zendesk/checkout@v2
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: zendesk/setup-ruby@v1
         with:
           bundler-cache: true
           ruby-version: 2.6
