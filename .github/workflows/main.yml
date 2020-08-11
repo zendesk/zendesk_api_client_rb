@@ -51,4 +51,4 @@ jobs:
           ruby-version: 2.6
       - name: spec:live
         run: |
-          bundle exec rake clean_live set_travis_credentials spec:live
+          bundle exec rake clean_live set_ci_credentials spec:live
