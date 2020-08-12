@@ -1,13 +1,11 @@
 name: Main
 
 on:
+  pull_request:
   push:
     branches:
       - master
       - spec_live
-  pull_request:
-    branches:
-      - master
 
 jobs:
   test-and-lint:
