@@ -33,6 +33,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
       - name: Test and Lint
         run: |
+          bundle install
           bundle exec rake
           bundle exec rubocop
   spec-live:
@@ -53,4 +54,5 @@ jobs:
           ruby-version: 2.6
       - name: spec:live
         run: |
+          bundle install
           bundle exec rake clean_live set_ci_credentials spec:live
