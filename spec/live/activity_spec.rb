@@ -1,6 +1,6 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::Activity do
+xdescribe ZendeskAPI::Activity do
   before do
     VCR.use_cassette("ticket_activity") do
       ticket.comment = { :value => "test", :author_id => agent.id }
