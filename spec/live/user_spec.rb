@@ -57,7 +57,7 @@ describe ZendeskAPI::User, :delete_after do
       end
     end
 
-    context "merge" do
+    xcontext "merge" do
       let(:merge_user_1) do
         VCR.use_cassette("merge_users_user_1") do
           client.users.create!(email: 'merge_1@example.com', name: 'User 1')

@@ -23,7 +23,7 @@ if defined?(RSpec)
     sh "rm -rf spec/fixtures/cassettes"
   end
 
-  task :set_travis_credentials do
+  task :set_ci_credentials do
     File.open("spec/fixtures/credentials.yml", "w") do |f|
       f.write(
         File.read("spec/fixtures/credentials.yml.example")
