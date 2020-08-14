@@ -5,7 +5,7 @@ gem "mime-types", "~> 2.99", :platforms => [:ruby_19, :jruby]
 gem "rake"
 gem "addressable", "< 2.5.0", :platforms => [:ruby_19, :jruby]
 gem "yard"
-gem "json", "< 2.0", :platforms => :ruby_19
+gem "json", ">= 2.3.0", :platforms => :ruby_19
 gem "scrub_rb", :platforms => [:ruby_19, :ruby_20, :jruby]
 
 gem "rubocop", "~> 0.64.0", :require => false
