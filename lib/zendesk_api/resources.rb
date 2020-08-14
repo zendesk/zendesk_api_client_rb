@@ -181,6 +181,26 @@ module ZendeskAPI
     end
   end
 
+  class Section < Resource
+    class << self
+      def resource_path
+        "help_center/sections"
+      end
+    end
+
+    has Category
+  end
+
+  class Article < Resource
+    class << self
+      def resource_path
+        "help_center/articles"
+      end
+    end
+
+    has Section
+  end
+
   class TopicSubscription < Resource
     class << self
       def model_key
