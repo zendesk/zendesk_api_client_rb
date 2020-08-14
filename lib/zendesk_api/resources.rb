@@ -179,9 +179,14 @@ module ZendeskAPI
         "help_center/categories"
       end
     end
+
+    class Section < Resource
+    end
+
+    has_many Section
   end
 
-  class Section < Resource
+  class Section < ReadResource
     class << self
       def resource_path
         "help_center/sections"
@@ -189,16 +194,19 @@ module ZendeskAPI
     end
 
     has Category
+
+    class Article < Resource
+    end
+
+    has_many Article
   end
 
-  class Article < Resource
+  class Article < ReadResource
     class << self
       def resource_path
         "help_center/articles"
       end
     end
-
-    has Section
   end
 
   class TopicSubscription < Resource
