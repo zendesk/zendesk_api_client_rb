@@ -1,3 +1,7 @@
+# v1.27.0
+
+* Add Section and Article resources
+
 # v1.26.0
 
 * Allow using hashie 4.x
