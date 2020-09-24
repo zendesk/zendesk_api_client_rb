@@ -7,6 +7,9 @@ module ZendeskAPI
   class Category < Resource; end
   class OrganizationMembership < ReadResource; end
   class OrganizationSubscription < ReadResource; end
+  module Nps
+    class Survey < DataResource; end
+  end
 
   # @internal Begin actual Resource definitions
 
@@ -948,6 +951,45 @@ module ZendeskAPI
         :path => "push_notification_devices/destroy_many",
         :verb => :post
       )
+    end
+  end
+
+  module Nps
+    include DataNamespace
+
+    class Response < ReadResource
+      namespace 'nps'
+
+      class << self
+        def model_key
+          "responses"
+        end
+      end
+      # Gets a incremental export of nps_survey_response from the start_time until now.
+      # @param [Client] client The {Client} object to be used
+      # @param [Integer] start_time The start_time parameter
+      # @return [Collection] Collection of {NpsResponse}
+      def self.incremental_export(client, start_time)
+        ZendeskAPI::Collection.new(client, self,
+          :path => "nps/incremental/responses?start_time=#{start_time.to_i}"
+        )
+      end
+
+      has :survey, class: Nps::Survey
+    end
+
+    class Survey < DataResource
+      include Read
+      include Update
+
+      namespace 'nps'
+
+      post :close
+      has_many :responses, class: Nps::Response
+
+      def new_record?
+        false
+      end
     end
   end
 end
