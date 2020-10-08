@@ -512,6 +512,8 @@ module ZendeskAPI
     end
   end
 
+  class TriggerCategory < Resource; end
+
   module Conditions
     def all_conditions=(all_conditions)
       self.conditions ||= {}
