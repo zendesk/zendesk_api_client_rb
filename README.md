@@ -114,6 +114,15 @@ ZendeskAPI::Ticket.find!(client, :id => 1)
 ZendeskAPI::Ticket.destroy!(client, :id => 1)
 ```
 
+You can also update ticket objects.
+
+```ruby
+ticket = ZendeskAPI::Ticket.find!(client, :id => 1)
+ticket.update(:comment => { :value => "This is a test reply." })
+
+ticket.save!
+```
+
 Another way is to use the instance methods under client.
 
 ```ruby
