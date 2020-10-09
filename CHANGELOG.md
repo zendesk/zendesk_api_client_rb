@@ -1,3 +1,7 @@
+# v1.28.0
+
+* Add Trigger categories resource
+
 # v1.27.0
 
 * Add Section and Article resources
