@@ -64,9 +64,11 @@ module ZendeskAPI
       def _save(method = :save)
         return self unless @resources
 
-        @client.connection.post(path) do |req|
-          req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }
+        @client.connection.put(path) do |req|
+          req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }.merge(attributes_for_update)
         end
+
+        raise Faraday::ClientError.new("Testing saja")
 
         true
       rescue Faraday::ClientError => e
@@ -75,6 +77,10 @@ module ZendeskAPI
         else
           raise e
         end
+      end
+
+      def attributes_for_update
+        association.options.parent.send(:attributes_for_save).to_h[association.options.parent.class.singular_resource_name.to_sym].to_h
       end
     end
 
