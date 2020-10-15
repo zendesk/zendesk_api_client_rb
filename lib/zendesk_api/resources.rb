@@ -68,8 +68,6 @@ module ZendeskAPI
           req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }.merge(attributes_for_update)
         end
 
-        raise Faraday::ClientError.new("Testing saja")
-
         true
       rescue Faraday::ClientError => e
         if method == :save
