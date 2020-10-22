@@ -63,6 +63,7 @@ module ZendeskAPI
     module Update
       def _save(method = :save)
         return self unless @resources
+        return self if association&.options&.parent&.class&.singular_resource_name&.to_sym == :ticket
 
         @client.connection.post(path) do |req|
           req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }
