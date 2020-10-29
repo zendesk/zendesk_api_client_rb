@@ -180,7 +180,7 @@ module ZendeskAPI
       end
     end
 
-    class Section < Resource
+    class Section < ReadResource
     end
 
     has_many Section
