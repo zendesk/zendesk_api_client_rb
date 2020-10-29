@@ -207,6 +207,28 @@ module ZendeskAPI
         "help_center/articles"
       end
     end
+
+    class Vote < Resource
+    end
+
+    class UpVote < Resource
+    end
+
+    class DownVote < Resource
+    end
+
+    has_many Vote
+
+    has_many UpVote, path: 'up'
+    has_many DownVote, path: 'down'
+  end
+
+  class Vote < ReadResource
+    class << self
+      def resource_path
+        "help_center/votes"
+      end
+    end
   end
 
   class TopicSubscription < Resource
