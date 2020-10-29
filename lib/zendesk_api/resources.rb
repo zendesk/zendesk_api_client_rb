@@ -186,7 +186,7 @@ module ZendeskAPI
     has_many Section
   end
 
-  class Section < ReadResource
+  class Section < Resource
     class << self
       def resource_path
         "help_center/sections"
