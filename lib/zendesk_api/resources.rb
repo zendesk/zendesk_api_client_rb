@@ -201,7 +201,7 @@ module ZendeskAPI
     has_many Article
   end
 
-  class Article < ReadResource
+  class Article < Resource
     class << self
       def resource_path
         "help_center/articles"
@@ -217,10 +217,14 @@ module ZendeskAPI
     class DownVote < Resource
     end
 
+    class Translation < Resource
+    end
+
     has_many Vote
 
-    has_many UpVote, path: 'up'
-    has_many DownVote, path: 'down'
+    has_many Translation
+    has_many :up_votes, path: 'up', class: Vote
+    has_many :down_votes, path: 'down', class: Vote
   end
 
   class Vote < ReadResource
