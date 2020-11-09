@@ -762,6 +762,10 @@ module ZendeskAPI
     end
   end
 
+  class DeletedUser < ReadResource
+    include Destroy
+  end
+
   class UserField < Resource; end
   class OrganizationField < Resource; end
 
