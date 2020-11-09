@@ -474,6 +474,15 @@ module ZendeskAPI
     put :recover
   end
 
+  class DeletedTicket < ReadResource
+    include Destroy
+    extend DestroyMany
+
+    # Restores this previously deleted ticket to an actual ticket
+    put :restore
+    put :restore_many
+  end
+
   class UserViewRow < DataResource
     has User
     def self.model_key
