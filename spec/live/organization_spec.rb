@@ -71,4 +71,24 @@ describe ZendeskAPI::Organization, :delete_after do
       expect(destroy_many_job["total"]).to be 2
     end
   end
+
+  describe "related" do
+    let!(:organization) do
+      VCR.use_cassette("organization_related_create_organization") do
+        client.organizations.create(valid_attributes)
+      end
+    end
+
+    after do
+      VCR.use_cassette("organization_related_destroy_organization") do
+        organization.destroy
+      end
+    end
+
+    it "shows realated information" do
+      VCR.use_cassette("organization_related_information") do
+        expect(organization.related).to be_a ZendeskAPI::OrganizationRelated
+      end
+    end
+  end
 end
