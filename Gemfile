@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem "jruby-openssl", :platforms => :jruby
-gem "mime-types", "~> 2.99", :platforms => [:ruby_19, :jruby]
+gem "mini_mime"
 gem "rake"
 gem "addressable", "< 2.5.0", :platforms => [:ruby_19, :jruby]
 gem "yard"
