@@ -968,10 +968,52 @@ module ZendeskAPI
       # Gets a incremental export of nps_survey_response from the start_time until now.
       # @param [Client] client The {Client} object to be used
       # @param [Integer] start_time The start_time parameter
-      # @return [Collection] Collection of {NpsResponse}
+      # @return [Collection] Collection of {Nps::Response}
       def self.incremental_export(client, start_time)
         ZendeskAPI::Collection.new(client, self,
           :path => "nps/incremental/responses?start_time=#{start_time.to_i}"
+        )
+      end
+
+      has :survey, class: Nps::Survey
+    end
+
+    class Recipient < ReadResource
+      namespace 'nps'
+
+      class << self
+        def model_key
+          "recipients"
+        end
+      end
+      # Gets a incremental export of nps_survey_recipient from the start_time until now.
+      # @param [Client] client The {Client} object to be used
+      # @param [Integer] start_time The start_time parameter
+      # @return [Collection] Collection of {Nps::Recipient}
+      def self.incremental_export(client, start_time)
+        ZendeskAPI::Collection.new(client, self,
+          :path => "nps/incremental/recipients?start_time=#{start_time.to_i}"
+        )
+      end
+
+      has :survey, class: Nps::Survey
+    end
+
+    class Invitation < ReadResource
+      namespace 'nps'
+
+      class << self
+        def model_key
+          "invitations"
+        end
+      end
+      # Gets a incremental export of nps_survey_invitation from the start_time until now.
+      # @param [Client] client The {Client} object to be used
+      # @param [Integer] survey_id Corresponding ZendeskAPI::Nps::Response ID
+      # @return [Collection] Collection of {Nps::Invitation}
+      def self.list(client, survey_id)
+        ZendeskAPI::Collection.new(client, self,
+          :path => "nps/surveys/#{survey_id}/invitations.json"
         )
       end
 

@@ -1,13 +1,13 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::NpsResponse do
+describe ZendeskAPI::Nps::Response do
 
   describe ".incremental_export" do
-    let(:results) { ZendeskAPI::NpsResponse.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
+    let(:results) { ZendeskAPI::Nps::Response.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
 
     around do |example|
       # 1 request every 5 minutes allowed <-> you can only test 1 call ...
-      VCR.use_cassette("incremental_export") do
+      VCR.use_cassette("responses_incremental_export") do
         client.config.retry = false
 
         example.call
@@ -17,7 +17,7 @@ describe ZendeskAPI::NpsResponse do
     end
 
     it "finds nps_responses after a old date" do
-      expect(results.to_a.first).to be_an_instance_of ZendeskAPI::NpsResponse
+      expect(results.to_a.first).to be_an_instance_of ZendeskAPI::Nps::Response
     end
 
     it "is able to do next" do
@@ -27,5 +27,5 @@ describe ZendeskAPI::NpsResponse do
       results.next
       expect(results.first).to_not eq(first)
     end
-  end  
+  end
 end
