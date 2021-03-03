@@ -150,6 +150,7 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.use ZendeskAPI::Middleware::Response::ParseJson
         builder.use ZendeskAPI::Middleware::Response::SanitizeResponse
+        builder.use FaradayMiddleware::FollowRedirects, limit: 0
 
         adapter = config.adapter || Faraday.default_adapter
 
