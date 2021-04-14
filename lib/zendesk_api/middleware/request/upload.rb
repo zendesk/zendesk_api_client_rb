@@ -1,5 +1,5 @@
 require "faraday/middleware"
-require "mime/types"
+require "mini_mime"
 require 'tempfile'
 
 module ZendeskAPI
@@ -50,7 +50,10 @@ module ZendeskAPI
               hash = hash[key]
             end
 
-            mime_type ||= MIME::Types.type_for(path).first || "application/octet-stream"
+            unless defined?(mime_type) && !mime_type.nil?
+              mime_type = MiniMime.lookup_by_filename(path)
+              mime_type = mime_type ? mime_type.content_type : "application/octet-stream"
+            end
 
             hash[:filename] ||= if file.respond_to?(:original_filename)
               file.original_filename
