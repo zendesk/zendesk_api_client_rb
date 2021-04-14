@@ -1,6 +1,8 @@
 # v1.29.0
 
+* Add Organization Related resource
 * Add Deleted Users and Deleted Tickets resource
+* Switch over mini_mime for mime type lookups
 
 # v1.28.0
 
