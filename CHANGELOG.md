@@ -1,3 +1,7 @@
+# v1.29.0
+
+* Add Deleted Users and Deleted Tickets resource
+
 # v1.28.0
 
 * Add Trigger categories resource

@@ -477,6 +477,15 @@ module ZendeskAPI
     put :recover
   end
 
+  class DeletedTicket < ReadResource
+    include Destroy
+    extend DestroyMany
+
+    # Restores this previously deleted ticket to an actual ticket
+    put :restore
+    put :restore_many
+  end
+
   class UserViewRow < DataResource
     has User
     def self.model_key
@@ -754,6 +763,10 @@ module ZendeskAPI
       # Needed for proper Role sideloading
       self.role_id = role.name if key?(:role)
     end
+  end
+
+  class DeletedUser < ReadResource
+    include Destroy
   end
 
   class UserField < Resource; end
