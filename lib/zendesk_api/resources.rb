@@ -122,6 +122,8 @@ module ZendeskAPI
     put :clear_badge
   end
 
+  class OrganizationRelated < DataResource; end
+
   class Organization < Resource
     extend CreateMany
     extend CreateOrUpdate
@@ -129,6 +131,7 @@ module ZendeskAPI
 
     has Ability, :inline => true
     has Group
+    has :related, :class => OrganizationRelated
 
     has_many Ticket
     has_many User
