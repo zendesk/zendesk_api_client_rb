@@ -8,7 +8,7 @@
 
 This Ruby gem is a wrapper around Zendesk's REST API. Please see our [API documentation](http://developer.zendesk.com) for more information.
 
-Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki), [class documentation](http://zendesk.github.io/zendesk_api_client_rb), and [issues](https://github.com/zendesk/zendesk_api_client_rb/issues) before reporting a bug or asking for help.
+Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki), [class documentation](https://www.rubydoc.info/gems/zendesk_api/), and [issues](https://github.com/zendesk/zendesk_api_client_rb/issues) before reporting a bug or asking for help.
 
 ## Product Support
 
