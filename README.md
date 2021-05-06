@@ -1,14 +1,14 @@
 # Zendesk API Client
 
 ![Test](https://github.com/zendesk/zendesk_api_client_rb/workflows/Test/badge.svg)
-[![Gem Version](https://badge.fury.io/rb/zendesk_api.svg)](http://badge.fury.io/rb/zendesk_api)
+[![Gem Version](https://badge.fury.io/rb/zendesk_api.svg)](https://badge.fury.io/rb/zendesk_api)
 [![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.svg)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
 
 ## Documentation
 
-This Ruby gem is a wrapper around Zendesk's REST API. Please see our [API documentation](http://developer.zendesk.com) for more information.
+This Ruby gem is a wrapper around Zendesk's REST API. Please see our [API documentation](https://developer.zendesk.com) for more information.
 
-Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki), [class documentation](http://zendesk.github.io/zendesk_api_client_rb), and [issues](https://github.com/zendesk/zendesk_api_client_rb/issues) before reporting a bug or asking for help.
+Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki), [class documentation](https://www.rubydoc.info/gems/zendesk_api/), and [issues](https://github.com/zendesk/zendesk_api_client_rb/issues) before reporting a bug or asking for help.
 
 ## Product Support
 
@@ -46,7 +46,7 @@ Add it to your Gemfile
 
     gem "zendesk_api"
 
-and follow normal [Bundler](http://gembundler.com/) installation and execution procedures.
+and follow normal [Bundler](https://bundler.io/) installation and execution procedures.
 
 ## Configuration
 
@@ -59,7 +59,7 @@ require 'zendesk_api'
 client = ZendeskAPI::Client.new do |config|
   # Mandatory:
 
-  config.url = "<- your-zendesk-url ->" # e.g. https://mydesk.zendesk.com/api/v2
+  config.url = "<- your-zendesk-url ->" # e.g. https://yoursubdomain.zendesk.com/api/v2
 
   # Basic / Token Authentication
   config.username = "login.email@zendesk.com"
@@ -245,7 +245,7 @@ ticket.requester # => #<ZendeskAPI::User id=...>
 ```
 
 Currently, this feature is limited to only a few resources and their associations.
-They are documented on [developer.zendesk.com](http://developer.zendesk.com/documentation/rest_api/introduction.html#side-loading-\(beta\)).
+They are documented on [developer.zendesk.com](https://developer.zendesk.com/rest_api/docs/support/side_loading#supported-endpoints).
 
 ### Search
 
@@ -283,7 +283,7 @@ Bulk importing tickets allows you to move large amounts of data into Zendesk.
 ticket = ZendeskAPI::Ticket.import(client, :subject => "Help", :comments => [{ :author_id => 19, :value => "This is a comment" }])
 ```
 
-http://developer.zendesk.com/documentation/rest_api/ticket_import.html
+Further documentation can be found on [developer.zendesk.com](https://developer.zendesk.com/rest_api/docs/support/ticket_import)
 
 ### Attaching files
 
@@ -299,7 +299,7 @@ ticket.save!
 
 ### Apps API
 
-v1.1.0 introduces support for the Zendesk [Apps API](http://developer.zendesk.com/documentation/apps/reference/api.html)
+v1.1.0 introduces support for the Zendesk [Apps API](https://developer.zendesk.com/rest_api/docs/support/apps)
 
 #### Creating Apps
 
@@ -429,11 +429,11 @@ ZendeskAPI::AppInstallation.destroy!(client, :id => 123)
 
 ## Copyright and license
 
-Copyright 2015-2019 Zendesk
+Copyright 2015-2021 Zendesk
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
