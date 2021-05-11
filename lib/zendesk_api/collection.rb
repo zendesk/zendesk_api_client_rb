@@ -47,7 +47,7 @@ module ZendeskAPI
     end
 
     # Methods that take a Hash argument
-    methods = %w{create find update update_many destroy}
+    methods = %w{create find update update_many destroy create_or_update}
     methods += methods.map { |method| method + "!" }
     methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
