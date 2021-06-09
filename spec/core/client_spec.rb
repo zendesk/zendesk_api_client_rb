@@ -269,6 +269,28 @@ describe ZendeskAPI::Client do
     it 'raises if the resource does not exist' do
       expect { subject.random_resource }.to raise_error(RuntimeError)
     end
+
+    context "when use_resource_cache is set to false" do
+      subject do
+        ZendeskAPI::Client.new do |config|
+          config.url = "https://example.zendesk.com/api/v2"
+          config.use_resource_cache = false
+        end
+      end
+
+      before(:each) do
+        stub_request(:get, %r{/bs$}).to_return(:status => 200)
+      end
+
+      it "returns an instance of ZendeskAPI::Collection" do
+        expect(subject.tickets).to be_instance_of(ZendeskAPI::Collection)
+      end
+
+      it "does not add collection to resource_cache" do
+        subject.tickets
+        expect(subject.instance_variable_get(:@resource_cache)).to be_empty
+      end
+    end
   end
 
   it "can be subclassed" do

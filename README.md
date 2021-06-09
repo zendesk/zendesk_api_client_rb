@@ -87,6 +87,9 @@ client = ZendeskAPI::Client.new do |config|
   require 'logger'
   config.logger = Logger.new(STDOUT)
 
+  # Disable resource cache (this is enabled by default)
+  config.use_resource_cache = false
+
   # Changes Faraday adapter
   # config.adapter = :patron
 
