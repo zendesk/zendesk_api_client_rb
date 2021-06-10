@@ -14,11 +14,11 @@ group :test do
   gem "simplecov"
   gem "byebug", :platform => [:ruby_20, :ruby_21]
   gem "webmock"
-  gem "vcr"
+  gem "vcr", "~> 6.0"
   gem "rspec"
 
   # only used for uploads testing
-  gem "actionpack", "~> 3.2"
+  gem "actionpack", ">= 5.2.4.6"
 end
 
 group :dev do
