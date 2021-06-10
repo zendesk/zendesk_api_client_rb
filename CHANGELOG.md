@@ -1,3 +1,9 @@
+# v1.30.0
+
+* Add configuration option to disable resource cache
+* Add RecipientAddress resource
+* Upgrade VCR and actionpack testing dependencies
+
 # v1.29.0
 
 * Add Organization Related resource
