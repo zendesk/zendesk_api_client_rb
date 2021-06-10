@@ -290,6 +290,10 @@ describe ZendeskAPI::Client do
         subject.tickets
         expect(subject.instance_variable_get(:@resource_cache)).to be_empty
       end
+
+      it "raises if the resource does not exist" do
+        expect { subject.random_resource }.to raise_error(RuntimeError)
+      end
     end
   end
 
