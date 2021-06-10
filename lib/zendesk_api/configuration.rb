@@ -42,8 +42,12 @@ module ZendeskAPI
     # @return [ZendeskAPI::LRUCache]
     attr_accessor :cache
 
+    # @return [Boolean] Whether to use resource_cache or not
+    attr_accessor :use_resource_cache
+
     def initialize
       @client_options = {}
+      @use_resource_cache = true
 
       self.cache = ZendeskAPI::LRUCache.new(1000)
     end

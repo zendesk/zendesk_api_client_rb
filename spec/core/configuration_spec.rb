@@ -29,4 +29,8 @@ describe ZendeskAPI::Configuration do
     subject.client_options = { :ssl => { :verify => false } }
     expect(subject.options[:ssl][:verify]).to eq(false)
   end
+
+  it "sets a default for use_resource_cache" do
+    expect(subject.use_resource_cache).to be true
+  end
 end

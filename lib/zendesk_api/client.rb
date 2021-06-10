@@ -40,6 +40,11 @@ module ZendeskAPI
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
 
+      unless config.use_resource_cache
+        raise "Resource for #{method} does not exist" unless method_as_class(method)
+        return ZendeskAPI::Collection.new(self, method_as_class(method), options)
+      end
+
       @resource_cache[method] ||= { :class => nil, :cache => ZendeskAPI::LRUCache.new }
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
