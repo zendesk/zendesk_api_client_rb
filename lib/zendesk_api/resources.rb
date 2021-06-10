@@ -10,6 +10,8 @@ module ZendeskAPI
 
   # @internal Begin actual Resource definitions
 
+  class RecipientAddress < Resource; end
+
   class Locale < ReadResource; end
 
   class CustomRole < DataResource; end
