@@ -1,3 +1,7 @@
+# v1.31.0
+
+* Upgrade addressable dependency
+
 # v1.30.0
 
 * Add configuration option to disable resource cache
