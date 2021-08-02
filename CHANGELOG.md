@@ -1,3 +1,7 @@
+# v1.32.0
+
+* Add more info to ZendeskAPI::Error::RecordInvalid
+
 # v1.31.0
 
 * Upgrade addressable dependency
