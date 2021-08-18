@@ -863,6 +863,18 @@ describe ZendeskAPI::Collection do
     end
   end
 
+  context "with a module (SearchExport)" do
+    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::SearchExport, :query => "hello") }
+
+    before(:each) do
+      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => []))
+    end
+
+    it "should not blow up" do
+      expect(subject.to_a).to eq([])
+    end
+  end
+
   context "with different path" do
     subject do
       ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :collection_path => %w(test_resources active))

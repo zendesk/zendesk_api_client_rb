@@ -185,9 +185,8 @@ module ZendeskAPI
       elsif association && association.options.parent && association.options.parent.new_record?
         return (@resources = [])
       end
-
       @response = get_response(@query || path)
-      handle_response(@response.body)
+      handle_response(@response.body, (@query || path))
 
       @resources
     end
@@ -332,6 +331,32 @@ module ZendeskAPI
       end
     end
 
+    def has_more_results?(response)
+      return false unless response["meta"].present? && response["results"].present?
+
+      response["meta"]["has_more"] && response["results"].length > 0
+    end
+
+    def get_response_body(link)
+      response_body = @client.connection.send("get", link).body
+
+      response_body
+    end
+
+    def get_next_page_data(original_response_body)
+      link = original_response_body["links"]["next"]
+
+      while link do
+        response = get_response_body(link)
+
+        original_response_body["results"] = original_response_body["results"] + response["results"]
+
+        link = response['meta']['has_more'] ? response['links']['next'] : nil
+      end
+
+      original_response_body
+    end
+
     def _all(start_page = @options["page"], bang = false, &block)
       raise(ArgumentError, "must pass a block") unless block
 
@@ -410,10 +435,12 @@ module ZendeskAPI
       end
     end
 
-    def handle_response(response_body)
+    def handle_response(response_body, path = nil)
       unless response_body.is_a?(Hash)
         raise ZendeskAPI::Error::NetworkError, @response.env
       end
+
+      response_body = get_next_page_data(response_body) if has_more_results?(response_body)
 
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
@@ -426,8 +453,12 @@ module ZendeskAPI
         wrap_resource(res)
       end
 
-      set_page_and_count(body)
-      set_includes(@resources, @includes, body)
+      unless path == 'search/export'
+        set_page_and_count(body)
+        set_includes(@resources, @includes, body)
+
+        return
+      end
     end
 
     # Simplified Associations#wrap_resource
