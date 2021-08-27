@@ -45,6 +45,8 @@ module ZendeskAPI
     # @return [Boolean] Whether to use resource_cache or not
     attr_accessor :use_resource_cache
 
+    attr_accessor :retry_codes
+
     def initialize
       @client_options = {}
       @use_resource_cache = true

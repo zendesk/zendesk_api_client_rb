@@ -8,19 +8,32 @@ module ZendeskAPI
       # @private
       class Retry < Faraday::Middleware
         DEFAULT_RETRY_AFTER = 10
-        ERROR_CODES = [429, 503]
+        DEFAULT_ERROR_CODES = [429, 503]
 
         def initialize(app, options = {})
           super(app)
           @logger = options[:logger]
+          @error_codes = options.key?(:retry_codes) && options[:retry_codes] ? options[:retry_codes] : DEFAULT_ERROR_CODES
         end
 
         def call(env)
           original_env = env.dup
-          response = @app.call(env)
+          exception_happened = false
+          begin
+            response = @app.call(env)
+          rescue StandardError => e
+            exception_happened = true
+          end
 
-          if ERROR_CODES.include?(response.env[:status])
-            seconds_left = (response.env[:response_headers][:retry_after] || DEFAULT_RETRY_AFTER).to_i
+          if exception_happened || @error_codes.include?(response.env[:status])
+
+            if exception_happened
+              seconds_left = DEFAULT_RETRY_AFTER.to_i
+              @logger.warn "An exception happened, waiting #{seconds_left} seconds... #{e}" if @logger
+            else
+              seconds_left = (response.env[:response_headers][:retry_after] || DEFAULT_RETRY_AFTER).to_i
+            end
+
             @logger.warn "You have been rate limited. Retrying in #{seconds_left} seconds..." if @logger
 
             seconds_left.times do |i|
