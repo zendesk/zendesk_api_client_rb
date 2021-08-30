@@ -1,5 +1,4 @@
 require "faraday/middleware"
-
 module ZendeskAPI
   module Middleware
     # @private
@@ -14,15 +13,20 @@ module ZendeskAPI
           super(app)
           @logger = options[:logger]
           @error_codes = options.key?(:retry_codes) && options[:retry_codes] ? options[:retry_codes] : DEFAULT_ERROR_CODES
+          @retry_on_exception = options.key?(:retry_on_exception) && options[:retry_on_exception] ? options[:retry_on_exception] : false
         end
 
         def call(env)
           original_env = env.dup
           exception_happened = false
-          begin
+          if @retry_on_exception
+            begin
+              response = @app.call(env)
+            rescue StandardError => e
+              exception_happened = true
+            end
+          else
             response = @app.call(env)
-          rescue StandardError => e
-            exception_happened = true
           end
 
           if exception_happened || @error_codes.include?(response.env[:status])
