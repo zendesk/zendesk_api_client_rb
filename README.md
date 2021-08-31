@@ -98,6 +98,12 @@ client = ZendeskAPI::Client.new do |config|
 
   # When getting the error 'hostname does not match the server certificate'
   # use the API at https://yoursubdomain.zendesk.com/api/v2
+
+  # Change retry configuration (this is disabled by default)
+  config.retry_on_exception = true
+
+  # Error codes when the request will be automatically retried. Defaults to 429, 503
+  config.retry_codes = [ 429 ]
 end
 ```
 

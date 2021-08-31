@@ -1,3 +1,7 @@
+# v1.33.0
+
+* Expand retry logic to support retries on 5xx error codes
+
 # v1.32.0
 
 * Add more info to ZendeskAPI::Error::RecordInvalid
