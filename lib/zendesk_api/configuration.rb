@@ -45,6 +45,12 @@ module ZendeskAPI
     # @return [Boolean] Whether to use resource_cache or not
     attr_accessor :use_resource_cache
 
+    # specify the server error codes in which you want a retry to be attempted
+    attr_accessor :retry_codes
+
+    # specify if you want a (network layer) exception to elicit a retry
+    attr_accessor :retry_on_exception
+
     def initialize
       @client_options = {}
       @use_resource_cache = true
