@@ -198,7 +198,7 @@ module ZendeskAPI
     end
 
     def check_url
-      if !config.allow_http && config.url !~ /^https/
+      if !config.allow_http && !config.url.start_with?('https://')
         raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
       end
     end
