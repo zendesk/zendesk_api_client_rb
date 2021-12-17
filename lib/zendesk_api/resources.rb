@@ -5,7 +5,6 @@ module ZendeskAPI
   class User < Resource; end
   class UserRelated < DataResource; end
   class Category < Resource; end
-  class OrganizationMembership < ReadResource; end
   class OrganizationSubscription < ReadResource; end
 
   # @internal Begin actual Resource definitions
@@ -125,6 +124,10 @@ module ZendeskAPI
   end
 
   class OrganizationRelated < DataResource; end
+
+  class OrganizationMembership < ReadResource
+    extend CreateOrUpdate
+  end
 
   class Organization < Resource
     extend CreateMany
