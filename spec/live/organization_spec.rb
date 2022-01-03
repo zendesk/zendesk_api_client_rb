@@ -30,7 +30,7 @@ describe ZendeskAPI::Organization, :delete_after do
         end
       end
 
-      it "updates the existing user" do
+      it "updates the existing organization" do
         VCR.use_cassette("create_or_update_find_existing_organization") do
           expect(client.organizations.find(id: organization.id).name).to eql "Updated!"
         end
