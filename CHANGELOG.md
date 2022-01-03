@@ -1,84 +1,90 @@
+# v1.34.0
+
+- Refine https check for URL
+- Support installations with hashie 5.0.0
+- Add `OrganizationMembership.create_or_update{,!}`
+
 # v1.33.0
 
-* Expand retry logic to support retries on 5xx error codes
+- Expand retry logic to support retries on 5xx error codes
 
 # v1.32.0
 
-* Add more info to ZendeskAPI::Error::RecordInvalid
+- Add more info to ZendeskAPI::Error::RecordInvalid
 
 # v1.31.0
 
-* Upgrade addressable dependency
+- Upgrade addressable dependency
 
 # v1.30.0
 
-* Add configuration option to disable resource cache
-* Add RecipientAddress resource
-* Upgrade VCR and actionpack testing dependencies
+- Add configuration option to disable resource cache
+- Add RecipientAddress resource
+- Upgrade VCR and actionpack testing dependencies
 
 # v1.29.0
 
-* Add Organization Related resource
-* Add Deleted Users and Deleted Tickets resource
-* Switch over mini_mime for mime type lookups
+- Add Organization Related resource
+- Add Deleted Users and Deleted Tickets resource
+- Switch over mini_mime for mime type lookups
 
 # v1.28.0
 
-* Add Trigger categories resource
+- Add Trigger categories resource
 
 # v1.27.0
 
-* Add Section and Article resources
+- Add Section and Article resources
 
 # v1.26.0
 
-* Allow using hashie 4.x
-* Add support to merge user API
+- Allow using hashie 4.x
+- Add support to merge user API
 
 # v1.25.0
 
-* Allow using Faraday 1.x release in gemspec
+- Allow using Faraday 1.x release in gemspec
 
 # v1.24.0
 
-* Added support for `UserRelated` operation on users resource
-* Bring back `UpdateMany` on users resource
+- Added support for `UserRelated` operation on users resource
+- Bring back `UpdateMany` on users resource
 
 # v1.23.0
 
-* Fix Faraday deprecation notice and relax required version
+- Fix Faraday deprecation notice and relax required version
 
 # v1.22.0
 
-* Fix `CreateOrUpdate` action to use singular resource name
-* Add `CreateMany`, `CreateOrUpdate` and `DestroyMany` to Organizations
+- Fix `CreateOrUpdate` action to use singular resource name
+- Add `CreateMany`, `CreateOrUpdate` and `DestroyMany` to Organizations
 
 # v1.21.0
 
-* Add support for `.find` attachments
-* Set default request timeout of 60 seconds
-* Add gem project metadata
-* Add meaningful error when the username is not set using basic token auth
+- Add support for `.find` attachments
+- Set default request timeout of 60 seconds
+- Add gem project metadata
+- Add meaningful error when the username is not set using basic token auth
 
 # v1.20.0
 
-* Bring back spec live testing
+- Bring back spec live testing
 
 # v1.19.1
 
-* Remove forums resource and start using community topics
-* Add assigned tickets association
+- Remove forums resource and start using community topics
+- Add assigned tickets association
 
 # v1.19.0
 
-* Add option to raise error when rate limited
+- Add option to raise error when rate limited
 
 # v1.18.0
 
-* Add support for create_or_update for user resource
-* Update ticket incremental export endpoint
-* Add support to create or update many users and remove unsupported update many users
-* Define respond_to_missing?
+- Add support for create_or_update for user resource
+- Update ticket incremental export endpoint
+- Add support to create or update many users and remove unsupported update many users
+- Define respond_to_missing?
 
 # v1.17.0
 
@@ -200,7 +206,7 @@ add a gzip middleware exception for httpclient
 
 # v1.12.1
 
-add user *_many endpoints
+add user \*\_many endpoints
 
 fix doc gitignores
 
