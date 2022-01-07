@@ -185,9 +185,14 @@ module ZendeskAPI
       elsif association && association.options.parent && association.options.parent.new_record?
         return (@resources = [])
       end
-
-      @response = get_response(@query || path)
-      handle_response(@response.body)
+      path_query_link = (@query || path)
+      @response = get_response(path_query_link)
+      
+      if path_query_link == "search/export"
+        handle_cursor_response(@response.body)
+      else
+        handle_response(@response.body)
+      end
 
       @resources
     end
@@ -319,6 +324,32 @@ module ZendeskAPI
       map(&:to_param)
     end
 
+    def has_more_results?(response)
+      return false unless response["meta"].present? && response["results"].present?
+
+      response["meta"]["has_more"] && response["results"].length > 0
+    end
+
+    def get_response_body(link)
+      response_body = @client.connection.send("get", link).body
+
+      response_body
+    end
+
+    def get_next_page_data(original_response_body)
+      link = original_response_body["links"]["next"]
+
+      while link do
+        response = get_response_body(link)
+
+        original_response_body["results"] = original_response_body["results"] + response["results"]
+
+        link = response["meta"]["has_more"] ? response["links"]["next"] : nil
+      end
+
+      original_response_body
+    end
+
     private
 
     def set_page_and_count(body)
@@ -407,6 +438,25 @@ module ZendeskAPI
         else
           req.params.merge!(opts)
         end
+      end
+    end
+
+    def handle_cursor_response(response_body)
+      unless response_body.is_a?(Hash)
+        raise ZendeskAPI::Error::NetworkError, @response.env
+      end
+
+      response_body = get_next_page_data(response_body) if has_more_results?(response_body)
+
+      body = response_body.dup
+      results = body.delete(@resource_class.model_key) || body.delete("results")
+
+      unless results
+        raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
+      end
+
+      @resources = results.map do |res|
+        wrap_resource(res)
       end
     end
 

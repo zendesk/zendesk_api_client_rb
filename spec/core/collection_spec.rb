@@ -863,6 +863,35 @@ describe ZendeskAPI::Collection do
     end
   end
 
+  context "with a module (SearchExport)" do
+    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::SearchExport, :query => "hello") }
+
+    it "should not blow up" do
+      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => []))
+
+      expect(subject.to_a).to eq([])
+    end
+
+    it "should not have more results" do
+      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [], 
+                                                                   :meta => {has_more: false}))
+
+      subject.fetch
+      response = subject.instance_variable_get(:@response).body
+      expect(subject.has_more_results?(response)).to be(false)
+    end
+
+    it "should not have more pages data" do
+      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [], 
+                                                                   :meta => {has_more: false}, 
+                                                                   :links => {:next => nil}))
+
+      subject.fetch
+      response = subject.instance_variable_get(:@response).body
+      expect(subject.get_next_page_data(response)).to eq(response)
+    end
+  end
+
   context "with different path" do
     subject do
       ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :collection_path => %w(test_resources active))
