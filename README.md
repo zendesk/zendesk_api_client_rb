@@ -1,6 +1,6 @@
 # Zendesk API Client
 
-![Test](https://github.com/zendesk/zendesk_api_client_rb/workflows/Test/badge.svg)
+[![Test](https://github.com/zendesk/zendesk_api_client_rb/workflows/Test/badge.svg)](https://github.com/zendesk/zendesk_api_client_rb/actions/workflows/main.yml?query=branch%3Amaster)
 [![Gem Version](https://badge.fury.io/rb/zendesk_api.svg)](https://badge.fury.io/rb/zendesk_api)
 [![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.svg)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
 
@@ -227,6 +227,7 @@ To facilitate a smaller number of requests and easier manipulation of associated
 For example:
 A `ZendeskAPI::Ticket` is associated with `ZendeskAPI::User` through the `requester_id` field.
 API requests for that ticket return a structure similar to this:
+
 ```json
 "ticket": {
   "id": 1,
@@ -244,11 +245,9 @@ tickets = client.tickets.include(:users)
 # Or client.tickets(:include => :users)
 # Does *NOT* make a request to the server since it is already loaded
 tickets.first.requester # => #<ZendeskAPI::User id=...>
-```
 
-OR
+# OR
 
-```ruby
 ticket = client.tickets.find!(:id => 1, :include => :users)
 ticket.requester # => #<ZendeskAPI::User id=...>
 ```
@@ -426,7 +425,17 @@ installation.destroy!
 ZendeskAPI::AppInstallation.destroy!(client, :id => 123)
 ```
 
-## Note on Patches/Pull Requests
+## Running the gem locally
+
+See `.github/workflows/main.yml` to understand the CI process.
+
+```
+bundle exec rake # Runs the tests
+bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
+```
+
+## Contributing
+
 1. Fork the project.
 2. Make your feature addition or bug fix.
 3. Add tests for it. This is important so that we don't break it in a future
@@ -438,7 +447,7 @@ ZendeskAPI::AppInstallation.destroy!(client, :id => 123)
 
 ## Copyright and license
 
-Copyright 2015-2021 Zendesk
+Copyright 2015-2022 Zendesk
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
