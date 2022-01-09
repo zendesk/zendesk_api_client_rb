@@ -187,7 +187,7 @@ module ZendeskAPI
       end
       path_query_link = (@query || path)
       @response = get_response(path_query_link)
-      
+
       if path_query_link == "search/export"
         handle_cursor_response(@response.body)
       else
