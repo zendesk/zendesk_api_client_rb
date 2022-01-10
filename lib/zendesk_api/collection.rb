@@ -318,8 +318,6 @@ module ZendeskAPI
       end
     end
 
-    alias :to_str :to_s
-
     def to_param
       map(&:to_param)
     end
@@ -327,6 +325,7 @@ module ZendeskAPI
     def more_results?(response)
       response["meta"].present? && response["results"].present?
     end
+    alias_method :has_more_results?, :more_results? # For backward compatibility with 1.33.0 and 1.34.0
 
     def get_response_body(link)
       @client.connection.send("get", link).body
