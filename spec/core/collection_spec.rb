@@ -878,7 +878,7 @@ describe ZendeskAPI::Collection do
 
       subject.fetch
       response = subject.instance_variable_get(:@response).body
-      expect(subject.has_more_results?(response)).to be(false)
+      expect(subject.more_results?(response)).to be(false)
     end
 
     it "should not have more pages data" do
