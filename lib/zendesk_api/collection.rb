@@ -325,21 +325,17 @@ module ZendeskAPI
     end
 
     def has_more_results?(response)
-      return false unless response["meta"].present? && response["results"].present?
-
-      response["meta"]["has_more"] && response["results"].length > 0
+      response["meta"].present? && response["results"].present?
     end
 
     def get_response_body(link)
-      response_body = @client.connection.send("get", link).body
-
-      response_body
+      @client.connection.send("get", link).body
     end
 
     def get_next_page_data(original_response_body)
       link = original_response_body["links"]["next"]
 
-      while link do
+      while link
         response = get_response_body(link)
 
         original_response_body["results"] = original_response_body["results"] + response["results"]
