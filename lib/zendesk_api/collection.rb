@@ -324,7 +324,7 @@ module ZendeskAPI
       map(&:to_param)
     end
 
-    def has_more_results?(response)
+    def more_results?(response)
       response["meta"].present? && response["results"].present?
     end
 
@@ -442,7 +442,7 @@ module ZendeskAPI
         raise ZendeskAPI::Error::NetworkError, @response.env
       end
 
-      response_body = get_next_page_data(response_body) if has_more_results?(response_body)
+      response_body = get_next_page_data(response_body) if more_results?(response_body)
 
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
