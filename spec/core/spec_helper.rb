@@ -10,6 +10,7 @@ require 'stringio'
 begin
   require 'byebug'
 rescue LoadError
+  puts "ByeBug not available"
 end
 
 class String

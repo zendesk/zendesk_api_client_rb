@@ -24,7 +24,6 @@ end
 
 group :dev, :test do
   gem "byebug"
-  gem "bump"
 end
 
 gemspec
