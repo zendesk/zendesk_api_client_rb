@@ -12,7 +12,6 @@ gem "rubocop", "~> 0.64.0", :require => false
 
 group :test do
   gem "simplecov"
-  gem "byebug", :platform => [:ruby_20, :ruby_21]
   gem "webmock"
   gem "vcr", "~> 6.0"
   gem "rspec"
@@ -23,6 +22,7 @@ end
 
 group :dev do
   gem "bump"
+  gem "byebug"
 end
 
 gemspec

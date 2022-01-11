@@ -2,6 +2,7 @@ $:.unshift(File.join(File.dirname(__FILE__), "macros"))
 
 ENV['TZ'] = 'CET' # something that is not local and not utc so we find all the bugs
 
+# TODO: remove
 if RUBY_VERSION =~ /1.9/ && ENV["COVERAGE"]
   require 'simplecov'
   SimpleCov.start do
@@ -13,11 +14,13 @@ require 'zendesk_api'
 require 'vcr'
 require 'logger'
 require 'stringio'
+# TODO: remove
 require 'scrub_rb' if RUBY_VERSION < "2.1.0"
 
 begin
   require 'byebug'
 rescue LoadError
+  puts "ByeBug not available"
 end
 
 class String

@@ -13,3 +13,5 @@ config/mongod
 Gemfile.lock
 vendor/bundle
 .bundle
+.byebug_history
+
