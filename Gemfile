@@ -1,18 +1,16 @@
 source 'https://rubygems.org'
 
-gem "jruby-openssl", :platforms => :jruby
+gem "jruby-openssl", platforms: :jruby
 gem "mini_mime"
 gem "rake"
-gem "addressable", ">= 2.8.0", :platforms => [:ruby_19, :jruby]
+gem "addressable", ">= 2.8.0", platforms: :jruby
 gem "yard"
-gem "json", ">= 2.3.0", :platforms => :ruby_19
-gem "scrub_rb", :platforms => [:ruby_19, :ruby_20, :jruby]
+gem "scrub_rb", platforms: :jruby
 
-gem "rubocop", "~> 0.64.0", :require => false
+gem "rubocop", "~> 0.64.0", require: false
 
 group :test do
   gem "simplecov"
-  gem "byebug", :platform => [:ruby_20, :ruby_21]
   gem "webmock"
   gem "vcr", "~> 6.0"
   gem "rspec"
@@ -22,6 +20,7 @@ group :test do
 end
 
 group :dev do
+  gem "byebug"
   gem "bump"
 end
 
