@@ -879,18 +879,19 @@ describe ZendeskAPI::Collection do
     end
 
     it "should not have more results" do
-      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [], 
-                                                                   :meta => {has_more: false}))
+      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [],
+                                                                   :meta => { has_more: false }))
 
       subject.fetch
       response = subject.instance_variable_get(:@response).body
+      expect(subject.more_results?(response)).to be(false)
       expect(subject.has_more_results?(response)).to be(false)
     end
 
     it "should not have more pages data" do
-      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [], 
-                                                                   :meta => {has_more: false}, 
-                                                                   :links => {:next => nil}))
+      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [],
+                                                                   :meta => { has_more: false },
+                                                                   :links => { :next => nil }))
 
       subject.fetch
       response = subject.instance_variable_get(:@response).body
