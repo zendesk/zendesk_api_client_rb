@@ -52,7 +52,10 @@ describe ZendeskAPI::Collection do
     it "should defer #create_or_update to the resource class" do
       resource = ZendeskAPI::Collection.new(client, ZendeskAPI::CreateOrUpdateTestResource)
       stub_json_request(:post, %r{create_or_update_test_resources/create_or_update}, json(create_or_update_test_resource: { param: "abc" }))
+
       resource.create_or_update!
+
+      assert_requested(:post, %r{create_or_update_test_resources/create_or_update$})
     end
 
     it "should defer #create to the resource class" do
@@ -879,7 +882,7 @@ describe ZendeskAPI::Collection do
     end
 
     it "should not have more results" do
-      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [], 
+      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [],
                                                                    :meta => {has_more: false}))
 
       subject.fetch
@@ -888,8 +891,8 @@ describe ZendeskAPI::Collection do
     end
 
     it "should not have more pages data" do
-      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [], 
-                                                                   :meta => {has_more: false}, 
+      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [],
+                                                                   :meta => {has_more: false},
                                                                    :links => {:next => nil}))
 
       subject.fetch
