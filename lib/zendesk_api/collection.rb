@@ -187,7 +187,7 @@ module ZendeskAPI
       end
       path_query_link = (@query || path)
       @response = get_response(path_query_link)
-      
+
       if path_query_link == "search/export"
         handle_cursor_response(@response.body)
       else
@@ -318,28 +318,23 @@ module ZendeskAPI
       end
     end
 
-    alias :to_str :to_s
-
     def to_param
       map(&:to_param)
     end
 
-    def has_more_results?(response)
-      return false unless response["meta"].present? && response["results"].present?
-
-      response["meta"]["has_more"] && response["results"].length > 0
+    def more_results?(response)
+      response["meta"].present? && response["results"].present?
     end
+    alias_method :has_more_results?, :more_results? # For backward compatibility with 1.33.0 and 1.34.0
 
     def get_response_body(link)
-      response_body = @client.connection.send("get", link).body
-
-      response_body
+      @client.connection.send("get", link).body
     end
 
     def get_next_page_data(original_response_body)
       link = original_response_body["links"]["next"]
 
-      while link do
+      while link
         response = get_response_body(link)
 
         original_response_body["results"] = original_response_body["results"] + response["results"]
@@ -446,7 +441,7 @@ module ZendeskAPI
         raise ZendeskAPI::Error::NetworkError, @response.env
       end
 
-      response_body = get_next_page_data(response_body) if has_more_results?(response_body)
+      response_body = get_next_page_data(response_body) if more_results?(response_body)
 
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
