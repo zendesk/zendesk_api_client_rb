@@ -6,7 +6,7 @@ require 'rubocop/rake_task'
 begin
   require 'rspec/core/rake_task'
 rescue LoadError
-  puts "WARN: #{$!.message} Continuing..."
+  puts "WARN: #{$ERROR_INFO.message} Continuing..."
 end
 
 if defined?(RSpec)
