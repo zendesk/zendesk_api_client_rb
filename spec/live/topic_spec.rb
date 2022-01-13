@@ -1,6 +1,6 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::Topic do
+describe ZendeskAPI::Topic, :delete_after do
   def valid_attributes
     {
       :name => "My Topic",
