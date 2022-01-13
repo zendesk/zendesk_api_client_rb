@@ -57,37 +57,6 @@ describe ZendeskAPI::User, :delete_after do
       end
     end
 
-    xcontext "merge" do
-      let(:merge_user_1) do
-        VCR.use_cassette("merge_users_user_1") do
-          client.users.create!(email: 'merge_1@example.com', name: 'User 1')
-        end
-      end
-      let(:merge_user_2) do
-        VCR.use_cassette("merge_users_user_2") do
-          client.users.create!(email: 'merge_2@example.com', name: 'User 2')
-        end
-      end
-
-      before do
-        VCR.use_cassette("merge_users") do
-          merge_user_1.merge!(user: { id: merge_user_2.id })
-        end
-      end
-
-      after do
-        VCR.use_cassette("destroy_merge_user") do
-          puts merge_user_1.destroy!
-        end
-      end
-
-      it "expects merge to change use 1" do
-        VCR.use_cassette("test_merge_users") do
-          expect(merge_user_1.reload!.name).to eql "User 2"
-        end
-      end
-    end
-
     context "create_or_update" do
       after do
         VCR.use_cassette("create_or_update_destroy_user") do

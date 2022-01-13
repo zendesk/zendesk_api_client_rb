@@ -341,17 +341,6 @@ describe ZendeskAPI::Collection do
           :next_page => "/test_resources?page=2"
         ))
       end
-
-      xit "should yield resource and page (and not infinitely loop)" do
-        expect do |b|
-          Timeout.timeout(5) do
-            silence_logger { subject.all(&b) }
-          end
-        end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
-          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
-        )
-      end
     end
 
     context "successful requests" do

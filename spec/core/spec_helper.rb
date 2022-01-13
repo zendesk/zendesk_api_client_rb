@@ -10,7 +10,7 @@ require 'stringio'
 begin
   require 'byebug'
 rescue LoadError
-  puts "WARN: #{$!.message} Continuing..."
+  puts "WARN: #{$ERROR_INFO.message} Continuing..."
 end
 
 class String
