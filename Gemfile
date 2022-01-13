@@ -11,7 +11,6 @@ gem "scrub_rb"
 gem "rubocop", "~> 0.64.0", require: false
 
 group :test do
-  gem "byebug"
   gem "webmock"
   gem "vcr", "~> 6.0"
   gem "rspec"
@@ -22,6 +21,10 @@ end
 
 group :dev do
   gem "bump"
+end
+
+group :dev, :test do
+  gem "byebug", platforms: :ruby
 end
 
 gemspec
