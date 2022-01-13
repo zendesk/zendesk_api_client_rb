@@ -10,6 +10,5 @@ example.rb
 bin/*.yml
 .sass-cache
 config/mongod
-Gemfile.lock
 vendor/bundle
 .bundle
