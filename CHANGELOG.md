@@ -1,3 +1,9 @@
+# v1.35.0 (WIP)
+
+- Abandoned support for Ruby 2.5 (eol)
+- Tested in Ruby 3.1
+- Add `Organization#create_or_update`
+
 # v1.34.0
 
 - Refine https check for URL
