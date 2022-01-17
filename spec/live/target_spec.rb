@@ -12,6 +12,6 @@ describe ZendeskAPI::Target, :delete_after do
 
   it_should_be_readable :targets, :create => :true
   it_should_be_creatable
-  it_should_be_updatable :email, "bye@example.com"
+  it_should_be_updatable :active, false
   it_should_be_deletable
 end
