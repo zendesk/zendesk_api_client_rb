@@ -2,7 +2,7 @@ require 'core/spec_helper'
 
 describe ZendeskAPI::User, :delete_after do
   def valid_attributes
-    { :name => "Test U.", :email => "test@example.org" }
+    { name: "Test U.", email: "test+#{Time.now.to_i}@example.org" }
   end
 
   it_should_be_creatable
