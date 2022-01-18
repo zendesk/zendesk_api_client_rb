@@ -49,6 +49,15 @@ describe ZendeskAPI::Collection do
       assert_requested(:put, %r{bulk_test_resources/update_many\?ids=1,2,3$})
     end
 
+    it "should defer #create_or_update to the resource class" do
+      resource = ZendeskAPI::Collection.new(client, ZendeskAPI::CreateOrUpdateTestResource)
+      stub_json_request(:post, %r{create_or_update_test_resources/create_or_update}, json(create_or_update_test_resource: { param: "abc" }))
+
+      resource.create_or_update!
+
+      assert_requested(:post, %r{create_or_update_test_resources/create_or_update$})
+    end
+
     it "should defer #create to the resource class" do
       stub_json_request(:post, %r{test_resources$}, json(:test_resource => {}))
       subject.create
