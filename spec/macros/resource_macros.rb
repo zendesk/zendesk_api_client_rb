@@ -37,6 +37,8 @@ module ResourceMacros
       end
 
       after(:all) do
+        return unless @object.id
+
         VCR.use_cassette("#{described_class.to_s}_create_delete") do
           @object.destroy
         end
@@ -78,6 +80,8 @@ module ResourceMacros
       end
 
       after(:all) do
+        return unless @object.id
+
         VCR.use_cassette("#{described_class.to_s}_update_delete") do
           @object.destroy
         end
