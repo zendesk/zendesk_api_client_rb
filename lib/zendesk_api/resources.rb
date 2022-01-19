@@ -835,6 +835,12 @@ module ZendeskAPI
 
   class Target < Resource; end
 
+  class Webhook < Resource; end
+  class Invocation < Resource; end
+  class Webhook < Resource
+    has_many Invocation
+  end
+
   module Voice
     include DataNamespace
 
