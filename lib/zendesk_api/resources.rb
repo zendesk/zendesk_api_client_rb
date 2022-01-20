@@ -290,9 +290,9 @@ module ZendeskAPI
     end
 
     # Quack like a Resource
-    # Creates the correct resource class from the result_type passed in
+    # Creates the correct resource class from `attributes[:result_type]`
     def self.new(client, attributes)
-      result_type = attributes["result_type"]
+      result_type = attributes[:result_type] || attributes["result_type"]
 
       if result_type
         result_type = ZendeskAPI::Helpers.modulize_string(result_type)
@@ -329,9 +329,9 @@ module ZendeskAPI
     end
 
     # Quack like a Resource
-    # Creates the correct resource class from the result_type passed in
+    # Creates the correct resource class from `attributes[:result_type]`
     def self.new(client, attributes)
-      result_type = attributes["result_type"]
+      result_type = attributes[:result_type] || attributes["result_type"]
 
       if result_type
         result_type = ZendeskAPI::Helpers.modulize_string(result_type)

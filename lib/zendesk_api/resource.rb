@@ -6,7 +6,7 @@ require 'zendesk_api/associations'
 require 'zendesk_api/verbs'
 
 module ZendeskAPI
-  # Represents a resource that only holds data.
+  # Represents an abstract resource that only holds data.
   class Data
     include Associations
 
@@ -177,7 +177,7 @@ module ZendeskAPI
     include Destroy
   end
 
-  # Represents a resource that can CRUD (create, read, update, delete).
+  # Represents an abstract resource that can CRUD (create, read, update, delete).
   class Resource < DataResource
     include Read
     include Create
