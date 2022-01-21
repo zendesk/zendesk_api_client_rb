@@ -54,6 +54,7 @@ module ZendeskAPI
     # @param [Hash] attributes The optional attributes that describe the resource
     def initialize(client, attributes = {})
       raise "Expected a Hash for attributes, got #{attributes.inspect}" unless attributes.is_a?(Hash)
+
       @association = attributes.delete(:association) || Association.new(:class => self.class)
       @global_params = attributes.delete(:global) || {}
       @client = client

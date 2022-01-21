@@ -1,5 +1,6 @@
 require 'zendesk_api/resource'
 require 'zendesk_api/resources'
+require 'zendesk_api/search'
 
 module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
@@ -253,7 +254,7 @@ module ZendeskAPI
       if @options["page"]
         clear_cache
         @options["page"] += 1
-      elsif @query = @next_page
+      elsif (@query = @next_page)
         fetch(true)
       else
         clear_cache
@@ -269,7 +270,7 @@ module ZendeskAPI
       if @options["page"] && @options["page"] > 1
         clear_cache
         @options["page"] -= 1
-      elsif @query = @prev_page
+      elsif (@query = @prev_page)
         fetch(true)
       else
         clear_cache
