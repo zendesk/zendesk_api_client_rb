@@ -29,7 +29,7 @@ module ZendeskAPI
     # @param [String] resource The resource being collected.
     # @param [Hash] options Any additional options to be passed in.
     def initialize(client, resource, options = {})
-      @client, @resource_class, @resource = client, resource, resource.resource_name
+      @client, @resource_class, @resource = client, resource, resource.resource_path
       @options = SilentMash.new(options)
 
       set_association_from_options
