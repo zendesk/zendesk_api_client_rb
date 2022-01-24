@@ -1,11 +1,10 @@
 # `zendesk_api` gem root
 module ZendeskAPI
+  # A rich factory that returns a class for your searches
   class Search
-    class Result < Data; end
-
     # Creates a search collection
     def self.search(client, options = {})
-      unless (%w{query external_id} & options.keys.map(&:to_s)).any?
+      if (options.keys.map(&:to_s) & %w[query external_id]).empty?
         warn "you have not specified a query for this search"
       end
 
@@ -15,22 +14,24 @@ module ZendeskAPI
     # Quack like a Resource
     # Creates the correct resource class from `attributes[:result_type]`
     def self.new(client, attributes)
-      result_type = attributes[:result_type] || attributes["result_type"]
-
-      if result_type
-        result_type = ZendeskAPI::Helpers.modulize_string(result_type)
-        klass = ZendeskAPI.const_get(result_type) rescue nil
-      end
+      present_result_type = (attributes[:result_type] || attributes["result_type"]).to_s
+      result_type = ZendeskAPI::Helpers.modulize_string(present_result_type)
+      klass = begin
+                ZendeskAPI.const_get(result_type)
+              rescue NameError
+                Result
+              end
 
       (klass || Result).new(client, attributes)
     end
+
+    class Result < Data; end
 
     class << self
       def resource_name
         "search"
       end
-
-      alias :resource_path :resource_name
+      alias resource_path resource_name
 
       def model_key
         "results"
@@ -39,41 +40,12 @@ module ZendeskAPI
   end
 
   # This will use cursor pagination by default
-  class SearchExport
-    class Result < Data; end
-
-    # Creates a search export collection
-    def self.search_export(client, options = {})
-      unless (%w{query external_id} & options.keys.map(&:to_s)).any?
-        warn "you have not specified a query for this search"
-      end
-
-      ZendeskAPI::Collection.new(client, self, options)
-    end
-
-    # Quack like a Resource
-    # Creates the correct resource class from `attributes[:result_type]`
-    def self.new(client, attributes)
-      result_type = attributes[:result_type] || attributes["result_type"]
-
-      if result_type
-        result_type = ZendeskAPI::Helpers.modulize_string(result_type)
-        klass = ZendeskAPI.const_get(result_type) rescue nil
-      end
-
-      (klass || Result).new(client, attributes)
-    end
-
+  class SearchExport < Search
     class << self
       def resource_name
         "search/export"
       end
-
-      alias :resource_path :resource_name
-
-      def model_key
-        "results"
-      end
+      alias resource_path resource_name
     end
   end
 end
