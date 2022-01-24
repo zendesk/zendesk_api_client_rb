@@ -1,5 +1,6 @@
 require 'zendesk_api/resource'
 require 'zendesk_api/resources'
+require 'zendesk_api/search'
 
 module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
@@ -186,6 +187,7 @@ module ZendeskAPI
         return (@resources = [])
       end
       path_query_link = (@query || path)
+
       @response = get_response(path_query_link)
 
       if path_query_link == "search/export"
@@ -253,7 +255,7 @@ module ZendeskAPI
       if @options["page"]
         clear_cache
         @options["page"] += 1
-      elsif @query = @next_page
+      elsif (@query = @next_page)
         fetch(true)
       else
         clear_cache
@@ -269,7 +271,7 @@ module ZendeskAPI
       if @options["page"] && @options["page"] > 1
         clear_cache
         @options["page"] -= 1
-      elsif @query = @prev_page
+      elsif (@query = @prev_page)
         fetch(true)
       else
         clear_cache
@@ -398,8 +400,6 @@ module ZendeskAPI
       result
     end
 
-    ## Initialize
-
     def join_special_params
       # some params use comma-joined strings instead of query-based arrays for multiple values
       @options.each do |k, v|
@@ -415,7 +415,6 @@ module ZendeskAPI
       association_options = { :path => @options.delete(:path) }
       association_options[:path] ||= @collection_path.join("/") if @collection_path
       @association = @options.delete(:association) || Association.new(association_options.merge(:class => @resource_class))
-
       @collection_path ||= [@resource]
     end
 

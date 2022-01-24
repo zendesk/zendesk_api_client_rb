@@ -6,29 +6,21 @@
 
 ## Documentation
 
-This Ruby gem is a wrapper around Zendesk's REST API. Please see our [API documentation](https://developer.zendesk.com) for more information.
+This Ruby gem is a generic wrapper around Zendesk's REST API. Follow this README and the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki) for how to use it.
 
-Please check out the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki), [class documentation](https://www.rubydoc.info/gems/zendesk_api/), and [issues](https://github.com/zendesk/zendesk_api_client_rb/issues) before reporting a bug or asking for help.
+You can interact with all the resources defined in [`resources.rb`](lib/zendesk_api/resources.rb). Basically we have some cleaver code to convert Ruby objects into HTTP requests.
+
+Please refer to our [API documentation](https://developer.zendesk.com) for the specific endpoints and once you understand the mapping between Ruby and the HTTP endpoints you should be able to call any endpoint.
+
+The Yard generated documentation is available in at [RubyDoc](https://www.rubydoc.info/gems/zendesk_api).
+
+Please report any bug in the [Github issues page](https://github.com/zendesk/zendesk_api_client_rb/issues).
 
 ## Product Support
 
 This Ruby gem supports the REST API's for Zendesk Support, Zendesk Guide,
 and Zendesk Talk. It does not yet support other Zendesk products such as
 Zendesk Chat, Zendesk Explore, and Zendesk Sell.
-
-## Important Notices
-
-* Version 0.0.5 brings with it a change to the top-level namespace. All references to `Zendesk` should now use `ZendeskAPI`.
-* Version 0.3.0 changed the license from MIT to Apache Version 2.
-* Version 0.3.2 introduced a regression when side-loading roles on users. This was fixed in 0.3.4.
-* Version 1.0.0 changes the way errors are handled. Please see the [wiki page](https://github.com/zendesk/zendesk_api_client_rb/wiki/Errors) for more info.
-* Version 1.3.0 updates the Faraday dependency to 0.9. Since Faraday did not bump a major version we have not either, but there is no guarantee >= 1.3.0 works with Faraday < 0.9
-* Version 1.3.8 had a bug where attachments were created, but the response was not handled properly
-* Version >= 1.0 and < 1.4.2 had a bug where non application/json response bodies were discarded
-* Version 1.5.0 removed support for Ruby 1.8
-* Version 1.6.0 ZendeskAPI::Voice::CertificationAddress is now ZendeskAPI::Voice::Address
-* Version 1.8.0 no longer considers 1XX and 3XX (except 304) response status codes valid and will raise a NetworkError
-* Version 1.x.x requires you to install `scrub_rb` or `string-scrub` or similar implementation of `String#scrub!` if you're using Ruby 1.9 or 2.0.
 
 ## Installation
 
@@ -44,14 +36,15 @@ gem install zendesk_api
 
 Add it to your Gemfile
 
-    gem "zendesk_api"
+```
+gem "zendesk_api"
+```
 
-and follow normal [Bundler](https://bundler.io/) installation and execution procedures.
+Then `bundle` as usual.
 
 ## Configuration
 
 Configuration is done through a block returning an instance of `ZendeskAPI::Client`.
-The block is mandatory and if not passed, an `ArgumentError` will be thrown.
 
 ```ruby
 require 'zendesk_api'
@@ -449,9 +442,4 @@ bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 
 Copyright 2015-2022 Zendesk
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+See [LICENSE](./LICENSE).

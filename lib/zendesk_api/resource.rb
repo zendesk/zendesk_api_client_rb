@@ -6,7 +6,7 @@ require 'zendesk_api/associations'
 require 'zendesk_api/verbs'
 
 module ZendeskAPI
-  # Represents a resource that only holds data.
+  # Represents an abstract resource that only holds data.
   class Data
     include Associations
 
@@ -54,6 +54,7 @@ module ZendeskAPI
     # @param [Hash] attributes The optional attributes that describe the resource
     def initialize(client, attributes = {})
       raise "Expected a Hash for attributes, got #{attributes.inspect}" unless attributes.is_a?(Hash)
+
       @association = attributes.delete(:association) || Association.new(:class => self.class)
       @global_params = attributes.delete(:global) || {}
       @client = client
@@ -177,7 +178,7 @@ module ZendeskAPI
     include Destroy
   end
 
-  # Represents a resource that can CRUD (create, read, update, delete).
+  # Represents an abstract resource that can CRUD (create, read, update, delete).
   class Resource < DataResource
     include Read
     include Create

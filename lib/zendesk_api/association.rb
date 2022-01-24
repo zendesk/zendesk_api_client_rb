@@ -19,13 +19,8 @@ module ZendeskAPI
         nil
       end
 
-      # 1.9+ changed default to search ancestors, added flag to disable behavior.
       def module_defines_class?(mod, klass_as_string)
-        if RUBY_VERSION < '1.9'
-          mod.const_defined?(klass_as_string)
-        else
-          mod.const_defined?(klass_as_string, false)
-        end
+        mod.const_defined?(klass_as_string, false)
       end
     end
 
@@ -58,7 +53,6 @@ module ZendeskAPI
 
       namespace = @options[:class].to_s.split("::")
       namespace[-1] = @options[:class].resource_path
-
       # Remove components without path information
       ignorable_namespace_strings.each { |ns| namespace.delete(ns) }
       has_parent = namespace.size > 1 || (options[:with_parent] && @options.parent)
