@@ -5,7 +5,7 @@ describe ZendeskAPI::Article, :delete_after do
     expect(article).not_to be_nil
   end
 
-  describe "creating articles withing sections" do
+  describe "creating articles within a section" do
     def valid_attributes
       { :name => "My Article", user_segment_id: nil, permission_group_id: 2801272, title: "My super article" }
     end
@@ -24,6 +24,17 @@ describe ZendeskAPI::Article, :delete_after do
 
     it "can be created" do
       expect(section_article).not_to be_nil
+    end
+
+    describe "#search" do
+      before { section_article }
+
+      it "finds the article", :vcr do
+        actual = client.articles.search(query: "What")
+
+        expect(actual.count).to be > 0
+        expect(actual.last.title).to eq("What are these sections and articles doing here?")
+      end
     end
   end
 end
