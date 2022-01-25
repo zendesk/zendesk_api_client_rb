@@ -1,6 +1,6 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::Webhook, :delete_after do
+RSpec.describe ZendeskAPI::Webhook, :delete_after do
   def valid_attributes
     {
       name: "Random Hook",

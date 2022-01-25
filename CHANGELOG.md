@@ -1,6 +1,6 @@
 # v1.36.0 (WIP)
 
-- Nothing yet
+- Add `Schedule` resource
 
 # v1.35.0
 

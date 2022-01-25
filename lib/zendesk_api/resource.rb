@@ -5,6 +5,7 @@ require 'zendesk_api/association'
 require 'zendesk_api/associations'
 require 'zendesk_api/verbs'
 
+# See docs: https://developer.zendesk.com/api-reference/
 module ZendeskAPI
   # Represents an abstract resource that only holds data.
   class Data
