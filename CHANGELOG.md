@@ -1,4 +1,4 @@
-# v1.35.0 (WIP)
+# v1.35.0
 
 - Abandoned support for Ruby 2.5 (EOL)
 - Tested in Ruby 3.1
