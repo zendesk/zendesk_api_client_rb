@@ -1,8 +1,10 @@
 # v1.35.0 (WIP)
 
-- Abandoned support for Ruby 2.5 (eol)
+- Abandoned support for Ruby 2.5 (EOL)
 - Tested in Ruby 3.1
 - Add `Organization#create_or_update`
+- Bug-fixing
+- Improved documentation
 
 # v1.34.0
 
