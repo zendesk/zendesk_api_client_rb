@@ -320,6 +320,8 @@ module ZendeskAPI
       end
     end
 
+    alias to_str to_s
+
     def to_param
       map(&:to_param)
     end

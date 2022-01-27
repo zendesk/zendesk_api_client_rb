@@ -1,8 +1,15 @@
-# v1.35.0 (WIP)
+# v1.36.0 (WIP)
 
-- Abandoned support for Ruby 2.5 (eol)
+- Nothing yet
+
+# v1.35.0
+
+- Abandoned support for Ruby 2.5 (EOL)
 - Tested in Ruby 3.1
+- Add `Webhook` resource
 - Add `Organization#create_or_update`
+- Bug-fixing
+- Improved documentation
 
 # v1.34.0
 
