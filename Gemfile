@@ -13,7 +13,15 @@ gem "rubocop", "~> 0.64.0", require: false
 group :test do
   gem "webmock"
   gem "vcr", "~> 6.0"
-  gem "rspec"
+
+  # Hardcoding these gems as the newer version makes the tests fail in Ruby 3
+  # See https://github.com/zendesk/zendesk_api_client_rb/runs/5013748785?check_suite_focus=true#step:4:59
+  # NOTE: This affects previous build re-runs because we don't store Gemfile.lock
+  gem "rspec-support", "3.10.3"
+  gem "rspec-core", "3.10.1"
+  gem "rspec-expectations", "3.10.2"
+  gem "rspec-mocks", "3.10.2"
+  gem "rspec", "3.10.0"
 
   # only used for uploads testing
   gem "actionpack", ">= 5.2.4.6"
