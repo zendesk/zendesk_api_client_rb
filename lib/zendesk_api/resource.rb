@@ -146,10 +146,16 @@ module ZendeskAPI
 
     alias :to_param :attributes
 
+    def attributes_for_save
+      { self.class.singular_resource_name.to_sym => attribute_changes }
+    end
+
     private
 
-    def attributes_for_save
-      { self.class.singular_resource_name.to_sym => attributes.changes }
+    # Send only the changes, for example, if the "status" attriubte
+    # goes from "new" to "new", we don't need to send anything
+    def attribute_changes
+      attributes.changes
     end
   end
 
@@ -190,7 +196,7 @@ module ZendeskAPI
 
   class SingularResource < Resource
     def attributes_for_save
-      { self.class.resource_name.to_sym => attributes.changes }
+      { self.class.resource_name.to_sym => attribute_changes }
     end
   end
 
