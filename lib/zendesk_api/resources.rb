@@ -277,6 +277,18 @@ module ZendeskAPI
     has Group
   end
 
+  class Interval < Resource; end
+
+  class Schedule < Resource
+    has_many Interval
+
+    class << self
+      def resource_path
+        "business_hours/schedules"
+      end
+    end
+  end
+
   class Request < Resource
     class Comment < DataResource
       include Save
