@@ -1,6 +1,6 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::Ticket do
+RSpec.describe ZendeskAPI::Ticket do
   def valid_attributes
     {
       :type => "question",
@@ -26,6 +26,26 @@ describe ZendeskAPI::Ticket do
   it_should_be_readable current_user, :assigned_tickets, create: true
   it_should_be_readable agent, :ccd_tickets, create: true
   it_should_be_readable organization, :tickets
+
+  describe "#attributes_for_save" do
+    let :ticket do
+      described_class.new(instance_double(ZendeskAPI::Client), status: :new)
+    end
+
+    it "keeps all the comments", :vcr do
+      ticket.update(comment: { private: true, body: "Private comment" })
+      expect(ticket.attributes_for_save).to eq(ticket: {
+                                                 "status" => :new,
+                                                 "comment" => { "private" => true, "body" => "Private comment" }
+                                               })
+
+      ticket.update(comment: { private: true, body: "Private comment2" })
+      expect(ticket.attributes_for_save).to eq(ticket: {
+                                                 "status" => :new,
+                                                 "comment" => { "private" => true, "body" => "Private comment2" }
+                                               })
+    end
+  end
 
   context "recent tickets" do
     before(:all) do

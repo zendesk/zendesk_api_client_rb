@@ -353,6 +353,13 @@ module ZendeskAPI
     extend UpdateMany
     extend DestroyMany
 
+    # Unlike other attributes, "comment" is not a property of the ticket,
+    # but is used as a "comment on save", so it should be kept unchanged,
+    # See https://github.com/zendesk/zendesk_api_client_rb/issues/321
+    def attribute_changes
+      attributes.changes.merge("comment" => attributes["comment"])
+    end
+
     class Audit < DataResource
       class Event < Data
         has :author, :class => User
