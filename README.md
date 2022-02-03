@@ -16,6 +16,8 @@ The Yard generated documentation is available in at [RubyDoc](https://www.rubydo
 
 Please report any bug in the [Github issues page](https://github.com/zendesk/zendesk_api_client_rb/issues).
 
+You might want to try out this gem in a REPL for exploring your options, if so, check out [this project](https://github.com/zendesk/zendesk_api_client_rb_repl).
+
 ## Product Support
 
 This Ruby gem supports the REST API's for Zendesk Support, Zendesk Guide,
@@ -426,6 +428,14 @@ See `.github/workflows/main.yml` to understand the CI process.
 bundle exec rake # Runs the tests
 bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 ```
+
+## Releasing a new gem version
+
+1. Execute `bundle exec rake bump:minor`, which bumps the version in my local machine in a specific commit
+2. Change the CHANGELOG and amend that previous commit, so the bump commit and the CHANGELOG changes are in the same commit (example)
+3. Push to Github
+4. Post a message in Slack `#rest-api`, so advocacy are aware that we are going to release a new gem, just in case any customer complains about something related to the gem
+5. After a couple of hours, run `bundle exec rake release`, which automatically pushes the tag to GitHub and releases a new version to Rubygems (it does the gem push for you)
 
 ## Contributing
 
