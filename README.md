@@ -16,6 +16,8 @@ The Yard generated documentation is available in at [RubyDoc](https://www.rubydo
 
 Please report any bug in the [Github issues page](https://github.com/zendesk/zendesk_api_client_rb/issues).
 
+You might want to try out this gem in a REPL for exploring your options, if so, check out [this project](https://github.com/zendesk/zendesk_api_client_rb_repl).
+
 ## Product Support
 
 This Ruby gem supports the REST API's for Zendesk Support, Zendesk Guide,
