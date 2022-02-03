@@ -429,6 +429,14 @@ bundle exec rake # Runs the tests
 bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 ```
 
+## Releasing a new gem version
+
+1. Execute `bundle exec rake bump:minor`, which bumps the version in my local machine in a specific commit
+2. Change the CHANGELOG and amend that previous commit, so the bump commit and the CHANGELOG changes are in the same commit (example)
+3. Push to Github
+4. Post a message in Slack `#rest-api`, so advocacy are aware that we are going to release a new gem, just in case any customer complains about something related to the gem
+5. After a couple of hours, run `bundle exec rake release`, which automatically pushes the tag to GitHub and releases a new version to Rubygems (it does the gem push for you)
+
 ## Contributing
 
 1. Fork the project.
