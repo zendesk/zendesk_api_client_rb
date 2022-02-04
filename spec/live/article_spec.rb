@@ -1,6 +1,6 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::Article, :delete_after do
+RSpec.describe ZendeskAPI::Article, :delete_after do
   it "expects article to exist" do
     expect(article).not_to be_nil
   end
@@ -34,6 +34,7 @@ describe ZendeskAPI::Article, :delete_after do
 
         expect(actual.count).to be > 0
         expect(actual.last.title).to eq("What are these sections and articles doing here?")
+        expect(actual.last.votes.any?).to be(true) # Manually set in UI
       end
     end
   end

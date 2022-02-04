@@ -203,7 +203,9 @@ module ZendeskAPI
 
     has Category
 
+    class Vote < Resource; end
     class Article < Resource
+      has_many Vote
     end
 
     has_many Article
@@ -215,6 +217,9 @@ module ZendeskAPI
         "help_center/articles"
       end
     end
+
+    class Vote < Resource; end
+    has_many Vote
   end
 
   class TopicSubscription < Resource

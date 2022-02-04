@@ -420,8 +420,6 @@ module ZendeskAPI
       @collection_path ||= [@resource]
     end
 
-    ## Fetch
-
     def get_response(path)
       @error = nil
       @response = @client.connection.send(@verb || "get", path) do |req|
