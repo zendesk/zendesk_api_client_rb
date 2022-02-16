@@ -26,7 +26,7 @@ module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
   # Can also be used as an accessor to resource collections.
   class Client
-    GZIP_EXCEPTIONS = [:em_http, :httpclient]
+    GZIP_EXCEPTIONS = [:em_http, :httpclient, :httpx]
 
     # @return [Configuration] Config instance
     attr_reader :config
