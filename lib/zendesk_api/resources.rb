@@ -6,6 +6,7 @@ module ZendeskAPI
   class UserRelated < DataResource; end
   class Category < Resource; end
   class OrganizationSubscription < ReadResource; end
+  class CustomStatus < Resource; end
 
   # @internal Begin actual Resource definitions
 
