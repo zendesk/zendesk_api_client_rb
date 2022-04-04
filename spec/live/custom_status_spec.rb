@@ -4,12 +4,12 @@ require 'securerandom'
 describe ZendeskAPI::CustomStatus, :delete_after do
   def valid_attributes
     {
-      :status_category => 'open',
-      :agent_label => "Agent Label #{SecureRandom.hex(6)}",
-      :end_user_label => "End User Label #{SecureRandom.hex(6)}",
-      :description => "Description #{SecureRandom.hex(6)}",
-      :end_user_description => "End User Description #{SecureRandom.hex(6)}",
-      :active => false
+      status_category: 'open',
+      agent_label: "Agent Label #{SecureRandom.hex(6)}",
+      end_user_label: "End User Label #{SecureRandom.hex(6)}",
+      description: "Description #{SecureRandom.hex(6)}",
+      end_user_description: "End User Description #{SecureRandom.hex(6)}",
+      active: false
     }
   end
 
