@@ -5,6 +5,12 @@ RSpec.describe ZendeskAPI::Article, :delete_after do
     expect(article).not_to be_nil
   end
 
+  it "can have translations", :vcr do
+    article.translations.create(locale: "fr", title: "Traduction", body: "Bonjour")
+
+    expect(article.translations.map(&:locale)).to include("fr")
+  end
+
   describe "creating articles within a section" do
     def valid_attributes
       { :name => "My Article", user_segment_id: nil, permission_group_id: 2801272, title: "My super article" }

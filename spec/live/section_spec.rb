@@ -5,6 +5,12 @@ describe ZendeskAPI::Section, :delete_after do
     expect(section).not_to be_nil
   end
 
+  it "can have translations", :vcr do
+    section.translations.create(locale: "es", title: "Traducción", body: "Hola")
+
+    expect(section.translations.map(&:locale)).to include("es")
+  end
+
   describe "creating sections withing categories" do
     def valid_attributes
       { :name => "My Section" }
