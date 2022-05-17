@@ -1,6 +1,13 @@
-# v1.36.0 (WIP)
+# Unreleased
 
+# v1.36.0
+
+- Fix: Ticket comments should be sent unchanged
+- Update README: Document the [REPL project](https://github.com/zendesk/zendesk_api_client_rb_repl), add release instructions
 - Add `Schedule` resource
+- Add `Vote` resource for Articles
+- Add `CustomStatus` resource
+- Add `Translation` resource for Categories, Sections, and Articles
 
 # v1.35.0
 
