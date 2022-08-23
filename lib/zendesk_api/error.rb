@@ -20,7 +20,7 @@ module ZendeskAPI
         super
 
         if response[:body].is_a?(Hash)
-          @errors = response[:body]["details"] || generate_error_msg(response[:body])
+          @errors = response[:body]["details"] || generate_error_msg(response[:body]) || response[:body]["error"]
         end
 
         @errors ||= {}

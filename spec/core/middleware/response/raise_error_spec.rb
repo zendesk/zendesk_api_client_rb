@@ -92,6 +92,21 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
         else
           fail # didn't raise an error
         end
+
+        context "with only an error key" do
+          let(:body) { JSON.dump(:error => "something went wrong") }
+
+          it "should return RecordInvalid with proper message" do
+            begin
+              client.connection.get "/non_existent"
+            rescue ZendeskAPI::Error::RecordInvalid => e
+              expect(e.errors).to eq("something went wrong")
+              expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: something went wrong")
+            else
+              fail # didn't raise an error
+            end
+          end
+        end
       end
     end
 
@@ -112,6 +127,21 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
           expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: big file is big - small file is small")
         else
           fail # didn't raise an error
+        end
+
+        context "with only an error key" do
+          let(:body) { JSON.dump(:error => "something went wrong") }
+
+          it "should return RecordInvalid with proper message" do
+            begin
+              client.connection.get "/non_existent"
+            rescue ZendeskAPI::Error::RecordInvalid => e
+              expect(e.errors).to eq("something went wrong")
+              expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: something went wrong")
+            else
+              fail # didn't raise an error
+            end
+          end
         end
       end
     end
