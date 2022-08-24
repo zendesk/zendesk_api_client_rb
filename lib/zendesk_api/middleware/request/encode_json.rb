@@ -6,7 +6,7 @@ module ZendeskAPI
       class EncodeJson < Faraday::Middleware
         CONTENT_TYPE = 'Content-Type'.freeze
         MIME_TYPE = 'application/json'.freeze
-        dependency 'json'
+        # dependency 'json' https://github.com/lostisland/faraday/blob/main/UPGRADING.md#the-dependency-method-in-middlewares-has-been-removed
 
         def call(env)
           type = env[:request_headers][CONTENT_TYPE].to_s
