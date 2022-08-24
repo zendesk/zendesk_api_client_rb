@@ -6,6 +6,7 @@ module ZendeskAPI
   module Middleware
     module Request
       # @private
+      # TODO? update too?
       class Upload < Faraday::Middleware
         def call(env)
           if env[:body]

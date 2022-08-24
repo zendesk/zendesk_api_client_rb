@@ -3,11 +3,11 @@ module ZendeskAPI
   module Middleware
     # @private
     module Request
-      class EncodeJson # < Faraday::Middleware
+      class EncodeJson < Faraday::Adapter::NetHttp
 
-        def initialize(*args)
-          raise "Need to implement a Faraday Middleware, see: https://github.com/lostisland/faraday/blob/main/UPGRADING.md#faraday-middleware-deprecation"
-        end
+        # def initialize(*args)
+        #   raise "Need to implement a Faraday Middleware, see: https://github.com/lostisland/faraday/blob/main/UPGRADING.md#faraday-middleware-deprecation"
+        # end
 
         CONTENT_TYPE = 'Content-Type'.freeze
         MIME_TYPE = 'application/json'.freeze

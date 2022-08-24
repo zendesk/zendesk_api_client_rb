@@ -178,7 +178,7 @@ module ZendeskAPI
 
         builder.use ZendeskAPI::Middleware::Request::Upload
         # builder.request :multipart
-        builder.use ZendeskAPI::Middleware::Request::EncodeJson
+        builder.adapter ZendeskAPI::Middleware::Request::EncodeJson
 
         # Should always be first in the stack
         builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger, :retry_codes => config.retry_codes, :retry_on_exception => config.retry_on_exception if config.retry
