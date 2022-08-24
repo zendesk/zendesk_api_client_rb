@@ -3,10 +3,18 @@ module ZendeskAPI
   module Middleware
     # @private
     module Request
-      class EncodeJson < Faraday::Middleware
+      class EncodeJson # < Faraday::Middleware
+
+        def initialize(*args)
+          raise "Need to implement a Faraday Middleware, see: https://github.com/lostisland/faraday/blob/main/UPGRADING.md#faraday-middleware-deprecation"
+        end
+
         CONTENT_TYPE = 'Content-Type'.freeze
         MIME_TYPE = 'application/json'.freeze
-        # dependency 'json' https://github.com/lostisland/faraday/blob/main/UPGRADING.md#the-dependency-method-in-middlewares-has-been-removed
+
+        # This _might_ be easily fixed by requiring the lib itself, done in lib/zendesk_api.rb
+        # https://github.com/lostisland/faraday/blob/main/UPGRADING.md#the-dependency-method-in-middlewares-has-been-removed
+        # dependency 'json'
 
         def call(env)
           type = env[:request_headers][CONTENT_TYPE].to_s

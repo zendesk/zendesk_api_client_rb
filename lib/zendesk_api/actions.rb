@@ -114,7 +114,6 @@ module ZendeskAPI
 
         includes = Array(options[:include])
         options[:include] = includes.join(",") if includes.any?
-
         response = client.connection.get(association.generate_path(options)) do |req|
           req.params = options
 

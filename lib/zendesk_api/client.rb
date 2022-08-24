@@ -169,7 +169,7 @@ module ZendeskAPI
         elsif config.access_token
           builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
         else
-          builder.use Faraday::Request::BasicAuthentication, config.username, config.password
+          # builder.use Faraday::Request::BasicAuthentication, config.username, config.password
         end
 
         if config.cache
@@ -177,7 +177,7 @@ module ZendeskAPI
         end
 
         builder.use ZendeskAPI::Middleware::Request::Upload
-        builder.request :multipart
+        # builder.request :multipart
         builder.use ZendeskAPI::Middleware::Request::EncodeJson
 
         # Should always be first in the stack

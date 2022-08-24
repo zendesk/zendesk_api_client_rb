@@ -21,7 +21,6 @@ module ZendeskAPI
             else
               verb = method_verb
             end
-
             @response = @client.connection.send(verb, "#{path}/#{method}") do |req|
               req.body = opts
             end

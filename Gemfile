@@ -10,6 +10,11 @@ gem "scrub_rb"
 
 gem "rubocop", "~> 0.64.0", require: false
 
+gem "pry"
+gem "pry-nav"
+gem "pry-stack_explorer"
+gem "pry-doc"
+
 group :test do
   gem "webmock"
   gem "vcr", "~> 6.0"
