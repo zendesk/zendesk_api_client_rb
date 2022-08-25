@@ -1,5 +1,3 @@
-require 'faraday'
-
 require 'zendesk_api/version'
 require 'zendesk_api/sideloading'
 require 'zendesk_api/configuration'
