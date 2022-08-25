@@ -167,9 +167,10 @@ module ZendeskAPI
         if config.access_token && !config.url_based_access_token
           builder.authorization("Bearer", config.access_token)
         elsif config.access_token
+          # TODO
           builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
         else
-          builder.use Faraday::Request::BasicAuthentication, config.username, config.password
+          builder.request :authorization, :basic, config.username, config.password
         end
 
         if config.cache
