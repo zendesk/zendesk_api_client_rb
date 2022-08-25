@@ -156,8 +156,10 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::ParseJson
         builder.use ZendeskAPI::Middleware::Response::SanitizeResponse
 
+        # TODO? can this be used for middlewares?
         adapter = config.adapter || Faraday.default_adapter
 
+        # TODO: test
         unless GZIP_EXCEPTIONS.include?(adapter)
           builder.use ZendeskAPI::Middleware::Response::Gzip
           builder.use ZendeskAPI::Middleware::Response::Deflate
@@ -167,9 +169,11 @@ module ZendeskAPI
         if config.access_token && !config.url_based_access_token
           builder.authorization("Bearer", config.access_token)
         elsif config.access_token
+          # TODO:
           builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
         else
           # builder.use Faraday::Request::BasicAuthentication, config.username, config.password
+          builder.request :authorization, :basic, config.username, config.password
         end
 
         if config.cache

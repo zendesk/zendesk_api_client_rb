@@ -4,6 +4,9 @@ module ResourceMacros
   end
 
   def under(object, &blk)
+    puts "def under(#{object.class})"
+    object.class.singular_resource_name rescue binding.pry
+
     context "under a #{object.class.singular_resource_name}" do
       let(:parent) { object }
 

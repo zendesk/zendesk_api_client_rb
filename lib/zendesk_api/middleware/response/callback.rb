@@ -4,7 +4,7 @@ module ZendeskAPI
   module Middleware
     module Response
       # @private
-      class Callback # < Faraday::Response::Middleware
+      class Callback < Faraday::Middleware # < Faraday::Response::Middleware
         def initialize(app, client)
           super(app)
           @client = client
