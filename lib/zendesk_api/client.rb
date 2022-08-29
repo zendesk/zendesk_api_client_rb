@@ -110,7 +110,6 @@ module ZendeskAPI
     # @return [Faraday::Connection] Faraday connection for the client
     def connection
       @connection ||= build_connection
-      return @connection
     end
 
     # Pushes a callback onto the stack. Callbacks are executed on responses, last in the Faraday middleware stack.
