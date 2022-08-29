@@ -71,7 +71,8 @@ describe ZendeskAPI::Client do
       end
 
       it "should include Request::Authorization in the handlers" do
-        expect(subject.connection.builder.handlers).to include(Faraday::Request::Authorization)
+        expect(subject.connection.builder.handlers)
+          .to include(Faraday::Request::Authorization)
       end
 
       it "should not build token middleware" do
@@ -87,8 +88,9 @@ describe ZendeskAPI::Client do
         end
       end
 
-      it "should not build basic auth middleware" do
-        expect(subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to be_nil
+      it "should include Request::Authorization in the handlers" do
+        expect(subject.connection.builder.handlers)
+          .to include(Faraday::Request::Authorization)
       end
 
       it "should build token middleware" do
@@ -118,8 +120,9 @@ describe ZendeskAPI::Client do
       end
 
       context "with no password" do
-        it "should build basic auth middleware" do
-          expect(client.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to_not be_nil
+        it "should include Request::Authorization in the handlers" do
+          expect(client.connection.builder.handlers)
+            .to include(Faraday::Request::Authorization)
         end
 
         it "should not build token middleware" do
