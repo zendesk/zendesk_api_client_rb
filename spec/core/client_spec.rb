@@ -14,8 +14,8 @@ describe ZendeskAPI::Client do
         config.access_token = access_token
         config.adapter = :test
         config.adapter_proc = proc do |stub|
-          stub.get "/api/v2/tickets" do |env|
-            [200, {"Content-Type": "application/json"}, "null"]
+          stub.get "/api/v2/tickets" do |_env|
+            [200, { "Content-Type": "application/json" }, "null"]
           end
         end
       end
