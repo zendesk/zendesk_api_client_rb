@@ -145,6 +145,8 @@ module ZendeskAPI
     # Retry middleware if retry is true
     def build_connection
       Faraday.new(config.options) do |builder|
+        builder.request :multipart
+
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
