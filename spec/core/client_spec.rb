@@ -7,6 +7,30 @@ class SimpleClient < ZendeskAPI::Client
 end
 
 describe ZendeskAPI::Client do
+  describe "#tickets" do
+    subject do
+      ZendeskAPI::Client.new do |config|
+        config.url = "https://example.zendesk.com/api/v2"
+        config.access_token = access_token
+        config.adapter = :test
+        config.adapter_proc = proc do |stub|
+          stub.get "/api/v2/tickets" do |env|
+            [200, {"Content-Type": "application/json"}, "null"]
+          end
+        end
+      end
+    end
+
+    let(:access_token) { "my-access-token" }
+
+    context "access token" do
+      it "makes a call using the access token" do
+        response = subject.connection.get("/api/v2/tickets")
+        expect(response.env.request_headers["Authorization"]).to eq("Bearer #{access_token}")
+      end
+    end
+  end
+
   subject { client }
 
   context "#initialize" do
@@ -92,10 +116,6 @@ describe ZendeskAPI::Client do
         expect(subject.connection.builder.handlers)
           .to include(Faraday::Request::Authorization)
       end
-
-      it "should build token middleware" do
-        expect(subject.connection.headers["Authorization"]).to match(/Bearer/)
-      end
     end
 
     context "#token" do
@@ -123,10 +143,6 @@ describe ZendeskAPI::Client do
         it "should include Request::Authorization in the handlers" do
           expect(client.connection.builder.handlers)
             .to include(Faraday::Request::Authorization)
-        end
-
-        it "should not build token middleware" do
-          expect(client.connection.builder.handlers.index(Faraday::Request::TokenAuthentication)).to be_nil
         end
 
         it "should copy token to password" do

@@ -152,7 +152,6 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.use ZendeskAPI::Middleware::Response::ParseJson
         builder.use ZendeskAPI::Middleware::Response::SanitizeResponse
-
         adapter = config.adapter || Faraday.default_adapter
 
         unless GZIP_EXCEPTIONS.include?(adapter)
@@ -184,7 +183,7 @@ module ZendeskAPI
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger
         end
 
-        builder.adapter(*adapter)
+        builder.adapter(*adapter, &config.adapter_proc)
       end
     end
 
