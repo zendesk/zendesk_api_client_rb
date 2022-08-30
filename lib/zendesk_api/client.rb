@@ -159,15 +159,7 @@ module ZendeskAPI
           builder.use ZendeskAPI::Middleware::Response::Deflate
         end
 
-        # request
-        if config.access_token && !config.url_based_access_token
-          builder.request :authorization, "Bearer", config.access_token
-        elsif config.access_token
-          # TODO
-          builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
-        else
-          builder.request :authorization, :basic, config.username, config.password
-        end
+        set_authentication(builder, config)
 
         if config.cache
           builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
@@ -234,6 +226,17 @@ module ZendeskAPI
         if warning = env[:response_headers]["X-Zendesk-API-Warn"]
           logger.warn "WARNING: #{warning}"
         end
+      end
+    end
+
+    # See https://lostisland.github.io/faraday/middleware/authentication
+    def set_authentication(builder, config)
+      if config.access_token && !config.url_based_access_token
+        builder.request :authorization, "Bearer", config.access_token
+      elsif config.access_token
+        builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
+      else
+        builder.request :authorization, :basic, config.username, config.password
       end
     end
   end

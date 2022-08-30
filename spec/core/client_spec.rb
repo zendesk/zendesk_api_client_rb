@@ -6,7 +6,9 @@ class SimpleClient < ZendeskAPI::Client
   end
 end
 
-describe ZendeskAPI::Client do
+RSpec.describe ZendeskAPI::Client do
+  subject { client }
+
   describe "#tickets" do
     subject do
       ZendeskAPI::Client.new do |config|
@@ -30,8 +32,6 @@ describe ZendeskAPI::Client do
       end
     end
   end
-
-  subject { client }
 
   context "#initialize" do
     it "should require a block" do
