@@ -10,7 +10,7 @@ module ZendeskAPI
       class Gzip < Faraday::Middleware
         def on_complete(env)
           return if env[:response_headers]['content-encoding'] != "gzip"
-          return if env[:body].strip.empty?
+          return if env[:body].to_s.strip.empty?
 
           env[:body] = Zlib::GzipReader.new(StringIO.new(env[:body])).read
         end
