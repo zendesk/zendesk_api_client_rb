@@ -4,8 +4,6 @@
 
 - Support for Faraday 2.0
 - Add support for JRuby 9.3
-- Drop support for JRuby 9.1 and 9.2
-- Drop support for Ruby 2.6
 
 ## v1.36.0
 
