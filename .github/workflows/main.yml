@@ -48,7 +48,7 @@ jobs:
         uses: zendesk/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: 2.6
+          ruby-version: jruby-9.1
       - name: spec:live
         run: |
           bundle install
