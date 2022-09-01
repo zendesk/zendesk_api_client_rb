@@ -262,12 +262,10 @@ describe ZendeskAPI::Collection do
 
       it "should retry from the same page!" do
         expect do |b|
-          begin
-            subject.all!(&b)
-          rescue ZendeskAPI::Error::NetworkError
-            retry
-          rescue ZendeskAPI::Error::ClientError
-          end
+          subject.all!(&b)
+        rescue ZendeskAPI::Error::NetworkError
+          retry
+        rescue ZendeskAPI::Error::ClientError
         end.to yield_successive_args(
           [ZendeskAPI::TestResource.new(client, :id => 1), 1],
           [ZendeskAPI::TestResource.new(client, :id => 2), 2]

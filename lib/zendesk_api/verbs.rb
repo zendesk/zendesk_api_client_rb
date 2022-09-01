@@ -44,14 +44,12 @@ module ZendeskAPI
           end
 
           define_method method do |*method_args|
-            begin
-              send("#{method}!", *method_args)
-            rescue ZendeskAPI::Error::RecordInvalid => e
-              @errors = e.errors
-              false
-            rescue ZendeskAPI::Error::ClientError
-              false
-            end
+            send("#{method}!", *method_args)
+          rescue ZendeskAPI::Error::RecordInvalid => e
+            @errors = e.errors
+            false
+          rescue ZendeskAPI::Error::ClientError
+            false
           end
         end
       end

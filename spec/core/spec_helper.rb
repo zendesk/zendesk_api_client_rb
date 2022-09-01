@@ -136,12 +136,10 @@ RSpec.configure do |c|
   end
 
   c.around(:each, :prevent_logger_changes) do |example|
-    begin
-      old_logger = client.config.logger
-      example.call
-    ensure
-      client.config.logger = old_logger
-    end
+    old_logger = client.config.logger
+    example.call
+  ensure
+    client.config.logger = old_logger
   end
 
   c.extend ResourceMacros
