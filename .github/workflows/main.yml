@@ -14,11 +14,6 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - 2.6
-          - 2.7
-          - 3.0
-          - 3.1
-          - jruby-9.1
           - jruby-9.2
     steps:
       - name: Checkout code
@@ -48,7 +43,7 @@ jobs:
         uses: zendesk/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: jruby-9.1
+          ruby-version: jruby-9.2
       - name: spec:live
         run: |
           bundle install
