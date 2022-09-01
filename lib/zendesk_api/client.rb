@@ -95,12 +95,11 @@ module ZendeskAPI
 
       check_url
 
+      # TODO?
       config.retry = !!config.retry # nil -> false
 
       set_raise_error_when_rated_limited
-
       set_token_auth
-
       set_default_logger
       add_warning_callback
     end
@@ -157,6 +156,7 @@ module ZendeskAPI
         adapter = config.adapter || Faraday.default_adapter
 
         unless GZIP_EXCEPTIONS.include?(adapter)
+          # builder.response :encoding # use Faraday::Encoding middleware
           builder.use ZendeskAPI::Middleware::Response::Gzip
           builder.use ZendeskAPI::Middleware::Response::Deflate
         end

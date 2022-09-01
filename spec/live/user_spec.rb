@@ -133,6 +133,7 @@ describe ZendeskAPI::User, :delete_after do
         end
       end
 
+      # If fails, try deleting the orgs using the REPL
       it "updates all the users, and then, it deletes them properly" do
         created_user_objects.each do |user|
           expect(user.notes).to eq "this is a note"

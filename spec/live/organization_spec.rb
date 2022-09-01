@@ -64,6 +64,7 @@ describe ZendeskAPI::Organization, :delete_after do
       end
     end
 
+    # If fails, try deleting the orgs using the REPL
     it "creates many and then it can destroy many" do
       created_orgs = create_many_job.results.filter { |x| x["status"] == "Created" }
 
