@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "faraday", "> 2.0.0"
   s.add_runtime_dependency "faraday-multipart"
-  # s.add_runtime_dependency "faraday-encoding"
   s.add_runtime_dependency "hashie", ">= 3.5.2", "< 6.0.0"
   s.add_runtime_dependency "inflection"
   s.add_runtime_dependency "multipart-post", "~> 2.0"

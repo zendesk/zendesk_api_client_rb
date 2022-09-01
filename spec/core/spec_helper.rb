@@ -1,7 +1,5 @@
 $:.unshift(File.join(File.dirname(__FILE__), "macros"))
 
-# TODO: coverage
-
 ENV['TZ'] = 'CET' # something that is not local and not utc so we find all the bugs
 
 require 'zendesk_api'

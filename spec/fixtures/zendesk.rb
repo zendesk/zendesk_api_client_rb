@@ -90,9 +90,9 @@ module ZendeskAPI
 
     def organization
       VCR.use_cassette('valid_organization') do
-        # current_user.organization
-        # ... or, maybe:
-        @organization ||= current_user.organization || client.organizations.fetch!.last
+        current_user.organization
+        # ... or, if you can't work it out locally:
+        # @organization ||= current_user.organization || client.organizations.fetch!.last
       end
     end
 
