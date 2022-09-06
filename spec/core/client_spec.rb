@@ -80,19 +80,22 @@ describe ZendeskAPI::Client do
     end
 
     context "access token" do
-      subject do
-        ZendeskAPI::Client.new do |config|
+      before do
+        @client = ZendeskAPI::Client.new do |config|
           config.url = "https://example.zendesk.com/api/v2"
           config.access_token = "hello"
         end
+
+        stub_request(:get, %r{/bs$}).to_return(:status => 200)
       end
 
       it "should not build basic auth middleware" do
-        expect(subject.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to be_nil
+        expect(@client.connection.builder.handlers.index(Faraday::Request::BasicAuthentication)).to be_nil
       end
 
       it "should build token middleware" do
-        expect(subject.connection.headers["Authorization"]).to match(/Bearer/)
+        headers = @client.connection.get('/bs').env.request_headers
+        expect(headers["Authorization"]).to match(/Bearer/)
       end
     end
 
