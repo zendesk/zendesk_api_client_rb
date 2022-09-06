@@ -165,7 +165,7 @@ module ZendeskAPI
 
         # request
         if config.access_token && !config.url_based_access_token
-          builder.authorization("Bearer", config.access_token)
+          builder.request(:authorization, "Bearer", config.access_token)
         elsif config.access_token
           builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
         else
