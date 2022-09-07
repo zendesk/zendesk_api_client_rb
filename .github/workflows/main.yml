@@ -1,6 +1,7 @@
 name: Test
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -18,8 +19,7 @@ jobs:
           - 2.7
           - 3.0
           - 3.1
-          - jruby-9.1
-          - jruby-9.2
+          - jruby-9.3
     steps:
       - name: Checkout code
         uses: zendesk/checkout@v2
@@ -48,7 +48,7 @@ jobs:
         uses: zendesk/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: 2.6
+          ruby-version: 3.1
       - name: spec:live
         run: |
           bundle install

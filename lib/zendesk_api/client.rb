@@ -1,5 +1,3 @@
-require 'faraday'
-
 require 'zendesk_api/version'
 require 'zendesk_api/sideloading'
 require 'zendesk_api/configuration'
@@ -100,9 +98,7 @@ module ZendeskAPI
       config.retry = !!config.retry # nil -> false
 
       set_raise_error_when_rated_limited
-
       set_token_auth
-
       set_default_logger
       add_warning_callback
     end
@@ -112,7 +108,6 @@ module ZendeskAPI
     # @return [Faraday::Connection] Faraday connection for the client
     def connection
       @connection ||= build_connection
-      return @connection
     end
 
     # Pushes a callback onto the stack. Callbacks are executed on responses, last in the Faraday middleware stack.
@@ -148,6 +143,8 @@ module ZendeskAPI
     # Retry middleware if retry is true
     def build_connection
       Faraday.new(config.options) do |builder|
+        builder.request :multipart
+
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
         builder.use ZendeskAPI::Middleware::Response::Callback, self
@@ -155,7 +152,6 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
         builder.use ZendeskAPI::Middleware::Response::ParseJson
         builder.use ZendeskAPI::Middleware::Response::SanitizeResponse
-
         adapter = config.adapter || Faraday.default_adapter
 
         unless GZIP_EXCEPTIONS.include?(adapter)
@@ -163,14 +159,7 @@ module ZendeskAPI
           builder.use ZendeskAPI::Middleware::Response::Deflate
         end
 
-        # request
-        if config.access_token && !config.url_based_access_token
-          builder.request(:authorization, "Bearer", config.access_token)
-        elsif config.access_token
-          builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
-        else
-          builder.use Faraday::Request::BasicAuthentication, config.username, config.password
-        end
+        set_authentication(builder, config)
 
         if config.cache
           builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
@@ -186,7 +175,7 @@ module ZendeskAPI
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger
         end
 
-        builder.adapter(*adapter)
+        builder.adapter(*adapter, &config.adapter_proc)
       end
     end
 
@@ -237,6 +226,17 @@ module ZendeskAPI
         if warning = env[:response_headers]["X-Zendesk-API-Warn"]
           logger.warn "WARNING: #{warning}"
         end
+      end
+    end
+
+    # See https://lostisland.github.io/faraday/middleware/authentication
+    def set_authentication(builder, config)
+      if config.access_token && !config.url_based_access_token
+        builder.request :authorization, "Bearer", config.access_token
+      elsif config.access_token
+        builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
+      else
+        builder.request :authorization, :basic, config.username, config.password
       end
     end
   end

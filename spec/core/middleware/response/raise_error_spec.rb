@@ -85,14 +85,12 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
         let(:body) { JSON.dump(:details => "hello") }
 
         it "should return RecordInvalid with proper message" do
-          begin
-            client.connection.get "/non_existent"
-          rescue ZendeskAPI::Error::RecordInvalid => e
-            expect(e.errors).to eq("hello")
-            expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: hello")
-          else
-            fail # didn't raise an error
-          end
+          client.connection.get "/non_existent"
+        rescue ZendeskAPI::Error::RecordInvalid => e
+          expect(e.errors).to eq("hello")
+          expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: hello")
+        else
+          fail # didn't raise an error
         end
       end
     end
@@ -108,14 +106,12 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
         let(:body) { JSON.dump(:description => "big file is big", :message => "small file is small") }
 
         it "should return RecordInvalid with proper message" do
-          begin
-            client.connection.get "/non_existent"
-          rescue ZendeskAPI::Error::RecordInvalid => e
-            expect(e.errors).to eq("big file is big - small file is small")
-            expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: big file is big - small file is small")
-          else
-            fail # didn't raise an error
-          end
+          client.connection.get "/non_existent"
+        rescue ZendeskAPI::Error::RecordInvalid => e
+          expect(e.errors).to eq("big file is big - small file is small")
+          expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: big file is big - small file is small")
+        else
+          fail # didn't raise an error
         end
       end
     end

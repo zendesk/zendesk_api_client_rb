@@ -1,9 +1,11 @@
 require 'core/spec_helper'
 
-describe ZendeskAPI::Tag, :vcr, :not_findable do
+RSpec.describe ZendeskAPI::Tag, :vcr, :not_findable do
   [organization, user, ticket].each do |object|
+    raise "Your setup is invalid, see spec/live/Readme.md" unless object
+
     under object do
-      before(:each) do
+      before do
         parent.tags = %w{tag2 tag3}
         parent.tags.save!
       end

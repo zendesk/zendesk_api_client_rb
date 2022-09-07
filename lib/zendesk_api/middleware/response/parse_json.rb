@@ -3,9 +3,8 @@ module ZendeskAPI
   module Middleware
     # @private
     module Response
-      class ParseJson < Faraday::Response::Middleware
+      class ParseJson < Faraday::Middleware
         CONTENT_TYPE = 'Content-Type'.freeze
-        dependency 'json'
 
         def on_complete(env)
           type = env[:response_headers][CONTENT_TYPE].to_s

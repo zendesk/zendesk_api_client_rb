@@ -7,11 +7,12 @@ module ZendeskAPI
     # @private
     module Response
       # Faraday middleware to handle content-encoding = gzip
-      class Gzip < Faraday::Response::Middleware
+      class Gzip < Faraday::Middleware
         def on_complete(env)
-          if !env[:body].strip.empty? && env[:response_headers]['content-encoding'] == "gzip"
-            env[:body] = Zlib::GzipReader.new(StringIO.new(env[:body])).read
-          end
+          return if env[:response_headers]['content-encoding'] != "gzip"
+          return if env[:body].force_encoding(Encoding::BINARY).strip.empty?
+
+          env[:body] = Zlib::GzipReader.new(StringIO.new(env[:body])).read
         end
       end
     end

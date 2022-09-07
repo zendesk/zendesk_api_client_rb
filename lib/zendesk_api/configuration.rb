@@ -28,6 +28,9 @@ module ZendeskAPI
     # @return [Symbol] Faraday adapter
     attr_accessor :adapter
 
+    # @return [Proc] Faraday adapter proc
+    attr_accessor :adapter_proc
+
     # @return [Boolean] Whether to allow non-HTTPS connections for development purposes.
     attr_accessor :allow_http
 

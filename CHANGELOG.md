@@ -1,10 +1,21 @@
-# Unreleased
+# CHANGELOG
 
-## v1.37
+## Unreleased
+
+## v1.38.0
+
+- Add support for Faraday 2.0
+- Drop support for Faraday 1 (BREAKING)
+- Add support for JRuby 9.3
+- Drop support for JRuby 9.1, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110095881
+- Drop support for JRuby 9.2, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110151024
+- NOTE: Support for Ruby 2.6 will drop
+
+## v1.37.0
 
 - Fix Faraday v1 deprecation
 
-# v1.36.0
+## v1.36.0
 
 - Fix: Ticket comments should be sent unchanged
 - Update README: Document the [REPL project](https://github.com/zendesk/zendesk_api_client_rb_repl), add release instructions
@@ -13,7 +24,7 @@
 - Add `CustomStatus` resource
 - Add `Translation` resource for Categories, Sections, and Articles
 
-# v1.35.0
+## v1.35.0
 
 - Abandoned support for Ruby 2.5 (EOL)
 - Tested in Ruby 3.1
@@ -22,115 +33,115 @@
 - Bug-fixing
 - Improved documentation
 
-# v1.34.0
+## v1.34.0
 
 - Refine https check for URL
 - Support installations with hashie 5.0.0
 - Add `OrganizationMembership.create_or_update{,!}`
 
-# v1.33.0
+## v1.33.0
 
 - Expand retry logic to support retries on 5xx error codes
 
-# v1.32.0
+## v1.32.0
 
 - Add more info to ZendeskAPI::Error::RecordInvalid
 
-# v1.31.0
+## v1.31.0
 
 - Upgrade addressable dependency
 
-# v1.30.0
+## v1.30.0
 
 - Add configuration option to disable resource cache
 - Add RecipientAddress resource
 - Upgrade VCR and actionpack testing dependencies
 
-# v1.29.0
+## v1.29.0
 
 - Add Organization Related resource
 - Add Deleted Users and Deleted Tickets resource
 - Switch over mini_mime for mime type lookups
 
-# v1.28.0
+## v1.28.0
 
 - Add Trigger categories resource
 
-# v1.27.0
+## v1.27.0
 
 - Add Section and Article resources
 
-# v1.26.0
+## v1.26.0
 
 - Allow using hashie 4.x
 - Add support to merge user API
 
-# v1.25.0
+## v1.25.0
 
 - Allow using Faraday 1.x release in gemspec
 
-# v1.24.0
+## v1.24.0
 
 - Added support for `UserRelated` operation on users resource
 - Bring back `UpdateMany` on users resource
 
-# v1.23.0
+## v1.23.0
 
 - Fix Faraday deprecation notice and relax required version
 
-# v1.22.0
+## v1.22.0
 
 - Fix `CreateOrUpdate` action to use singular resource name
 - Add `CreateMany`, `CreateOrUpdate` and `DestroyMany` to Organizations
 
-# v1.21.0
+## v1.21.0
 
 - Add support for `.find` attachments
 - Set default request timeout of 60 seconds
 - Add gem project metadata
 - Add meaningful error when the username is not set using basic token auth
 
-# v1.20.0
+## v1.20.0
 
 - Bring back spec live testing
 
-# v1.19.1
+## v1.19.1
 
 - Remove forums resource and start using community topics
 - Add assigned tickets association
 
-# v1.19.0
+## v1.19.0
 
 - Add option to raise error when rate limited
 
-# v1.18.0
+## v1.18.0
 
 - Add support for create_or_update for user resource
 - Update ticket incremental export endpoint
 - Add support to create or update many users and remove unsupported update many users
 - Define respond_to_missing?
 
-# v1.17.0
+## v1.17.0
 
 dropped support for Ruby 1.9.x, 2.0.x, 2.1.x and 2.2.x, all of which are EOL
 
-# v1.16.0
+## v1.16.0
 
 log response body for 4xx errors (https://github.com/zendesk/zendesk_api_client_rb/pull/354)
 
-# v1.15.0
+## v1.15.0
 
 support batch update resources (https://github.com/zendesk/zendesk_api_client_rb/pull/344)
 
-# v1.14.4
+## v1.14.4
 
 document hashie dependency
 
-# v1.14.3
+## v1.14.3
 
 silence logging spam (https://github.com/zendesk/zendesk_api_client_rb/pull/327)
 
-# v1.14.2
+## v1.14.2
 
 make error also work without an response
 
@@ -148,7 +159,7 @@ silence mashie
 You are setting a key that conflicts with a built-in method Hashie::Mash#class defined in Kernel. This can cause unexpected behavior when accessing the key via as a property. You can still access the key via the #[] method.
 ```
 
-# v1.14.1
+## v1.14.1
 
 avoid double builds
 
@@ -162,7 +173,7 @@ implements `scrub!` for you.
 
 Fix addressable on older Rubies
 
-# v1.14.0
+## v1.14.0
 
 added live spec
 
@@ -191,20 +202,20 @@ don't install mime-types >= v3.0.
 
 Lock webmock version to get green build
 
-# v1.13.4
+## v1.13.4
 
 fix some rubocop warnings
 
 fix deprecation warning on ruby 2.3.0
 
-# v1.13.3
+## v1.13.3
 
 Add agent Set Group Membership as Default
 
 https://developer.zendesk.com/rest_api/docs/core/group_memberships#set-m
 embership-as-default
 
-# v1.13.2
+## v1.13.2
 
 fix method_as_class to handle non alphanumeric
 
@@ -224,11 +235,11 @@ only show bang! methods in README
 
 DELETEs return 204s now
 
-# v1.13.1
+## v1.13.1
 
 add a gzip middleware exception for httpclient
 
-# v1.12.1
+## v1.12.1
 
 add user \*\_many endpoints
 
@@ -244,33 +255,33 @@ update class documentation link
 
 fix documentation [ci skip]
 
-# v1.12.0
+## v1.12.0
 
 restoring gemspec to the previous required ruby version
 
 Sanitizing body responses to deal with bad characters.
 
-# v1.11.7
+## v1.11.7
 
 Revert "always upload files as inline"
 
 This reverts commit cc97c3733e47f524595b9dc35068218e7a410acd.
 
-# v1.11.6
+## v1.11.6
 
-# v1.11.5
+## v1.11.5
 
 make user tags a proper association
 
-# v1.11.4
+## v1.11.4
 
 add CreateMany and DestroyMany to Ticket
 
-# v1.11.3
+## v1.11.3
 
 small spacing fix
 
-# v1.11.2
+## v1.11.2
 
 always upload files as inline
 
@@ -278,11 +289,11 @@ Update pull request #254
 Add .bundle/ to .gitignore
 Rename Ticket::display to Ticket::display!
 
-# v1.11.1
+## v1.11.1
 
 Get RecordInvalid message from description in absence of details
 
-# v1.11.0
+## v1.11.0
 
 Add agent resource and ticket-display feature
 
@@ -292,7 +303,7 @@ fix documentation for incremental export
 
 issue #250
 
-# v1.10.0
+## v1.10.0
 
 Change User-Agent to be Ruby specific
 
@@ -310,35 +321,35 @@ don't save existing comment associations
 
 silence rspec warnings
 
-# v1.9.6
+## v1.9.6
 
 make Voice::Ticket a CreateResource
 
 Add zendesk voice ticket resource #245
 
-# v1.9.5
+## v1.9.5
 
 destroy_many uses a comma separated list of ids
 
-# v1.9.4
+## v1.9.4
 
 organization memberships are not updatable
 
 Adds Organization Membership resource
 
-# v1.9.3
+## v1.9.3
 
 Actually use the client
 
-# v1.9.2
+## v1.9.2
 
 fix destroy_many! and create_many! on collections
 
-# v1.9.1
+## v1.9.1
 
 Allow bulk actions on collections
 
-# v1.9.0
+## v1.9.0
 
 Introduce reload!
 
@@ -348,7 +359,7 @@ return JobStatus
 
 Bulk actions!
 
-# v1.8.0
+## v1.8.0
 
 update README
 
