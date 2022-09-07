@@ -8,6 +8,10 @@
 - Drop support for JRuby 9.2, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110151024
 - NOTE: Support for Ruby 2.6 will drop
 
+## v1.37
+
+- Fix Faraday v1 deprecation
+
 ## v1.36.0
 
 - Fix: Ticket comments should be sent unchanged
