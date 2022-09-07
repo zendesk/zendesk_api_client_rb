@@ -1,5 +1,9 @@
 # Unreleased
 
+## v1.37
+
+- Fix Faraday v1 deprecation
+
 # v1.36.0
 
 - Fix: Ticket comments should be sent unchanged
