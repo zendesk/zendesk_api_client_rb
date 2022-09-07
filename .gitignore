@@ -5,4 +5,4 @@ coverage/**
 .yardoc/**
 Gemfile.lock
 vendor/bundle/**
-
+pkg/**

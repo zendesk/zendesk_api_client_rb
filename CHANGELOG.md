@@ -1,14 +1,17 @@
-# Unreleased
+# CHANGELOG
 
-## v2.0.0-beta1
+## Unreleased
 
-- Support for Faraday 2.0
+## v1.38.0
+
+- Add support for Faraday 2.0
+- Drop support for Faraday 1 (BREAKING)
 - Add support for JRuby 9.3
 - Drop support for JRuby 9.1, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110095881
 - Drop support for JRuby 9.2, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110151024
 - NOTE: Support for Ruby 2.6 will drop
 
-## v1.37
+## v1.37.0
 
 - Fix Faraday v1 deprecation
 
