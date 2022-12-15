@@ -12,9 +12,11 @@ RSpec.describe ZendeskAPI::Article, :delete_after do
   end
 
   it "can have labels", :vcr do
-    article.labels.create(name: "test-label")
+    label = article.labels.create!(name: "ruby-client-test-label")
 
-    expect(article.labels.map(&:name)).to include("test-label")
+    expect(article.labels.map(&:name)).to include(label.name)
+
+    label.destroy
   end
 
   describe "creating articles within a section" do
