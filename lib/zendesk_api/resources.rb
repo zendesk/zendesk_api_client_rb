@@ -228,6 +228,12 @@ module ZendeskAPI
     has_many Vote
     class Translation < Resource; end
     has_many Translation
+    class Label < DataResource
+      include Read
+      include Create
+      include Destroy
+    end
+    has_many Label
   end
 
   class TopicSubscription < Resource
