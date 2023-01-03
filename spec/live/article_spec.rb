@@ -15,8 +15,8 @@ RSpec.describe ZendeskAPI::Article, :delete_after do
     label = article.labels.create!(name: "ruby-client-test-label")
 
     expect(article.labels.map(&:name)).to include(label.name)
-
-    label.destroy
+  ensure # Cleanup
+    label&.destroy
   end
 
   describe "creating articles within a section" do
