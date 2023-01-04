@@ -21,6 +21,7 @@ module ResourceMacros
 
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_create") do
+          puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{described_class}_create #{valid_attributes.merge(default_options).inspect}"
           @object = described_class.create(client, valid_attributes.merge(default_options))
         end
       end

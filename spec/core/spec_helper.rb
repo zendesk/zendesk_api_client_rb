@@ -73,12 +73,12 @@ def client
         config.url = "https://my.zendesk.com/api/v2"
       end
 
-      config.logger = Logger.new("/dev/null")
+      config.logger = Logger.new(STDOUT) # Logger.new("/dev/null")
 
       config.retry = true
     end
 
-    client.config.logger.level = (ENV["LOG"] ? Logger::DEBUG : Logger::WARN)
+    client.config.logger.level = Logger::DEBUG # (ENV["LOG"] ? Logger::DEBUG : Logger::WARN)
     client.config.cache.size = 0
     client.callbacks.clear
 
