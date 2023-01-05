@@ -11,6 +11,14 @@ RSpec.describe ZendeskAPI::Article, :delete_after do
     expect(article.translations.map(&:locale)).to include("fr")
   end
 
+  it "can have labels", :vcr do
+    label = article.labels.create!(name: "ruby-client-test-label")
+
+    expect(article.labels.map(&:name)).to include(label.name)
+  ensure # Cleanup
+    label&.destroy
+  end
+
   describe "creating articles within a section" do
     def valid_attributes
       { :name => "My Article", user_segment_id: nil, permission_group_id: 2801272, title: "My super article" }
