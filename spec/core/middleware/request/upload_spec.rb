@@ -5,14 +5,21 @@ require 'action_dispatch'
 describe ZendeskAPI::Middleware::Request::Upload do
   subject { ZendeskAPI::Middleware::Request::Upload.new(lambda { |env| env }) }
   let(:filename) { File.join(File.dirname(__FILE__), "test.jpg") }
-  let(:body_double) { double(:test) }
 
-  it "should handle no body" do
-    expect(subject.call({})).to eq({})
+  context "when the body is an IO" do
+    let(:io) { StringIO.new(json) }
+    let(:json) { '{"stuff": "a looot of"}' }
+    let(:big_body) { Faraday::Multipart::CompositeReadIO.new(io) }
+
+    it "returns the read stream" do
+      allow(io).to receive(:to_io).and_return(io)
+
+      expect(subject.call(body: big_body)).to eq(body: JSON.parse(json))
+    end
   end
 
-  it "ignores bodies that are not hash" do
-    expect(subject.call(body: body_double)).to eq(body: body_double)
+  it "should handle no body" do
+    expect(subject.call({})).to eq(body: nil)
   end
 
   it "should handle body with no file" do
