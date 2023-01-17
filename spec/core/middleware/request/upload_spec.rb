@@ -5,9 +5,14 @@ require 'action_dispatch'
 describe ZendeskAPI::Middleware::Request::Upload do
   subject { ZendeskAPI::Middleware::Request::Upload.new(lambda { |env| env }) }
   let(:filename) { File.join(File.dirname(__FILE__), "test.jpg") }
+  let(:body_double) { double(:test) }
 
   it "should handle no body" do
     expect(subject.call({})).to eq({})
+  end
+
+  it "ignores bodies that are not hash" do
+    expect(subject.call(body: body_double)).to eq(body: body_double)
   end
 
   it "should handle body with no file" do

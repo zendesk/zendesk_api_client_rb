@@ -8,7 +8,7 @@ module ZendeskAPI
       # @private
       class Upload < Faraday::Middleware
         def call(env)
-          if env[:body]
+          if env[:body].is_a?(Hash)
             set_file(env[:body], :file, true)
             traverse_hash(env[:body])
           end
