@@ -8,9 +8,15 @@ module ZendeskAPI
       # @private
       class Upload < Faraday::Middleware
         def call(env)
-          if env[:body].is_a?(Hash)
-            set_file(env[:body], :file, true)
-            traverse_hash(env[:body])
+          body = if env[:body].is_a?(Faraday::Multipart::CompositeReadIO)
+            JSON.parse(env[:body].read)
+          else
+            env[:body]
+          end
+
+          if body.is_a?(Hash)
+            set_file(body, :file, true)
+            traverse_hash(body)
           end
 
           @app.call(env)
