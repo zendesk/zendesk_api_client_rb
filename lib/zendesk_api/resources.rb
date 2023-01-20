@@ -66,8 +66,13 @@ module ZendeskAPI
       def _save(method = :save)
         return self unless @resources
 
-        @client.connection.post(path) do |req|
-          req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }
+        update_details = if @updated_stamp
+          { safe_update: true, updated_stamp: @updated_stamp }
+        end
+
+        @client.connection.put(path) do |req|
+          req.body = (update_details || {})
+            .merge(tags: @resources.reject(&:destroyed?).map(&:id) )
         end
 
         true
