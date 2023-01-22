@@ -428,6 +428,13 @@ See `.github/workflows/main.yml` to understand the CI process.
 bundle exec rake # Runs the tests
 bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 ```
+## Testing
+
+Run live spec
+```
+rspec spec/live/safe_update_spec.rb
+
+```
 
 ## Releasing a new gem version
 
