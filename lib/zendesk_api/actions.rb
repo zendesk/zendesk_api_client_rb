@@ -70,9 +70,9 @@ module ZendeskAPI
 
         inline_creation = association_data[:inline] == :create && new_record?
         changed = association.is_a?(Collection) || association.changed?
-        
+
         if safe_update
-          association.updated_stamp = updated_stamp ||= DateTime.now
+          association.updated_stamp = updated_stamp
         end
 
         if association.respond_to?(:save) && changed && !inline_creation && association.save

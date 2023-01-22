@@ -72,7 +72,7 @@ module ZendeskAPI
 
         @client.connection.put(path) do |req|
           req.body = (update_details || {})
-            .merge(tags: @resources.reject(&:destroyed?).map(&:id) )
+            .merge(tags: @resources.reject(&:destroyed?).map(&:id))
         end
 
         true

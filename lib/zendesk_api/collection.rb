@@ -14,7 +14,7 @@ module ZendeskAPI
     # @return [ZendeskAPI::Association] The class association
     attr_reader :association
     attr_accessor :updated_stamp
-    
+
     # @return [Faraday::Response] The last response
     attr_reader :response
 
