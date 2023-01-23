@@ -8,8 +8,6 @@ module ZendeskAPI
       # @private
       class Upload < Faraday::Middleware
         def call(env)
-          env[:body] = body_for(env)
-
           if env[:body]
             set_file(env[:body], :file, true)
             traverse_hash(env[:body])
@@ -19,18 +17,6 @@ module ZendeskAPI
         end
 
         private
-
-        def body_for(env)
-          if env[:body].is_a?(Faraday::Multipart::CompositeReadIO)
-            begin
-              JSON.parse(env[:body].read)
-            ensure
-              env[:body].close
-            end
-          else
-            env[:body]
-          end
-        end
 
         # Sets the proper file parameters :uploaded_data and :filename
         # If top_level, then it removes key and and sets the parameters directly on hash,
