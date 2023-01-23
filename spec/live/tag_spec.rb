@@ -7,7 +7,7 @@ RSpec.describe ZendeskAPI::Tag, :vcr, :not_findable do
     under object do
       before do
         parent.tags = %w{tag2 tag3}
-        let!(:existing_tags) {tags | parent.tags}
+        let!(:existing_tags) { tags | parent.tags }
         parent.tags.save!
       end
 
