@@ -8,7 +8,7 @@ gem "yard"
 gem "json", ">= 2.3.0", platforms: :ruby
 gem "scrub_rb"
 
-gem "rubocop", "~> 0.64.0", require: false
+gem "rubocop", "~> 0.65.0", require: false
 
 group :test do
   gem "webmock"

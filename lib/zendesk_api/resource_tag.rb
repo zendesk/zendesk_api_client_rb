@@ -4,8 +4,8 @@ module ZendeskAPI
     include Update
     include Destroy
 
-    alias :name :id
-    alias :to_param :id
+    alias name id
+    alias to_param id
 
     def path(opts = {})
       raise "tags must have parent resource" unless association.options.parent
@@ -23,6 +23,7 @@ module ZendeskAPI
       end
     end
 
+    # Overriding
     module Update
       def _save(method = :save)
         return self unless @resources
@@ -33,11 +34,9 @@ module ZendeskAPI
 
         true
       rescue Faraday::ClientError => e
-        if method == :save
-          false
-        else
-          raise e
-        end
+        return false if method == :save
+
+        raise e
       end
     end
 
