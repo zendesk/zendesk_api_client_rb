@@ -134,6 +134,8 @@ module ResourceMacros
       end if create
 
       after(:all) do
+        return unless @object
+
         VCR.use_cassette("#{described_class.to_s}_#{context_name}_delete") do
           @object.destroy
         end

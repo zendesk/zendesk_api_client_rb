@@ -6,3 +6,4 @@
  - Ensure you allow admins to set up user password (or `POST /api/v2/users/{user_id}/password.json` will fail). You can check this in the admin centre > security > advanced
  - Go to Account > Localization and ensure you add `Spanish` to the list of additional languages. The `variant_spec` needs to create some items using spanish locale.
  - Ensure the authenticated agent is the assigned to the main fixture ticket at `spec/fixtures/zendesk.rb`, or the `activities_spec` won't get any update, and thus, will fail.
+- If you run multiple live specs at once (pushing fast to Github), some of the cleanup might not work, use the UI or the REPL to fix this
