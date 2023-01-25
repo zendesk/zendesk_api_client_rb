@@ -1,5 +1,6 @@
 require 'zendesk_api/resource'
 require 'zendesk_api/resources'
+require 'zendesk_api/resource_ticket'
 require 'zendesk_api/search'
 
 module ZendeskAPI
