@@ -17,6 +17,7 @@ require 'zendesk_api/middleware/response/sanitize_response'
 require 'zendesk_api/middleware/response/parse_iso_dates'
 require 'zendesk_api/middleware/response/parse_json'
 require 'zendesk_api/middleware/response/raise_error'
+require 'zendesk_api/middleware/response/read_multipart'
 require 'zendesk_api/middleware/response/logger'
 require 'zendesk_api/delegator'
 
@@ -147,6 +148,7 @@ module ZendeskAPI
 
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
+        builder.use ZendeskAPI::Middleware::Response::ReadMultipart
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
