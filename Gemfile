@@ -31,7 +31,12 @@ group :dev do
 end
 
 group :dev, :test do
-  gem "byebug", platforms: :ruby
+  platform :ruby do
+    gem "pry"
+    gem "pry-nav"
+    gem "pry-stack_explorer"
+    gem "pry-doc"
+  end
 end
 
 gemspec

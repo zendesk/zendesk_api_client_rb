@@ -8,9 +8,9 @@ require 'logger'
 require 'stringio'
 
 begin
-  require 'byebug'
-rescue LoadError
-  puts "WARN: #{$ERROR_INFO.message} Continuing..."
+  require 'pry'
+rescue LoadError => e
+  puts "WARN: #{e.message} Continuing..."
 end
 
 class String
