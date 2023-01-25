@@ -4,11 +4,8 @@ gem "jruby-openssl", platforms: :jruby
 gem "mini_mime"
 gem "rake"
 gem "addressable", ">= 2.8.0"
-gem "yard"
 gem "json", ">= 2.3.0", platforms: :ruby
 gem "scrub_rb"
-
-gem "rubocop", "~> 0.65.0", require: false
 
 group :test do
   gem "webmock"
@@ -29,6 +26,8 @@ end
 
 group :dev do
   gem "bump"
+  gem "yard"
+  gem "rubocop", "~> 0.65.0", require: false
 end
 
 group :dev, :test do
