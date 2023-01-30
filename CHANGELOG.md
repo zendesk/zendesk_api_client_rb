@@ -4,6 +4,7 @@
 
 ## v1.38.0
 
+- Add `Label` resource for Articles
 - Add support for Faraday 2.0
 - Drop support for Faraday 1 (BREAKING)
 - Add support for JRuby 9.3
