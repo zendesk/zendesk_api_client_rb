@@ -27,13 +27,13 @@ module ZendeskAPI
 
       req_path = options[:path] if options[:path]
 
-      save_associations
-
       @response = @client.connection.send(method, req_path) do |req|
         req.body = attributes_for_save.merge(@global_params)
 
         yield req if block_given?
       end
+
+      save_associations
 
       handle_response(@response)
 

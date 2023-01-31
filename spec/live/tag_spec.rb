@@ -51,6 +51,20 @@ RSpec.describe ZendeskAPI::Tag, :vcr, :not_findable do
 
         expect(tags).to be_empty
       end
+
+      it "doesn't update a ticket when the main resource fails to update" do
+        next unless object.is_a?(ZendeskAPI::Ticket)
+
+        parent.safe_update = true
+        parent.updated_stamp = Time.now # Fails because of wrong type
+        expected_tags = parent.tags.to_a.map(&:name)
+        parent.tags = %w[tag4]
+
+        expect { parent.save! }
+          .to raise_error(ZendeskAPI::Error::NetworkError)
+
+        expect(parent.tags.fetch!(:reload).to_a.map(&:name)).to eq(expected_tags)
+      end
     end
   end
 
