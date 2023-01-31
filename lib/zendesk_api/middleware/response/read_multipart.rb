@@ -3,7 +3,6 @@ module ZendeskAPI
     module Response
       class ReadMultipart < Faraday::Middleware
         def on_complete(env)
-          puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
           return unless env[:body].is_a?(Faraday::Multipart::CompositeReadIO)
 
           env[:body] = read_multipart(env[:body])
