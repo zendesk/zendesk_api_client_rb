@@ -2,15 +2,16 @@
 
 ## Unreleased
 
-## v1.38.0
+## v1.38.0 (rc2)
 
 - Add `Label` resource for Articles
 - Add support for Faraday 2.0
 - Drop support for Faraday 1 (BREAKING)
-- Add support for JRuby 9.3
+- Add JRuby 9.3 to CI
+- Add Ruby 3.2 to CI
 - Drop support for JRuby 9.1, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110095881
 - Drop support for JRuby 9.2, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110151024
-- NOTE: Support for Ruby 2.6 will drop
+- Drop support for 2.6, not supported by Faraday 2.0
 
 ## v1.37.0
 
