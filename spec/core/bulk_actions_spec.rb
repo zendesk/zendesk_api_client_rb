@@ -33,7 +33,7 @@ describe ZendeskAPI::CreateMany do
 
     it 'calls the create_many endpoint' do
       assert_requested(:post, %r{bulk_test_resources/create_many},
-        :body => json(:bulk_test_resources => attributes)
+                       :body => json(:bulk_test_resources => attributes)
       )
     end
 
@@ -57,7 +57,7 @@ describe ZendeskAPI::CreateMany do
 
         it 'calls the update_many endpoint' do
           assert_requested(:put, %r{bulk_test_resources/update_many\?ids=1,2,3$},
-            :body => json(:bulk_test_resource => attributes)
+                           :body => json(:bulk_test_resource => attributes)
           )
         end
 
@@ -77,7 +77,7 @@ describe ZendeskAPI::CreateMany do
 
         it 'calls the update_many endpoint' do
           assert_requested(:put, %r{bulk_test_resources/update_many$},
-            :body => json(:bulk_test_resources => attributes)
+                           :body => json(:bulk_test_resources => attributes)
           )
         end
 
@@ -107,7 +107,7 @@ RSpec.describe ZendeskAPI::CreateOrUpdateMany do
         subject
 
         assert_requested(:post, %r{bulk_test_resources/create_or_update_many$},
-          :body => json(:bulk_test_resources => attributes)
+                         :body => json(:bulk_test_resources => attributes)
         )
       end
 

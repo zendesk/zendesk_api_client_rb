@@ -13,11 +13,11 @@ Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
 
 # Align the elements of a hash literal if they span more than one line.
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedLastArgumentHashStyle: ignore_implicit
 
 # Align the parameters of a method call if they span more than one line.
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
 # Checks the indentation of hanging closing parentheses.

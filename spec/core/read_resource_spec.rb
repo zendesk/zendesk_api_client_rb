@@ -48,8 +48,8 @@ describe ZendeskAPI::ReadResource do
     context "with side loads" do
       before(:each) do
         stub_json_request(:get, %r{test_resources/#{id}\?include=nil_resource}, json(
-          "test_resource" => { :id => 1, :nil_resource_id => 2 },
-          "nil_resources" => [{ :id => 1, :name => :bye }, { :id => 2, :name => :hi }]
+                                                                                  "test_resource" => { :id => 1, :nil_resource_id => 2 },
+                                                                                  "nil_resources" => [{ :id => 1, :name => :bye }, { :id => 2, :name => :hi }]
         ))
 
         subject.has ZendeskAPI::NilResource

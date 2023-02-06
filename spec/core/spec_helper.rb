@@ -63,8 +63,8 @@ def client
         end
       else
         unless $credentials_warning
-          STDERR.puts "using default credentials: live specs will fail."
-          STDERR.puts "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
+          warn "using default credentials: live specs will fail."
+          warn "add your credentials to spec/fixtures/credentials.yml (see: spec/fixtures/credentials.yml.example)"
           $credentials_warning = true
         end
 
