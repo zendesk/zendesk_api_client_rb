@@ -15,6 +15,14 @@
 - Drop support for JRuby 9.2, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110151024
 - Drop support for 2.6, we will try to support Ruby 2.7 for as long as possible
 
+**Note:**
+
+It is possible that the SDK will work okay in Ruby 2.6, but we do not guarantee it and also support will not be provided on any issues.
+
+We will continue to support Ruby 2.7 owing to the large set of developers still on Ruby 2. The support will end by Jan 2024.
+
+We strongly recommend everyone to consider moving to Ruby 3 at the earliest.
+
 ## v1.37.0
 
 - Fix Faraday v1 deprecation
