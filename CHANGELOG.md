@@ -9,15 +9,15 @@
 - Add support for Faraday 2.0
 - Add `Label` resource for Articles
 - Add Ruby 3.2 to CI
-- Add JRuby 9.3 to CI
+- Add JRuby 9.4 to CI
 - Drop support for Faraday 1
-- Drop support for JRuby 9.1, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110095881
-- Drop support for JRuby 9.2, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110151024
-- Drop support for 2.6, we will try to support Ruby 2.7 for as long as possible
+- Remove 2.6 from CI
+- Remove JRuby 9.1 from CI, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110095881
+- Remove JRuby 9.2 from CI, see https://github.com/zendesk/zendesk_api_client_rb/runs/8110151024
 
 **Note:**
 
-It is possible that the SDK will work okay in Ruby 2.6, but we do not guarantee it and also support will not be provided on any issues.
+It is possible that the SDK will work okay in Ruby 2.6, but we do not guarantee it, and also support will not be provided on any issues.
 
 We will continue to support Ruby 2.7 owing to the large set of developers still on Ruby 2. The support will end by Jan 2024.
 
