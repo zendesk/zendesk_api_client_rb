@@ -28,9 +28,12 @@ Gemspec/OrderedDependencies:
 # SupportedHashRocketStyles: key, separator, table
 # SupportedColonStyles: key, separator, table
 # SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
-Layout/AlignHash:
+Layout/HashAlignment:
   Exclude:
     - 'spec/live/user_view_spec.rb'
+
+Layout/LineLength:
+  Max: 160
 
 # Offense count: 17
 # Cop supports --auto-correct.
@@ -106,7 +109,7 @@ Lint/DuplicateMethods:
     - 'lib/zendesk_api/resource.rb'
 
 # Offense count: 3
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Exclude:
     - 'Rakefile'
     - 'spec/core/collection_spec.rb'
@@ -138,7 +141,7 @@ Lint/ShadowingOuterLocalVariable:
 
 # Offense count: 10
 # Cop supports --auto-correct.
-Lint/StringConversionInInterpolation:
+Lint/RedundantStringCoercion:
   Exclude:
     - 'lib/zendesk_api/middleware/response/logger.rb'
     - 'spec/live/macro_spec.rb'
@@ -191,26 +194,6 @@ Naming/PredicateName:
   Exclude:
     - 'spec/**/*'
     - 'lib/zendesk_api/associations.rb'
-
-# Offense count: 1
-Performance/Caller:
-  Exclude:
-    - 'lib/zendesk_api/resource.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/RedundantBlockCall:
-  Exclude:
-    - 'lib/zendesk_api/collection.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: MaxKeyValuePairs.
-Performance/RedundantMerge:
-  Exclude:
-    - 'lib/zendesk_api/associations.rb'
-    - 'lib/zendesk_api/collection.rb'
-    - 'spec/macros/resource_macros.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

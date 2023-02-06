@@ -170,7 +170,12 @@ module ZendeskAPI
         builder.use ZendeskAPI::Middleware::Request::EncodeJson
 
         # Should always be first in the stack
-        builder.use ZendeskAPI::Middleware::Request::Retry, :logger => config.logger, :retry_codes => config.retry_codes, :retry_on_exception => config.retry_on_exception if config.retry
+        if config.retry
+          builder.use ZendeskAPI::Middleware::Request::Retry,
+                      :logger => config.logger,
+                      :retry_codes => config.retry_codes,
+                      :retry_on_exception => config.retry_on_exception
+        end
         if config.raise_error_when_rate_limited
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger
         end

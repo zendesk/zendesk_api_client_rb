@@ -29,9 +29,9 @@ describe ZendeskAPI::Collection do
       stub_json_request(:post, %r{bulk_test_resources/create_many$}, json(:job_status => {}))
       collection.create_many!([{ :name => 'Mick' }, { :name => 'Steven' }])
       assert_requested(:post, %r{bulk_test_resources/create_many$},
-        :body => {
-          :bulk_test_resources => [{ :name => 'Mick' }, { :name => 'Steven' }]
-        }
+                       :body => {
+                         :bulk_test_resources => [{ :name => 'Mick' }, { :name => 'Steven' }]
+                       }
       )
     end
 
@@ -100,7 +100,7 @@ describe ZendeskAPI::Collection do
 
       subject do
         ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource::TestChild,
-          :association => association)
+                                   :association => association)
       end
 
       before(:each) do
@@ -151,7 +151,7 @@ describe ZendeskAPI::Collection do
   context "pagination with data" do
     before(:each) do
       stub_json_request(:get, %r{test_resources}, json(
-        :test_resources => [{ :id => 1 }]
+                                                    :test_resources => [{ :id => 1 }]
       ))
       subject.fetch(true)
     end
@@ -229,7 +229,7 @@ describe ZendeskAPI::Collection do
     context "Faraday errors" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
-          :test_resources => [{ :id => 1 }], :next_page => "/test_resources?page=2"
+                                                       :test_resources => [{ :id => 1 }], :next_page => "/test_resources?page=2"
         ))
 
         stub_request(:get, %r{test_resources\?page=2}).to_return(:status => 500).then.to_return(
@@ -288,12 +288,12 @@ describe ZendeskAPI::Collection do
     context "requests with no next_page" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
-          :test_resources => [{ :id => 1 }],
-          :next_page => "/test_resources?page=2"
+                                                       :test_resources => [{ :id => 1 }],
+                                                       :next_page => "/test_resources?page=2"
         ))
 
         stub_json_request(:get, %r{test_resources\?page=2}, json(
-          :test_resources => [{ :id => 2 }]
+                                                              :test_resources => [{ :id => 2 }]
         ))
       end
 
@@ -314,13 +314,13 @@ describe ZendeskAPI::Collection do
 
       before(:each) do
         stub_json_request(:get, %r{incremental/test_resources\?start_time=0$}, json(
-          :test_resources => [{ :id => 1 }],
-          :next_page => "/incremental/test_resources?start_time=200"
+                                                                                 :test_resources => [{ :id => 1 }],
+                                                                                 :next_page => "/incremental/test_resources?start_time=200"
         ))
 
         stub_json_request(:get, %r{incremental/test_resources\?start_time=200$}, json(
-          :test_resources => [{ :id => 2 }],
-          :next_page => "/incremental/test_resources?start_time=200"
+                                                                                   :test_resources => [{ :id => 2 }],
+                                                                                   :next_page => "/incremental/test_resources?start_time=200"
         ))
       end
 
@@ -339,13 +339,13 @@ describe ZendeskAPI::Collection do
     context "infinite loops" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
-          :test_resources => [{ :id => 1 }],
-          :next_page => "/test_resources?page=2"
+                                                       :test_resources => [{ :id => 1 }],
+                                                       :next_page => "/test_resources?page=2"
         ))
 
         stub_json_request(:get, %r{/test_resources\?page=2$}, json(
-          :test_resources => [{ :id => 2 }],
-          :next_page => "/test_resources?page=2"
+                                                                :test_resources => [{ :id => 2 }],
+                                                                :next_page => "/test_resources?page=2"
         ))
       end
     end
@@ -353,13 +353,13 @@ describe ZendeskAPI::Collection do
     context "successful requests" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
-          :test_resources => [{ :id => 1 }],
-          :next_page => "/test_resources?page=2"
+                                                       :test_resources => [{ :id => 1 }],
+                                                       :next_page => "/test_resources?page=2"
         ))
 
         stub_json_request(:get, %r{test_resources\?page=2}, json(
-          :test_resources => [{ :id => 2 }],
-          :next_page => "/test_resources?page=3"
+                                                              :test_resources => [{ :id => 2 }],
+                                                              :next_page => "/test_resources?page=3"
         ))
 
         stub_request(:get, %r{test_resources\?page=3}).to_return(:status => 404)
@@ -417,8 +417,8 @@ describe ZendeskAPI::Collection do
       context "from next_page" do
         before(:each) do
           stub_json_request(:get, %r{test_resources}, json(
-            :test_resources => [{ :id => 2 }],
-            :next_page => "/test_resources?page=2"
+                                                        :test_resources => [{ :id => 2 }],
+                                                        :next_page => "/test_resources?page=2"
           ))
 
           subject.fetch(true)
@@ -433,8 +433,8 @@ describe ZendeskAPI::Collection do
       context "from prev_page" do
         before(:each) do
           stub_json_request(:get, %r{test_resources}, json(
-            :test_resources => [{ :id => 2 }],
-            :previous_page => "/test_resources?page=1"
+                                                        :test_resources => [{ :id => 2 }],
+                                                        :previous_page => "/test_resources?page=1"
           ))
 
           subject.fetch(true)
@@ -472,8 +472,8 @@ describe ZendeskAPI::Collection do
     context "with an invalid model key expectation" do
       before(:each) do
         stub_json_request(:get, %r{test_resources}, json(
-          :test_resource_stuff => [{ :id => 2 }],
-          :next_page => "/test_resources?page=2"
+                                                      :test_resource_stuff => [{ :id => 2 }],
+                                                      :next_page => "/test_resources?page=2"
         ))
       end
 
@@ -583,9 +583,9 @@ describe ZendeskAPI::Collection do
 
     before(:each) do
       stub_json_request(:get, %r{users\?page=2}, json(
-        :users => [{ :id => 2 }],
-        :next_page => "/users?page=3&per_page=1",
-        :previous_page => "/users?page=1&per_page=1"
+                                                   :users => [{ :id => 2 }],
+                                                   :next_page => "/users?page=3&per_page=1",
+                                                   :previous_page => "/users?page=1&per_page=1"
       ))
 
       subject.per_page(1).page(2)
@@ -651,8 +651,8 @@ describe ZendeskAPI::Collection do
         ZendeskAPI::TestResource.has ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
-          :nil_resources => [{ :id => 1, :name => :bye }, { :id => 4, :name => :hi }]
+                                                                             :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
+                                                                             :nil_resources => [{ :id => 1, :name => :bye }, { :id => 4, :name => :hi }]
         ))
 
         subject.fetch(true)
@@ -673,9 +673,12 @@ describe ZendeskAPI::Collection do
       before(:each) do
         ZendeskAPI::TestResource.has ZendeskAPI::NilResource
 
-        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{ :id => 1, :nil_resource_id => 4 }, { :id => 2, :nil_resource_id => 1 }],
-          :nil_resources => [{ :id => 1, :name => :bye }, { :id => 4, :name => :hi }]
+        stub_json_request(
+          :get,
+          %r{test_resources\?include=nil_resources},
+          json(
+            :test_resources => [{ :id => 1, :nil_resource_id => 4 }, { :id => 2, :nil_resource_id => 1 }],
+            :nil_resources => [{ :id => 1, :name => :bye }, { :id => 4, :name => :hi }]
         ))
 
         subject.fetch(true)
@@ -710,10 +713,16 @@ describe ZendeskAPI::Collection do
       before(:each) do
         ZendeskAPI::TestResource.has_many ZendeskAPI::NilResource
 
-        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{ :id => 1, :nil_resource_ids => [1, 4] }],
-          :nil_resources => [{ :id => 1, :name => :hi }, { :id => 4, :name => :hello }, { :id => 5, :name => :goodbye }]
-        ))
+        stub_json_request(
+          :get,
+          %r{test_resources\?include=nil_resources},
+          json(:test_resources => [{ :id => 1, :nil_resource_ids => [1, 4] }],
+               :nil_resources => [
+                 { :id => 1, :name => :hi },
+                 { :id => 4, :name => :hello },
+                 { :id => 5, :name => :goodbye }
+               ])
+        )
 
         subject.fetch(true)
 
@@ -733,10 +742,15 @@ describe ZendeskAPI::Collection do
       before(:each) do
         ZendeskAPI::TestResource.has_many ZendeskAPI::NilResource
 
-        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{ :id => 1 }],
-          :nil_resources => [{ :id => 1, :test_resource_id => 2 }, { :id => 2, :test_resource_id => 1 }, { :id => 4, :test_resource_id => 1 }]
-        ))
+        stub_json_request(
+          :get,
+          %r{test_resources\?include=nil_resources},
+          json(:test_resources => [{ :id => 1 }],
+               :nil_resources => [
+                 { :id => 1, :test_resource_id => 2 },
+                 { :id => 2, :test_resource_id => 1 },
+                 { :id => 4, :test_resource_id => 1 }
+               ]))
 
         subject.fetch(true)
         @resource = subject.detect { |res| res.id == 1 }
@@ -755,10 +769,11 @@ describe ZendeskAPI::Collection do
       before(:each) do
         ZendeskAPI::TestResource.has ZendeskAPI::NilResource
 
-        stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{ :id => 1 }],
-          :nil_resources => [{ :id => 1, :test_resource_id => 2 }, { :id => 2, :test_resource_id => 1 }]
-        ))
+        stub_json_request(:get, %r{test_resources\?include=nil_resources},
+                          json(
+                            :test_resources => [{ :id => 1 }],
+                            :nil_resources => [{ :id => 1, :test_resource_id => 2 }, { :id => 2, :test_resource_id => 1 }]
+                        ))
 
         subject.fetch(true)
         @resource = subject.detect { |res| res.id == 1 }
@@ -778,8 +793,8 @@ describe ZendeskAPI::Collection do
         ZendeskAPI::TestResource.has ZendeskAPI::NilResource, :include_key => :name
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
-          :nil_resources => [{ :name => 1 }, { :name => 4 }]
+                                                                             :test_resources => [{ :id => 1, :nil_resource_id => 4 }],
+                                                                             :nil_resources => [{ :name => 1 }, { :name => 4 }]
         ))
 
         subject.fetch(true)
@@ -802,8 +817,8 @@ describe ZendeskAPI::Collection do
         ZendeskAPI::TestResource::TestChild.has ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{ :id => 1, :test_child => { :nil_resource_id => 4 } }],
-          :nil_resources => [{ :id => 1 }, { :id => 4 }]
+                                                                             :test_resources => [{ :id => 1, :test_child => { :nil_resource_id => 4 } }],
+                                                                             :nil_resources => [{ :id => 1 }, { :id => 4 }]
         ))
 
         subject.fetch(true)
@@ -907,7 +922,7 @@ describe ZendeskAPI::Collection do
     context "resources" do
       before(:each) do
         stub_json_request(:get, %r{test_resources/active},
-          json(:test_resources => [{ :id => 1 }]))
+                          json(:test_resources => [{ :id => 1 }]))
 
         subject.fetch
 
