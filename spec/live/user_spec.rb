@@ -1,5 +1,6 @@
 require 'core/spec_helper'
 
+# TODO: test working
 describe ZendeskAPI::User, :delete_after do
   def valid_attributes
     { name: "Test U.", email: "test+#{Time.now.to_i}@example.org" }

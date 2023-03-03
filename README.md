@@ -450,6 +450,6 @@ bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 
 ## Copyright and license
 
-Copyright 2015-2022 Zendesk
+Copyright 2015-2023 Zendesk.
 
 See [LICENSE](./LICENSE).
