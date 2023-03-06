@@ -27,6 +27,41 @@ RSpec.describe ZendeskAPI::Ticket do
   it_should_be_readable agent, :ccd_tickets, create: true
   it_should_be_readable organization, :tickets
 
+  describe "#create" do
+    context "when passing large objects as parameters" do
+      let(:requester) { client.users.search(query: 'role:end-user').detect(&:photo) }
+      let(:organization) { client.organizations.sample }
+      let(:ticket_parameters) do
+        {
+          subject: 'live spec subject',
+          description: 'live spec description',
+          requester: requester,
+          organization: organization
+        } # We should always use requester/organiztion _id for existing records. This test should not be used as a guideline on how to use the sdk.
+      end
+
+      before do
+        VCR.use_cassette("ticket_create_with_large_objects") do
+          @ticket = ZendeskAPI::Ticket.create(client, ticket_parameters)
+        end
+      end
+
+      it 'is creatable' do
+        expect(requester).to_not be_nil
+
+        expect(@ticket.id).to_not be_nil
+        expect(@ticket.description).to eq(ticket_parameters[:description])
+      end
+    end
+
+    after do
+      return unless @ticket
+      VCR.use_cassette("ticket_destroy_with_large_objects") do
+        @ticket.destroy!
+      end
+    end
+  end
+
   describe "#attributes_for_save" do
     let :ticket do
       described_class.new(instance_double(ZendeskAPI::Client), status: :new)
