@@ -4,7 +4,7 @@
 
 - Upcoming changes
 
-## v1.38.0 (rc2 - BREAKING!)
+## v2.0.0 (BREAKING!)
 
 - Add support for Faraday 2.0
 - Add `Label` resource for Articles
