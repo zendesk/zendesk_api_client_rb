@@ -232,6 +232,12 @@ module ZendeskAPI
       include Read
       include Create
       include Destroy
+
+      def destroy!
+        super do |req|
+          req.path = path
+        end
+      end
     end
     has_many Label
   end
