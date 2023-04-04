@@ -20,7 +20,7 @@ module ZendeskAPI
         super
 
         if response[:body].is_a?(Hash)
-          @errors = response[:body]["details"] || generate_error_msg(response[:body]) || response[:body]["error"]
+          @errors = response[:body]["details"] || generate_error_msg(response[:body])
         end
 
         @errors ||= {}
@@ -33,11 +33,11 @@ module ZendeskAPI
       private
 
       def generate_error_msg(response_body)
-        return unless response_body["description"] || response_body["message"]
-
         [
           response_body["description"],
-          response_body["message"]
+          response_body["message"],
+          response_body["error"],
+          response_body["errors"]
         ].compact.join(" - ")
       end
     end
