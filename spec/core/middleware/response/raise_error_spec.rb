@@ -93,17 +93,18 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
           fail # didn't raise an error
         end
 
-        context "with only an error key" do
-          let(:body) { JSON.dump(:error => "something went wrong") }
+        {
+          error: 'There was an error',
+          errors: 'There were several errors'
+        }.each do |key, message|
+          context "with only an #{key} key" do
+            let(:body) { JSON.dump(key => message) }
 
-          it "should return RecordInvalid with proper message" do
-            begin
-              client.connection.get "/non_existent"
-            rescue ZendeskAPI::Error::RecordInvalid => e
-              expect(e.errors).to eq("something went wrong")
-              expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: something went wrong")
-            else
-              fail # didn't raise an error
+            it "should return RecordInvalid with proper message" do
+              expect { client.connection.get "/non_existent" }.to raise_error do |error|
+                expect(error).to be_a(ZendeskAPI::Error::RecordInvalid)
+                expect(error.errors).to eq(message)
+              end
             end
           end
         end
@@ -129,17 +130,18 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
           fail # didn't raise an error
         end
 
-        context "with only an error key" do
-          let(:body) { JSON.dump(:error => "something went wrong") }
+        {
+          error: 'There was an error',
+          errors: 'There were several errors'
+        }.each do |key, message|
+          context "with only an #{key} key" do
+            let(:body) { JSON.dump(key => message) }
 
-          it "should return RecordInvalid with proper message" do
-            begin
-              client.connection.get "/non_existent"
-            rescue ZendeskAPI::Error::RecordInvalid => e
-              expect(e.errors).to eq("something went wrong")
-              expect(e.to_s).to eq("ZendeskAPI::Error::RecordInvalid: something went wrong")
-            else
-              fail # didn't raise an error
+            it "should return RecordInvalid with proper message" do
+              expect { client.connection.get "/non_existent" }.to raise_error do |error|
+                expect(error).to be_a(ZendeskAPI::Error::RecordInvalid)
+                expect(error.errors).to eq(message)
+              end
             end
           end
         end
