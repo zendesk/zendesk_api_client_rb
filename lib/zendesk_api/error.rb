@@ -33,12 +33,7 @@ module ZendeskAPI
       private
 
       def generate_error_msg(response_body)
-        [
-          response_body["description"],
-          response_body["message"],
-          response_body["error"],
-          response_body["errors"]
-        ].compact.join(" - ")
+        response_body.values_at("description", "message", "error", "errors").compact.join(" - ")
       end
     end
 
