@@ -4,6 +4,10 @@
 
 - Upcoming changes
 
+## v2.0.1
+
+- More complete error message for `RecordInvalid`
+
 ## v2.0.0 (BREAKING!)
 
 - Add support for Faraday 2.0
