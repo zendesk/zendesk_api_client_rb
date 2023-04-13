@@ -431,11 +431,12 @@ bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 
 ## Releasing a new gem version
 
-1. Execute `bundle exec rake bump:minor`, which bumps the version in my local machine in a specific commit
-2. Change the CHANGELOG and amend that previous commit, so the bump commit and the CHANGELOG changes are in the same commit (example)
-3. Push to Github
-4. Post a message in Slack `#rest-api`, so advocacy are aware that we are going to release a new gem, just in case any customer complains about something related to the gem
-5. After a couple of hours, run `bundle exec rake release`, which automatically pushes the tag to GitHub and releases a new version to Rubygems (it does the gem push for you)
+1. Ensure the CHANGELOG is correct and updated, this is your last opportunity
+2. Execute `bundle exec bump patch --tag`, or minor or major according to [SemVer](https://semver.org), this bumps the version in your local machine in the latest commit
+3. Push to GitHub `git push && git push origin vX.X.X`
+4. Raise a PR and get it approved and merged
+5. Post a message in Slack `#rest-api`, so advocacy are aware that we are going to release a new gem, just in case any customer complains about something related to the gem
+6. After 2 hours from the above message, you can [approve the release of the gem](https://github.com/zendesk/zendesk_api_client_rb/deployments/activity_log?environment=rubygems-publish)
 
 ## Contributing
 
@@ -448,8 +449,10 @@ bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
    we can ignore when we pull.)
 5. Submit a pull request.
 
+**Note:** Live specs will likely fail for external contributors. The Zendesk devs can help with that. If you have permissions and some live specs unexpectedly fail, that might be a data error, see the REPL for that.
+
 ## Copyright and license
 
-Copyright 2015-2022 Zendesk
+Copyright 2015-2023 Zendesk
 
 See [LICENSE](./LICENSE).
