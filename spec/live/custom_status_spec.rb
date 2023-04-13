@@ -18,6 +18,6 @@ describe ZendeskAPI::CustomStatus, :delete_after do
   it_should_be_updatable :end_user_label, 'New End User Label'
   it_should_be_updatable :description, 'New Description'
   it_should_be_updatable :end_user_description, 'New End User Description'
-  it_should_be_deletable
+  it_should_be_deletable find: [:active?, false]
   it_should_be_readable :custom_statuses
 end
