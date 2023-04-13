@@ -142,6 +142,9 @@ RSpec.configure do |c|
     client.config.logger = old_logger
   end
 
+  # Used by `rspec spec/live --only-failures` in CI
+  c.example_status_persistence_file_path = "spec/examples.txt"
+
   c.extend ResourceMacros
   c.extend ZendeskAPI::Fixtures
   c.include ZendeskAPI::Fixtures
