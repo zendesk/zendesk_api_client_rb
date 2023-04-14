@@ -1,4 +1,5 @@
 doc/**
+spec/examples.txt
 spec/fixtures/cassettes
 spec/fixtures/credentials.yml
 coverage/**
