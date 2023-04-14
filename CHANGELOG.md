@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Upcoming changes
+- _Unofficial_ support for [httpx](https://rubygems.org/gems/httpx)
 
 ## v2.0.1
 
