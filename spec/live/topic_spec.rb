@@ -1,12 +1,13 @@
 require 'core/spec_helper'
 
 RSpec.describe ZendeskAPI::Topic do
+  # Cleanup topics (:delete_after doesn't work here)
   before :all do
     VCR.configure do |c|
       @previous_allow_http_connections = c.allow_http_connections_when_no_cassette?
       c.allow_http_connections_when_no_cassette = true
     end
-    client.topics.fetch!.map(&:destroy!)
+    client.topics.fetch!.reject { |t| t == @topic }.map(&:destroy!)
   ensure
     VCR.configure do |c|
       c.allow_http_connections_when_no_cassette = @previous_allow_http_connections
