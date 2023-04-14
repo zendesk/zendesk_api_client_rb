@@ -52,6 +52,6 @@ jobs:
       - name: spec:live
         run: |
           bundle install
-          bundle exec rake clean_live set_ci_credentials spec:live
-          bundle exec rake clean_live
+          bundle exec rake clean_live set_ci_credentials spec:live ||
+          bundle exec rake clean_live &&
           bundle exec rspec spec/live --only-failures
