@@ -39,6 +39,14 @@ module ZendeskAPI
       def namespace(namespace)
         @namespace = namespace
       end
+
+      def new_from_response(client, response, includes = nil)
+        new(client).tap do |resource|
+          resource.handle_response(response)
+          resource.set_includes(resource, includes, response.body) if includes
+          resource.attributes.clear_changes
+        end
+      end
     end
 
     # @return [Hash] The resource's attributes
@@ -123,17 +131,17 @@ module ZendeskAPI
 
     # Compares resources by class and id. If id is nil, then by object_id
     def ==(other)
-      return true if other.object_id == object_id
+      return false unless other
 
-      if other && !(other.is_a?(Data) || other.is_a?(Integer))
-        warn "Trying to compare #{other.class} to a Resource from #{caller.first}"
-      end
+      return true if other.object_id == object_id
 
       if other.is_a?(Data)
         other.id && other.id == id
       elsif other.is_a?(Integer)
         id == other
       else
+        warn "Trying to compare #{other.class} to a Resource from #{caller.first}"
+
         false
       end
     end
