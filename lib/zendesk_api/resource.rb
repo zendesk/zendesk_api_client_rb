@@ -135,15 +135,14 @@ module ZendeskAPI
 
       return true if other.object_id == object_id
 
-      if other.is_a?(Data)
-        other.id && other.id == id
-      elsif other.is_a?(Integer)
-        id == other
-      else
-        warn "Trying to compare #{other.class} to a Resource from #{caller.first}"
+      return other.id && (other.id == id) if other.is_a?(Data)
 
-        false
+      unless other.is_a?(Integer)
+        return warn "Trying to compare #{other.class} to a Resource
+          from #{caller.first}"
       end
+
+      id == other
     end
     alias :eql :==
 
