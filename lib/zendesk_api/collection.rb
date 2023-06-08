@@ -3,6 +3,7 @@ require 'zendesk_api/resources'
 require 'zendesk_api/search'
 
 module ZendeskAPI
+  DEFAULT_PAGE_SIZE = 100
   # Represents a collection of resources. Lazily loaded, resources aren't
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
@@ -188,9 +189,24 @@ module ZendeskAPI
       end
       path_query_link = (@query || path)
 
-      @response = get_response(path_query_link)
+      if intentional_obp_request?
+        warn "OBP will be deprecated after Oct 2023."
+      else
+        @options_page_was = @options.page
+        per_page_param = @options.delete("per_page")
+        @options.page = { size: (per_page_param || DEFAULT_PAGE_SIZE) }
+      end
 
-      if path_query_link == "search/export"
+      begin
+        @response = get_response(path_query_link)
+      rescue ZendeskAPI::Error::NetworkError => e
+        raise e if intentional_obp_request?
+        @options.page = @options_page_was
+        @response = get_response(path_query_link)
+      end
+
+      # if CBP --
+      if response_is_cbp?(@response.body)
         handle_cursor_response(@response.body)
       else
         handle_response(@response.body)
@@ -327,7 +343,7 @@ module ZendeskAPI
     end
 
     def more_results?(response)
-      response["meta"].present? && response["results"].present?
+      ![nil, false, '', {}, []].include?(response["meta"]) && response["meta"]["has_more"]
     end
     alias_method :has_more_results?, :more_results? # For backward compatibility with 1.33.0 and 1.34.0
 
@@ -337,11 +353,11 @@ module ZendeskAPI
 
     def get_next_page_data(original_response_body)
       link = original_response_body["links"]["next"]
-
+      result_key = @resource_class.model_key || "results"
       while link
         response = get_response_body(link)
 
-        original_response_body["results"] = original_response_body["results"] + response["results"]
+        original_response_body[result_key] = original_response_body[result_key] + response[result_key]
 
         link = response["meta"]["has_more"] ? response["links"]["next"] : nil
       end
@@ -351,14 +367,32 @@ module ZendeskAPI
 
     private
 
+    def response_is_cbp?(body)
+      body["meta"] && body["links"]
+    end
+
+    def intentional_obp_request?
+      @options.page? && @options.page.is_a?(Numeric)
+    end
+
     def set_page_and_count(body)
       @count = (body["count"] || @resources.size).to_i
-      @next_page, @prev_page = body["next_page"], body["previous_page"]
-
+      # line below, cater for cbp links as well
+      @next_page, @prev_page = page_links(body)
+      # Check if this bit can just be removed ... or cater for CBP
       if @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
         @options["page"] = $1.to_i + 1
+      end
+    end
+
+    # TODO: write a test for this method``
+    def page_links(body)
+      if body["meta"] && body["links"]
+        [body["links"]["next"], body["links"]["prev"]]
+      else
+        [body["next_page"], body["previous_page"]]
       end
     end
 
