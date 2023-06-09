@@ -605,11 +605,10 @@ describe ZendeskAPI::Collection do
     context "pagination with no options" do
       before(:each) do
         stub_json_request(:get, %r{users\?page=(1|3)}, json(:users => [{ :id => 3 }]))
-
         subject.per_page(nil).page(nil)
       end
 
-      xit "should find the next page by calling fetch" do
+      it "should find the next page by calling fetch" do
         current = subject.to_a.dup
         nxt = subject.next
 
@@ -617,7 +616,7 @@ describe ZendeskAPI::Collection do
         expect(nxt).to_not eq(current)
       end
 
-      xit "should find the prev page by calling fetch" do
+      it "should find the prev page by calling fetch" do
         current = subject.to_a.dup
         prev = subject.prev
 
@@ -952,23 +951,49 @@ describe ZendeskAPI::Collection do
   end
 
   describe "pagination behaviour" do
+    let(:cbp_response) do
+      {
+        "meta" => {
+          "has_more" => true,
+          "next_page" => "https://example.com/api/v2/test_resources.json?page=2&per_page=100",
+          "previous_page" => nil,
+          "count" => 100
+        },
+        "test_resources" => [{ "id" => 1 }]
+      }
+    end
+
+    let(:cbp_success_response) do
+      double("response", body: cbp_response)
+    end
+
     context "when fetching a collection" do
-      it "tries to make a CBP request" do
-        # expect(subject).to receive(:get_response).with("http://blah")
-        # subject.fetch
+      before do
+        expect(subject).to receive(:get_response).with("test_resources").and_return(cbp_success_response)
       end
 
-      it "defaults the page size to 100" do
+      it "tries to make a CBP request, setting the page[size] parameter" do
+        subject.fetch
+        expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 100 })
       end
 
       context "when per_page is given" do
         it "tries the CBP request with the given page size" do
+          subject.per_page(22).fetch
+          expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 22 })
         end
       end
     end
 
     context "when the endpoint does not support CBP" do
+      before do
+        expect(subject).to receive(:get_response).with("test_resources").and_raise(ZendeskAPI::Error::NetworkError).twice
+      end
+
       it "tries an OBP request after a failed CBP request" do
+        subject.per_page(2).fetch
+        expect(subject.instance_variable_get(:@options)["per_page"]).to eq(2)
+        expect(subject.instance_variable_get(:@options)["page"]).to be_nil
       end
     end
   end

@@ -191,23 +191,22 @@ module ZendeskAPI
 
       if intentional_obp_request?
         warn "OBP will be deprecated after Oct 2023."
-      else
-        @options_page_was = @options.page
-        per_page_param = @options.delete("per_page")
-        @options.page = { size: (per_page_param || DEFAULT_PAGE_SIZE) }
+      elsif @next_page.nil?
+        @options_per_page_was = @options.delete("per_page")
+        @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
       end
 
       begin
         @response = get_response(path_query_link)
       rescue ZendeskAPI::Error::NetworkError => e
         raise e if intentional_obp_request?
-        @options.page = @options_page_was
+        @options.per_page = @options_per_page_was
+        @options.page = nil
         @response = get_response(path_query_link)
       end
 
-      # if CBP --
-      if response_is_cbp?(@response.body)
-        handle_cursor_response(@response.body)
+      if path_query_link == "search/export"
+        handle_cursor_search_export_response(@response.body)
       else
         handle_response(@response.body)
       end
@@ -268,9 +267,9 @@ module ZendeskAPI
     # * If there is a next_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
     def next
-      if @options["page"]
+      if @options["page"] && !@options["page"].is_a?(Hash)
         clear_cache
-        @options["page"] += 1
+        @options["page"] = @options["page"].to_i + 1
       elsif (@query = @next_page)
         fetch(true)
       else
@@ -377,9 +376,9 @@ module ZendeskAPI
 
     def set_page_and_count(body)
       @count = (body["count"] || @resources.size).to_i
-      # line below, cater for cbp links as well
       @next_page, @prev_page = page_links(body)
-      # Check if this bit can just be removed ... or cater for CBP
+
+      # code below is for OBP responses, only
       if @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
@@ -387,7 +386,6 @@ module ZendeskAPI
       end
     end
 
-    # TODO: write a test for this method``
     def page_links(body)
       if body["meta"] && body["links"]
         [body["links"]["next"], body["links"]["prev"]]
@@ -469,7 +467,7 @@ module ZendeskAPI
       end
     end
 
-    def handle_cursor_response(response_body)
+    def handle_cursor_search_export_response(response_body)
       unless response_body.is_a?(Hash)
         raise ZendeskAPI::Error::NetworkError, @response.env
       end
