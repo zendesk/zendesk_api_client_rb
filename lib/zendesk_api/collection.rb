@@ -258,7 +258,7 @@ module ZendeskAPI
         @options["page"] += 1
       elsif (@query = @next_page)
         # WHO CALLS THIS METHOD???? not a CBP call
-        fetch(true)
+        # fetch(true)
       else
         clear_cache
         @resources = []
