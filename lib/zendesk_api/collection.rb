@@ -253,9 +253,11 @@ module ZendeskAPI
     # * Otherwise, returns an empty array.
     def next
       if @options["page"]
+        # OBP call
         clear_cache
         @options["page"] += 1
       elsif (@query = @next_page)
+        # WHO CALLS THIS METHOD???? not a CBP call
         fetch(true)
       else
         clear_cache
@@ -353,11 +355,17 @@ module ZendeskAPI
 
     def set_page_and_count(body)
       @count = (body["count"] || @resources.size).to_i
+      # CBP: body["next_page"] == "http://asdf?next_page=<token>"
+      # OBP: body["next_page"] == "http://asdf?next_page=3" when on page 2
+      # OBP: body["prev_page"] == "http://asdf?next_page=1" when on page 2
       @next_page, @prev_page = body["next_page"], body["previous_page"]
 
+      # OBP only: Set the current page using either next_page or prev_page
       if @next_page =~ /page=(\d+)/
+        # @options["page"] == 2 # when OBP on page 2
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
+        # @options["page"] == 2 # when OBP on page 2
         @options["page"] = $1.to_i + 1
       end
     end
@@ -379,6 +387,7 @@ module ZendeskAPI
           block.call(*arguments)
         end
 
+        # ONLY `#next` consumer?
         last_page? ? break : self.next
       end
 
