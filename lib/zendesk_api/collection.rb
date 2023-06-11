@@ -271,6 +271,7 @@ module ZendeskAPI
         clear_cache
         @options["page"] = @options["page"].to_i + 1
       elsif (@query = @next_page)
+        @options.page&.delete("before")
         fetch(true)
       else
         clear_cache
@@ -287,6 +288,7 @@ module ZendeskAPI
         clear_cache
         @options["page"] -= 1
       elsif (@query = @prev_page)
+        @options.page&.delete("after")
         fetch(true)
       else
         clear_cache
@@ -378,8 +380,10 @@ module ZendeskAPI
       @count = (body["count"] || @resources.size).to_i
       @next_page, @prev_page = page_links(body)
 
-      # code below is for OBP responses, only
-      if @next_page =~ /page=(\d+)/
+      if response_is_cbp?(body)
+        @options.page.after = body["meta"]["after_cursor"]
+        @options.page.before = body["meta"]["before_cursor"]
+      elsif @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
         @options["page"] = $1.to_i + 1

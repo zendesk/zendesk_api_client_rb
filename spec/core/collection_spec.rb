@@ -955,9 +955,12 @@ describe ZendeskAPI::Collection do
       {
         "meta" => {
           "has_more" => true,
-          "next_page" => "https://example.com/api/v2/test_resources.json?page=2&per_page=100",
-          "previous_page" => nil,
-          "count" => 100
+          "after_cursor" => "xxx",
+          "before_cursor" => nil
+        },
+        "links" => {
+          "next" => "https://test_resources.json?pager[after]=xxx&page[size]=100",
+          "prev" => nil
         },
         "test_resources" => [{ "id" => 1 }]
       }
@@ -974,13 +977,13 @@ describe ZendeskAPI::Collection do
 
       it "tries to make a CBP request, setting the page[size] parameter" do
         subject.fetch
-        expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 100 })
+        expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 100, "after" => "xxx", "before" => nil })
       end
 
       context "when per_page is given" do
         it "tries the CBP request with the given page size" do
           subject.per_page(22).fetch
-          expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 22 })
+          expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 22, "after" => "xxx", "before" => nil })
         end
       end
     end
@@ -994,6 +997,40 @@ describe ZendeskAPI::Collection do
         subject.per_page(2).fetch
         expect(subject.instance_variable_get(:@options)["per_page"]).to eq(2)
         expect(subject.instance_variable_get(:@options)["page"]).to be_nil
+      end
+    end
+
+    describe "#all going through multiple pages" do
+      def generate_response(index, has_more)
+        {
+          "meta" => {
+            "has_more" => true,
+            "after_cursor" => "after#{index}",
+            "before_cursor" => "before#{index - 1}"
+          },
+          "links" => {
+            "next" => has_more ? "https://test_resources.json?page%5Bafter%5D=after#{index}&page%5Bsize%5D=1" : nil,
+            "prev" => index > 1 ? "https://test_resources.json?page%5Bafter%5D=after#{index - 1}&page%5Bsize%5D=1" : nil
+          },
+          "test_resources" => [{ "id" => index }]
+        }
+      end
+      before do
+        stub_json_request(:get, %r{test_resources\?page%5Bsize%5D=1}, json(generate_response(1, true)))
+        stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after1&page%5Bsize%5D=1}, json(generate_response(2, true)))
+        stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after2&page%5Bsize%5D=1}, json(generate_response(3, true)))
+        stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after3&page%5Bsize%5D=1}, json(generate_response(4, false)))
+      end
+
+      it "fetches all pages and yields the correct arguments" do
+        expect do |b|
+          silence_logger { subject.all(&b) }
+        end.to yield_successive_args(
+          [ZendeskAPI::TestResource.new(client, :id => 1), anything],
+          [ZendeskAPI::TestResource.new(client, :id => 2), anything],
+          [ZendeskAPI::TestResource.new(client, :id => 3), anything],
+          [ZendeskAPI::TestResource.new(client, :id => 4), anything]
+        )
       end
     end
   end
