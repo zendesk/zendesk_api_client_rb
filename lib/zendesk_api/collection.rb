@@ -3,10 +3,11 @@ require 'zendesk_api/resources'
 require 'zendesk_api/search'
 
 module ZendeskAPI
-  DEFAULT_PAGE_SIZE = 100
   # Represents a collection of resources. Lazily loaded, resources aren't
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
+    DEFAULT_PAGE_SIZE = 100
+
     include ZendeskAPI::Sideloading
 
     # Options passed in that are automatically converted from an array to a comma-separated list.
