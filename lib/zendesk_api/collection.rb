@@ -368,7 +368,7 @@ module ZendeskAPI
 
     private
 
-    def response_is_cbp?(body)
+    def cbp_response?(body)
       body["meta"] && body["links"]
     end
 
@@ -380,7 +380,7 @@ module ZendeskAPI
       @count = (body["count"] || @resources.size).to_i
       @next_page, @prev_page = page_links(body)
 
-      if response_is_cbp?(body)
+      if cbp_response?(body)
         @options.page.after = body["meta"]["after_cursor"]
         @options.page.before = body["meta"]["before_cursor"]
       elsif @next_page =~ /page=(\d+)/
