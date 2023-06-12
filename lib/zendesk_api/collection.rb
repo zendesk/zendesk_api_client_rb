@@ -349,15 +349,11 @@ module ZendeskAPI
     end
     alias_method :has_more_results?, :more_results? # For backward compatibility with 1.33.0 and 1.34.0
 
-    def get_response_body(link)
-      @client.connection.send("get", link).body
-    end
-
     def get_next_page_data(original_response_body)
       link = original_response_body["links"]["next"]
       result_key = @resource_class.model_key || "results"
       while link
-        response = get_response_body(link)
+        response = @client.connection.send("get", link).body
 
         original_response_body[result_key] = original_response_body[result_key] + response[result_key]
 
@@ -459,7 +455,7 @@ module ZendeskAPI
 
     def get_response(path)
       @error = nil
-      @response = @client.connection.send(@verb || "get", path) do |req|
+      @client.connection.send(@verb || "get", path) do |req|
         opts = @options.delete_if { |_, v| v.nil? }
 
         req.params.merge!(:include => @includes.join(",")) if @includes.any?

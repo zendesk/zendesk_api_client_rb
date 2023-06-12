@@ -5,6 +5,58 @@ describe ZendeskAPI::Collection do
     ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource)
   end
 
+  # TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  # TODO: pager, xxx, url
+
+  describe "#prev" do
+    let(:page1_cursor) { "111pg111" }
+    let(:page2_cursor) { "222pg222" }
+    let :response_body_page1 do
+      {
+        "meta" => {
+          "has_more" => true,
+          "before_cursor" => nil,
+          "after_cursor" => page2_cursor
+        },
+        "links" => {
+          "prev" => nil,
+          "next" => "https://zen.com/test_resources.json?page[after]=#{page2_cursor}&page[size]=2"
+        },
+        "test_resources" => [{ "id" => 1 }, { "id" => 2 }]
+      }
+    end
+    # let :response_body_page2 do
+    #   {
+    #     "meta" => {
+    #       "has_more" => false,
+    #       "before_cursor" => page1_cursor,
+    #       "after_cursor" => nil
+    #     },
+    #     "links" => {
+    #       "prev" => "https://zen.com/test_resources.json?page[after]=#{page1_cursor}&page[size]=2",
+    #       "next" => nil
+    #     },
+    #     "test_resources" => [{ "id" => 3 }]
+    #   }
+    # end
+
+    let(:response_page1) { double("response_page1", body: response_body_page1) }
+    # let(:response_page2) { double("response_page2", body: response_body_page2) }
+
+    before do
+      allow(subject).to receive(:get_response).with("test_resources").and_return(response_page1)
+      # allow(subject).to receive(:get_response).with("https://zen.com/test_resources.json?page[after]=222pg222&page[size]=2").and_return(response_page1)
+    end
+
+    context "when CBP is used" do
+      it "is empty on the first page" do
+        subject.fetch
+
+        expect(subject.prev).to eq([])
+      end
+    end
+  end
+
   context "initialization" do
     it "should set the resource class" do
       expect(subject.instance_variable_get(:@resource_class)).to eq(ZendeskAPI::TestResource)
@@ -422,7 +474,7 @@ describe ZendeskAPI::Collection do
     end
   end
 
-  context "fetch" do
+  describe "#fetch" do
     context "grabbing the current page" do
       context "from next_page" do
         before(:each) do
@@ -984,19 +1036,6 @@ describe ZendeskAPI::Collection do
         it "tries the CBP request with the given page size" do
           subject.per_page(22).fetch
           expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 22, "after" => "xxx", "before" => nil })
-        end
-      end
-
-      describe "#prev" do
-        before do
-          allow(subject).to receive(:get_response).with("test_resources").and_return(cbp_success_response)
-        end
-
-        context "when CBP is used" do
-          it "goes prev" do
-            subject.fetch
-            subject.prev
-          end
         end
       end
     end
