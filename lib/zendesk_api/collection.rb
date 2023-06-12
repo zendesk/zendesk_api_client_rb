@@ -472,9 +472,7 @@ module ZendeskAPI
     end
 
     def handle_cursor_search_export_response(response_body)
-      unless response_body.is_a?(Hash)
-        raise ZendeskAPI::Error::NetworkError, @response.env
-      end
+      assert_valid_response_body(response_body)
 
       response_body = get_next_page_data(response_body) if more_results?(response_body)
 
@@ -491,9 +489,7 @@ module ZendeskAPI
     end
 
     def handle_response(response_body)
-      unless response_body.is_a?(Hash)
-        raise ZendeskAPI::Error::NetworkError, @response.env
-      end
+      assert_valid_response_body(response_body)
 
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
@@ -549,6 +545,12 @@ module ZendeskAPI
 
     def resource_methods
       @resource_methods ||= @resource_class.singleton_methods(false).map(&:to_sym)
+    end
+
+    def assert_valid_response_body(response_body)
+      unless response_body.is_a?(Hash)
+        raise ZendeskAPI::Error::NetworkError, @response.env
+      end
     end
   end
 end
