@@ -1026,10 +1026,10 @@ describe ZendeskAPI::Collection do
         expect do |b|
           silence_logger { subject.all(&b) }
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, :id => 1), anything],
-          [ZendeskAPI::TestResource.new(client, :id => 2), anything],
-          [ZendeskAPI::TestResource.new(client, :id => 3), anything],
-          [ZendeskAPI::TestResource.new(client, :id => 4), anything]
+          [ZendeskAPI::TestResource.new(client, id: 1), "after" => "after1", "before" => "before0", "size" => 100],
+          [ZendeskAPI::TestResource.new(client, id: 2), "after" => "after2", "before" => "before1", "size" => 100],
+          [ZendeskAPI::TestResource.new(client, id: 3), "after" => "after3", "before" => "before2", "size" => 100],
+          [ZendeskAPI::TestResource.new(client, id: 4), "after" => "after4", "before" => "before3", "size" => 100]
         )
       end
     end

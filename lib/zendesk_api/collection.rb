@@ -344,7 +344,7 @@ module ZendeskAPI
     end
 
     def more_results?(response)
-      ![nil, false, '', {}, []].include?(response["meta"]) && response["meta"]["has_more"]
+      Helpers.present?(response["meta"]) && response["meta"]["has_more"]
     end
     alias_method :has_more_results?, :more_results? # For backward compatibility with 1.33.0 and 1.34.0
 
