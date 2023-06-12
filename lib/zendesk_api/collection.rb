@@ -285,7 +285,7 @@ module ZendeskAPI
     # * If there is a prev_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
     def prev
-      if @options["page"] && @options["page"] > 1
+      if !@options["page"].is_a?(Hash) && @options["page"].to_i > 1
         clear_cache
         @options["page"] -= 1
       elsif (@query = @prev_page)

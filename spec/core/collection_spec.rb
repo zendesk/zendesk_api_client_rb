@@ -986,6 +986,19 @@ describe ZendeskAPI::Collection do
           expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 22, "after" => "xxx", "before" => nil })
         end
       end
+
+      describe "#prev" do
+        before do
+          allow(subject).to receive(:get_response).with("test_resources").and_return(cbp_success_response)
+        end
+
+        context "when CBP is used" do
+          it "goes prev" do
+            subject.fetch
+            subject.prev
+          end
+        end
+      end
     end
 
     context "when the endpoint does not support CBP" do
