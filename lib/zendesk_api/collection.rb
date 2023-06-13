@@ -188,9 +188,8 @@ module ZendeskAPI
       elsif association && association.options.parent && association.options.parent.new_record?
         return (@resources = [])
       end
-      path_query_link = (@query || path)
 
-      get_resources(path_query_link)
+      get_resources(@query || path)
     end
 
     def fetch(*args)
@@ -250,6 +249,7 @@ module ZendeskAPI
         clear_cache
         @options["page"] = @options["page"].to_i + 1
       elsif (@query = @next_page)
+        # Send _only_ url param "?after=token" to get the next page
         @options.page&.delete("before")
         fetch(true)
       else
@@ -267,6 +267,7 @@ module ZendeskAPI
         clear_cache
         @options["page"] -= 1
       elsif (@query = @prev_page)
+        # Send _only_ url param "?before=token" to get the prev page
         @options.page&.delete("after")
         fetch(true)
       else
@@ -405,13 +406,7 @@ module ZendeskAPI
 
       while (bang ? fetch! : fetch)
         each do |resource|
-          arguments = [resource, @options["page"] || 1]
-
-          if block.arity >= 0
-            arguments = arguments.take(block.arity)
-          end
-
-          block.call(*arguments)
+          block.call(resource, @options["page"] || 1)
         end
 
         last_page? ? break : self.next

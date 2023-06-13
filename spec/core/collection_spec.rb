@@ -5,9 +5,6 @@ describe ZendeskAPI::Collection do
     ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource)
   end
 
-  # TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  # TODO: pager, xxx, url
-
   describe "#prev" do
     let(:page1_cursor) { "111pg111" }
     let(:page2_cursor) { "222pg222" }
@@ -25,27 +22,11 @@ describe ZendeskAPI::Collection do
         "test_resources" => [{ "id" => 1 }, { "id" => 2 }]
       }
     end
-    # let :response_body_page2 do
-    #   {
-    #     "meta" => {
-    #       "has_more" => false,
-    #       "before_cursor" => page1_cursor,
-    #       "after_cursor" => nil
-    #     },
-    #     "links" => {
-    #       "prev" => "https://zen.com/test_resources.json?page[after]=#{page1_cursor}&page[size]=2",
-    #       "next" => nil
-    #     },
-    #     "test_resources" => [{ "id" => 3 }]
-    #   }
-    # end
 
     let(:response_page1) { double("response_page1", body: response_body_page1) }
-    # let(:response_page2) { double("response_page2", body: response_body_page2) }
 
     before do
       allow(subject).to receive(:get_response).with("test_resources").and_return(response_page1)
-      # allow(subject).to receive(:get_response).with("https://zen.com/test_resources.json?page[after]=222pg222&page[size]=2").and_return(response_page1)
     end
 
     context "when CBP is used" do
@@ -1003,15 +984,16 @@ describe ZendeskAPI::Collection do
   end
 
   describe "pagination behaviour" do
+    let(:page2_cursor) { "222pg222" }
     let(:cbp_response) do
       {
         "meta" => {
           "has_more" => true,
-          "after_cursor" => "xxx",
+          "after_cursor" => page2_cursor,
           "before_cursor" => nil
         },
         "links" => {
-          "next" => "https://test_resources.json?pager[after]=xxx&page[size]=100",
+          "next" => "https://test_resources.json?page[after]=#{page2_cursor}&page[size]=100",
           "prev" => nil
         },
         "test_resources" => [{ "id" => 1 }]
@@ -1029,13 +1011,13 @@ describe ZendeskAPI::Collection do
 
       it "tries to make a CBP request, setting the page[size] parameter" do
         subject.fetch
-        expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 100, "after" => "xxx", "before" => nil })
+        expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 100, "after" => page2_cursor, "before" => nil })
       end
 
       context "when per_page is given" do
         it "tries the CBP request with the given page size" do
           subject.per_page(22).fetch
-          expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 22, "after" => "xxx", "before" => nil })
+          expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 22, "after" => page2_cursor, "before" => nil })
         end
       end
     end
