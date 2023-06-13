@@ -245,7 +245,7 @@ module ZendeskAPI
     # * If there is a next_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
     def next
-      if @options["page"] && !@options["page"].is_a?(Hash)
+      if @options["page"] && !cbp_request?
         clear_cache
         @options["page"] = @options["page"].to_i + 1
       elsif (@query = @next_page)
@@ -263,7 +263,7 @@ module ZendeskAPI
     # * If there is a prev_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
     def prev
-      if !@options["page"].is_a?(Hash) && @options["page"].to_i > 1
+      if !cbp_request? && @options["page"].to_i > 1
         clear_cache
         @options["page"] -= 1
       elsif (@query = @prev_page)
@@ -348,8 +348,12 @@ module ZendeskAPI
       !!(body["meta"] && body["links"])
     end
 
+    def cbp_request?
+      @options["page"].is_a?(Hash)
+    end
+
     def intentional_obp_request?
-      Helpers.present?(@options["page"]) && !@options["page"].is_a?(SilentMash)
+      Helpers.present?(@options["page"]) && !cbp_request?
     end
 
     def get_resources(path_query_link)
