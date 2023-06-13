@@ -478,9 +478,7 @@ module ZendeskAPI
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
 
-      unless results
-        raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
-      end
+      assert_results(results, body)
 
       @resources = results.map do |res|
         wrap_resource(res)
@@ -493,9 +491,7 @@ module ZendeskAPI
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
 
-      unless results
-        raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
-      end
+      assert_results(results, body)
 
       @resources = results.map do |res|
         wrap_resource(res)
@@ -552,6 +548,11 @@ module ZendeskAPI
       unless response_body.is_a?(Hash)
         raise ZendeskAPI::Error::NetworkError, @response.env
       end
+    end
+
+    def assert_results(results, body)
+      return if results
+      raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
     end
   end
 end
