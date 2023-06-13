@@ -344,7 +344,7 @@ module ZendeskAPI
     private
 
     def cbp_response?(body)
-      body["meta"] && body["links"]
+      !!(body["meta"] && body["links"])
     end
 
     def intentional_obp_request?
