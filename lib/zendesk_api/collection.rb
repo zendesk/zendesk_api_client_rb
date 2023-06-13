@@ -370,7 +370,7 @@ module ZendeskAPI
     end
 
     def intentional_obp_request?
-      @options.page? && @options.page.is_a?(Numeric)
+      Helpers.present?(@options["page"]) && !@options["page"].is_a?(SilentMash)
     end
 
     def set_page_and_count(body)
@@ -378,8 +378,8 @@ module ZendeskAPI
       @next_page, @prev_page = page_links(body)
 
       if cbp_response?(body)
-        @options.page.after = body["meta"]["after_cursor"]
-        @options.page.before = body["meta"]["before_cursor"]
+        @options["page"]["after"] = body["meta"]["after_cursor"]
+        @options["page"]["before"] = body["meta"]["before_cursor"]
       elsif @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
