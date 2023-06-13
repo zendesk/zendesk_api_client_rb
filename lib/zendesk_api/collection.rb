@@ -190,29 +190,7 @@ module ZendeskAPI
       end
       path_query_link = (@query || path)
 
-      if intentional_obp_request?
-        warn "OBP will be deprecated after Oct 2023."
-      elsif @next_page.nil?
-        @options_per_page_was = @options.delete("per_page")
-        @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
-      end
-
-      begin
-        @response = get_response(path_query_link)
-      rescue ZendeskAPI::Error::NetworkError => e
-        raise e if intentional_obp_request?
-        @options.per_page = @options_per_page_was
-        @options.page = nil
-        @response = get_response(path_query_link)
-      end
-
-      if path_query_link == "search/export"
-        handle_cursor_search_export_response(@response.body)
-      else
-        handle_response(@response.body)
-      end
-
-      @resources
+      get_resources(path_query_link)
     end
 
     def fetch(*args)
@@ -373,6 +351,30 @@ module ZendeskAPI
       Helpers.present?(@options["page"]) && !@options["page"].is_a?(SilentMash)
     end
 
+    def get_resources(path_query_link)
+      if intentional_obp_request?
+        warn "OBP will be deprecated after Oct 2023."
+      elsif @next_page.nil?
+        @options_per_page_was = @options.delete("per_page")
+        @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
+      end
+
+      begin
+        @response = get_response(path_query_link)
+      rescue ZendeskAPI::Error::NetworkError => e
+        raise e if intentional_obp_request?
+        @options.per_page = @options_per_page_was
+        @options.page = nil
+        @response = get_response(path_query_link)
+      end
+
+      if path_query_link == "search/export"
+        handle_cursor_search_export_response(@response.body)
+      else
+        handle_response(@response.body)
+      end
+    end
+
     def set_page_and_count(body)
       @count = (body["count"] || @resources.size).to_i
       @next_page, @prev_page = page_links(body)
@@ -501,6 +503,8 @@ module ZendeskAPI
 
       set_page_and_count(body)
       set_includes(@resources, @includes, body)
+
+      @resources
     end
 
     # Simplified Associations#wrap_resource
