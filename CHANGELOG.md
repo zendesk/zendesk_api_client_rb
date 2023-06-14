@@ -2,7 +2,20 @@
 
 ## Unreleased
 
-- _Unofficial_ support for [httpx](https://rubygems.org/gems/httpx)
+## v3.0.0.beta
+
+In this version, We are bringing Cursor Based Pagination (CBP) support to all supported endpoints. This is in line with the [limits announcement](https://support.zendesk.com/hc/en-us/articles/5591904358938-New-limits-for-offset-based-pagination) made by Zendesk to promote system reliability and also CBP usage.
+
+- `Collection#all` uses CBP by default instead of Offset Based Pagination (OBP). If an endpoint doesn't support CBP, then a new OBP request will be triggered automatically with the same parameters. This is managed by the library internally
+- `Collection#next and #prev` using CBP by default
+- The pagination behaviour of search and exports endpoint have not changed
+- We are adding support for [httpx](https://rubygems.org/gems/httpx). We will be monitoring the issues and feedback to determine if we continue the support and make it into a stable release
+
+**Notes:**
+
+- OBP support will be further limited in the Zendesk APIs and will be deprecated soon. We are working to ensure all Zendesk APIs support CBP and transition for the customers is smooth
+- The order of the returned results is different in CBP from OBP at times depending on the endpoint behaviour and support for ordering. Please note that any ordering was never hard-coded or built-in so it is not guaranteed. We recommend that you pick the relevant sort/order needed for your workflows and pass them explicitly when making the API call via the library
+- This is a Beta-release and we seek your feedback, experiences. Please open an issue or create a PR to help us work with you
 
 ## v2.0.1
 
