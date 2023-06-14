@@ -2,13 +2,13 @@
 
 ## Unreleased
 
-## v3.0.0.beta
+## v3.0.0.rc1
 
 In this version, We are bringing Cursor Based Pagination (CBP) support to all supported endpoints. This is in line with the [limits announcement](https://support.zendesk.com/hc/en-us/articles/5591904358938-New-limits-for-offset-based-pagination) made by Zendesk to promote system reliability and also CBP usage.
 
 - `Collection#all` uses CBP by default instead of Offset Based Pagination (OBP). If an endpoint doesn't support CBP, then a new OBP request will be triggered automatically with the same parameters. This is managed by the library internally
 - `Collection#next and #prev` using CBP by default
-- The pagination behaviour of search and exports endpoint have not changed
+- The pagination behaviour of search and export endpoint have not changed
 - We are adding support for [httpx](https://rubygems.org/gems/httpx). We will be monitoring the issues and feedback to determine if we continue the support and make it into a stable release
 
 **Notes:**
