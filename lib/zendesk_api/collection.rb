@@ -358,23 +358,27 @@ module ZendeskAPI
 
     def get_resources(path_query_link)
       if intentional_obp_request?
-        warn "OBP will be deprecated after Oct 2023."
+        warn "Offset Based Pagination will be deprecated soon"
       elsif @next_page.nil?
         @options_per_page_was = @options.delete("per_page")
+        # Default to CBP by using the page param as a map
         @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
       end
 
       begin
+        # Try CBP first, unless the user explicitly asked for OBP
         @response = get_response(path_query_link)
       rescue ZendeskAPI::Error::NetworkError => e
         raise e if intentional_obp_request?
+        # Fallback to OBP if CBP didn't work, using per_page param
         @options.per_page = @options_per_page_was
         @options.page = nil
         @response = get_response(path_query_link)
       end
 
+      # Keep pre-existing behaviour for search/export
       if path_query_link == "search/export"
-        handle_cursor_search_export_response(@response.body)
+        handle_search_export_response(@response.body)
       else
         handle_response(@response.body)
       end
@@ -385,6 +389,7 @@ module ZendeskAPI
       @next_page, @prev_page = page_links(body)
 
       if cbp_response?(body)
+        # We'll delete the one we don't need in #next or #prev
         @options["page"]["after"] = body["meta"]["after_cursor"]
         @options["page"]["before"] = body["meta"]["before_cursor"]
       elsif @next_page =~ /page=(\d+)/
@@ -469,9 +474,10 @@ module ZendeskAPI
       end
     end
 
-    def handle_cursor_search_export_response(response_body)
+    def handle_search_export_response(response_body)
       assert_valid_response_body(response_body)
 
+      # Note this doesn't happen in #handle_response
       response_body = get_next_page_data(response_body) if more_results?(response_body)
 
       body = response_body.dup
@@ -484,6 +490,7 @@ module ZendeskAPI
       end
     end
 
+    # For both CBP and OBP
     def handle_response(response_body)
       assert_valid_response_body(response_body)
 
