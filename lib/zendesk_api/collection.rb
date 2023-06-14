@@ -6,6 +6,8 @@ module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
+    DEFAULT_PAGE_SIZE = 100
+
     include ZendeskAPI::Sideloading
 
     # Options passed in that are automatically converted from an array to a comma-separated list.
@@ -186,17 +188,8 @@ module ZendeskAPI
       elsif association && association.options.parent && association.options.parent.new_record?
         return (@resources = [])
       end
-      path_query_link = (@query || path)
 
-      @response = get_response(path_query_link)
-
-      if path_query_link == "search/export"
-        handle_cursor_response(@response.body)
-      else
-        handle_response(@response.body)
-      end
-
-      @resources
+      get_resources(@query || path)
     end
 
     def fetch(*args)
@@ -252,10 +245,12 @@ module ZendeskAPI
     # * If there is a next_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
     def next
-      if @options["page"]
+      if @options["page"] && !cbp_request?
         clear_cache
-        @options["page"] += 1
+        @options["page"] = @options["page"].to_i + 1
       elsif (@query = @next_page)
+        # Send _only_ url param "?after=token" to get the next page
+        @options.page&.delete("before")
         fetch(true)
       else
         clear_cache
@@ -268,10 +263,12 @@ module ZendeskAPI
     # * If there is a prev_page url cached, it executes a fetch on that url and returns the results.
     # * Otherwise, returns an empty array.
     def prev
-      if @options["page"] && @options["page"] > 1
+      if !cbp_request? && @options["page"].to_i > 1
         clear_cache
         @options["page"] -= 1
       elsif (@query = @prev_page)
+        # Send _only_ url param "?before=token" to get the prev page
+        @options.page&.delete("after")
         fetch(true)
       else
         clear_cache
@@ -327,21 +324,17 @@ module ZendeskAPI
     end
 
     def more_results?(response)
-      response["meta"].present? && response["results"].present?
+      Helpers.present?(response["meta"]) && response["meta"]["has_more"]
     end
     alias_method :has_more_results?, :more_results? # For backward compatibility with 1.33.0 and 1.34.0
 
-    def get_response_body(link)
-      @client.connection.send("get", link).body
-    end
-
     def get_next_page_data(original_response_body)
       link = original_response_body["links"]["next"]
-
+      result_key = @resource_class.model_key || "results"
       while link
-        response = get_response_body(link)
+        response = @client.connection.send("get", link).body
 
-        original_response_body["results"] = original_response_body["results"] + response["results"]
+        original_response_body[result_key] = original_response_body[result_key] + response[result_key]
 
         link = response["meta"]["has_more"] ? response["links"]["next"] : nil
       end
@@ -351,14 +344,66 @@ module ZendeskAPI
 
     private
 
+    def cbp_response?(body)
+      !!(body["meta"] && body["links"])
+    end
+
+    def cbp_request?
+      @options["page"].is_a?(Hash)
+    end
+
+    def intentional_obp_request?
+      Helpers.present?(@options["page"]) && !cbp_request?
+    end
+
+    def get_resources(path_query_link)
+      if intentional_obp_request?
+        warn "Offset Based Pagination will be deprecated soon"
+      elsif @next_page.nil?
+        @options_per_page_was = @options.delete("per_page")
+        # Default to CBP by using the page param as a map
+        @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
+      end
+
+      begin
+        # Try CBP first, unless the user explicitly asked for OBP
+        @response = get_response(path_query_link)
+      rescue ZendeskAPI::Error::NetworkError => e
+        raise e if intentional_obp_request?
+        # Fallback to OBP if CBP didn't work, using per_page param
+        @options.per_page = @options_per_page_was
+        @options.page = nil
+        @response = get_response(path_query_link)
+      end
+
+      # Keep pre-existing behaviour for search/export
+      if path_query_link == "search/export"
+        handle_search_export_response(@response.body)
+      else
+        handle_response(@response.body)
+      end
+    end
+
     def set_page_and_count(body)
       @count = (body["count"] || @resources.size).to_i
-      @next_page, @prev_page = body["next_page"], body["previous_page"]
+      @next_page, @prev_page = page_links(body)
 
-      if @next_page =~ /page=(\d+)/
+      if cbp_response?(body)
+        # We'll delete the one we don't need in #next or #prev
+        @options["page"]["after"] = body["meta"]["after_cursor"]
+        @options["page"]["before"] = body["meta"]["before_cursor"]
+      elsif @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
         @options["page"] = $1.to_i + 1
+      end
+    end
+
+    def page_links(body)
+      if body["meta"] && body["links"]
+        [body["links"]["next"], body["links"]["prev"]]
+      else
+        [body["next_page"], body["previous_page"]]
       end
     end
 
@@ -370,13 +415,7 @@ module ZendeskAPI
 
       while (bang ? fetch! : fetch)
         each do |resource|
-          arguments = [resource, @options["page"] || 1]
-
-          if block.arity >= 0
-            arguments = arguments.take(block.arity)
-          end
-
-          block.call(*arguments)
+          block.call(resource, @options["page"] || 1)
         end
 
         last_page? ? break : self.next
@@ -422,7 +461,7 @@ module ZendeskAPI
 
     def get_response(path)
       @error = nil
-      @response = @client.connection.send(@verb || "get", path) do |req|
+      @client.connection.send(@verb || "get", path) do |req|
         opts = @options.delete_if { |_, v| v.nil? }
 
         req.params.merge!(:include => @includes.join(",")) if @includes.any?
@@ -435,36 +474,30 @@ module ZendeskAPI
       end
     end
 
-    def handle_cursor_response(response_body)
-      unless response_body.is_a?(Hash)
-        raise ZendeskAPI::Error::NetworkError, @response.env
-      end
+    def handle_search_export_response(response_body)
+      assert_valid_response_body(response_body)
 
+      # Note this doesn't happen in #handle_response
       response_body = get_next_page_data(response_body) if more_results?(response_body)
 
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
 
-      unless results
-        raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
-      end
+      assert_results(results, body)
 
       @resources = results.map do |res|
         wrap_resource(res)
       end
     end
 
+    # For both CBP and OBP
     def handle_response(response_body)
-      unless response_body.is_a?(Hash)
-        raise ZendeskAPI::Error::NetworkError, @response.env
-      end
+      assert_valid_response_body(response_body)
 
       body = response_body.dup
       results = body.delete(@resource_class.model_key) || body.delete("results")
 
-      unless results
-        raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
-      end
+      assert_results(results, body)
 
       @resources = results.map do |res|
         wrap_resource(res)
@@ -472,6 +505,8 @@ module ZendeskAPI
 
       set_page_and_count(body)
       set_includes(@resources, @includes, body)
+
+      @resources
     end
 
     # Simplified Associations#wrap_resource
@@ -513,6 +548,17 @@ module ZendeskAPI
 
     def resource_methods
       @resource_methods ||= @resource_class.singleton_methods(false).map(&:to_sym)
+    end
+
+    def assert_valid_response_body(response_body)
+      unless response_body.is_a?(Hash)
+        raise ZendeskAPI::Error::NetworkError, @response.env
+      end
+    end
+
+    def assert_results(results, body)
+      return if results
+      raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
     end
   end
 end

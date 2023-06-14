@@ -38,3 +38,6 @@ Layout/MultilineOperationIndentation:
 
 Metrics:
   Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false

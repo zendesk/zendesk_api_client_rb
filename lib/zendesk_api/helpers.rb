@@ -1,6 +1,10 @@
 module ZendeskAPI
   # @private
   module Helpers
+    def self.present?(value)
+      ![nil, false, "", " ", [], {}].include?(value)
+    end
+
     # From https://github.com/rubyworks/facets/blob/master/lib/core/facets/string/modulize.rb
     # Converts a string to module name representation.
     #
