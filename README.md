@@ -431,9 +431,10 @@ bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 
 ## Releasing a new gem version
 
+1. From updated master: `git checkout -b bump-vX.X.X`, according to [SemVer](https://semver.org)
 1. Ensure the CHANGELOG is correct and updated, this is your last opportunity
-2. Execute `bundle exec bump patch --tag`, or minor or major according to [SemVer](https://semver.org), this bumps the version in your local machine in the latest commit
-3. Push to GitHub `git push && git push origin vX.X.X`
+2. Execute `bundle exec bump patch --tag`, or minor or major, this bumps the version in your local machine in the latest commit
+3. Push to GitHub `git pull && git push origin vX.X.X`
 4. Raise a PR and get it approved and merged
 5. Post a message in Slack `#rest-api`, so advocacy are aware that we are going to release a new gem, just in case any customer complains about something related to the gem
 6. After 2 hours from the above message, you can [approve the release of the gem](https://github.com/zendesk/zendesk_api_client_rb/deployments/activity_log?environment=rubygems-publish)
