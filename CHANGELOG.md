@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## v3.0.0.rc1
+## v3.0.0
 
 In this version, We are bringing Cursor Based Pagination (CBP) support to all supported endpoints. This is in line with the [limits announcement](https://support.zendesk.com/hc/en-us/articles/5591904358938-New-limits-for-offset-based-pagination) made by Zendesk to promote system reliability and also CBP usage.
 
@@ -16,6 +16,7 @@ In this version, We are bringing Cursor Based Pagination (CBP) support to all su
 - OBP support will be further limited in the Zendesk APIs and will be deprecated soon. We are working to ensure all Zendesk APIs support CBP and transition for the customers is smooth
 - The order of the returned results is different in CBP from OBP at times depending on the endpoint behaviour and support for ordering. Please note that any ordering was never hard-coded or built-in so it is not guaranteed. We recommend that you pick the relevant sort/order needed for your workflows and pass them explicitly when making the API call via the library
 - This is a Beta-release and we seek your feedback, experiences. Please open an issue or create a PR to help us work with you
+- v1 of this gem is not compatible with Faraday 1. We are releasing a new version with CBP support on August 1st with the version `v3.0.0`. Once the new version is released, we will no longer support the v1 officially
 
 ## v2.0.1
 
