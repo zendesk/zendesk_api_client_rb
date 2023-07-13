@@ -1004,6 +1004,17 @@ describe ZendeskAPI::Collection do
       double("response", body: cbp_response)
     end
 
+    context "when we know for sure that the endpoint does not support CBP" do
+      before do
+        stub_json_request(:get, %r{test_resources\/show_many}, json(:test_resources => [{ :id => 1 }]))
+      end
+
+      it "does not try to default to CBP" do
+        subject.show_many.fetch
+        expect(subject.instance_variable_get(:@options)["page"]).to be_nil
+      end
+    end
+
     context "when fetching a collection" do
       before do
         expect(subject).to receive(:get_response).with("test_resources").and_return(cbp_success_response)
