@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## Unreleased
+## v3.0.1
+
+This version introduces a small change in order to prevent CBP request attempts for API endpoints in which we know this pagination is not supported. At the moment, the show_many endpoints have been excluded from attempting CBP requests.
 
 ## v3.0.0
 
