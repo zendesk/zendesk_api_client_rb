@@ -356,10 +356,15 @@ module ZendeskAPI
       Helpers.present?(@options["page"]) && !cbp_request?
     end
 
+    def should_try_cbp?(path_query_link)
+      not_supported_endpoints = %w[show_many]
+      not_supported_endpoints.none? { |endpoint| path_query_link.end_with?(endpoint) }
+    end
+
     def get_resources(path_query_link)
       if intentional_obp_request?
         warn "Offset Based Pagination will be deprecated soon"
-      elsif @next_page.nil?
+      elsif @next_page.nil? && should_try_cbp?(path_query_link)
         @options_per_page_was = @options.delete("per_page")
         # Default to CBP by using the page param as a map
         @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
