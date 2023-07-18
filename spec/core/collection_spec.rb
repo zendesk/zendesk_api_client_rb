@@ -26,14 +26,14 @@ describe ZendeskAPI::Collection do
     let(:response_page1) { double("response_page1", body: response_body_page1) }
 
     before do
-      allow(subject).to receive(:get_response).with("test_resources").and_return(response_page1)
+      stub_json_request(:get, %r{test_resources}, json(response_body_page1))
     end
 
     context "when CBP is used" do
       it "is empty on the first page" do
-        subject.fetch
-
-        expect(subject.prev).to eq([])
+        stub_const("ZendeskAPI::TestResource::CBP_ACTIONS", %w[test_resources])
+        collection = ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource)
+        expect(collection.prev).to eq([])
       end
     end
   end
@@ -1015,8 +1015,9 @@ describe ZendeskAPI::Collection do
       end
     end
 
-    context "when fetching a collection" do
+    context "when fetching a collection that supports CBP" do
       before do
+        stub_const("ZendeskAPI::TestResource::CBP_ACTIONS", %w[test_resources])
         expect(subject).to receive(:get_response).with("test_resources").and_return(cbp_success_response)
       end
 
@@ -1030,18 +1031,6 @@ describe ZendeskAPI::Collection do
           subject.per_page(22).fetch
           expect(subject.instance_variable_get(:@options)["page"]).to eq({ "size" => 22, "after" => page2_cursor, "before" => nil })
         end
-      end
-    end
-
-    context "when the endpoint does not support CBP" do
-      before do
-        expect(subject).to receive(:get_response).with("test_resources").and_raise(ZendeskAPI::Error::NetworkError).twice
-      end
-
-      it "tries an OBP request after a failed CBP request" do
-        subject.per_page(2).fetch
-        expect(subject.instance_variable_get(:@options)["per_page"]).to eq(2)
-        expect(subject.instance_variable_get(:@options)["page"]).to be_nil
       end
     end
 
@@ -1061,6 +1050,7 @@ describe ZendeskAPI::Collection do
         }
       end
       before do
+        stub_const("ZendeskAPI::TestResource::CBP_ACTIONS", %w[test_resources])
         stub_json_request(:get, %r{test_resources\?page%5Bsize%5D=1}, json(generate_response(1, true)))
         stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after1&page%5Bsize%5D=1}, json(generate_response(2, true)))
         stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after2&page%5Bsize%5D=1}, json(generate_response(3, true)))
@@ -1069,12 +1059,12 @@ describe ZendeskAPI::Collection do
 
       it "fetches all pages and yields the correct arguments" do
         expect do |b|
-          silence_logger { subject.all(&b) }
+          silence_logger { subject.per_page(1).all(&b) }
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, id: 1), "after" => "after1", "before" => "before0", "size" => 100],
-          [ZendeskAPI::TestResource.new(client, id: 2), "after" => "after2", "before" => "before1", "size" => 100],
-          [ZendeskAPI::TestResource.new(client, id: 3), "after" => "after3", "before" => "before2", "size" => 100],
-          [ZendeskAPI::TestResource.new(client, id: 4), "after" => "after4", "before" => "before3", "size" => 100]
+          [ZendeskAPI::TestResource.new(client, id: 1), "after" => "after1", "before" => "before0", "size" => 1],
+          [ZendeskAPI::TestResource.new(client, id: 2), "after" => "after2", "before" => "before1", "size" => 1],
+          [ZendeskAPI::TestResource.new(client, id: 3), "after" => "after3", "before" => "before2", "size" => 1],
+          [ZendeskAPI::TestResource.new(client, id: 4), "after" => "after4", "before" => "before3", "size" => 1]
         )
       end
     end

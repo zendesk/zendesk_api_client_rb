@@ -356,30 +356,27 @@ module ZendeskAPI
       Helpers.present?(@options["page"]) && !cbp_request?
     end
 
-    def should_try_cbp?(path_query_link)
-      not_supported_endpoints = %w[show_many]
-      not_supported_endpoints.none? { |endpoint| path_query_link.end_with?(endpoint) }
+    def supports_cursor_based_pagination?
+      @resource_class.const_defined?(:CBP_ACTIONS) && @resource_class.const_get(:CBP_ACTIONS).any? { |supported_path| path.end_with?(supported_path) }
+    end
+
+    def first_of_multiple_pages?
+      @next_page.nil?
+    end
+
+    def modify_request_for_cbp
+      @options_per_page_was = @options.delete("per_page")
+      # Default to CBP by using the page param as a map
+      @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
     end
 
     def get_resources(path_query_link)
       if intentional_obp_request?
         warn "Offset Based Pagination will be deprecated soon"
-      elsif @next_page.nil? && should_try_cbp?(path_query_link)
-        @options_per_page_was = @options.delete("per_page")
-        # Default to CBP by using the page param as a map
-        @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
+      elsif supports_cursor_based_pagination? && first_of_multiple_pages?
+        modify_request_for_cbp
       end
-
-      begin
-        # Try CBP first, unless the user explicitly asked for OBP
-        @response = get_response(path_query_link)
-      rescue ZendeskAPI::Error::NetworkError => e
-        raise e if intentional_obp_request?
-        # Fallback to OBP if CBP didn't work, using per_page param
-        @options.per_page = @options_per_page_was
-        @options.page = nil
-        @response = get_response(path_query_link)
-      end
+      @response = get_response(path_query_link)
 
       # Keep pre-existing behaviour for search/export
       if path_query_link == "search/export"
@@ -394,7 +391,6 @@ module ZendeskAPI
       @next_page, @prev_page = page_links(body)
 
       if cbp_response?(body)
-        # We'll delete the one we don't need in #next or #prev
         @options["page"]["after"] = body["meta"]["after_cursor"]
         @options["page"]["before"] = body["meta"]["before_cursor"]
       elsif @next_page =~ /page=(\d+)/
@@ -541,9 +537,13 @@ module ZendeskAPI
       to_a.public_send(name, *args, &block)
     end
 
+    # If you call client.tickets.foo - and foo is not an attribute nor an association, it ends up here, as a new collection
     def next_collection(name, *args, &block)
       opts = args.last.is_a?(Hash) ? args.last : {}
-      opts.merge!(:collection_path => @collection_path.dup.push(name))
+      opts.merge!(collection_path: [*@collection_path, name], page: nil)
+      # why page: nil ?
+      # when you do client.tickets.fetch followed by client.tickets.foos => the request to /tickets/foos will
+      # have the options page set to whatever the last options were for the tickets collection
       self.class.new(@client, @resource_class, @options.merge(opts))
     end
 

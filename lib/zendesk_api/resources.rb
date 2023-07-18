@@ -378,6 +378,8 @@ module ZendeskAPI
     extend UpdateMany
     extend DestroyMany
 
+    CBP_ACTIONS = %w[tickets].freeze
+
     # Unlike other attributes, "comment" is not a property of the ticket,
     # but is used as a "comment on save", so it should be kept unchanged,
     # See https://github.com/zendesk/zendesk_api_client_rb/issues/321

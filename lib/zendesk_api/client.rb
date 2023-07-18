@@ -37,24 +37,24 @@ module ZendeskAPI
     def method_missing(method, *args, &block)
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
-
       unless config.use_resource_cache
-        raise "Resource for #{method} does not exist" unless method_as_class(method)
-        return ZendeskAPI::Collection.new(self, method_as_class(method), options)
+        resource_class = resource_class_for(method)
+        raise "Resource for #{method} does not exist" unless resource_class
+        return ZendeskAPI::Collection.new(self, resource_class, options)
       end
 
       @resource_cache[method] ||= { :class => nil, :cache => ZendeskAPI::LRUCache.new }
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
-        @resource_cache[method][:class] ||= method_as_class(method)
+        @resource_cache[method][:class] ||= resource_class_for(method)
         raise "Resource for #{method} does not exist" unless @resource_cache[method][:class]
         @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
       end
     end
 
     def respond_to?(method, *args)
-      ((cache = @resource_cache[method]) && cache[:class]) || !method_as_class(method).nil? || super
+      ((cache = @resource_cache[method]) && cache[:class]) || !resource_class_for(method).nil? || super
     end
 
     # Returns the current user (aka me)
@@ -184,7 +184,7 @@ module ZendeskAPI
 
     private
 
-    def method_as_class(method)
+    def resource_class_for(method)
       klass_as_string = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s.gsub(/\W/, '')))
       ZendeskAPI::Association.class_from_namespace(klass_as_string)
     end
