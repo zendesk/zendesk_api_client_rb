@@ -391,8 +391,14 @@ module ZendeskAPI
       @next_page, @prev_page = page_links(body)
 
       if cbp_response?(body)
-        @options["page"]["after"] = body["meta"]["after_cursor"]
-        @options["page"]["before"] = body["meta"]["before_cursor"]
+        @options.page = {} unless cbp_request?
+        # the line above means an intentional CBP request where page[size] is passed on the query
+        # this is to cater for CBP responses where we don't specify page[size] but the endpoint
+        # responds CBP by default. i.e  `client.trigger_categories.fetch`
+        @options.page.merge!(
+          after: body["meta"]["after_cursor"],
+          before: body["meta"]["before_cursor"]
+                             )
       elsif @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/

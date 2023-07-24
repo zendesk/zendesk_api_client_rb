@@ -543,6 +543,34 @@ describe ZendeskAPI::Collection do
         expect(subject.fetch(true)).to be_empty
       end
     end
+
+    context "when the request returns a Cursor Based Pagination type of response" do
+      let(:cbp_response) do
+        {
+          "meta" => {
+            "has_more" => true,
+            "after_cursor" => 'after_cursor',
+            "before_cursor" => 'before_cursor'
+          },
+          "links" => {
+            "next" => "next_page",
+            "prev" => "previous_page"
+          },
+          "test_resources" => [{ "id" => 1 }]
+        }
+      end
+      before do
+        stub_json_request(:get, %r{test_resources}, json(cbp_response))
+      end
+
+      it "should set the next and previous pages and cursors" do
+        subject.fetch
+        expect(subject.instance_variable_get(:@next_page)).to eq("next_page")
+        expect(subject.instance_variable_get(:@prev_page)).to eq("previous_page")
+        expect(subject.options.page.after).to eq("after_cursor")
+        expect(subject.options.page.before).to eq("before_cursor")
+      end
+    end
   end
 
   context "save" do
