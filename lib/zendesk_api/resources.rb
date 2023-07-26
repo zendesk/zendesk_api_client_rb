@@ -645,11 +645,17 @@ module ZendeskAPI
   end
 
   class GroupMembership < Resource
+    CBP_ACTIONS = [%r{groups/\d+/memberships$}].freeze
     extend CreateMany
     extend DestroyMany
 
     has User
     has Group
+  end
+
+  class Group < Resource
+    CBP_ACTIONS = [/groups$/, %r{groups/assignable$}].freeze
+    has_many :memberships, :class => GroupMembership, :path => "memberships"
   end
 
   class User < Resource
