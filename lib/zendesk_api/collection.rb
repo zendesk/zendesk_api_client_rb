@@ -354,9 +354,9 @@ module ZendeskAPI
       @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
     end
 
+    # CBP requests look like: `/resources?page[size]=100`
+    # OBP requests look like: `/resources?page=2`
     def cbp_request?
-      # CBP requests look like: `/resources?page[size]=100`
-      # OBP requests look like: `/resources?page=2`
       @options["page"].is_a?(Hash)
     end
 
