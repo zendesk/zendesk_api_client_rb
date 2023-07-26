@@ -348,6 +348,14 @@ module ZendeskAPI
       !!(body["meta"] && body["links"])
     end
 
+    def set_cbp_options
+      @options_per_page_was = @options.delete("per_page")
+      # Default to CBP by using the page param as a map
+      @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
+    end
+
+    # CBP requests look like: `/resources?page[size]=100`
+    # OBP requests look like: `/resources?page=2`
     def cbp_request?
       @options["page"].is_a?(Hash)
     end
@@ -356,30 +364,23 @@ module ZendeskAPI
       Helpers.present?(@options["page"]) && !cbp_request?
     end
 
-    def should_try_cbp?(path_query_link)
-      not_supported_endpoints = %w[show_many]
-      not_supported_endpoints.none? { |endpoint| path_query_link.end_with?(endpoint) }
+    def supports_cbp?
+      @resource_class.const_defined?(:CBP_ACTIONS) && @resource_class.const_get(:CBP_ACTIONS).any? { |supported_path| path.end_with?(supported_path) }
+    end
+
+    def first_cbp_request?
+      # @next_page will be nil when making the first cbp request
+      @next_page.nil?
     end
 
     def get_resources(path_query_link)
       if intentional_obp_request?
         warn "Offset Based Pagination will be deprecated soon"
-      elsif @next_page.nil? && should_try_cbp?(path_query_link)
-        @options_per_page_was = @options.delete("per_page")
-        # Default to CBP by using the page param as a map
-        @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
+      elsif supports_cbp? && first_cbp_request?
+        # only set cbp options if it's the first request, otherwise the options would be already in place
+        set_cbp_options
       end
-
-      begin
-        # Try CBP first, unless the user explicitly asked for OBP
-        @response = get_response(path_query_link)
-      rescue ZendeskAPI::Error::NetworkError => e
-        raise e if intentional_obp_request?
-        # Fallback to OBP if CBP didn't work, using per_page param
-        @options.per_page = @options_per_page_was
-        @options.page = nil
-        @response = get_response(path_query_link)
-      end
+      @response = get_response(path_query_link)
 
       # Keep pre-existing behaviour for search/export
       if path_query_link == "search/export"
@@ -394,9 +395,7 @@ module ZendeskAPI
       @next_page, @prev_page = page_links(body)
 
       if cbp_response?(body)
-        # We'll delete the one we don't need in #next or #prev
-        @options["page"]["after"] = body["meta"]["after_cursor"]
-        @options["page"]["before"] = body["meta"]["before_cursor"]
+        set_cbp_response_options(body)
       elsif @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
@@ -541,9 +540,13 @@ module ZendeskAPI
       to_a.public_send(name, *args, &block)
     end
 
+    # If you call client.tickets.foo - and foo is not an attribute nor an association, it ends up here, as a new collection
     def next_collection(name, *args, &block)
       opts = args.last.is_a?(Hash) ? args.last : {}
-      opts.merge!(:collection_path => @collection_path.dup.push(name))
+      opts.merge!(collection_path: [*@collection_path, name], page: nil)
+      # why page: nil ?
+      # when you do client.tickets.fetch followed by client.tickets.foos => the request to /tickets/foos will
+      # have the options page set to whatever the last options were for the tickets collection
       self.class.new(@client, @resource_class, @options.merge(opts))
     end
 
@@ -564,6 +567,17 @@ module ZendeskAPI
     def assert_results(results, body)
       return if results
       raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
+    end
+
+    def set_cbp_response_options(body)
+      @options.page = {} unless cbp_request?
+      # the line above means an intentional CBP request where page[size] is passed on the query
+      # this is to cater for CBP responses where we don't specify page[size] but the endpoint
+      # responds CBP by default. i.e  `client.trigger_categories.fetch`
+      @options.page.merge!(
+        before: body["meta"]["before_cursor"],
+        after: body["meta"]["after_cursor"]
+                           )
     end
   end
 end

@@ -62,6 +62,24 @@ RSpec.describe ZendeskAPI::Ticket do
     end
   end
 
+  describe "#show_many" do
+    let(:how_many_tickets) { 10 }
+    before do
+      VCR.use_cassette("get_tickets_show_many") do
+        @tickets = client.tickets.per_page(how_many_tickets).fetch
+      end
+
+      VCR.use_cassette("tickets_show_many_with_ids") do
+        @tickets_from_show_many = client.tickets.show_many(ids: @tickets.map(&:id)).fetch
+      end
+    end
+
+    it "returns the correct number of tickets" do
+      expect(@tickets_from_show_many.count).to eq(how_many_tickets)
+      expect(@tickets.map(&:id).sort).to eq(@tickets_from_show_many.map(&:id).sort)
+    end
+  end
+
   describe "#attributes_for_save" do
     let :ticket do
       described_class.new(instance_double(ZendeskAPI::Client), status: :new)
