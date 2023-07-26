@@ -563,7 +563,7 @@ describe ZendeskAPI::Collection do
         stub_json_request(:get, %r{test_resources}, json(cbp_response))
       end
 
-      it "should set the next and previous pages and cursors" do
+      it "sets the next and previous pages and cursors" do
         subject.fetch
         expect(subject.instance_variable_get(:@next_page)).to eq("next_page")
         expect(subject.instance_variable_get(:@prev_page)).to eq("previous_page")

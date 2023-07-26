@@ -54,7 +54,8 @@ module ZendeskAPI
     end
 
     def respond_to?(method, *args)
-      ((cache = @resource_cache[method]) && cache[:class]) || !resource_class_for(method).nil? || super
+      cache = @resource_cache[method]
+      !!(cache.to_h[:class] || resource_class_for(method) || super)
     end
 
     # Returns the current user (aka me)
@@ -185,8 +186,8 @@ module ZendeskAPI
     private
 
     def resource_class_for(method)
-      klass_as_string = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s.gsub(/\W/, '')))
-      ZendeskAPI::Association.class_from_namespace(klass_as_string)
+      resource_name = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s.gsub(/\W/, '')))
+      ZendeskAPI::Association.class_from_namespace(resource_name)
     end
 
     def check_url

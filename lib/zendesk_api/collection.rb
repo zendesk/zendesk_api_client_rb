@@ -348,7 +348,15 @@ module ZendeskAPI
       !!(body["meta"] && body["links"])
     end
 
+    def set_cbp_options
+      @options_per_page_was = @options.delete("per_page")
+      # Default to CBP by using the page param as a map
+      @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
+    end
+
     def cbp_request?
+      # CBP requests look like: `/resources?page[size]=100`
+      # OBP requests look like: `/resources?page=2`
       @options["page"].is_a?(Hash)
     end
 
@@ -356,25 +364,21 @@ module ZendeskAPI
       Helpers.present?(@options["page"]) && !cbp_request?
     end
 
-    def supports_cursor_based_pagination?
+    def supports_cbp?
       @resource_class.const_defined?(:CBP_ACTIONS) && @resource_class.const_get(:CBP_ACTIONS).any? { |supported_path| path.end_with?(supported_path) }
     end
 
-    def first_of_multiple_pages?
+    def first_cbp_request?
+      # @next_page will be nil when making the first cbp request
       @next_page.nil?
-    end
-
-    def modify_request_for_cbp
-      @options_per_page_was = @options.delete("per_page")
-      # Default to CBP by using the page param as a map
-      @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
     end
 
     def get_resources(path_query_link)
       if intentional_obp_request?
         warn "Offset Based Pagination will be deprecated soon"
-      elsif supports_cursor_based_pagination? && first_of_multiple_pages?
-        modify_request_for_cbp
+      elsif supports_cbp? && first_cbp_request?
+        # only set cbp options if it's the first request, otherwise the options would be already in place
+        set_cbp_options
       end
       @response = get_response(path_query_link)
 
@@ -391,14 +395,7 @@ module ZendeskAPI
       @next_page, @prev_page = page_links(body)
 
       if cbp_response?(body)
-        @options.page = {} unless cbp_request?
-        # the line above means an intentional CBP request where page[size] is passed on the query
-        # this is to cater for CBP responses where we don't specify page[size] but the endpoint
-        # responds CBP by default. i.e  `client.trigger_categories.fetch`
-        @options.page.merge!(
-          after: body["meta"]["after_cursor"],
-          before: body["meta"]["before_cursor"]
-                             )
+        set_cbp_response_options(body)
       elsif @next_page =~ /page=(\d+)/
         @options["page"] = $1.to_i - 1
       elsif @prev_page =~ /page=(\d+)/
@@ -570,6 +567,17 @@ module ZendeskAPI
     def assert_results(results, body)
       return if results
       raise ZendeskAPI::Error::ClientError, "Expected #{@resource_class.model_key} or 'results' in response keys: #{body.keys.inspect}"
+    end
+
+    def set_cbp_response_options(body)
+      @options.page = {} unless cbp_request?
+      # the line above means an intentional CBP request where page[size] is passed on the query
+      # this is to cater for CBP responses where we don't specify page[size] but the endpoint
+      # responds CBP by default. i.e  `client.trigger_categories.fetch`
+      @options.page.merge!(
+        before: body["meta"]["before_cursor"],
+        after: body["meta"]["after_cursor"]
+                           )
     end
   end
 end
