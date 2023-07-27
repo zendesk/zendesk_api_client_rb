@@ -4,6 +4,7 @@ require 'zendesk_api/actions'
 require 'zendesk_api/association'
 require 'zendesk_api/associations'
 require 'zendesk_api/verbs'
+require 'zendesk_api/cbp_support'
 
 # See docs: https://developer.zendesk.com/api-reference/
 module ZendeskAPI
@@ -163,6 +164,7 @@ module ZendeskAPI
   class DataResource < Data
     attr_accessor :error, :error_message
     extend Verbs
+    include CBPSupport
   end
 
   # Represents a resource that can only GET

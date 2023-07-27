@@ -152,6 +152,8 @@ module ZendeskAPI
     def self.incremental_export(client, start_time)
       ZendeskAPI::Collection.new(client, self, :path => "incremental/organizations?start_time=#{start_time.to_i}")
     end
+
+    CBP_ACTIONS = [/organizations$/].freeze
   end
 
   class Brand < Resource
@@ -180,6 +182,8 @@ module ZendeskAPI
 
     has User
     has Organization
+
+    CBP_ACTIONS = [%r{organizations/\d+/subscriptions$}].freeze
   end
 
   class Category < Resource
@@ -378,7 +382,7 @@ module ZendeskAPI
     extend UpdateMany
     extend DestroyMany
 
-    CBP_ACTIONS = %w[tickets].freeze
+    CBP_ACTIONS = [/tickets$/].freeze
 
     # Unlike other attributes, "comment" is not a property of the ticket,
     # but is used as a "comment on save", so it should be kept unchanged,

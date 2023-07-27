@@ -365,8 +365,7 @@ module ZendeskAPI
     end
 
     def supports_cbp?
-      @resource_class.const_defined?(:CBP_ACTIONS) &&
-        @resource_class.const_get(:CBP_ACTIONS).any? { |supported_path_regex| path.match?(supported_path_regex) }
+      @resource_class.cbp_path_regexes.any? { |supported_path_regex| path.match?(supported_path_regex) }
     end
 
     def first_cbp_request?
