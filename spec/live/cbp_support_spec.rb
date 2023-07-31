@@ -41,4 +41,18 @@ describe 'Endpoints that support CBP' do
       end
     end
   end
+
+  describe ZendeskAPI::Trigger do
+    describe '/triggers' do
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { client.triggers }
+      end
+    end
+
+    describe '/triggers/active' do
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { client.triggers.active }
+      end
+    end
+  end
 end

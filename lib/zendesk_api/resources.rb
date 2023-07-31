@@ -604,6 +604,7 @@ module ZendeskAPI
     include Conditions
     include Actions
 
+    CBP_ACTIONS = [/triggers$/, %r{triggers/active$}].freeze
     has :execution, :class => RuleExecution
   end
 
