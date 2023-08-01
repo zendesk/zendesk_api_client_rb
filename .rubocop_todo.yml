@@ -176,6 +176,7 @@ Naming/AccessorMethodName:
     - 'lib/zendesk_api/collection.rb'
     - 'lib/zendesk_api/lru_cache.rb'
     - 'lib/zendesk_api/resources.rb'
+    - 'lib/zendesk_api/pagination.rb'
 
 # Offense count: 1
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
