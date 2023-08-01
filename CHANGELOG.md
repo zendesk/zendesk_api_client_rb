@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.0.2
+
+In this version, we are adding CBP support to Tickets, Triggers, Groups, Organizations, GroupMembership and OrganizationMembership.
+The supported enpoints will benefit from CBP requests and more endpoints should be added to the list in the near future.
+
 ## v3.0.1
 
 This version introduces a small change in order to prevent CBP request attempts for API endpoints in which we know this pagination is not supported. At the moment, the show_many endpoints have been excluded from attempting CBP requests.

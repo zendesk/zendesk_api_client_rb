@@ -25,6 +25,10 @@ module ZendeskAPI
       (klass || Result).new(client, attributes)
     end
 
+    def self.cbp_path_regexes
+      []
+    end
+
     class Result < Data; end
 
     class << self

@@ -189,6 +189,17 @@ client.tickets.all! do |resource, page_number|
 end
 ```
 
+### Cursor Based Pagination
+
+A few endpoints related to organizations, tickets, triggers and groups will now make use of cursor based pagination by default.
+It is also recommended to use CBP whenever [the Zendesk developer documentation](https://developer.zendesk.com/api-reference) says it's supported.
+Pass `page[size]=number` in the parameters to attempt a CBP request, like the example below:
+
+```ruby
+client.connection.get('/api/v2/suspended_tickets', page: { size: 100 }).body
+{"suspended_tickets"=>[...], "meta"=>{"has_more"=>true, "after_cursor"=>" ... ", "before_cursor"=>nil}, "links"=>{"prev"=>nil, "next"=>"..."}}
+```
+
 ### Callbacks
 
 Callbacks can be added to the `ZendeskAPI::Client` instance and will be called (with the response env) after all response middleware on a successful request.

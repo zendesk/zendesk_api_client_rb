@@ -163,6 +163,10 @@ module ZendeskAPI
   class DataResource < Data
     attr_accessor :error, :error_message
     extend Verbs
+
+    def self.cbp_path_regexes
+      []
+    end
   end
 
   # Represents a resource that can only GET
