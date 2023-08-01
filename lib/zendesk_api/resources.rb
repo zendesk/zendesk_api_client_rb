@@ -266,10 +266,10 @@ module ZendeskAPI
   end
 
   class Topic < Resource
-    has_many :subscriptions, :class => TopicSubscription, :inline => true
-    has_many Tag, :extend => Tag::Update, :inline => :create
+    has_many :subscriptions, class: TopicSubscription, inline: true
+    has_many Tag, extend: Tag::Update, inline: :create
     has_many Attachment
-    has_many :uploads, :class => Attachment, :inline => true
+    has_many :uploads, class: Attachment, inline: true
   end
 
   class Activity < Resource
@@ -326,7 +326,7 @@ module ZendeskAPI
     class Comment < DataResource
       include Save
 
-      has_many :uploads, :class => Attachment, :inline => true
+      has_many :uploads, class: Attachment, inline: true
       has :author, :class => User
 
       def save
@@ -368,7 +368,7 @@ module ZendeskAPI
   class TicketEvent < DataResource
     class Event < Data; end
 
-    has_many :child_events, :class => Event
+    has_many :child_events, class: Event
     has Ticket
     has :updater, :class => User
 
@@ -413,8 +413,8 @@ module ZendeskAPI
     class Comment < DataResource
       include Save
 
-      has_many :uploads, :class => Attachment, :inline => true
-      has :author, :class => User
+      has_many :uploads, class: Attachment, inline: true
+      has :author, class: User
 
       def save
         if new_record?
@@ -441,35 +441,35 @@ module ZendeskAPI
     has :submitter, :class => User
     has :assignee, :class => User
 
-    has_many :collaborators, :class => User, :inline => true, :extend => (Module.new do
+    has_many :collaborators, class: User, inline: true, extend: (Module.new do
       def to_param
         map(&:id)
       end
     end)
 
     has_many Audit
-    has :metrics, :class => TicketMetric
+    has :metrics, class: TicketMetric
     has Group
     has Organization
     has Brand
-    has :related, :class => TicketRelated
+    has :related, class: TicketRelated
 
-    has Comment, :inline => true
+    has Comment, inline: true
     has_many Comment
 
-    has :last_comment, :class => Comment, :inline => true
-    has_many :last_comments, :class => Comment, :inline => true
+    has :last_comment, class: Comment, inline: true
+    has_many :last_comments, class: Comment, inline: true
 
-    has_many Tag, :extend => Tag::Update, :inline => :create
+    has_many Tag, extend: Tag::Update, inline: :create
 
-    has_many :incidents, :class => Ticket
+    has_many :incidents, class: Ticket
 
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used
     # @param [Integer] start_time The start_time parameter
     # @return [Collection] Collection of {Ticket}
     def self.incremental_export(client, start_time)
-      ZendeskAPI::Collection.new(client, self, :path => "incremental/tickets?start_time=#{start_time.to_i}")
+      ZendeskAPI::Collection.new(client, self, path: "incremental/tickets?start_time=#{start_time.to_i}")
     end
 
     # Imports a ticket through the imports/tickets endpoint using save!
@@ -478,7 +478,7 @@ module ZendeskAPI
     # @return [Ticket] Created object or nil
     def self.import!(client, attributes)
       new(client, attributes).tap do |ticket|
-        ticket.save!(:path => "imports/tickets")
+        ticket.save!(path: "imports/tickets")
       end
     end
 
@@ -488,7 +488,7 @@ module ZendeskAPI
     # @return [Ticket] Created object or nil
     def self.import(client, attributes)
       ticket = new(client, attributes)
-      return unless ticket.save(:path => "imports/tickets")
+      return unless ticket.save(path: "imports/tickets")
       ticket
     end
   end
@@ -522,9 +522,9 @@ module ZendeskAPI
     # @internal Optional columns
 
     has Group
-    has :assignee, :class => User
-    has :requester, :class => User
-    has :submitter, :class => User
+    has :assignee, class: User
+    has :requester, class: User
+    has :submitter, class: User
     has Organization
 
     def self.model_key
@@ -671,7 +671,7 @@ module ZendeskAPI
   end
 
   class Group < Resource
-    has_many :memberships, :class => GroupMembership, :path => "memberships"
+    has_many :memberships, class: GroupMembership, path: "memberships"
 
     def self.cbp_path_regexes
       [/groups$/, %r{groups/assignable$}]

@@ -8,7 +8,7 @@ module ZendeskAPI
   # actually fetched until explicitly needed (e.g. #each, {#fetch}).
   class Collection
     include ZendeskAPI::Sideloading
-    include ZendeskAPI::Pagination
+    include Pagination
 
     # Options passed in that are automatically converted from an array to a comma-separated list.
     SPECIALLY_JOINED_PARAMS = [:ids, :only]
@@ -196,6 +196,16 @@ module ZendeskAPI
     # @param [Block] block Passed to #each
     def all(start_page = @options["page"], &block)
       _all(start_page, &block)
+    end
+
+    def each_page!(*args, &block)
+      warn "ZendeskAPI::Collection#each_page! is deprecated, please use ZendeskAPI::Collection#all!"
+      all!(*args, &block)
+    end
+
+    def each_page(*args, &block)
+      warn "ZendeskAPI::Collection#each_page is deprecated, please use ZendeskAPI::Collection#all"
+      all(*args, &block)
     end
 
     # Replaces the current (loaded or not) resources with the passed in collection
