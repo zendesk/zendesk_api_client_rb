@@ -153,7 +153,9 @@ module ZendeskAPI
       ZendeskAPI::Collection.new(client, self, :path => "incremental/organizations?start_time=#{start_time.to_i}")
     end
 
-    CBP_ACTIONS = [/organizations$/].freeze
+    def self.cbp_path_regexes
+      [/organizations$/]
+    end
   end
 
   class Brand < Resource
@@ -183,7 +185,9 @@ module ZendeskAPI
     has User
     has Organization
 
-    CBP_ACTIONS = [%r{organizations/\d+/subscriptions$}].freeze
+    def self.cbp_path_regexes
+      [%r{organizations/\d+/subscriptions$}]
+    end
   end
 
   class Category < Resource
@@ -382,7 +386,9 @@ module ZendeskAPI
     extend UpdateMany
     extend DestroyMany
 
-    CBP_ACTIONS = [/tickets$/].freeze
+    def self.cbp_path_regexes
+      [/tickets$/]
+    end
 
     # Unlike other attributes, "comment" is not a property of the ticket,
     # but is used as a "comment on save", so it should be kept unchanged,
@@ -604,8 +610,11 @@ module ZendeskAPI
     include Conditions
     include Actions
 
-    CBP_ACTIONS = [/triggers$/, %r{triggers/active$}].freeze
     has :execution, :class => RuleExecution
+
+    def self.cbp_path_regexes
+      [/triggers$/, %r{triggers/active$}]
+    end
   end
 
   class Automation < Rule
@@ -650,17 +659,23 @@ module ZendeskAPI
   end
 
   class GroupMembership < Resource
-    CBP_ACTIONS = [%r{groups/\d+/memberships$}].freeze
     extend CreateMany
     extend DestroyMany
 
     has User
     has Group
+
+    def self.cbp_path_regexes
+      [%r{groups/\d+/memberships$}]
+    end
   end
 
   class Group < Resource
-    CBP_ACTIONS = [/groups$/, %r{groups/assignable$}].freeze
     has_many :memberships, :class => GroupMembership, :path => "memberships"
+
+    def self.cbp_path_regexes
+      [/groups$/, %r{groups/assignable$}]
+    end
   end
 
   class User < Resource

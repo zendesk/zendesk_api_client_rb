@@ -30,8 +30,8 @@ describe ZendeskAPI::Collection do
     end
 
     context "when CBP is used" do
+      before { allow(ZendeskAPI::TestResource).to receive(:cbp_path_regexes).and_return([/test_resources/]) }
       it "is empty on the first page" do
-        stub_const("ZendeskAPI::TestResource::CBP_ACTIONS", %w[test_resources])
         collection = ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource)
         expect(collection.prev).to eq([])
       end
@@ -1045,7 +1045,7 @@ describe ZendeskAPI::Collection do
 
     context "when fetching a collection that supports CBP" do
       before do
-        stub_const("ZendeskAPI::TestResource::CBP_ACTIONS", %w[test_resources])
+        allow(ZendeskAPI::TestResource).to receive(:cbp_path_regexes).and_return([/test_resources/])
         expect(subject).to receive(:get_response).with("test_resources").and_return(cbp_success_response)
       end
 
@@ -1078,7 +1078,7 @@ describe ZendeskAPI::Collection do
         }
       end
       before do
-        stub_const("ZendeskAPI::TestResource::CBP_ACTIONS", %w[test_resources])
+        allow(ZendeskAPI::TestResource).to receive(:cbp_path_regexes).and_return([/test_resources/])
         stub_json_request(:get, %r{test_resources\?page%5Bsize%5D=1}, json(generate_response(1, true)))
         stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after1&page%5Bsize%5D=1}, json(generate_response(2, true)))
         stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after2&page%5Bsize%5D=1}, json(generate_response(3, true)))
