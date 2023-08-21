@@ -166,7 +166,17 @@ zendesk_api_client_rb $ bundle console
 `ZendeskAPI::Collections` can be paginated:
 
 ```ruby
+# Note that CBP (cursor based pagination) is the default and preferred way
+# and has fewer limitations on deep pagination
+tickets = client.tickets.per_page(3)
+page1 = tickets.fetch! # GET /api/v2/tickets?page[after]={cursor}&page[size]=3
+page2 = tickets.next # GET /api/v2/tickets?page[after]={cursor}&page[size]=3
+# ...
+
+# OR...
+# Note that OBP (offset based pagination) can incur to various limitations
 tickets = client.tickets.page(2).per_page(3)
+
 next_page = tickets.next # => 3
 tickets.fetch! # GET /api/v2/tickets?page=3&per_page=3
 previous_page = tickets.prev # => 2
@@ -221,7 +231,7 @@ ticket.attributes # => { "priority" => "urgent" }
 ticket.save! # Will PUT => true
 ticket.destroy! # => true
 
-ZendeskAPI::Ticket.new(client, { :priority => "urgent" })
+ZendeskAPI::Ticket.new(client, { priority: "urgent" })
 ticket.new_record? # => true
 ticket.save! # Will POST
 ```
@@ -455,7 +465,7 @@ bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 
 1. Fork the project.
 2. Make your feature addition or bug fix.
-3. Add tests for it. This is important so that we don't break it in a future
+3. **Add tests for it**. This is important so that we don't break it in a future
    version unintentionally.
 4. Commit. Do not alter `Rakefile`, version, or history. (If you want to have
    your own version, that is fine, but bump version in a commit by itself that
@@ -463,6 +473,17 @@ bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 5. Submit a pull request.
 
 **Note:** Live specs will likely fail for external contributors. The Zendesk devs can help with that. If you have permissions and some live specs unexpectedly fail, that might be a data error, see the REPL for that.
+
+## Merging contributors pull requests
+
+External contributions don't run live specs, so we need to use a workaround. Assuming a PR from `author:author/branch` to `default_branch`:
+
+1. Create a branch in our repo `author_branch`
+2. Change the destination branch of the PR to `author_branch`
+3. Merge
+4. Create a pr in our repo from `default_branch`
+   - Make sure they know the commits still carry their name
+   - [Example](https://github.com/zendesk/zendesk_api_client_rb/pull/553)
 
 ## Copyright and license
 

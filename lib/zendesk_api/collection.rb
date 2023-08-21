@@ -225,7 +225,7 @@ module ZendeskAPI
         clear_cache
         @options["page"] = @options["page"].to_i + 1
       elsif (@query = @next_page)
-        # Send _only_ url param "?after=token" to get the next page
+        # Send _only_ url param "?page[after]=token" to get the next page
         @options.page&.delete("before")
         fetch(true)
       else
@@ -243,7 +243,7 @@ module ZendeskAPI
         clear_cache
         @options["page"] -= 1
       elsif (@query = @prev_page)
-        # Send _only_ url param "?before=token" to get the prev page
+        # Send _only_ url param "?page[before]=token" to get the prev page
         @options.page&.delete("after")
         fetch(true)
       else
@@ -465,7 +465,7 @@ module ZendeskAPI
     def next_collection(name, *args, &block)
       opts = args.last.is_a?(Hash) ? args.last : {}
       opts.merge!(collection_path: [*@collection_path, name], page: nil)
-      # why page: nil ?
+      # Why `page: nil`?
       # when you do client.tickets.fetch followed by client.tickets.foos => the request to /tickets/foos will
       # have the options page set to whatever the last options were for the tickets collection
       self.class.new(@client, @resource_class, @options.merge(opts))
