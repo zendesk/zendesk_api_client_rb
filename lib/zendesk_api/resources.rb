@@ -24,6 +24,10 @@ module ZendeskAPI
 
   class Topic < Resource
     class << self
+      def cbp_path_regexes
+        [%r{^community/topics$}]
+      end
+
       def resource_path
         "community/topics"
       end
@@ -82,6 +86,10 @@ module ZendeskAPI
 
     def attributes_for_save
       { self.class.resource_name => [id] }
+    end
+
+    def self.cbp_path_regexes
+      [/^tags$/]
     end
   end
 
@@ -154,7 +162,7 @@ module ZendeskAPI
     end
 
     def self.cbp_path_regexes
-      [/organizations$/]
+      [/^organizations$/]
     end
   end
 
@@ -186,7 +194,7 @@ module ZendeskAPI
     has Organization
 
     def self.cbp_path_regexes
-      [%r{organizations/\d+/subscriptions$}]
+      [%r{^organizations/\d+/subscriptions$}]
     end
   end
 
@@ -275,6 +283,10 @@ module ZendeskAPI
   class Activity < Resource
     has User
     has :actor, :class => User
+
+    def self.cbp_path_regexes
+      [/^activities$/]
+    end
   end
 
   class Setting < UpdateResource
@@ -357,10 +369,18 @@ module ZendeskAPI
     namespace 'portal'
   end
 
-  class TicketField < Resource; end
+  class TicketField < Resource
+    def self.cbp_path_regexes
+      [/^ticket_fields$/]
+    end
+  end
 
   class TicketMetric < DataResource
     include Read
+
+    def self.cbp_path_regexes
+      [/^ticket_metrics$/]
+    end
   end
 
   class TicketRelated < DataResource; end
@@ -387,7 +407,7 @@ module ZendeskAPI
     extend DestroyMany
 
     def self.cbp_path_regexes
-      [/tickets$/]
+      [/^tickets$/]
     end
 
     # Unlike other attributes, "comment" is not a property of the ticket,
@@ -498,6 +518,10 @@ module ZendeskAPI
 
     # Recovers this suspended ticket to an actual ticket
     put :recover
+
+    def self.cbp_path_regexes
+      [/^suspended_tickets$/]
+    end
   end
 
   class DeletedTicket < ReadResource
@@ -507,6 +531,10 @@ module ZendeskAPI
     # Restores this previously deleted ticket to an actual ticket
     put :restore
     put :restore_many
+
+    def self.cbp_path_regexes
+      [/^deleted_tickets$/]
+    end
   end
 
   class UserViewRow < DataResource
@@ -604,6 +632,10 @@ module ZendeskAPI
     def self.preview(client, options = {})
       Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
     end
+
+    def self.cbp_path_regexes
+      [/^views$/]
+    end
   end
 
   class Trigger < Rule
@@ -613,7 +645,7 @@ module ZendeskAPI
     has :execution, :class => RuleExecution
 
     def self.cbp_path_regexes
-      [/triggers$/, %r{triggers/active$}]
+      [/^triggers$/, %r{^triggers/active$}]
     end
   end
 
@@ -622,12 +654,20 @@ module ZendeskAPI
     include Actions
 
     has :execution, :class => RuleExecution
+
+    def self.cbp_path_regexes
+      [/^automations$/]
+    end
   end
 
   class Macro < Rule
     include Actions
 
     has :execution, :class => RuleExecution
+
+    def self.cbp_path_regexes
+      [/^macros$/]
+    end
 
     # Returns the update to a ticket that happens when a macro will be applied.
     # @param [Ticket] ticket Optional {Ticket} to apply this macro to.
@@ -666,7 +706,7 @@ module ZendeskAPI
     has Group
 
     def self.cbp_path_regexes
-      [%r{groups/\d+/memberships$}]
+      [%r{^groups/\d+/memberships$}]
     end
   end
 
@@ -674,7 +714,7 @@ module ZendeskAPI
     has_many :memberships, class: GroupMembership, path: "memberships"
 
     def self.cbp_path_regexes
-      [/groups$/, %r{groups/assignable$}]
+      [/^groups$/, %r{^groups/assignable$}]
     end
   end
 
@@ -816,6 +856,10 @@ module ZendeskAPI
 
     def self.singular_resource_name
       "client"
+    end
+
+    def self.cbp_path_regexes
+      [%r{^oauth/clients$}]
     end
   end
 
