@@ -155,7 +155,7 @@ describe 'Endpoints that support CBP' do
   end
 
   describe ZendeskAPI::OauthClient do
-    describe '/oauth/client' do
+    describe '/oauth/clients' do
       it_behaves_like 'an endpoint that supports CBP' do
         let(:collection) { client.oauth_clients }
       end
