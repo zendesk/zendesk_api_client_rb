@@ -98,6 +98,40 @@ describe 'Endpoints that support CBP' do
     end
   end
 
+  describe ZendeskAPI::Ticket do
+    describe '/tickets' do
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { client.tickets }
+      end
+    end
+
+    describe '/organizations/:id/tickets' do
+      let(:organization) do
+        VCR.use_cassette("cbp_#{described_class}_organization_fetch") do
+          client.organizations.fetch.first
+        end
+      end
+
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { organization.tickets }
+      end
+    end
+  end
+
+  describe ZendeskAPI::Ticket::Audit do
+    describe '/tickets/:id/audits' do
+      let(:ticket) do
+        VCR.use_cassette("cbp_#{described_class}_ticket_fetch") do
+          client.tickets.fetch.first
+        end
+      end
+
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { ticket.audits }
+      end
+    end
+  end
+
   describe ZendeskAPI::TicketMetric do
     describe '/ticket_metrics' do
       it_behaves_like 'an endpoint that supports CBP' do
@@ -158,6 +192,33 @@ describe 'Endpoints that support CBP' do
     describe '/oauth/clients' do
       it_behaves_like 'an endpoint that supports CBP' do
         let(:collection) { client.oauth_clients }
+      end
+    end
+  end
+
+  describe ZendeskAPI::Brand do
+    describe '/brands' do
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { client.brands }
+      end
+    end
+  end
+
+  describe ZendeskAPI::User do
+    describe '/users' do
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { client.users }
+      end
+    end
+
+    describe '/organizations/:id/users' do
+      let(:organization) do
+        VCR.use_cassette("cbp_#{described_class}_organization_fetch") do
+          client.organizations.fetch.first
+        end
+      end
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { organization.users }
       end
     end
   end

@@ -167,6 +167,10 @@ module ZendeskAPI
   end
 
   class Brand < Resource
+    def self.cbp_path_regexes
+      [/^brands$/]
+    end
+
     def destroy!
       self.active = false
       save!
@@ -407,7 +411,7 @@ module ZendeskAPI
     extend DestroyMany
 
     def self.cbp_path_regexes
-      [/^tickets$/]
+      [/^tickets$/, %r{organizations/\d+/tickets}]
     end
 
     # Unlike other attributes, "comment" is not a property of the ticket,
@@ -428,6 +432,10 @@ module ZendeskAPI
       has :author, :class => User
 
       has_many Event
+
+      def self.cbp_path_regexes
+        [%r{^tickets/\d+/audits$}]
+      end
     end
 
     class Comment < DataResource
@@ -738,6 +746,10 @@ module ZendeskAPI
 
       # Requests verification for this identity
       put :request_verification
+    end
+
+    def self.cbp_path_regexes
+      [/^users$/, %r{^organizations/\d+/users$}]
     end
 
     any :password
