@@ -105,7 +105,7 @@ describe 'Endpoints that support CBP' do
       end
     end
 
-    describe '/organiozations/:id/tickets' do
+    describe '/organizations/:id/tickets' do
       let(:organization) do
         VCR.use_cassette("cbp_#{described_class}_organization_fetch") do
           client.organizations.fetch.first
