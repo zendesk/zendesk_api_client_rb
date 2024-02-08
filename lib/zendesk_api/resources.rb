@@ -16,6 +16,20 @@ module ZendeskAPI
 
   class CustomRole < DataResource; end
 
+  # client.agent_availabilities.fetch
+  # client.agent_availabilities.find 20401208368
+  # both return consistently - ZendeskAPI::AgentAvailability
+  class AgentAvailability < DataResource
+    def self.model_key
+      "data"
+    end
+
+    def self.find(client, id, *args)
+      attributes = client.connection.get("#{resource_path}/#{id}").body.fetch(model_key, {})
+      new(client, attributes)
+    end
+  end
+
   class Role < DataResource
     def to_param
       name
