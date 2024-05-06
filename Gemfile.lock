@@ -55,13 +55,12 @@ GEM
     diff-lcs (1.5.1)
     drb (2.2.1)
     erubi (1.12.0)
-    faraday (2.8.1)
-      base64
-      faraday-net_http (>= 2.0, < 3.1)
-      ruby2_keywords (>= 0.0.4)
+    faraday (2.9.0)
+      faraday-net_http (>= 2.0, < 3.2)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
-    faraday-net_http (3.0.2)
+    faraday-net_http (3.1.0)
+      net-http
     hashdiff (1.1.0)
     hashie (5.0.0)
     i18n (1.14.4)
@@ -73,12 +72,12 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.6)
     minitest (5.22.3)
     multipart-post (2.4.0)
     mutex_m (0.2.0)
-    nokogiri (1.15.6)
-      mini_portile2 (~> 2.8.2)
+    net-http (0.4.1)
+      uri
+    nokogiri (1.16.4-arm64-darwin)
       racc (~> 1.4)
     parallel (1.24.0)
     parser (3.3.1.0)
@@ -122,11 +121,11 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
     ruby-progressbar (1.13.0)
-    ruby2_keywords (0.0.5)
     scrub_rb (1.0.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.6.1)
+    uri (0.13.0)
     vcr (6.2.0)
     webmock (3.23.0)
       addressable (>= 2.8.0)
@@ -135,7 +134,7 @@ GEM
     yard (0.9.36)
 
 PLATFORMS
-  ruby
+  arm64-darwin-23
 
 DEPENDENCIES
   actionpack (>= 5.2.4.6)
@@ -159,4 +158,4 @@ DEPENDENCIES
   zendesk_api!
 
 BUNDLED WITH
-   2.1.4
+   2.3.3
