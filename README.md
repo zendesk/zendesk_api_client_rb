@@ -487,6 +487,6 @@ External contributions don't run live specs, so we need to use a workaround. Ass
 
 ## Copyright and license
 
-Copyright 2015-2023 Zendesk
+Copyright 2015-2024 Zendesk
 
 See [LICENSE](./LICENSE).
