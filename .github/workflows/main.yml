@@ -29,11 +29,28 @@ jobs:
         with:
           bundler-cache: true
           ruby-version: ${{ matrix.ruby }}
-      - name: Test and Lint
+
+      - name: Custom cache gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-${{ matrix.ruby }}
+          restore-keys: |
+            ${{ runner.os }}-gems-${{ matrix.ruby }}
+
+      - name: Install gems
         run: |
-          bundle install
-          bundle exec rake
-          bundle exec rubocop
+          BUNDLE_GEMFILE=Gemfile.${{ matrix.ruby }} bundle install --jobs 4 --retry 3 --path vendor/bundle
+
+      - name: Test
+        run: |
+          BUNDLE_GEMFILE=Gemfile.${{ matrix.ruby }} bundle exec rake
+
+      - name: Lint
+        if: matrix.ruby == '2.7'
+        run: |
+          BUNDLE_GEMFILE=Gemfile.2.7 bundle exec rubocop
+
   spec-live:
     name: Spec live
     if: github.repository == 'zendesk/zendesk_api_client_rb'
