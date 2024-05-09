@@ -1,12 +1,17 @@
 module ZendeskAPI
   # @internal The following are redefined later, but needed by some circular resources (e.g. Ticket -> User, User -> Ticket)
 
+  class Channel < Resource; end
   class Ticket < Resource; end
   class User < Resource; end
   class UserRelated < DataResource; end
   class Category < Resource; end
   class OrganizationSubscription < ReadResource; end
   class CustomStatus < Resource; end
+
+  class AgentAvailability < Resource
+    has :channels, class: Channel
+  end
 
   # @internal Begin actual Resource definitions
 
