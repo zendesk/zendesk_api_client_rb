@@ -69,7 +69,7 @@ jobs:
           ruby-version: 3.1
       - name: spec:live
         run: |
-          bundle install
-          bundle exec rake clean_live set_ci_credentials spec:live ||
-          bundle exec rake clean_live &&
-          bundle exec rspec spec/live --only-failures
+          BUNDLE_GEMFILE=Gemfile.3.1 bundle install --jobs 4 --retry 3 --path vendor/bundle
+          BUNDLE_GEMFILE=Gemfile.3.1 bundle exec rake clean_live set_ci_credentials spec:live ||
+          BUNDLE_GEMFILE=Gemfile.3.1 bundle exec rake clean_live &&
+          BUNDLE_GEMFILE=Gemfile.3.1 bundle exec rspec spec/live --only-failures
