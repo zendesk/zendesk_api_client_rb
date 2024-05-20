@@ -454,7 +454,7 @@ BUNDLE_GEMFILE=Gemfile.2.7 bundle exec rubocop # Runs the lint (use `--fix` for 
 
 1. From updated master: `git checkout -b bump-vX.X.X`, according to [SemVer](https://semver.org)
 2. Ensure the CHANGELOG is correct and updated, this is your last opportunity
-3. Execute `bundle exec bump patch --tag # minor|major`, this bumps the version in a new commit, and adds the relative git tag
+3. Execute `BUNDLE_GEMFILE=Gemfile.2.7 bundle exec bump patch --tag # minor|major`, this bumps the version in a new commit, and adds the relative git tag
 4. Push to GitHub `git push origin vX.X.X -u && git push --tags`
 5. Raise a PR ([example](https://github.com/zendesk/zendesk_api_client_rb/pull/540)) including the code diff ([example](https://github.com/zendesk/zendesk_api_client_rb/compare/v2.0.1...v3.0.0.rc1))
 6. Get it approved and merged
