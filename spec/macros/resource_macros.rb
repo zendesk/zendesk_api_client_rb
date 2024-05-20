@@ -20,8 +20,9 @@ module ResourceMacros
       subject { described_class }
 
       before(:all) do
-        VCR.use_cassette("#{described_class.to_s}_create") do
+        VCR.use_cassette("#{described_class}_create") do
           @object = described_class.create(client, valid_attributes.merge(default_options))
+            .tap { puts "it_should_be_creatable #{described_class} created id #{@object.try(:id)}" }
         end
       end
 
@@ -51,6 +52,7 @@ module ResourceMacros
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_update_create") do
           @object = described_class.create(client, valid_attributes.merge(default_options))
+            .tap { puts "it_should_be_updatable #{described_class} created id #{@object.try(:id)}" }
         end
       end
 
@@ -97,6 +99,7 @@ module ResourceMacros
         else
           VCR.use_cassette("#{described_class.to_s}_delete_create") do
             @object = described_class.create(client, valid_attributes.merge(default_options))
+              .tap { puts "it_should_be_deletable #{described_class} created id #{@object.try(:id)}" }
           end
         end
       end
@@ -130,6 +133,7 @@ module ResourceMacros
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_#{context_name}_create") do
           @object = described_class.create!(client, valid_attributes.merge(default_options))
+            .tap { puts "it_should_be_readable #{described_class} created id #{@object.try(:id)}" }
         end
       end if create
 

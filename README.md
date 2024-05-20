@@ -446,6 +446,7 @@ ZendeskAPI::AppInstallation.destroy!(client, :id => 123)
 See `.github/workflows/main.yml` to understand the CI process.
 
 ```
+BUNDLE_GEMFILE=Gemfile.2.7 bundle install # Ensure latest gems
 BUNDLE_GEMFILE=Gemfile.2.7 bundle exec rake # Runs the tests, assuming Ruby 2.7 is chosen
 BUNDLE_GEMFILE=Gemfile.2.7 bundle exec rubocop # Runs the lint (use `--fix` for autocorrect), assuming Ruby 2.7 is chosen
 ```
