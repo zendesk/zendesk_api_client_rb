@@ -29,28 +29,11 @@ jobs:
         with:
           bundler-cache: true
           ruby-version: ${{ matrix.ruby }}
-
-      - name: Custom cache gems
-        uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}-${{ matrix.ruby }}
-          restore-keys: |
-            ${{ runner.os }}-gems-${{ matrix.ruby }}
-
-      - name: Install gems
+      - name: Test and Lint
         run: |
-          BUNDLE_GEMFILE=Gemfile.${{ matrix.ruby }} bundle install --jobs 4 --retry 3 --path vendor/bundle
-
-      - name: Test
-        run: |
-          BUNDLE_GEMFILE=Gemfile.${{ matrix.ruby }} bundle exec rake
-
-      - name: Lint
-        if: matrix.ruby == '2.7'
-        run: |
-          BUNDLE_GEMFILE=Gemfile.2.7 bundle exec rubocop
-
+          bundle install
+          bundle exec rake
+          bundle exec rubocop
   spec-live:
     name: Spec live
     if: github.repository == 'zendesk/zendesk_api_client_rb'
@@ -69,7 +52,7 @@ jobs:
           ruby-version: 3.1
       - name: spec:live
         run: |
-          BUNDLE_GEMFILE=Gemfile.3.1 bundle install --jobs 4 --retry 3 --path vendor/bundle
-          BUNDLE_GEMFILE=Gemfile.3.1 bundle exec rake clean_live set_ci_credentials spec:live ||
-          BUNDLE_GEMFILE=Gemfile.3.1 bundle exec rake clean_live &&
-          BUNDLE_GEMFILE=Gemfile.3.1 bundle exec rspec spec/live --only-failures
+          bundle install
+          bundle exec rake clean_live set_ci_credentials spec:live ||
+          bundle exec rake clean_live &&
+          bundle exec rspec spec/live --only-failures
