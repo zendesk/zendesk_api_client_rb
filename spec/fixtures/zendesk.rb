@@ -30,6 +30,7 @@ module ZendeskAPI
 
     def topic
       VCR.use_cassette('valid_topic') do
+        @topic ||= client.topics.fetch.find { |t| t.name == "Test Topic" }
         @topic ||= client.topics.create(
           :name => "Test Topic",
           :description => "This is the body of a topic."
