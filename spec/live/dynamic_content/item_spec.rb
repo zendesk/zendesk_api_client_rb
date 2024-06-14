@@ -3,14 +3,14 @@ require 'core/spec_helper'
 describe ZendeskAPI::DynamicContent::Item, :delete_after do
   def valid_attributes
     {
-      :name => "Snowboard Problem",
+      :name => "Dynamic Content Item name Ruby SDK test",
       :default_locale_id => 1,
-      :content => "Snowboard Problem variant"
+      :content => "Ruby SDK test content"
     }
   end
 
   it_should_be_readable :dynamic_content, :items, :create => true
   it_should_be_creatable
-  it_should_be_updatable :name
+  it_should_be_updatable :name, 'Updated Dynamic Content Item name Ruby SDK test'
   it_should_be_deletable
 end

@@ -21,26 +21,26 @@ module ResourceMacros
 
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_create") do
-          @object = described_class.create(client, valid_attributes.merge(default_options))
+          @creatable_object = described_class.create!(client, valid_attributes.merge(default_options))
         end
       end
 
       it "should have an id" do
-        expect(@object).to_not be_nil
-        expect(@object.send(:id)).to_not be_nil
+        expect(@creatable_object).to_not be_nil
+        expect(@creatable_object.send(:id)).to_not be_nil
       end
 
       it "should be findable", :unless => metadata[:not_findable] do
         options = default_options
-        options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-        expect(described_class.find(client, options)).to eq(@object)
+        options.merge!(:id => @creatable_object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
+        expect(described_class.find(client, options)).to eq(@creatable_object)
       end
 
       after(:all) do
-        return unless @object.id
+        return unless @creatable_object.id
 
         VCR.use_cassette("#{described_class.to_s}_create_delete") do
-          @object.destroy
+          @creatable_object.destroy
         end
       end if metadata[:delete_after]
     end
@@ -50,40 +50,38 @@ module ResourceMacros
     context "update", :vcr do
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_update_create") do
-          @object = described_class.create(client, valid_attributes.merge(default_options))
+          @updatable_object = described_class.create!(client, valid_attributes.merge(default_options))
         end
       end
 
       before(:each) do
-        @object.send("#{attribute}=", value)
-        extra.each { |k, v| @object.send("#{k}=", v) }
+        @updatable_object.public_send("#{attribute}=", value)
+        extra.each { |k, v| @updatable_object.public_send("#{k}=", v) }
       end
 
       it "should be savable" do
-        expect(@object.save).to be(true)
+        expect(@updatable_object.save).to be(true), "Expected object to save, but it failed with errors: #{@updatable_object.errors&.full_messages&.join(', ')}"
       end
 
       context "after save" do
         before(:each) do
-          @object.save
+          @updatable_object.save
         end
 
         it "should keep attributes" do
-          expect(@object.send(attribute)).to eq(value)
+          expect(@updatable_object.send(attribute)).to eq(value)
         end
 
         it "should be findable", :unless => metadata[:not_findable] do
           options = default_options
-          options.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
-          expect(described_class.find(client, options)).to eq(@object)
+          options.merge!(:id => @updatable_object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
+          expect(described_class.find(client, options)).to eq(@updatable_object)
         end
       end
 
       after(:all) do
-        return unless @object.id
-
         VCR.use_cassette("#{described_class.to_s}_update_delete") do
-          @object.destroy
+          @updatable_object.destroy
         end
       end if metadata[:delete_after]
     end
@@ -93,21 +91,20 @@ module ResourceMacros
     context "deletion", :vcr do
       before(:all) do
         if options[:object]
-          @object = options.delete(:object)
+          @deletable_object = options.delete(:object)
         else
           VCR.use_cassette("#{described_class.to_s}_delete_create") do
-            @object = described_class.create(client, valid_attributes.merge(default_options))
+            @deletable_object = described_class.create!(client, valid_attributes.merge(default_options))
           end
         end
       end
 
       it "should be destroyable" do |example|
-        expect(@object.destroy).to be(true)
-        expect(@object.destroyed?).to be(true)
-
+        expect(@deletable_object.destroy).to be(true)
+        expect(@deletable_object.destroyed?).to be(true)
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
           opts = default_options
-          opts.merge!(:id => @object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
+          opts.merge!(:id => @deletable_object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
           obj = described_class.find(client, opts)
 
           if options[:find]
@@ -129,13 +126,13 @@ module ResourceMacros
     context context_name, :vcr do
       before(:all) do
         VCR.use_cassette("#{described_class.to_s}_#{context_name}_create") do
-          @object = described_class.create!(client, valid_attributes.merge(default_options))
+          @readable_object = described_class.create!(client, valid_attributes.merge(default_options))
         end
       end if create
 
       after(:all) do
         VCR.use_cassette("#{described_class.to_s}_#{context_name}_delete") do
-          @object.destroy
+          @readable_object.destroy
         end
       end if create
 
@@ -148,7 +145,7 @@ module ResourceMacros
             object = nil
 
             result.all do |o|
-              object = o if @object == o
+              object = o if @readable_object == o
             end
 
             expect(object).to_not be_nil
@@ -158,7 +155,7 @@ module ResourceMacros
           end
         else
           expect(result).to_not be_nil
-          expect(result).to eq(@object) if create
+          expect(result).to eq(@readable_object) if create
           object = result
         end
 
