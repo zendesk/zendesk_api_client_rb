@@ -4,6 +4,8 @@
 
 Adding support to the agent availabilities API endpoints
 
+Adding multiple Gemfile and Gemfile.lock files for differen Ruby versions so that Snyk can scan the repo for vulnerabilities.
+
 ## v3.0.5
 
 Adding CBP support to more endpoints. please see `cbp_support_spec.rb` for the complete list.

@@ -6,7 +6,7 @@ describe ZendeskAPI::DynamicContent::Item::Variant, :delete_after do
       :locale_id => 2,
       :active => true,
       :default => false,
-      :content => 'Mon dieu!'
+      :content => 'Ruby SDK Test Variant Content'
     }
   end
 

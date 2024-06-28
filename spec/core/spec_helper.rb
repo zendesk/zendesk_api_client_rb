@@ -156,6 +156,10 @@ VCR.configure do |c|
   c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true, :serialize_with => :json, :preserve_exact_body_bytes => true }
   c.hook_into :webmock
   c.configure_rspec_metadata!
+
+  # In CI this doesn't matter, since we start by deleting all the cassettes.
+  # In development, this helps debugging.
+  c.allow_http_connections_when_no_cassette = true
 end
 
 include WebMock::API
