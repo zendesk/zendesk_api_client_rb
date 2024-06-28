@@ -222,4 +222,27 @@ describe 'Endpoints that support CBP' do
       end
     end
   end
+
+  describe ZendeskAPI::AgentAvailability do
+    describe '/agent_availabilities' do
+      let(:collection_fetched) do
+        VCR.use_cassette("cbp_#{described_class}_collection") do
+          client.agent_availabilities.fetch
+          client.agent_availabilities
+        end
+      end
+
+      let(:response_body) { collection_fetched.response.body }
+      let(:collection_fetched_results) { collection_fetched.to_a }
+      it 'returns a CBP response with all the correct keys' do
+        expect(response_body).to have_key('meta')
+        expect(response_body).to have_key('links')
+        expect(response_body['meta'].keys).to include('has_more')
+      end
+
+      it 'returns a list of AgentAvailability objects' do
+        expect(collection_fetched_results).to all(be_a(described_class))
+      end
+    end
+  end
 end

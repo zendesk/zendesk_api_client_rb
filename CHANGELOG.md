@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.0.6
+
+Adding support to the agent availabilities API endpoints
+
 ## v3.0.5
 
 Adding CBP support to more endpoints. please see `cbp_support_spec.rb` for the complete list.
