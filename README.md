@@ -271,6 +271,37 @@ ticket.requester # => #<ZendeskAPI::User id=...>
 Currently, this feature is limited to only a few resources and their associations.
 They are documented on [developer.zendesk.com](https://developer.zendesk.com/rest_api/docs/support/side_loading#supported-endpoints).
 
+#### Recommended Approach
+
+For better control over your data and to avoid large response sizes, consider fetching related resources explicitly. This approach can help you manage data loading more precisely and can lead to optimized performance for complex applications.
+
+```ruby
+ticket = ZendeskAPI::Ticket.find(id: 1)
+requester = ZendeskAPI::User.find(id: ticket.requester_id)
+```
+
+By explicitly fetching associated resources, you can ensure that your application only processes the data it needs, improving overall efficiency.
+
+### Omnichannel
+
+Support for the [Agent Availability API](https://developer.zendesk.com/api-reference/agent-availability/agent-availability-api/introduction/)
+
+An agent’s availability includes their state (such as online) for each channel (such as messaging), and their unified state across channels. It also includes the work items assigned to them.
+
+```ruby
+# All agent availabilities
+client.agent_availabilities.fetch
+
+# fetch availability for one agent, their channels and work items
+agent_availability = ZendeskAPI::AgentAvailability.find(client, 386390041152)
+agent_availability.channels
+agent_availability.channels.first.work_items
+
+# Using the agent availability filter
+ZendeskAPI::AgentAvailability.search(client, { select_channel: 'support' })
+ZendeskAPI::AgentAvailability.search(client, { channel_status: 'support:online' })
+```
+
 ### Search
 
 Searching is done through the client. Returned is an instance of `ZendeskAPI::Collection`:

@@ -2,6 +2,8 @@
 
 ## v3.0.6
 
+Adding support to the agent availabilities API endpoints
+
 Adding multiple Gemfile and Gemfile.lock files for differen Ruby versions so that Snyk can scan the repo for vulnerabilities.
 
 ## v3.0.5

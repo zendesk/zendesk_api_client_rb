@@ -16,6 +16,58 @@ module ZendeskAPI
 
   class CustomRole < DataResource; end
 
+  class WorkItem < Resource; end
+
+  class Channel < Resource
+    def work_items
+      @work_items ||= attributes.fetch('relationships', {}).fetch('work_items', {}).fetch('data', []).map do |work_item_attributes|
+        WorkItem.new(@client, work_item_attributes)
+      end
+    end
+  end
+
+  # client.agent_availabilities.fetch
+  # client.agent_availabilities.find 20401208368
+  # both return consistently - ZendeskAPI::AgentAvailability
+  class AgentAvailability < DataResource
+    def self.model_key
+      "data"
+    end
+
+    def initialize(client, attributes = {})
+      nested_attributes = attributes.delete('attributes')
+      super(client, attributes.merge(nested_attributes))
+    end
+
+    def self.find(client, id)
+      attributes = client.connection.get("#{resource_path}/#{id}").body.fetch(model_key, {})
+      new(client, attributes)
+    end
+
+    #  Examples:
+    #  ZendeskAPI::AgentAvailability.search(client, { channel_status: 'support:online' })
+    #  ZendeskAPI::AgentAvailability.search(client, { agent_status_id: 1 })
+    #  Just pass a hash that includes the key and value you want to search for, it gets turned into a query string
+    #  on the format of filter[key]=value
+    #  Returns a collection of AgentAvailability objects
+    def self.search(client, args_hash)
+      query_string = args_hash.map { |k, v| "filter[#{k}]=#{v}" }.join("&")
+      client.connection.get("#{resource_path}?#{query_string}").body.fetch(model_key, []).map do |attributes|
+        new(client, attributes)
+      end
+    end
+
+    def channels
+      @channels ||= begin
+        channel_attributes_array = @client.connection.get(attributes['links']['self']).body.fetch('included')
+        channel_attributes_array.map do |channel_attributes|
+          nested_attributes = channel_attributes.delete('attributes')
+          Channel.new(@client, channel_attributes.merge(nested_attributes))
+        end
+      end
+    end
+  end
+
   class Role < DataResource
     def to_param
       name
