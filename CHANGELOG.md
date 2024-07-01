@@ -1,8 +1,10 @@
 # CHANGELOG
 
-## v3.0.6
+## v3.1.0
 
-Adding support to the agent availabilities API endpoints
+Adding support to the agent availabilities API endpoints.
+
+## v3.0.6
 
 Adding multiple Gemfile and Gemfile.lock files for differen Ruby versions so that Snyk can scan the repo for vulnerabilities.
 
