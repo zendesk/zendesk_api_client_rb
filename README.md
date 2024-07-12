@@ -60,10 +60,13 @@ client = ZendeskAPI::Client.new do |config|
   config.username = "login.email@zendesk.com"
 
   # Choose one of the following depending on your authentication choice
+  # More information on obtaining API tokens can be found here:
+  # https://developer.zendesk.com/api-reference/introduction/security-and-auth/#api-token
   config.token = "your zendesk token"
-  config.password = "your zendesk password"
 
   # OAuth Authentication
+  # More information on obtaining OAuth access tokens can be found here:
+  # https://developer.zendesk.com/api-reference/introduction/security-and-auth/#oauth-access-token
   config.access_token = "your OAuth access token"
 
   # Optional:
