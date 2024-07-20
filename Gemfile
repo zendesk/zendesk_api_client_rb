@@ -7,6 +7,7 @@ gem "addressable", ">= 2.8.0"
 gem "yard"
 gem "json", ">= 2.3.0", platforms: :ruby
 gem "scrub_rb"
+gem "znowflake_client", "1.1.9"
 
 gem "rubocop", "~> 0.79.0", require: false # Handling of Ruby 2.7 syntax
 
