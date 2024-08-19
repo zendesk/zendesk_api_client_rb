@@ -463,7 +463,7 @@ module ZendeskAPI
     extend DestroyMany
 
     def self.cbp_path_regexes
-      [/^tickets$/, %r{organizations/\d+/tickets}]
+      [/^tickets$/, %r{organizations/\d+/tickets}, %r{users/\d+/tickets/requested}]
     end
 
     # Unlike other attributes, "comment" is not a property of the ticket,
