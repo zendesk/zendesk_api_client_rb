@@ -110,7 +110,7 @@ module ResourceMacros
           if options[:find]
             expect(obj.send(options[:find].first)).to eq(options[:find].last)
           else
-            expect(obj.nil? || !obj.active?).to eq(true)
+            options[:marked_for_deletion] ? (expect(obj.active?).to be_falsey) : (expect(obj).to be_nil)
           end
         end
       end
