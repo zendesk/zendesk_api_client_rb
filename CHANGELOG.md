@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.1.1
+
+Adding CBP support to requested tickets (api/v2/users/:id/tickets/requested)
+
 ## v3.1.0
 
 Adding support to the agent availabilities API endpoints.
