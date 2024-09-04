@@ -116,6 +116,18 @@ describe 'Endpoints that support CBP' do
         let(:collection) { organization.tickets }
       end
     end
+
+    describe '/users/:id/tickets/requested' do
+      let(:user) do
+        VCR.use_cassette("cbp_#{described_class}_user_fetch") do
+          client.users.fetch.first
+        end
+      end
+
+      it_behaves_like 'an endpoint that supports CBP' do
+        let(:collection) { user.requested_tickets }
+      end
+    end
   end
 
   describe ZendeskAPI::Ticket::Audit do

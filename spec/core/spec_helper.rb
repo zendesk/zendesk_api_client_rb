@@ -94,6 +94,10 @@ def client
   end
 end
 
+def random_string(length = 10)
+  ('a'..'z').to_a.shuffle.take(length).join
+end
+
 module TestHelper
   def silence_logger
     old_level = client.config.logger.level

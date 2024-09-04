@@ -37,7 +37,7 @@ module ResourceMacros
       end
 
       after(:all) do
-        return unless @creatable_object.id
+        return unless @creatable_object&.id
 
         VCR.use_cassette("#{described_class.to_s}_create_delete") do
           @creatable_object.destroy
@@ -81,7 +81,7 @@ module ResourceMacros
 
       after(:all) do
         VCR.use_cassette("#{described_class.to_s}_update_delete") do
-          @updatable_object.destroy
+          @updatable_object&.destroy
         end
       end if metadata[:delete_after]
     end
@@ -110,7 +110,7 @@ module ResourceMacros
           if options[:find]
             expect(obj.send(options[:find].first)).to eq(options[:find].last)
           else
-            expect(obj).to be_nil
+            options[:marked_for_deletion] ? (expect(obj.active?).to be_falsey) : (expect(obj).to be_nil)
           end
         end
       end
