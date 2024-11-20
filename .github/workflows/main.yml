@@ -8,6 +8,9 @@ on:
       - master
       - spec_live
 
+env:
+  RUBYOPT: --enable=frozen-string-literal
+
 jobs:
   test-and-lint:
     name: Test and lint
