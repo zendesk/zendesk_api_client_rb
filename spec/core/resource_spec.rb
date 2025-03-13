@@ -455,7 +455,12 @@ describe ZendeskAPI::Resource do
 
   context "#inspect" do
     it "should display nicely" do
-      expect(ZendeskAPI::User.new(client, :foo => :bar).inspect).to eq("#<ZendeskAPI::User {\"foo\"=>:bar}>")
+      expected_user_representation = if RUBY_VERSION >= "3.4"
+        "#<ZendeskAPI::User {\"foo\" => :bar}>"
+      else
+        "#<ZendeskAPI::User {\"foo\"=>:bar}>"
+      end
+      expect(ZendeskAPI::User.new(client, :foo => :bar).inspect).to eq(expected_user_representation)
     end
   end
 
