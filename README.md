@@ -484,16 +484,21 @@ bundle exec rake # Runs the tests
 bundle exec rubocop # Runs the lint (use `--fix` for autocorrect)
 ```
 
-## Releasing a new gem version
+### Releasing a new version
+A new version is published to RubyGems.org every time a change to `version.rb` is pushed to the `main` branch.
+In short, follow these steps:
+1. Update `version.rb`,
+2. merge this change into `main`,
+3. post a message in Slack `#rest-api`, so advocacy are aware that we are going to release a new gem, just in case any customer complains about something related to the gem,
+4. after 2 hours from the above message, you can [approve the release of the gem](https://github.com/zendesk/zendesk_api_client_rb/deployments/activity_log?environment=rubygems-publish)
+5. look at [the action](https://github.com/zendesk/zendesk_api_client_rb/actions/workflows/publish.yml) for output.
 
-1. From updated master: `git checkout -b bump-vX.X.X`, according to [SemVer](https://semver.org)
-2. Ensure the CHANGELOG is correct and updated, this is your last opportunity
-3. Execute `bundle exec bump:patch # minor|major`, this bumps the version in a new commit, and adds the relative git tag
-4. Push to GitHub `git push origin vX.X.X -u && git push --tags`
-5. Raise a PR ([example](https://github.com/zendesk/zendesk_api_client_rb/pull/540)) including the code diff ([example](https://github.com/zendesk/zendesk_api_client_rb/compare/v2.0.1...v3.0.0.rc1))
-6. Get it approved and merged
-7. Post a message in Slack `#rest-api` (example **TODO**), so advocacy are aware that we are going to release a new gem, just in case any customer complains about something related to the gem
-8. After 2 hours from the above message, you can [approve the release of the gem](https://github.com/zendesk/zendesk_api_client_rb/deployments/activity_log?environment=rubygems-publish)
+To create a pre-release from a non-main branch:
+1. change the version in `version.rb` to something like `1.2.0.pre.1` or `2.0.0.beta.2`,
+2. push this change to your branch,
+3. go to [Actions → “Publish to RubyGems.org” on GitHub](https://github.com/zendesk/zendesk_api_client_rb/actions/workflows/publish.yml),
+4. click the “Run workflow” button,
+5. pick your branch from a dropdown.
 
 ## Contributing
 
