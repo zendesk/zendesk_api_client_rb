@@ -8,7 +8,7 @@
 
 This Ruby gem is a generic wrapper around Zendesk's REST API. Follow this README and the [wiki](https://github.com/zendesk/zendesk_api_client_rb/wiki) for how to use it.
 
-You can interact with all the resources defined in [`resources.rb`](lib/zendesk_api/resources.rb). Basically we have some cleaver code to convert Ruby objects into HTTP requests.
+You can interact with all the resources defined in [`resources.rb`](lib/zendesk_api/resources.rb). Basically we have some clever code to convert Ruby objects into HTTP requests.
 
 Please refer to our [API documentation](https://developer.zendesk.com/api-reference) for the specific endpoints and once you understand the mapping between Ruby and the HTTP endpoints you should be able to call any endpoint.
 
