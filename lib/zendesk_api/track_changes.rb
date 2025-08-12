@@ -49,7 +49,7 @@ module ZendeskAPI
           value
         else
           changes[key] = value
-          defined?(_store) ? _store(key, value) : super(key, value)
+          defined?(_store) ? _store(key, value) : super
         end
       end
 

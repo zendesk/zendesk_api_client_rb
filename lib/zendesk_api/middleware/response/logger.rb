@@ -11,7 +11,7 @@ module ZendeskAPI
 
           @logger = logger || begin
             require 'logger'
-            ::Logger.new(STDOUT)
+            ::Logger.new($stdout)
           end
         end
 

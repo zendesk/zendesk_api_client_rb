@@ -49,7 +49,7 @@ module ZendeskAPI
       def set_cbp_options
         @options_per_page_was = @options.delete("per_page")
         # Default to CBP by using the page param as a map
-        @options.page = { size: (@options_per_page_was || DEFAULT_PAGE_SIZE) }
+        @options.page = { size: @options_per_page_was || DEFAULT_PAGE_SIZE }
       end
 
       # CBP requests look like: `/resources?page[size]=100`

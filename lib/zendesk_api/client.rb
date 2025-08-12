@@ -34,7 +34,7 @@ module ZendeskAPI
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
     # @return [Collection] Collection instance for resource
-    def method_missing(method, *args, &block)
+    def method_missing(method, *args, &)
       method = method.to_s
       options = args.last.is_a?(Hash) ? args.pop : {}
       unless config.use_resource_cache

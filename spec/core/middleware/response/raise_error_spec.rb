@@ -28,7 +28,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
 
     before(:each) do
       stub_request(:any, /.*/).to_return(:status => status, :body => body,
-        :headers => { :content_type => "application/json" })
+                                         :headers => { :content_type => "application/json" })
     end
 
     context "with status = 404" do
@@ -69,7 +69,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
       it "raises NetworkError with the right message" do
         expect { client.connection.get "/non_existent" }.to raise_error(
           ZendeskAPI::Error::NetworkError,
-          "the server responded with status 302 -- get https://#{client.connection.host}/non_existent"
+          "the server responded with status 302 for GET https://#{client.connection.host}/non_existent -- get https://#{client.connection.host}/non_existent"
         )
       end
     end
