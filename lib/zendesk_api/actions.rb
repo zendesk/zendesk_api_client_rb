@@ -43,8 +43,8 @@ module ZendeskAPI
     end
 
     # Saves, returning false if it fails and attaching the errors
-    def save(options = {}, &block)
-      save!(options, &block)
+    def save(options = {}, &)
+      save!(options, &)
     rescue ZendeskAPI::Error::RecordInvalid => e
       @errors = e.errors
       false
@@ -127,8 +127,8 @@ module ZendeskAPI
       # Finds, returning nil if it fails
       # @param [Client] client The {Client} object to be used
       # @param [Hash] options Any additional GET parameters to be added
-      def find(client, options = {}, &block)
-        find!(client, options, &block)
+      def find(client, options = {}, &)
+        find!(client, options, &)
       rescue ZendeskAPI::Error::ClientError
         nil
       end
@@ -157,8 +157,8 @@ module ZendeskAPI
       # Creates, returning nil if it fails
       # @param [Client] client The {Client} object to be used
       # @param [Hash] options Any additional GET parameters to be added
-      def create(client, attributes = {}, &block)
-        create!(client, attributes, &block)
+      def create(client, attributes = {}, &)
+        create!(client, attributes, &)
       rescue ZendeskAPI::Error::ClientError
         nil
       end
@@ -239,8 +239,8 @@ module ZendeskAPI
     end
 
     # Destroys, returning false on error.
-    def destroy(&block)
-      destroy!(&block)
+    def destroy(&)
+      destroy!(&)
     rescue ZendeskAPI::Error::ClientError
       false
     end
@@ -249,15 +249,15 @@ module ZendeskAPI
       # Deletes a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
       # @param [Hash] opts The optional parameters to pass. Defaults to {}
-      def destroy!(client, opts = {}, &block)
-        new(client, opts).destroy!(&block)
+      def destroy!(client, opts = {}, &)
+        new(client, opts).destroy!(&)
 
         true
       end
 
       # Destroys, returning false on error.
-      def destroy(client, attributes = {}, &block)
-        destroy!(client, attributes, &block)
+      def destroy(client, attributes = {}, &)
+        destroy!(client, attributes, &)
       rescue ZendeskAPI::Error::ClientError
         false
       end
@@ -289,8 +289,8 @@ module ZendeskAPI
 
     module ClassMethod
       # Updates, returning false on error.
-      def update(client, attributes = {}, &block)
-        update!(client, attributes, &block)
+      def update(client, attributes = {}, &)
+        update!(client, attributes, &)
       rescue ZendeskAPI::Error::ClientError
         false
       end
@@ -298,11 +298,11 @@ module ZendeskAPI
       # Updates a resource given the id passed in.
       # @param [Client] client The {Client} object to be used
       # @param [Hash] attributes The attributes to update. Default to {
-      def update!(client, attributes = {}, &block)
+      def update!(client, attributes = {}, &)
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
         resource = new(client, :id => attributes.delete(:id), :global => attributes.delete(:global), :association => attributes.delete(:association))
         resource.attributes.merge!(attributes)
-        resource.save!(:force_update => resource.is_a?(SingularResource), &block)
+        resource.save!(:force_update => resource.is_a?(SingularResource), &)
         resource
       end
     end

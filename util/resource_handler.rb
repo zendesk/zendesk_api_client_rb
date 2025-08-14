@@ -62,7 +62,7 @@ class ResourceHandler < YARD::Handlers::Ruby::Base
     statement.traverse do |node|
       if node.type == :assoc && node.jump(:kw).source == "class"
         node.traverse do |value|
-          if value.type == :const_path_ref || value.type == :var_ref
+          if [:const_path_ref, :var_ref].include?(value.type)
             return value.source
           end
         end

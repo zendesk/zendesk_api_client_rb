@@ -128,7 +128,7 @@ describe ZendeskAPI::Collection do
     context "with a class with a parent" do
       let(:association) do
         ZendeskAPI::Association.new(:class => ZendeskAPI::TestResource::TestChild,
-          :parent => ZendeskAPI::TestResource.new(client, :id => 1), :name => :children)
+                                    :parent => ZendeskAPI::TestResource.new(client, :id => 1), :name => :children)
       end
 
       subject do
@@ -1034,7 +1034,7 @@ describe ZendeskAPI::Collection do
 
     context "when we know for sure that the endpoint does not support CBP" do
       before do
-        stub_json_request(:get, %r{test_resources\/show_many}, json(:test_resources => [{ :id => 1 }]))
+        stub_json_request(:get, %r{test_resources/show_many}, json(:test_resources => [{ :id => 1 }]))
       end
 
       it "does not try to default to CBP" do
@@ -1080,19 +1080,19 @@ describe ZendeskAPI::Collection do
       before do
         allow(ZendeskAPI::TestResource).to receive(:cbp_path_regexes).and_return([/test_resources/])
         stub_json_request(:get, %r{test_resources\?page%5Bsize%5D=1}, json(generate_response(1, true)))
-        stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after1&page%5Bsize%5D=1}, json(generate_response(2, true)))
-        stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after2&page%5Bsize%5D=1}, json(generate_response(3, true)))
-        stub_json_request(:get, %r{test_resources.json\/\?page%5Bafter%5D=after3&page%5Bsize%5D=1}, json(generate_response(4, false)))
+        stub_json_request(:get, %r{test_resources.json/\?page%5Bafter%5D=after1&page%5Bsize%5D=1}, json(generate_response(2, true)))
+        stub_json_request(:get, %r{test_resources.json/\?page%5Bafter%5D=after2&page%5Bsize%5D=1}, json(generate_response(3, true)))
+        stub_json_request(:get, %r{test_resources.json/\?page%5Bafter%5D=after3&page%5Bsize%5D=1}, json(generate_response(4, false)))
       end
 
       it "fetches all pages and yields the correct arguments" do
         expect do |b|
           silence_logger { subject.per_page(1).all(&b) }
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, id: 1), "after" => "after1", "before" => "before0", "size" => 1],
-          [ZendeskAPI::TestResource.new(client, id: 2), "after" => "after2", "before" => "before1", "size" => 1],
-          [ZendeskAPI::TestResource.new(client, id: 3), "after" => "after3", "before" => "before2", "size" => 1],
-          [ZendeskAPI::TestResource.new(client, id: 4), "after" => "after4", "before" => "before3", "size" => 1]
+          [ZendeskAPI::TestResource.new(client, id: 1), { "after" => "after1", "before" => "before0", "size" => 1 }],
+          [ZendeskAPI::TestResource.new(client, id: 2), { "after" => "after2", "before" => "before1", "size" => 1 }],
+          [ZendeskAPI::TestResource.new(client, id: 3), { "after" => "after3", "before" => "before2", "size" => 1 }],
+          [ZendeskAPI::TestResource.new(client, id: 4), { "after" => "after4", "before" => "before3", "size" => 1 }]
         )
       end
     end

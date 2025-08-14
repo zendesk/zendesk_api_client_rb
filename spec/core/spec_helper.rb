@@ -31,7 +31,7 @@ def client
   @client ||= begin
     client = ZendeskAPI::Client.new do |config|
       if File.exist?(credentials)
-        data = YAML.load(File.read(credentials))
+        data = YAML.load_file(credentials)
         config.username = data["username"]
 
         if data["token"]
@@ -73,7 +73,7 @@ def client
         config.url = "https://my.zendesk.com/api/v2"
       end
 
-      config.logger = Logger.new("/dev/null")
+      config.logger = Logger.new(File::NULL)
 
       config.retry = true
     end
@@ -108,7 +108,7 @@ module TestHelper
   end
 
   def silence_stderr
-    $stderr = File.new('/dev/null', 'w')
+    $stderr = File.new(File::NULL, 'w')
     yield
   ensure
     $stderr = STDERR

@@ -86,9 +86,9 @@ module ZendeskAPI
 
     # Passes the method onto the attributes hash.
     # If the attributes are nested (e.g. { :tickets => { :id => 1 } }), passes the method onto the nested hash.
-    def method_missing(*args, &block)
+    def method_missing(*args, &)
       raise NoMethodError, ":save is not defined" if args.first.to_sym == :save
-      @attributes.send(*args, &block)
+      @attributes.send(*args, &)
     end
 
     def respond_to_missing?(method, include_private = false)
@@ -167,6 +167,7 @@ module ZendeskAPI
   # Indexable resource
   class DataResource < Data
     attr_accessor :error, :error_message
+
     extend Verbs
 
     def self.cbp_path_regexes

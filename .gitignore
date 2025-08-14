@@ -4,7 +4,5 @@ spec/fixtures/cassettes
 spec/fixtures/credentials.yml
 coverage/**
 .yardoc/**
-Gemfile.lock
-.ruby-version
 vendor/bundle/**
 pkg/**

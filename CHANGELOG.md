@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+Drops support for Ruby 2.7 and 3.0.
+
 ## v3.1.1
 
 Adding CBP support to requested tickets (api/v2/users/:id/tickets/requested)

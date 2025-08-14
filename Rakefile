@@ -26,14 +26,10 @@ if defined?(RSpec)
   end
 
   task :set_ci_credentials do
-    File.open("spec/fixtures/credentials.yml", "w") do |f|
-      f.write(
-        File.read("spec/fixtures/credentials.yml.example")
+    File.write("spec/fixtures/credentials.yml", File.read("spec/fixtures/credentials.yml.example")
           .sub("your_username", ENV.fetch("SPEC_LIVE_USERNAME"))
           .sub("your_password", ENV.fetch("SPEC_LIVE_PASSWORD"))
-          .sub("your_zendesk_host", ENV.fetch("SPEC_LIVE_ZENDESK_HOST"))
-        )
-    end
+          .sub("your_zendesk_host", ENV.fetch("SPEC_LIVE_ZENDESK_HOST")))
   end
 
   desc 'Default: run specs.'
@@ -52,7 +48,7 @@ rule(/^version:bump:.*/) do |t|
   version_parts[2] = 0 if index < 2 # remove patch for minor
   version_parts[1] = 0 if index < 1 # remove minor for major
   new_version = version_parts * '.'
-  File.open(file, 'w') { |f| f.write(version_file.sub(old_version, new_version)) }
+  File.write(file, version_file.sub(old_version, new_version))
 
   sh "bundle && git add #{file} Gemfile.lock && git commit -m 'bump version to #{new_version}'"
 end
