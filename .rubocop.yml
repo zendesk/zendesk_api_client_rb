@@ -1,17 +1,14 @@
 inherit_from: .rubocop_todo.yml
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.1
   DisplayCopNames: true
+  SuggestExtensions: false
+  NewCops: enable
   Exclude:
     - .git/**/*
     - spec/core/middleware/response/sanitize_response_spec.rb
     - vendor/**/*
-
-# Prevents Ruby 3.1 incompatibility error. You can enable this cop when Ruby 2.7 support is dropped.
-# See https://github.com/rubocop/rubocop/issues/10258
-Layout/BlockAlignment:
-  Enabled: false
 
 # Align ends correctly.
 Layout/EndAlignment:
@@ -46,3 +43,16 @@ Metrics:
 
 Style/DoubleNegation:
   Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Naming/PredicateMethod:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: false
+
+Style/RedundantFetchBlock:
+  Exclude:
+    - spec/core/lru_cache_spec.rb

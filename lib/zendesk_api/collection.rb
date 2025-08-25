@@ -51,7 +51,7 @@ module ZendeskAPI
 
     # Methods that take a Hash argument
     methods = %w{create find update update_many destroy create_or_update}
-    methods += methods.map { |method| method + "!" }
+    methods += methods.map { |method| "#{method}!" }
     methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
       # @param [Hash] options Options or attributes to pass
@@ -188,24 +188,24 @@ module ZendeskAPI
 
     # Calls #each on every page with the passed in block
     # @param [Block] block Passed to #each
-    def all!(start_page = @options["page"], &block)
-      _all(start_page, :bang, &block)
+    def all!(start_page = @options["page"], &)
+      _all(start_page, :bang, &)
     end
 
     # Calls #each on every page with the passed in block
     # @param [Block] block Passed to #each
-    def all(start_page = @options["page"], &block)
-      _all(start_page, &block)
+    def all(start_page = @options["page"], &)
+      _all(start_page, &)
     end
 
-    def each_page!(*args, &block)
+    def each_page!(...)
       warn "ZendeskAPI::Collection#each_page! is deprecated, please use ZendeskAPI::Collection#all!"
-      all!(*args, &block)
+      all!(...)
     end
 
-    def each_page(*args, &block)
+    def each_page(...)
       warn "ZendeskAPI::Collection#each_page is deprecated, please use ZendeskAPI::Collection#all"
-      all(*args, &block)
+      all(...)
     end
 
     # Replaces the current (loaded or not) resources with the passed in collection
@@ -271,13 +271,13 @@ module ZendeskAPI
     end
 
     # Sends methods to underlying array of resources.
-    def method_missing(name, *args, &block)
+    def method_missing(name, ...)
       if resource_methods.include?(name)
-        collection_method(name, *args, &block)
+        collection_method(name, ...)
       elsif [].respond_to?(name, false)
-        array_method(name, *args, &block)
+        array_method(name, ...)
       else
-        next_collection(name, *args, &block)
+        next_collection(name, ...)
       end
     end
 
@@ -457,12 +457,12 @@ module ZendeskAPI
 
     ## Method missing
 
-    def array_method(name, *args, &block)
-      to_a.public_send(name, *args, &block)
+    def array_method(name, ...)
+      to_a.public_send(name, ...)
     end
 
     # If you call client.tickets.foo - and foo is not an attribute nor an association, it ends up here, as a new collection
-    def next_collection(name, *args, &block)
+    def next_collection(name, *args, &)
       opts = args.last.is_a?(Hash) ? args.last : {}
       opts.merge!(collection_path: [*@collection_path, name], page: nil)
       # Why `page: nil`?
@@ -471,8 +471,8 @@ module ZendeskAPI
       self.class.new(@client, @resource_class, @options.merge(opts))
     end
 
-    def collection_method(name, *args, &block)
-      @resource_class.send(name, @client, *args, &block)
+    def collection_method(name, ...)
+      @resource_class.send(name, @client, ...)
     end
 
     def resource_methods

@@ -17,7 +17,7 @@ RSpec.describe ZendeskAPI::Client do
         config.adapter = :test
         config.adapter_proc = proc do |stub|
           stub.get "/api/v2/tickets" do |_env|
-            [200, { "Content-Type": "application/json" }, "null"]
+            [200, { 'Content-Type': "application/json" }, "null"]
           end
         end
       end

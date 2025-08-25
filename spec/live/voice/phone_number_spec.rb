@@ -3,12 +3,10 @@ require 'core/spec_helper'
 describe ZendeskAPI::Voice::PhoneNumber, :delete_after do
   # We have to find a valid token before we create a phone number
   def available_phone_token
-    @available_phone_token ||= begin
-      VCR.use_cassette("find_valid_phone_number_token_for_creation") do
-        client.voice.phone_numbers(
-          path: "channels/voice/phone_numbers/search.json", country: "US"
-        ).first.token
-      end
+    @available_phone_token ||= VCR.use_cassette("find_valid_phone_number_token_for_creation") do
+      client.voice.phone_numbers(
+        path: "channels/voice/phone_numbers/search.json", country: "US"
+      ).first.token
     end
   end
 

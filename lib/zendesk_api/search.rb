@@ -17,10 +17,10 @@ module ZendeskAPI
       present_result_type = (attributes[:result_type] || attributes["result_type"]).to_s
       result_type = ZendeskAPI::Helpers.modulize_string(present_result_type)
       klass = begin
-                ZendeskAPI.const_get(result_type)
-              rescue NameError
-                Result
-              end
+        ZendeskAPI.const_get(result_type)
+      rescue NameError
+        Result
+      end
 
       (klass || Result).new(client, attributes)
     end

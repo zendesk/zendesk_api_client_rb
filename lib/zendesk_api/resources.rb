@@ -263,6 +263,7 @@ module ZendeskAPI
 
     class Section < Resource
     end
+
     class Translation < Resource; end
 
     has_many Section
@@ -280,6 +281,7 @@ module ZendeskAPI
 
     class Vote < Resource; end
     class Translation < Resource; end
+
     class Article < Resource
       has_many Vote
       has_many Translation
@@ -521,11 +523,11 @@ module ZendeskAPI
     has :submitter, :class => User
     has :assignee, :class => User
 
-    has_many :collaborators, class: User, inline: true, extend: (Module.new do
+    has_many :collaborators, class: User, inline: true, extend: Module.new do
       def to_param
         map(&:id)
       end
-    end)
+    end
 
     has_many Audit
     has :metrics, class: TicketMetric
@@ -858,7 +860,7 @@ module ZendeskAPI
     delete :logout
 
     def clear_sessions!
-      @client.connection.delete(path + '/sessions')
+      @client.connection.delete("#{path}/sessions")
     end
 
     def clear_sessions
@@ -929,6 +931,7 @@ module ZendeskAPI
 
   class OauthToken < ReadResource
     include Destroy
+
     namespace "oauth"
 
     def self.singular_resource_name
@@ -939,6 +942,7 @@ module ZendeskAPI
   class Target < Resource; end
 
   class Invocation < Resource; end
+
   class Webhook < Resource
     has_many Invocation
   end
@@ -976,7 +980,7 @@ module ZendeskAPI
 
         def self.display!(client, options)
           new(client, options).tap do |resource|
-            resource.save!(path: resource.path + '/display')
+            resource.save!(path: "#{resource.path}/display")
           end
         end
       end
@@ -1031,7 +1035,7 @@ module ZendeskAPI
       super
     end
 
-    def self.create!(client, attributes = {}, &block)
+    def self.create!(client, attributes = {}, &)
       if file_path = attributes.delete(:upload)
         attributes[:upload_id] = client.apps.uploads.create!(:file => file_path).id
       end
@@ -1075,12 +1079,12 @@ module ZendeskAPI
       end
     end
 
-    def self.uploads(client, *args, &block)
-      ZendeskAPI::Collection.new(client, Upload, *args, &block)
+    def self.uploads(client, ...)
+      ZendeskAPI::Collection.new(client, Upload, ...)
     end
 
-    def self.installations(client, *args, &block)
-      ZendeskAPI::Collection.new(client, AppInstallation, *args, &block)
+    def self.installations(client, ...)
+      ZendeskAPI::Collection.new(client, AppInstallation, ...)
     end
 
     has Upload, :path => "uploads"
