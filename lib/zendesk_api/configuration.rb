@@ -36,6 +36,11 @@ module ZendeskAPI
 
     # @return [String] OAuth2 access_token
     attr_accessor :access_token
+    # @return [String] OAuth2 access_token
+    attr_accessor :refresh_token
+
+    attr_accessor :client_id
+    attr_accessor :client_secret
 
     attr_accessor :url_based_access_token
 

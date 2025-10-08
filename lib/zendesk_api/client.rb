@@ -17,6 +17,7 @@ require 'zendesk_api/middleware/response/sanitize_response'
 require 'zendesk_api/middleware/response/parse_iso_dates'
 require 'zendesk_api/middleware/response/parse_json'
 require 'zendesk_api/middleware/response/raise_error'
+require 'zendesk_api/middleware/response/refresh_access_token'
 require 'zendesk_api/middleware/response/logger'
 require 'zendesk_api/delegator'
 
@@ -146,6 +147,7 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
+        builder.use ZendeskAPI::Middleware::Response::RefreshAccessToken, self
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
@@ -236,7 +238,7 @@ module ZendeskAPI
     # See https://lostisland.github.io/faraday/middleware/authentication
     def set_authentication(builder, config)
       if config.access_token && !config.url_based_access_token
-        builder.request :authorization, "Bearer", config.access_token
+        builder.request :authorization, "Bearer", -> { config.access_token }
       elsif config.access_token
         builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
       else
