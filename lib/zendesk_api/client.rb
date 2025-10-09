@@ -17,7 +17,7 @@ require 'zendesk_api/middleware/response/sanitize_response'
 require 'zendesk_api/middleware/response/parse_iso_dates'
 require 'zendesk_api/middleware/response/parse_json'
 require 'zendesk_api/middleware/response/raise_error'
-require 'zendesk_api/middleware/response/refresh_access_token'
+require 'zendesk_api/middleware/response/token_refresher'
 require 'zendesk_api/middleware/response/logger'
 require 'zendesk_api/delegator'
 
@@ -147,7 +147,6 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
-        builder.use ZendeskAPI::Middleware::Response::RefreshAccessToken, self
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
@@ -241,6 +240,7 @@ module ZendeskAPI
         # Upon refreshing the access token, the configuration is updated accordingly.
         # Utilizing the proc here ensures that the token used is always valid.
         builder.request :authorization, "Bearer", -> { config.access_token }
+        builder.use ZendeskAPI::Middleware::Response::TokenRefresher, config
       elsif config.access_token
         builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
       else
