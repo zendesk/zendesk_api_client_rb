@@ -38,6 +38,9 @@ module ZendeskAPI
     end
 
     class NetworkError < ClientError; end
+    # It inherits from NetworkError for backward compatibility.
+    # In earlier version NetworkError included 401 HTTP response code.
+    class Unauthorized < NetworkError; end
     class RecordNotFound < ClientError; end
     class RateLimited < ClientError; end
   end
