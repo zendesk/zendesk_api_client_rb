@@ -240,7 +240,8 @@ module ZendeskAPI
         # Upon refreshing the access token, the configuration is updated accordingly.
         # Utilizing the proc here ensures that the token used is always valid.
         builder.request :authorization, "Bearer", -> { config.access_token }
-        builder.use ZendeskAPI::Middleware::Response::TokenRefresher, config
+        # TODO: If you decide to use TokenRefresher as a middleware, uncomment the below line.
+        # builder.use ZendeskAPI::Middleware::Response::TokenRefresher, config
       elsif config.access_token
         builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
       else

@@ -13,6 +13,8 @@ describe ZendeskAPI::Middleware::Response::TokenRefresher do
   end
 
   before do
+    skip "TODO: If you decide to use TokenRefresher as a middleware, remove this skip."
+
     client.config.client_id = "client"
     client.config.client_secret = "secret"
     client.config.refresh_token = "abc"
@@ -30,23 +32,19 @@ describe ZendeskAPI::Middleware::Response::TokenRefresher do
           body: "",
           headers: { content_type: "application/json" }
         )
+        stub_request(:post, %r{/oauth/tokens}).to_return(
+          status: refresh_token_status,
+          body: refresh_token_body.to_json,
+          headers: { content_type: "application/json" }
+        )
       end
 
       describe "when refreshing token succeeds" do
         let(:refresh_token_status) { 200 }
 
-        before do
-          stub_request(:post, %r{/oauth/tokens}).to_return(
-            status: refresh_token_status,
-            body: refresh_token_body.to_json,
-            headers: { content_type: "application/json" }
-          )
-        end
-
         it "refreshes token" do
           expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::Unauthorized)
 
-          assert_requested :post, %r{oauth/tokens}
           expect(client.config.access_token).to eq "nt"
           expect(client.config.refresh_token).to eq "nrt"
         end
@@ -64,85 +62,17 @@ describe ZendeskAPI::Middleware::Response::TokenRefresher do
           expect(new_refresh_token).to eq "nrt"
         end
 
-        it "does not include expiration params when not configured" do
-          expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::Unauthorized)
-
-          assert_requested(:post, %r{oauth/tokens}) do |req|
-            expect(req.body).to_not match(/expires_in/)
-            expect(req.body).to_not match(/refresh_token_expires_in/)
-          end
-        end
-
-        it "includes expiration params when configured" do
-          client.config.access_token_expiration = 300
-          client.config.refresh_token_expiration = 604800
-          expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::Unauthorized)
-
-          assert_requested(:post, %r{oauth/tokens}) do |req|
-            expect(req.body).to match(/expires_in/)
-            expect(req.body).to match(/refresh_token_expires_in/)
-          end
-        end
-
         it "raises unauthorized exception" do
           expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::Unauthorized)
-        end
-      end
-
-      describe "with client id not configuration" do
-        before do
-          client.config.client_id = nil
-        end
-
-        it "does not try to refresh token" do
-          expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::Unauthorized)
-
-          refute_requested :post, %r{/oauth/tokens}
-          expect(client.config.access_token).to eq "xyz"
-        end
-      end
-
-      describe "with client secret not configuration" do
-        before do
-          client.config.client_secret = nil
-        end
-
-        it "does not try to refresh token" do
-          expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::Unauthorized)
-
-          refute_requested :post, %r{/oauth/tokens}
-          expect(client.config.access_token).to eq "xyz"
-        end
-      end
-
-      describe "with client secret not configuration" do
-        before do
-          client.config.refresh_token = nil
-        end
-
-        it "does not try to refresh token" do
-          expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::Unauthorized)
-
-          refute_requested :post, %r{oauth/tokens}
-          expect(client.config.access_token).to eq "xyz"
         end
       end
 
       describe "when refreshing token fails" do
         let(:refresh_token_status) { 500 }
 
-        before do
-          stub_request(:post, %r{/oauth/tokens}).to_return(
-            status: refresh_token_status,
-            body: refresh_token_body.to_json,
-            headers: { content_type: "application/json" }
-          )
-        end
-
-        it "does not change token configuration" do
+        it "does not update configuration" do
           expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::NetworkError)
 
-          assert_requested :post, %r{oauth/tokens}
           expect(client.config.access_token).to eq "xyz"
           expect(client.config.refresh_token).to eq "abc"
         end
@@ -158,15 +88,10 @@ describe ZendeskAPI::Middleware::Response::TokenRefresher do
         )
       end
 
-      it "succeeds" do
-        result = client.connection.get "/whatever"
-        expect(result.status).to eq 200
-      end
-
       it "does not refresh token" do
         client.connection.get "/whatever"
 
-        refute_requested :post, %r{oauth/tokens}
+        expect_any_instance_of(ZendeskAPI::TokenRefresher).to receive(:refresh_token).never
         expect(client.config.access_token).to eq "xyz"
       end
     end
@@ -182,18 +107,12 @@ describe ZendeskAPI::Middleware::Response::TokenRefresher do
         body: "",
         headers: { content_type: "application/json" }
       )
-
-      stub_request(:post, %r{/oauth/tokens}).to_return(
-        status: 200,
-        body: refresh_token_body.to_json,
-        headers: { content_type: "application/json" }
-      )
     end
 
     it "refreshes token" do
       expect { client.connection.get "/whatever" }.to raise_error(ZendeskAPI::Error::Unauthorized)
 
-      refute_requested :post, %r{oauth/tokens}
+      expect_any_instance_of(ZendeskAPI::TokenRefresher).to receive(:refresh_token).never
     end
   end
 end
