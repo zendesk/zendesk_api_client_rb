@@ -1,4 +1,5 @@
 require "faraday/middleware"
+require 'active_support/notifications'
 
 module ZendeskAPI
   module Middleware
@@ -9,6 +10,7 @@ module ZendeskAPI
       class EtagCache < Faraday::Middleware
         def initialize(app, options = {})
           @app = app
+          @instrumentation = options[:instrumentation] if options[:instrumentation].respond_to?(:instrument)
           @cache = options[:cache] ||
             raise("need :cache option e.g. ActiveSupport::Cache::MemoryStore.new")
           @cache_key_prefix = options.fetch(:cache_key_prefix, :faraday_etags)
@@ -41,8 +43,18 @@ module ZendeskAPI
                 :content_length => cached[:response_headers][:content_length],
                 :content_encoding => cached[:response_headers][:content_encoding]
               )
+              @instrumentation&.instrument("zendesk.cache_hit",
+                                           {
+                                             endpoint: env[:url].path,
+                                             status: env[:status]
+                                           })
             elsif env[:status] == 200 && env[:response_headers]["Etag"] # modified and cacheable
               @cache.write(cache_key(env), env.to_hash)
+              @instrumentation&.instrument("zendesk.cache_miss",
+                                           {
+                                             endpoint: env[:url].path,
+                                             status: env[:status]
+                                           })
             end
           end
         end

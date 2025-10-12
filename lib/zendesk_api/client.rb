@@ -11,6 +11,7 @@ require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/request/encode_json'
 require 'zendesk_api/middleware/request/url_based_access_token'
 require 'zendesk_api/middleware/response/callback'
+require 'zendesk_api/middleware/response/zendesk_request_event'
 require 'zendesk_api/middleware/response/deflate'
 require 'zendesk_api/middleware/response/gzip'
 require 'zendesk_api/middleware/response/sanitize_response'
@@ -161,6 +162,7 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
+        builder.use ZendeskAPI::Middleware::Response::ZendeskRequestEvent, self if config.instrumentation.respond_to?(:instrument)
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
@@ -176,7 +178,7 @@ module ZendeskAPI
         set_authentication(builder, config)
 
         if config.cache
-          builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+          builder.use ZendeskAPI::Middleware::Request::EtagCache, { :cache => config.cache, :instrumentation => config.instrumentation }
         end
 
         builder.use ZendeskAPI::Middleware::Request::Upload
@@ -188,7 +190,8 @@ module ZendeskAPI
           builder.use ZendeskAPI::Middleware::Request::Retry,
                       :logger => config.logger,
                       :retry_codes => config.retry_codes,
-                      :retry_on_exception => config.retry_on_exception
+                      :retry_on_exception => config.retry_on_exception,
+                      :instrumentation => config.instrumentation
         end
         if config.raise_error_when_rate_limited
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger

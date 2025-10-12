@@ -58,6 +58,9 @@ module ZendeskAPI
     # specify if you want a (network layer) exception to elicit a retry
     attr_accessor :retry_on_exception
 
+    # specify if you wnat instrumentation to be used
+    attr_accessor :instrumentation
+
     def initialize
       @client_options = {}
       @use_resource_cache = true
