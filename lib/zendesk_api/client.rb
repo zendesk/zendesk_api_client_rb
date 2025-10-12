@@ -19,6 +19,7 @@ require_relative "middleware/response/parse_iso_dates"
 require_relative "middleware/response/parse_json"
 require_relative "middleware/response/raise_error"
 require_relative "middleware/response/logger"
+require_relative "middleware/response/zendesk_request_event"
 require_relative "delegator"
 
 module ZendeskAPI
@@ -96,6 +97,7 @@ module ZendeskAPI
       @resource_cache = {}
 
       check_url
+      check_instrumentation
 
       config.retry = !!config.retry # nil -> false
 
@@ -166,6 +168,7 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
+        builder.use ZendeskAPI::Middleware::Response::ZendeskRequestEvent, instrumentation: config.instrumentation, logger: config.logger if config.instrumentation
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
@@ -181,7 +184,7 @@ module ZendeskAPI
         set_authentication(builder, config)
 
         if config.cache
-          builder.use ZendeskAPI::Middleware::Request::EtagCache, cache: config.cache
+          builder.use ZendeskAPI::Middleware::Request::EtagCache, cache: config.cache, instrumentation: config.instrumentation
         end
 
         builder.use ZendeskAPI::Middleware::Request::Upload
@@ -193,7 +196,8 @@ module ZendeskAPI
           builder.use ZendeskAPI::Middleware::Request::Retry,
             logger: config.logger,
             retry_codes: config.retry_codes,
-            retry_on_exception: config.retry_on_exception
+            retry_on_exception: config.retry_on_exception,
+            instrumentation: config.instrumentation
         end
         if config.raise_error_when_rate_limited
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, logger: config.logger
@@ -214,6 +218,14 @@ module ZendeskAPI
     def check_url
       if !config.allow_http && !config.url.start_with?("https://")
         raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
+      end
+    end
+
+    def check_instrumentation
+      return unless config.instrumentation
+
+      unless config.instrumentation.respond_to?(:instrument)
+        raise ArgumentError, "instrumentation must respond to #instrument"
       end
     end
 
