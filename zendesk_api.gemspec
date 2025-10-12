@@ -34,4 +34,5 @@ Gem::Specification.new do |s|
   s.add_dependency "multipart-post", "~> 2.0"
   s.add_dependency "mini_mime"
   s.add_dependency "activesupport"
+  s.add_dependency "base64"
 end

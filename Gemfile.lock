@@ -3,6 +3,7 @@ PATH
   specs:
     zendesk_api (3.1.1)
       activesupport
+      base64
       faraday (> 2.0.0)
       faraday-multipart
       hashie (>= 3.5.2)

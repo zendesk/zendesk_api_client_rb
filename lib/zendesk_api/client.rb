@@ -9,6 +9,7 @@ require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/raise_rate_limited'
 require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/request/encode_json'
+require 'zendesk_api/middleware/request/api_token_impersonate'
 require 'zendesk_api/middleware/request/url_based_access_token'
 require 'zendesk_api/middleware/response/callback'
 require 'zendesk_api/middleware/response/zendesk_request_event'
@@ -120,6 +121,25 @@ module ZendeskAPI
       @ticket_fields_metadata
     end
 
+    # token impersonation for the scope of the block
+    # @param [String] username The username (email) of the user to impersonate
+    # @yield The block to run while impersonating the user
+    # @example
+    #   client.api_token_impersonate("otheruser@yourcompany.com") do
+    #    client.tickets.create(:subject => "Help!")
+    #   end
+    #
+    #   # creates a ticket on behalf of otheruser
+    # @return
+    # yielded value
+    def api_token_impersonate(username)
+      avant = Thread.current[:zendesk_thread_local_username]
+      Thread.current[:zendesk_thread_local_username] = username
+      yield
+    ensure
+      Thread.current[:zendesk_thread_local_username] = avant
+    end
+
     # Creates a connection if there is none, otherwise returns the existing connection.
     #
     # @return [Faraday::Connection] Faraday connection for the client
@@ -198,6 +218,7 @@ module ZendeskAPI
         end
 
         builder.adapter(*adapter, &config.adapter_proc)
+        builder.use ZendeskAPI::Middleware::Request::ApiTokenImpersonate
       end
     end
 
