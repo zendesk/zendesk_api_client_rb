@@ -211,4 +211,61 @@ RSpec.describe ZendeskAPI::Ticket do
       end
     end
   end
+
+  describe "CustomFieldSymbolProxy" do
+    let(:field_metadata) do
+      [
+        { id: 1, title: "foo" },
+        { id: 2, title: "bar" }
+      ]
+    end
+    let(:client) do
+      double("Client", :instance_variable_get => field_metadata)
+    end
+    let(:ticket) do
+      t = ZendeskAPI::Ticket.allocate
+      t.instance_variable_set(:@client, client)
+      t.instance_variable_set(:@custom_fields, [{ id: 1, value: "abc" }])
+      t
+    end
+    let(:proxy) { ZendeskAPI::Ticket::CustomFieldSymbolProxy.new(ticket, nil) }
+
+    it "reads a custom field by symbol" do
+      expect(proxy["foo"]).to eq("abc")
+    end
+
+    it "raises error for missing field" do
+      expect { proxy["baz"] }.to raise_error(/Cannot find custom field/)
+    end
+
+    it "writes a custom field by symbol" do
+      proxy["bar"] = "def"
+      expect(ticket.custom_fields.find { |h| h[:id] == 2 }[:value]).to eq("def")
+    end
+
+    it "delegates to_a" do
+      expect(proxy.to_a).to eq(ticket.custom_fields)
+    end
+
+    it "delegates method_missing and respond_to_missing?" do
+      expect(proxy.respond_to?(:each)).to be true
+      expect(proxy.map { |h| h[:id] }).to eq([1])
+    end
+
+    describe "integration with Ticket methods" do
+      it "returns proxy from custom_field_symbol accessor" do
+        t = ZendeskAPI::Ticket.allocate
+        t.instance_variable_set(:@client, client)
+        t.instance_variable_set(:@custom_fields, [{ id: 1, value: "abc" }])
+        expect(t.custom_field_symbol["foo"]).to eq("abc")
+      end
+
+      it "updates proxy on custom_field_symbol= assignment" do
+        t = ZendeskAPI::Ticket.allocate
+        t.instance_variable_set(:@client, client)
+        t.custom_field_symbol = [{ id: 1, value: "xyz" }]
+        expect(t.custom_field_symbol.to_a).to eq([{ id: 1, value: "xyz" }])
+      end
+    end
+  end
 end
