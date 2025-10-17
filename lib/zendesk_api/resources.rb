@@ -464,6 +464,55 @@ module ZendeskAPI
     extend UpdateMany
     extend DestroyMany
 
+    # Proxy to trap array operator usage on custom_field_symbol
+    class CustomFieldSymbolProxy
+      def initialize(ticket)
+        @ticket = ticket
+        @field_array = @ticket.custom_fields || []
+      end
+
+      def [](key)
+        raise "Cannot find custom field #{key}, configuration ticket_fields_metadata is OFF" unless
+          @ticket.instance_variable_get(:@client).ticket_fields_metadata
+        # Trap read access
+        fld = @ticket.instance_variable_get(:@client).ticket_fields_metadata.find { |val| val[:title] == key }
+        raise "Cannot find custom field #{key}" unless fld
+        cf = @ticket.custom_fields.find { |h| h[:id] == fld[:id] }
+        cf ? cf[:value] : nil
+      end
+
+      def []=(key, value)
+        raise "Cannot find custom field #{key}, configuration ticket_fields_metadata is OFF" unless
+          @ticket.instance_variable_get(:@client).ticket_fields_metadata
+        # Trap write access
+        fld = @ticket.instance_variable_get(:@client).ticket_fields_metadata.find { |val| val[:title] == key }
+        raise "Cannot find custom field #{key}" unless fld
+        cf = @ticket.custom_fields.find { |h| h[:id] == fld[:id] } if @ticket.custom_fields
+        if cf
+          cf[:value] = value
+        else
+          @ticket.custom_fields << {id: fld[:id], value: value}
+        end
+      end
+
+      def to_a
+        @field_array
+      end
+
+      # Delegate other hash methods as needed
+      def method_missing(method, ...)
+        @field_array.send(method, ...)
+      end
+
+      def respond_to_missing?(method, include_private = false)
+        @field_array.respond_to?(method, include_private)
+      end
+    end
+
+    def custom_field_symbol
+      @custom_field_symbol_proxy ||= CustomFieldSymbolProxy.new(self)
+    end
+
     def self.cbp_path_regexes
       [/^tickets$/, %r{organizations/\d+/tickets}, %r{users/\d+/tickets/requested}]
     end

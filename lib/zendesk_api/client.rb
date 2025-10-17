@@ -32,6 +32,10 @@ module ZendeskAPI
     # @return [Array] Custom response callbacks
     attr_reader :callbacks
 
+    def ticket_fields_metadata
+      @ticket_fields_metadata ||= []
+    end
+
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
     # @return [Collection] Collection instance for resource
@@ -103,6 +107,17 @@ module ZendeskAPI
       set_token_auth
       set_default_logger
       add_warning_callback
+      load_ticket_fields_metadata if @config.load_ticket_fields_metadata
+    end
+
+    def load_ticket_fields_metadata
+      @ticket_fields_metadata = []
+      ticket_fields.all do |f|
+        if f
+          @ticket_fields_metadata << f
+        end
+      end
+      @ticket_fields_metadata
     end
 
     # token impersonation for the scope of the block

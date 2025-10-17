@@ -69,7 +69,13 @@ client = ZendeskAPI::Client.new do |config|
   config.access_token = "your OAuth access token"
 
   # Optional:
+  # When the library initializes, it will fetch the ticket fields metadata
+  # from the API and cache it for future requests.
+  # You then have access to ticket field definitions through ticket.custom_field_symbol["field_key"]
+  # Enabling this will add an extra API request during initialization.
+  config.load_ticket_fields_metadata = true # Default: false
 
+  
   # Retry uses middleware to notify the user
   # when hitting the rate limit, sleep automatically,
   # then retry the request.
