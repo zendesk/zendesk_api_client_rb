@@ -30,7 +30,6 @@ module ZendeskAPI
           end
 
           if exception_happened || @error_codes.include?(response.env[:status])
-
             if exception_happened
               seconds_left = DEFAULT_RETRY_AFTER.to_i
               @logger.warn "An exception happened, waiting #{seconds_left} seconds... #{e}" if @logger
