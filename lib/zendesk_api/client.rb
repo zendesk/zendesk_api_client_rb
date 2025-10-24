@@ -9,8 +9,10 @@ require 'zendesk_api/middleware/request/retry'
 require 'zendesk_api/middleware/request/raise_rate_limited'
 require 'zendesk_api/middleware/request/upload'
 require 'zendesk_api/middleware/request/encode_json'
+require 'zendesk_api/middleware/request/api_token_impersonate'
 require 'zendesk_api/middleware/request/url_based_access_token'
 require 'zendesk_api/middleware/response/callback'
+require 'zendesk_api/middleware/response/zendesk_request_event'
 require 'zendesk_api/middleware/response/deflate'
 require 'zendesk_api/middleware/response/gzip'
 require 'zendesk_api/middleware/response/sanitize_response'
@@ -30,6 +32,10 @@ module ZendeskAPI
     attr_reader :config
     # @return [Array] Custom response callbacks
     attr_reader :callbacks
+
+    def ticket_fields_metadata
+      @ticket_fields_metadata ||= []
+    end
 
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
@@ -102,6 +108,36 @@ module ZendeskAPI
       set_token_auth
       set_default_logger
       add_warning_callback
+      load_ticket_fields_metadata if @config.load_ticket_fields_metadata
+    end
+
+    def load_ticket_fields_metadata
+      @ticket_fields_metadata = []
+      ticket_fields.all do |f|
+        if f
+          @ticket_fields_metadata << f
+        end
+      end
+      @ticket_fields_metadata
+    end
+
+    # token impersonation for the scope of the block
+    # @param [String] username The username (email) of the user to impersonate
+    # @yield The block to run while impersonating the user
+    # @example
+    #   client.api_token_impersonate("otheruser@yourcompany.com") do
+    #    client.tickets.create(:subject => "Help!")
+    #   end
+    #
+    #   # creates a ticket on behalf of otheruser
+    # @return
+    # yielded value
+    def api_token_impersonate(username)
+      avant = Thread.current[:zendesk_thread_local_username]
+      Thread.current[:zendesk_thread_local_username] = username
+      yield
+    ensure
+      Thread.current[:zendesk_thread_local_username] = avant
     end
 
     # Creates a connection if there is none, otherwise returns the existing connection.
@@ -146,6 +182,7 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
+        builder.use ZendeskAPI::Middleware::Response::ZendeskRequestEvent, self if config.instrumentation.respond_to?(:instrument)
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
@@ -161,7 +198,7 @@ module ZendeskAPI
         set_authentication(builder, config)
 
         if config.cache
-          builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+          builder.use ZendeskAPI::Middleware::Request::EtagCache, { :cache => config.cache, :instrumentation => config.instrumentation }
         end
 
         builder.use ZendeskAPI::Middleware::Request::Upload
@@ -173,13 +210,15 @@ module ZendeskAPI
           builder.use ZendeskAPI::Middleware::Request::Retry,
                       :logger => config.logger,
                       :retry_codes => config.retry_codes,
-                      :retry_on_exception => config.retry_on_exception
+                      :retry_on_exception => config.retry_on_exception,
+                      :instrumentation => config.instrumentation
         end
         if config.raise_error_when_rate_limited
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger
         end
 
         builder.adapter(*adapter, &config.adapter_proc)
+        builder.use ZendeskAPI::Middleware::Request::ApiTokenImpersonate
       end
     end
 

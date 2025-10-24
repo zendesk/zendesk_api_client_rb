@@ -14,10 +14,16 @@ module ZendeskAPI
           @logger = options[:logger]
           @error_codes = options.key?(:retry_codes) && options[:retry_codes] ? options[:retry_codes] : DEFAULT_ERROR_CODES
           @retry_on_exception = options.key?(:retry_on_exception) && options[:retry_on_exception] ? options[:retry_on_exception] : false
+          @instrumentation = options[:instrumentation]
         end
 
         def call(env)
           original_env = env.dup
+          if original_env[:call_attempt]
+            original_env[:call_attempt] += 1
+          else
+            original_env[:call_attempt] = 1
+          end
           exception_happened = false
           if @retry_on_exception
             begin
@@ -40,6 +46,16 @@ module ZendeskAPI
 
             @logger.warn "You have been rate limited. Retrying in #{seconds_left} seconds..." if @logger
 
+            if @instrumentation
+              @instrumentation.instrument("zendesk.retry",
+                                          {
+                                            attempt: original_env[:call_attempt],
+                                            endpoint: original_env[:url].path,
+                                            method: original_env[:method],
+                                            reason: exception_happened ? 'exception' : 'rate_limited',
+                                            delay: seconds_left
+                                          })
+            end
             seconds_left.times do |i|
               sleep 1
               time_left = seconds_left - i

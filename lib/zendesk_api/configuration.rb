@@ -37,7 +37,11 @@ module ZendeskAPI
     # @return [String] OAuth2 access_token
     attr_accessor :access_token
 
+    # @return [String] url_based_access_token
     attr_accessor :url_based_access_token
+
+    # @return [Boolean] load_ticket_fields_metadata
+    attr_accessor :load_ticket_fields_metadata
 
     # Use this cache instead of default ZendeskAPI::LRUCache.new
     # - must respond to read/write/fetch e.g. ActiveSupport::Cache::MemoryStore.new)
@@ -53,6 +57,9 @@ module ZendeskAPI
 
     # specify if you want a (network layer) exception to elicit a retry
     attr_accessor :retry_on_exception
+
+    # specify if you wnat instrumentation to be used
+    attr_accessor :instrumentation
 
     def initialize
       @client_options = {}

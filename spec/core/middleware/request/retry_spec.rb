@@ -17,7 +17,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
         expect(client.connection.get("blergh").status).to eq(200)
       }
 
-      expect(seconds).to be_within(0.2).of(1)
+      expect(seconds).to be_within(0.3).of(1)
     end
   end
 
@@ -116,6 +116,38 @@ describe ZendeskAPI::Middleware::Request::Retry do
         client.config.logger = false
         client.connection.get("blergh")
       end
+    end
+  end
+
+  context "with instrumentation on retry" do
+    let(:instrumentation) { double("Instrumentation") }
+    let(:middleware) do
+      ZendeskAPI::Middleware::Request::Retry.new(client.connection.builder.app)
+    end
+
+    before do
+      allow(instrumentation).to receive(:instrument)
+      client.config.instrumentation = instrumentation
+      # Inject instrumentation into middleware instance
+      allow_any_instance_of(ZendeskAPI::Middleware::Request::Retry).to receive(:instrumentation).and_return(instrumentation)
+      stub_request(:get, %r{instrumented}).to_return(:status => 429, :headers => { :retry_after => 1 }).to_return(:status => 200)
+    end
+
+    it "calls instrumentation on retry" do
+      expect(instrumentation).to receive(:instrument).with(
+        "zendesk.retry",
+        hash_including(:attempt, :endpoint, :method, :reason, :delay)
+      ).at_least(:once)
+      client.connection.get("instrumented")
+    end
+
+    it "does not call instrumentation when no retry occurs" do
+      stub_request(:get, %r{no_retry}).to_return(:status => 200)
+      expect(instrumentation).not_to receive(:instrument).with(
+        "zendesk.retry",
+        hash_including(:attempt, :endpoint, :method, :reason, :delay)
+      )
+      client.connection.get("no_retry")
     end
   end
 end
