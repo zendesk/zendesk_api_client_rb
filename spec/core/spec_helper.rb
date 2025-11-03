@@ -58,6 +58,8 @@ def client
 
         config.url = data["url"]
 
+        puts "subsection: #{config.url[8..19]}"
+
         if data["url"].start_with?("http://")
           config.allow_http = true
         end
