@@ -23,8 +23,8 @@ RSpec.describe ZendeskAPI::Ticket do
   it_should_be_deletable
   it_should_be_readable :tickets
   it_should_be_readable user, :requested_tickets
-  it_should_be_readable current_user, :assigned_tickets, create: true
-  it_should_be_readable agent, :ccd_tickets, create: true
+  it_should_be_readable current_user, :assigned_tickets
+  it_should_be_readable agent, :ccd_tickets
   it_should_be_readable organization, :tickets
 
   describe "#create" do
