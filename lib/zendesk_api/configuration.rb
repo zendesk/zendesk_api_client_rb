@@ -22,6 +22,9 @@ module ZendeskAPI
     # @return [Logger] Logger to use when logging requests.
     attr_accessor :logger
 
+    # @return [Object] Instrumentation backend (must respond to #instrument)
+    attr_accessor :instrumentation
+
     # @return [Hash] Client configurations (eg ssh config) to pass to Faraday
     attr_accessor :client_options
 

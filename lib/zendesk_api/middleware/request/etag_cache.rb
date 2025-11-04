@@ -12,6 +12,7 @@ module ZendeskAPI
           @cache = options[:cache] ||
             raise("need :cache option e.g. ActiveSupport::Cache::MemoryStore.new")
           @cache_key_prefix = options.fetch(:cache_key_prefix, :faraday_etags)
+          @instrumentation = options[:instrumentation]
         end
 
         def cache_key(env)
@@ -41,10 +42,26 @@ module ZendeskAPI
                 content_length: cached[:response_headers][:content_length],
                 content_encoding: cached[:response_headers][:content_encoding]
               )
+
+              instrument_cache('zendesk.cache_hit', env)
             elsif env[:status] == 200 && env[:response_headers]["Etag"] # modified and cacheable
               @cache.write(cache_key(env), env.to_hash)
+
+              instrument_cache('zendesk.cache_miss', env)
             end
           end
+        end
+
+        private
+
+        def instrument_cache(event_name, env)
+          return unless @instrumentation
+
+          @instrumentation.instrument(event_name,
+                                      :endpoint => env[:url]&.path,
+                                      :status => env[:status])
+        rescue StandardError
+          # Swallow instrumentation errors to maintain original middleware behavior.
         end
       end
     end

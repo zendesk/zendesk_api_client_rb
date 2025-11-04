@@ -11,6 +11,7 @@ require_relative "middleware/request/upload"
 require_relative "middleware/request/encode_json"
 require_relative "middleware/request/api_token_impersonate"
 require_relative "middleware/request/url_based_access_token"
+require_relative "middleware/response/instrument_request"
 require_relative "middleware/response/callback"
 require_relative "middleware/response/deflate"
 require_relative "middleware/response/gzip"
@@ -166,6 +167,9 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
+        if config.instrumentation
+          builder.use ZendeskAPI::Middleware::Response::InstrumentRequest, self
+        end
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
@@ -181,7 +185,9 @@ module ZendeskAPI
         set_authentication(builder, config)
 
         if config.cache
-          builder.use ZendeskAPI::Middleware::Request::EtagCache, cache: config.cache
+          builder.use ZendeskAPI::Middleware::Request::EtagCache,
+                      cache: config.cache,
+                      instrumentation: config.instrumentation
         end
 
         builder.use ZendeskAPI::Middleware::Request::Upload
@@ -193,7 +199,8 @@ module ZendeskAPI
           builder.use ZendeskAPI::Middleware::Request::Retry,
             logger: config.logger,
             retry_codes: config.retry_codes,
-            retry_on_exception: config.retry_on_exception
+            retry_on_exception: config.retry_on_exception,
+            instrumentation: config.instrumentation
         end
         if config.raise_error_when_rate_limited
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, logger: config.logger
