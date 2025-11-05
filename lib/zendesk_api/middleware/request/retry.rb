@@ -1,4 +1,6 @@
-require "faraday/middleware"
+# frozen_string_literal: true
+
+require 'faraday/middleware'
 
 module ZendeskAPI
   module Middleware
@@ -8,13 +10,13 @@ module ZendeskAPI
       # @private
       class Retry < Faraday::Middleware
         DEFAULT_RETRY_AFTER = 10
-        DEFAULT_ERROR_CODES = [429, 503]
+        DEFAULT_ERROR_CODES = [429, 503].freeze
 
         def initialize(app, options = {})
           super(app)
           @logger = options[:logger]
-          @error_codes = (options.key?(:retry_codes) && options[:retry_codes]) ? options[:retry_codes] : DEFAULT_ERROR_CODES
-          @retry_on_exception = (options.key?(:retry_on_exception) && options[:retry_on_exception]) ? options[:retry_on_exception] : false
+          @error_codes = options.key?(:retry_codes) && options[:retry_codes] ? options[:retry_codes] : DEFAULT_ERROR_CODES
+          @retry_on_exception = options.key?(:retry_on_exception) && options[:retry_on_exception] ? options[:retry_on_exception] : false
           @instrumentation = options[:instrumentation]
         end
 
@@ -26,7 +28,7 @@ module ZendeskAPI
           if @retry_on_exception
             begin
               response = @app.call(env)
-            rescue => e
+            rescue StandardError => e
               exception_happened = true
               exception = e
             end
@@ -47,20 +49,20 @@ module ZendeskAPI
             if @instrumentation
               attempt = (env[:zendesk_retry_attempt] || 1) + 1
               reason = if exception_happened
-                'exception'
-              elsif response.env[:status] == 429
-                'rate_limited'
-              else
-                'service_unavailable'
-              end
+                         'exception'
+                       elsif response.env[:status] == 429
+                         'rate_limited'
+                       else
+                         'service_unavailable'
+                       end
 
               begin
                 @instrumentation.instrument('zendesk.retry',
-                                            :attempt => attempt,
-                                            :endpoint => original_env[:url]&.path,
-                                            :method => original_env[:method],
-                                            :delay => seconds_left,
-                                            :reason => reason)
+                                            attempt: attempt,
+                                            endpoint: original_env[:url]&.path,
+                                            method: original_env[:method],
+                                            delay: seconds_left,
+                                            reason: reason)
               rescue StandardError => e
                 @logger&.debug("zendesk.retry instrumentation failed: #{e.message}")
               end
@@ -69,10 +71,10 @@ module ZendeskAPI
             seconds_left.times do |i|
               sleep 1
               time_left = seconds_left - i
-              @logger&.warn "#{time_left}..." if time_left > 0 && time_left % 5 == 0
+              @logger&.warn "#{time_left}..." if time_left.positive? && (time_left % 5).zero?
             end
 
-            @logger&.warn ""
+            @logger&.warn ''
 
             original_env[:zendesk_retry_attempt] = (env[:zendesk_retry_attempt] || 1) + 1
             @app.call(original_env)

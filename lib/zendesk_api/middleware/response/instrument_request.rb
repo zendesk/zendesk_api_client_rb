@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'faraday/middleware'
 
 module ZendeskAPI
@@ -25,10 +27,10 @@ module ZendeskAPI
             if status.nil? || status.to_i < 400
               begin
                 instrumentation.instrument('zendesk.request',
-                                           :duration => duration,
-                                           :endpoint => response_env[:url]&.path,
-                                           :method => response_env[:method],
-                                           :status => status)
+                                           duration: duration,
+                                           endpoint: response_env[:url]&.path,
+                                           method: response_env[:method],
+                                           status: status)
               rescue StandardError => e
                 @client.config.logger&.debug("Instrumentation error: #{e.message}")
               end
@@ -44,10 +46,10 @@ module ZendeskAPI
                 if remaining || limit
                   begin
                     instrumentation.instrument('zendesk.rate_limit',
-                                               :endpoint => response_env[:url]&.path,
-                                               :status => status,
-                                               :remaining => remaining&.to_i,
-                                               :threshold => limit&.to_i)
+                                               endpoint: response_env[:url]&.path,
+                                               status: status,
+                                               remaining: remaining&.to_i,
+                                               threshold: limit&.to_i)
                   rescue StandardError => e
                     @client.config.logger&.debug("Instrumentation error: #{e.message}")
                   end

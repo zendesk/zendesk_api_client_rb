@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'core/spec_helper'
 
 describe ZendeskAPI::Middleware::Response::InstrumentRequest do

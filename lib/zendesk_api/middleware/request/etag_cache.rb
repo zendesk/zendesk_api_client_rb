@@ -1,4 +1,6 @@
-require "faraday/middleware"
+# frozen_string_literal: true
+
+require 'faraday/middleware'
 
 module ZendeskAPI
   module Middleware
@@ -10,7 +12,7 @@ module ZendeskAPI
         def initialize(app, options = {})
           @app = app
           @cache = options[:cache] ||
-            raise("need :cache option e.g. ActiveSupport::Cache::MemoryStore.new")
+                   raise('need :cache option e.g. ActiveSupport::Cache::MemoryStore.new')
           @cache_key_prefix = options.fetch(:cache_key_prefix, :faraday_etags)
           @instrumentation = options[:instrumentation]
         end
@@ -20,14 +22,12 @@ module ZendeskAPI
         end
 
         def call(environment)
-          return @app.call(environment) unless [:get, :head].include?(environment[:method])
+          return @app.call(environment) unless %i[get head].include?(environment[:method])
 
           # send known etag
           cached = @cache.read(cache_key(environment))
 
-          if cached
-            environment[:request_headers]["If-None-Match"] ||= cached[:response_headers]["Etag"]
-          end
+          environment[:request_headers]['If-None-Match'] ||= cached[:response_headers]['Etag'] if cached
 
           @app.call(environment).on_complete do |env|
             if cached && env[:status] == 304 # not modified
@@ -44,7 +44,7 @@ module ZendeskAPI
               )
 
               instrument_cache('zendesk.cache_hit', env)
-            elsif env[:status] == 200 && env[:response_headers]["Etag"] # modified and cacheable
+            elsif env[:status] == 200 && env[:response_headers]['Etag'] # modified and cacheable
               @cache.write(cache_key(env), env.to_hash)
 
               instrument_cache('zendesk.cache_miss', env)
@@ -58,8 +58,8 @@ module ZendeskAPI
           return unless @instrumentation
 
           @instrumentation.instrument(event_name,
-                                      :endpoint => env[:url]&.path,
-                                      :status => env[:status])
+                                      endpoint: env[:url]&.path,
+                                      status: env[:status])
         rescue StandardError
           # Swallow instrumentation errors to maintain original middleware behavior.
         end

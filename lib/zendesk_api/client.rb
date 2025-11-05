@@ -1,32 +1,34 @@
-require_relative "version"
-require_relative "sideloading"
-require_relative "configuration"
-require_relative "collection"
-require_relative "lru_cache"
-require_relative "silent_mash"
-require_relative "middleware/request/etag_cache"
-require_relative "middleware/request/retry"
-require_relative "middleware/request/raise_rate_limited"
-require_relative "middleware/request/upload"
-require_relative "middleware/request/encode_json"
-require_relative "middleware/request/api_token_impersonate"
-require_relative "middleware/request/url_based_access_token"
-require_relative "middleware/response/instrument_request"
-require_relative "middleware/response/callback"
-require_relative "middleware/response/deflate"
-require_relative "middleware/response/gzip"
-require_relative "middleware/response/sanitize_response"
-require_relative "middleware/response/parse_iso_dates"
-require_relative "middleware/response/parse_json"
-require_relative "middleware/response/raise_error"
-require_relative "middleware/response/logger"
-require_relative "delegator"
+# frozen_string_literal: true
+
+require_relative 'version'
+require_relative 'sideloading'
+require_relative 'configuration'
+require_relative 'collection'
+require_relative 'lru_cache'
+require_relative 'silent_mash'
+require_relative 'middleware/request/etag_cache'
+require_relative 'middleware/request/retry'
+require_relative 'middleware/request/raise_rate_limited'
+require_relative 'middleware/request/upload'
+require_relative 'middleware/request/encode_json'
+require_relative 'middleware/request/api_token_impersonate'
+require_relative 'middleware/request/url_based_access_token'
+require_relative 'middleware/response/instrument_request'
+require_relative 'middleware/response/callback'
+require_relative 'middleware/response/deflate'
+require_relative 'middleware/response/gzip'
+require_relative 'middleware/response/sanitize_response'
+require_relative 'middleware/response/parse_iso_dates'
+require_relative 'middleware/response/parse_json'
+require_relative 'middleware/response/raise_error'
+require_relative 'middleware/response/logger'
+require_relative 'delegator'
 
 module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
   # Can also be used as an accessor to resource collections.
   class Client
-    GZIP_EXCEPTIONS = [:em_http, :httpclient, :httpx]
+    GZIP_EXCEPTIONS = %i[em_http httpclient httpx].freeze
 
     # @return [Configuration] Config instance
     attr_reader :config
@@ -42,16 +44,20 @@ module ZendeskAPI
       unless config.use_resource_cache
         resource_class = resource_class_for(method)
         raise "Resource for #{method} does not exist" unless resource_class
+
         return ZendeskAPI::Collection.new(self, resource_class, options)
       end
 
-      @resource_cache[method] ||= {class: nil, cache: ZendeskAPI::LRUCache.new}
+      @resource_cache[method] ||= { class: nil, cache: ZendeskAPI::LRUCache.new }
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
         @resource_cache[method][:class] ||= resource_class_for(method)
         raise "Resource for #{method} does not exist" unless @resource_cache[method][:class]
-        @resource_cache[method][:cache].write(options.hash, ZendeskAPI::Collection.new(self, @resource_cache[method][:class], options))
+
+        @resource_cache[method][:cache].write(options.hash,
+                                              ZendeskAPI::Collection.new(self, @resource_cache[method][:class],
+                                                                         options))
       end
     end
 
@@ -64,21 +70,24 @@ module ZendeskAPI
     # @return [ZendeskAPI::User] Current user or nil
     def current_user(reload = false)
       return @current_user if @current_user && !reload
-      @current_user = users.find(id: "me")
+
+      @current_user = users.find(id: 'me')
     end
 
     # Returns the current account
     # @return [Hash] The attributes of the current account or nil
     def current_account(reload = false)
       return @current_account if @current_account && !reload
-      @current_account = SilentMash.new(connection.get("account/resolve").body)
+
+      @current_account = SilentMash.new(connection.get('account/resolve').body)
     end
 
     # Returns the current locale
     # @return [ZendeskAPI::Locale] Current locale or nil
     def current_locale(reload = false)
       return @locale if @locale && !reload
-      @locale = locales.find(id: "current")
+
+      @locale = locales.find(id: 'current')
     end
 
     # Creates a new {Client} instance and yields {#config}.
@@ -88,7 +97,7 @@ module ZendeskAPI
     # Does basic configuration constraints:
     # * {Configuration#url} must be https unless {Configuration#allow_http} is set.
     def initialize
-      raise ArgumentError, "block not given" unless block_given?
+      raise ArgumentError, 'block not given' unless block_given?
 
       @config = ZendeskAPI::Configuration.new
       yield config
@@ -98,7 +107,7 @@ module ZendeskAPI
 
       check_url
 
-      config.retry = !!config.retry # nil -> false
+      config.retry = !config.retry.nil? # nil -> false
 
       set_raise_error_when_rated_limited
       set_token_auth
@@ -140,13 +149,13 @@ module ZendeskAPI
 
     # show a nice warning for people using the old style api
     def self.check_deprecated_namespace_usage(attributes, name)
-      if attributes[name].is_a?(Hash)
-        raise "un-nest '#{name}' from the attributes"
-      end
+      return unless attributes[name].is_a?(Hash)
+
+      raise "un-nest '#{name}' from the attributes"
     end
 
     ZendeskAPI::DataNamespace.descendants.each do |namespace|
-      delegator = ZendeskAPI::Helpers.snakecase_string(namespace.to_s.split("::").last)
+      delegator = ZendeskAPI::Helpers.snakecase_string(namespace.to_s.split('::').last)
       define_method delegator do |*| # takes arguments, but doesn't do anything with them
         Delegator.new(self)
       end
@@ -167,9 +176,7 @@ module ZendeskAPI
       Faraday.new(config.options) do |builder|
         # response
         builder.use ZendeskAPI::Middleware::Response::RaiseError
-        if config.instrumentation
-          builder.use ZendeskAPI::Middleware::Response::InstrumentRequest, self
-        end
+        builder.use ZendeskAPI::Middleware::Response::InstrumentRequest, self if config.instrumentation
         builder.use ZendeskAPI::Middleware::Response::Callback, self
         builder.use ZendeskAPI::Middleware::Response::Logger, config.logger if config.logger
         builder.use ZendeskAPI::Middleware::Response::ParseIsoDates
@@ -197,10 +204,10 @@ module ZendeskAPI
         # Should always be first in the stack
         if config.retry
           builder.use ZendeskAPI::Middleware::Request::Retry,
-            logger: config.logger,
-            retry_codes: config.retry_codes,
-            retry_on_exception: config.retry_on_exception,
-            instrumentation: config.instrumentation
+                      logger: config.logger,
+                      retry_codes: config.retry_codes,
+                      retry_on_exception: config.retry_on_exception,
+                      instrumentation: config.instrumentation
         end
         if config.raise_error_when_rate_limited
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, logger: config.logger
@@ -214,48 +221,46 @@ module ZendeskAPI
     private
 
     def resource_class_for(method)
-      resource_name = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s.gsub(/\W/, "")))
+      resource_name = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s.gsub(/\W/, '')))
       ZendeskAPI::Association.class_from_namespace(resource_name)
     end
 
     def check_url
-      if !config.allow_http && !config.url.start_with?("https://")
-        raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
-      end
+      return unless !config.allow_http && !config.url.start_with?('https://')
+
+      raise ArgumentError, 'zendesk_api is ssl only; url must begin with https://'
     end
 
     def set_raise_error_when_rated_limited
       config.raise_error_when_rate_limited = if config.retry
-        false
-      else
-        !!config.raise_error_when_rate_limited
-      end
+                                               false
+                                             else
+                                               !!config.raise_error_when_rate_limited
+                                             end
     end
 
     def set_token_auth
       return if config.password || config.token.nil?
 
-      if config.username.nil?
-        raise ArgumentError, "you need to provide a username when using API token auth"
-      else
-        config.password = config.token
-        config.username += "/token" unless config.username.end_with?("/token")
-      end
+      raise ArgumentError, 'you need to provide a username when using API token auth' if config.username.nil?
+
+      config.password = config.token
+      config.username += '/token' unless config.username.end_with?('/token')
     end
 
     def set_default_logger
-      if config.logger.nil? || config.logger == true
-        require "logger"
-        config.logger = Logger.new($stderr)
-        config.logger.level = Logger::WARN
-      end
+      return unless config.logger.nil? || config.logger == true
+
+      require 'logger'
+      config.logger = Logger.new($stderr)
+      config.logger.level = Logger::WARN
     end
 
     def add_warning_callback
       return unless (logger = config.logger)
 
       insert_callback do |env|
-        if (warning = env[:response_headers]["X-Zendesk-API-Warn"])
+        if (warning = env[:response_headers]['X-Zendesk-API-Warn'])
           logger.warn "WARNING: #{warning}"
         end
       end
@@ -264,7 +269,7 @@ module ZendeskAPI
     # See https://lostisland.github.io/faraday/middleware/authentication
     def set_authentication(builder, config)
       if config.access_token && !config.url_based_access_token
-        builder.request :authorization, "Bearer", config.access_token
+        builder.request :authorization, 'Bearer', config.access_token
       elsif config.access_token
         builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
       else
