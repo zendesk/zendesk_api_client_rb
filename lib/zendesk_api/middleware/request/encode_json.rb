@@ -10,7 +10,6 @@ module ZendeskAPI
         def call(env)
           type = env[:request_headers][CONTENT_TYPE].to_s
           type = type.split(";", 2).first if type.index(";")
-          type
 
           if env[:body] && !(env[:body].respond_to?(:to_str) && env[:body].empty?) && (type.empty? || type == MIME_TYPE)
             env[:body] = JSON.dump(env[:body])

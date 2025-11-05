@@ -6,11 +6,11 @@ describe ZendeskAPI::Middleware::Response::Deflate do
 
     before(:each) do
       stub_request(:get, %r{blergh}).to_return(
-        :headers => {
-          :content_encoding => "deflate",
-          :content_type => "application/json"
+        headers: {
+          content_encoding: "deflate",
+          content_type: "application/json"
         },
-        :body => Zlib::Deflate.deflate(subject)
+        body: Zlib::Deflate.deflate(subject)
       )
     end
 

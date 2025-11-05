@@ -8,11 +8,11 @@ describe ZendeskAPI::GroupMembership, :delete_after do
   end
 
   def valid_attributes
-    {:group_id => group.id, :user_id => agent.id}
+    {group_id: group.id, user_id: agent.id}
   end
 
   it_should_be_creatable
   it_should_be_deletable
   it_should_be_readable :group_memberships
-  it_should_be_readable agent, :group_memberships, :create => true
+  it_should_be_readable agent, :group_memberships, create: true
 end

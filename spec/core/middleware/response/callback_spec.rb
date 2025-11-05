@@ -8,7 +8,7 @@ describe ZendeskAPI::Middleware::Response::Callback do
       env[:body] = response
     end
 
-    stub_request(:get, %r{test_endpoint}).to_return(:body => JSON.dump({"ABC" => "DEF"}))
+    stub_request(:get, %r{test_endpoint}).to_return(body: JSON.dump({"ABC" => "DEF"}))
   end
 
   it "should call callbacks " do

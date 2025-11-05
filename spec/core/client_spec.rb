@@ -124,7 +124,7 @@ RSpec.describe ZendeskAPI::Client do
           config.url = "https://example.zendesk.com/api/v2"
           config.username = username
           config.token = "token"
-          config.client_options = {:request => {:timeout => 30}}
+          config.client_options = {request: {timeout: 30}}
         end
       end
 
@@ -176,7 +176,7 @@ RSpec.describe ZendeskAPI::Client do
           config.logger = subject
         end
 
-        stub_request(:get, %r{/bs$}).to_return(:status => 200)
+        stub_request(:get, %r{/bs$}).to_return(status: 200)
       end
 
       context "with true value" do
@@ -263,20 +263,20 @@ RSpec.describe ZendeskAPI::Client do
     end
 
     it "should not cache calls with different options" do
-      expect(subject.search(:query => "abc")).to_not eq(subject.search(:query => "123"))
+      expect(subject.search(query: "abc")).to_not eq(subject.search(query: "123"))
     end
 
     it "should not cache calls with :reload => true options" do
-      expect(subject.search(:query => "abc")).to_not eq(subject.search(:query => "abc", :reload => true))
+      expect(subject.search(query: "abc")).to_not eq(subject.search(query: "abc", reload: true))
     end
 
     it "should not pass reload to the underlying collection" do
-      collection = subject.search(:query => "abc", :reload => true)
+      collection = subject.search(query: "abc", reload: true)
       expect(collection.options.key?(:reload)).to be(false)
     end
 
     it "should cache calls with the same options" do
-      expect(subject.search(:query => "abc")).to eq(subject.search(:query => "abc"))
+      expect(subject.search(query: "abc")).to eq(subject.search(query: "abc"))
     end
 
     it "should respond_to? for valid resources" do
@@ -320,7 +320,7 @@ RSpec.describe ZendeskAPI::Client do
       end
 
       before(:each) do
-        stub_request(:get, %r{/bs$}).to_return(:status => 200)
+        stub_request(:get, %r{/bs$}).to_return(status: 200)
       end
 
       it "returns an instance of ZendeskAPI::Collection" do

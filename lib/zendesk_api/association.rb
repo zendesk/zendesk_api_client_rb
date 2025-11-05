@@ -43,7 +43,7 @@ module ZendeskAPI
     # * with_parent - Include the parent path (false by default)
     # * with_id - Include the instance id, if possible (true)
     def generate_path(*args)
-      options = SilentMash.new(:with_id => true)
+      options = SilentMash.new(with_id: true)
       if args.last.is_a?(Hash)
         original_options = args.pop
         options.merge!(original_options)

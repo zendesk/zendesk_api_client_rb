@@ -13,8 +13,8 @@ module ZendeskAPI
         def initialize(app, options = {})
           super(app)
           @logger = options[:logger]
-          @error_codes = options.key?(:retry_codes) && options[:retry_codes] ? options[:retry_codes] : DEFAULT_ERROR_CODES
-          @retry_on_exception = options.key?(:retry_on_exception) && options[:retry_on_exception] ? options[:retry_on_exception] : false
+          @error_codes = (options.key?(:retry_codes) && options[:retry_codes]) ? options[:retry_codes] : DEFAULT_ERROR_CODES
+          @retry_on_exception = (options.key?(:retry_on_exception) && options[:retry_on_exception]) ? options[:retry_on_exception] : false
         end
 
         def call(env)
@@ -23,7 +23,7 @@ module ZendeskAPI
           if @retry_on_exception
             begin
               response = @app.call(env)
-            rescue StandardError => e
+            rescue => e
               exception_happened = true
             end
           else

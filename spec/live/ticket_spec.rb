@@ -3,17 +3,17 @@ require "core/spec_helper"
 RSpec.describe ZendeskAPI::Ticket do
   def valid_attributes
     {
-      :type => "question",
-      :subject => "This is a question?",
-      :comment => {:value => "Indeed it is!"},
-      :priority => "normal",
-      :requester_id => user.id,
-      :assignee_id => current_user.id,
-      :submitter_id => user.id,
-      :collaborator_ids => [agent.id],
-      :tags => %w(awesome blossom),
-      :email_ccs => [
-        {:user_id => agent.id, action: "put"}
+      type: "question",
+      subject: "This is a question?",
+      comment: {value: "Indeed it is!"},
+      priority: "normal",
+      requester_id: user.id,
+      assignee_id: current_user.id,
+      submitter_id: user.id,
+      collaborator_ids: [agent.id],
+      tags: %w[awesome blossom],
+      email_ccs: [
+        {user_id: agent.id, action: "put"}
       ]
     }
   end
@@ -132,7 +132,7 @@ RSpec.describe ZendeskAPI::Ticket do
 
     it "is able to do next" do
       first = results.to_a.first
-      stub_json_request(:get, %r{/api/v2/incremental/tickets}, json(:results => []))
+      stub_json_request(:get, %r{/api/v2/incremental/tickets}, json(results: []))
 
       results.next
       expect(results.first).to_not eq(first)
@@ -143,8 +143,8 @@ RSpec.describe ZendeskAPI::Ticket do
     it "can import" do
       VCR.use_cassette("ticket_import_can_import") do
         old = Time.now - (5 * 365 * 24 * 60 * 60)
-        ticket = ZendeskAPI::Ticket.import(client, valid_attributes.merge(:created_at => old.iso8601))
-        expect(ZendeskAPI::Ticket.find(client, :id => ticket.id).created_at.year).to eq(old.year)
+        ticket = ZendeskAPI::Ticket.import(client, valid_attributes.merge(created_at: old.iso8601))
+        expect(ZendeskAPI::Ticket.find(client, id: ticket.id).created_at.year).to eq(old.year)
       end
     end
 
@@ -170,7 +170,7 @@ RSpec.describe ZendeskAPI::Ticket do
   it "can comment while creating" do
     VCR.use_cassette("ticket_inline_comments") do
       ticket = ZendeskAPI::Ticket.new(client, valid_attributes)
-      ticket.comment = ZendeskAPI::Ticket::Comment.new(client, :value => "My comment", :public => false)
+      ticket.comment = ZendeskAPI::Ticket::Comment.new(client, value: "My comment", public: false)
       ticket.save!
 
       expect(ticket.changes).to eq({}) # comment was set before save
@@ -191,7 +191,7 @@ RSpec.describe ZendeskAPI::Ticket do
               Thread.current[:response] = response
             end
 
-            ZendeskAPI::Ticket.import(client, :requester => {:email => email, :name => "Hello"}, :subject => "Test", :description => "Test")
+            ZendeskAPI::Ticket.import(client, requester: {email: email, name: "Hello"}, subject: "Test", description: "Test")
           end
         end
 

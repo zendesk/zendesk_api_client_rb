@@ -2,12 +2,12 @@ require "core/spec_helper"
 
 describe ZendeskAPI::Group, :delete_after do
   def valid_attributes
-    {:name => "My Group"}
+    {name: "My Group"}
   end
 
   it_should_be_creatable
   it_should_be_updatable :name
-  it_should_be_deletable :find => [:deleted?, true]
+  it_should_be_deletable find: [:deleted?, true]
   it_should_be_readable :groups
   it_should_be_readable :groups, :assignable
 
@@ -17,7 +17,7 @@ describe ZendeskAPI::Group, :delete_after do
         attrs = valid_attributes
         attrs.merge!(@default_options) if @default_options
         @object = described_class.create!(client, attrs)
-        @membership = agent.group_memberships.create(:group_id => @object.id, :user_id => agent.id)
+        @membership = agent.group_memberships.create(group_id: @object.id, user_id: agent.id)
       end
     end
 

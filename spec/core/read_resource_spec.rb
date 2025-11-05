@@ -11,13 +11,13 @@ describe ZendeskAPI::ReadResource do
       end
 
       it "should return instance of resource" do
-        expect(subject.find(client, :id => id)).to be_instance_of(subject)
+        expect(subject.find(client, id: id)).to be_instance_of(subject)
       end
     end
 
     it "should blow up without an id which would build an invalid url" do
       expect {
-        ZendeskAPI::User.find(client, :foo => :bar)
+        ZendeskAPI::User.find(client, foo: :bar)
       }.to raise_error("No :id given")
     end
 
@@ -35,11 +35,11 @@ describe ZendeskAPI::ReadResource do
       end
 
       before(:each) do
-        stub_json_request(:get, %r{hellos/#{id}}, json(:testing => 1))
+        stub_json_request(:get, %r{hellos/#{id}}, json(testing: 1))
       end
 
       it "should return instance of resource" do
-        object = subject.find(client, :id => id)
+        object = subject.find(client, id: id)
         expect(object).to be_instance_of(subject)
         expect(object.testing).to eq(1)
       end
@@ -48,12 +48,12 @@ describe ZendeskAPI::ReadResource do
     context "with side loads" do
       before(:each) do
         stub_json_request(:get, %r{test_resources/#{id}\?include=nil_resource}, json(
-          "test_resource" => {:id => 1, :nil_resource_id => 2},
-          "nil_resources" => [{:id => 1, :name => :bye}, {:id => 2, :name => :hi}]
+          "test_resource" => {id: 1, nil_resource_id: 2},
+          "nil_resources" => [{id: 1, name: :bye}, {id: 2, name: :hi}]
         ))
 
         subject.has ZendeskAPI::NilResource
-        @resource = subject.find(client, :id => id, :include => :nil_resource)
+        @resource = subject.find(client, id: id, include: :nil_resource)
       end
 
       it "should side load nil resource" do
@@ -63,13 +63,13 @@ describe ZendeskAPI::ReadResource do
 
     context "with client error" do
       it "should handle 500 properly" do
-        stub_request(:get, %r{test_resources/#{id}}).to_return(:status => 500)
-        expect(subject.find(client, :id => id)).to eq(nil)
+        stub_request(:get, %r{test_resources/#{id}}).to_return(status: 500)
+        expect(subject.find(client, id: id)).to eq(nil)
       end
 
       it "should handle 404 properly" do
-        stub_request(:get, %r{test_resources/#{id}}).to_return(:status => 404)
-        expect(subject.find(client, :id => id)).to eq(nil)
+        stub_request(:get, %r{test_resources/#{id}}).to_return(status: 404)
+        expect(subject.find(client, id: id)).to eq(nil)
       end
     end
   end
@@ -77,10 +77,10 @@ describe ZendeskAPI::ReadResource do
   context "#reload!" do
     let(:id) { 2 }
 
-    subject { ZendeskAPI::TestResource.new(client, :id => id, :name => "Old Name") }
+    subject { ZendeskAPI::TestResource.new(client, id: id, name: "Old Name") }
 
     before(:each) do
-      stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => {:id => id, :name => "New Name"}))
+      stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => {id: id, name: "New Name"}))
     end
 
     it "reloads the data" do

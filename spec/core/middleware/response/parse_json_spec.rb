@@ -4,10 +4,10 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
   context "with another content-type" do
     before(:each) do
       stub_request(:get, %r{blergh}).to_return(
-        :headers => {
-          :content_type => "application/xml"
+        headers: {
+          content_type: "application/xml"
         },
-        :body => "<nope></nope>"
+        body: "<nope></nope>"
       )
     end
 
@@ -19,10 +19,10 @@ describe ZendeskAPI::Middleware::Response::ParseJson do
   context "with content-type = 'application/json'" do
     before(:each) do
       stub_request(:get, %r{blergh}).to_return(
-        :headers => {
-          :content_type => "application/json"
+        headers: {
+          content_type: "application/json"
         },
-        :body => body
+        body: body
       )
     end
 

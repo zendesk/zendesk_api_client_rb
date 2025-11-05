@@ -14,12 +14,12 @@ module ZendeskAPI
     end
 
     def wrap_resource(resource, class_level_association, options = {})
-      instance_association = Association.new(class_level_association.merge(:parent => self))
+      instance_association = Association.new(class_level_association.merge(parent: self))
       klass = class_level_association[:class]
 
       case resource
       when Hash
-        klass.new(@client, resource.merge(:association => instance_association))
+        klass.new(@client, resource.merge(association: instance_association))
       when String, Integer
         klass.new(@client, options[:include_key] || :id => resource, :association => instance_association)
       else
@@ -40,12 +40,10 @@ module ZendeskAPI
       end
 
       def associated_with(name)
-        associations.inject([]) do |associated_with, association|
+        associations.each_with_object([]) do |association, associated_with|
           if association[:include] == name.to_s
             associated_with.push(Association.new(association))
           end
-
-          associated_with
         end
       end
 
@@ -53,14 +51,14 @@ module ZendeskAPI
 
       def build_association(klass, resource_name, options)
         {
-          :class => klass,
-          :name => resource_name,
-          :inline => options.delete(:inline),
-          :path => options.delete(:path),
-          :include => (options.delete(:include) || klass.resource_name).to_s,
-          :include_key => (options.delete(:include_key) || :id).to_s,
-          :singular => options.delete(:singular),
-          :extensions => Array(options.delete(:extend))
+          class: klass,
+          name: resource_name,
+          inline: options.delete(:inline),
+          path: options.delete(:path),
+          include: (options.delete(:include) || klass.resource_name).to_s,
+          include_key: (options.delete(:include_key) || :id).to_s,
+          singular: options.delete(:singular),
+          extensions: Array(options.delete(:extend))
         }
       end
 
@@ -83,7 +81,7 @@ module ZendeskAPI
           end
 
           class_level_association = build_association(klass, resource_name, class_level_options)
-          class_level_association.merge!(:singular => true, :id_column => "#{resource_name}_id")
+          class_level_association.merge!(singular: true, id_column: "#{resource_name}_id")
 
           associations << class_level_association
 
@@ -105,14 +103,14 @@ module ZendeskAPI
             return cached if cached && !instance_options[:reload]
 
             # find and cache association
-            instance_association = Association.new(association.merge(:parent => self))
+            instance_association = Association.new(association.merge(parent: self))
             resource = if klass.respond_to?(:find) && resource_id = method_missing(association[:id_column])
-              klass.find(@client, :id => resource_id, :association => instance_association)
+              klass.find(@client, id: resource_id, association: instance_association)
             elsif found = method_missing(association[:name].to_sym)
-              wrap_resource(found, association, :include_key => association[:include_key])
+              wrap_resource(found, association, include_key: association[:include_key])
             elsif klass.superclass == DataResource && !association[:inline]
-              response = @client.connection.get(instance_association.generate_path(:with_parent => true))
-              klass.new(@client, response.body[klass.singular_resource_name].merge(:association => instance_association))
+              response = @client.connection.get(instance_association.generate_path(with_parent: true))
+              klass.new(@client, response.body[klass.singular_resource_name].merge(association: instance_association))
             end
 
             send("#{association[:id_column]}=", resource.id) if resource && has_key?(association[:id_column])
@@ -142,7 +140,7 @@ module ZendeskAPI
           end
 
           class_level_association = build_association(klass, resource_name, class_level_options)
-          class_level_association.merge!(:singular => false, :id_column => "#{resource_name}_ids")
+          class_level_association.merge!(singular: false, id_column: "#{resource_name}_ids")
 
           associations << class_level_association
 
@@ -164,12 +162,12 @@ module ZendeskAPI
             return cached if cached && !instance_opts[:reload]
 
             # find and cache association
-            instance_association = Association.new(association.merge(:parent => self))
+            instance_association = Association.new(association.merge(parent: self))
             singular_resource_name = Inflection.singular(association[:name].to_s)
 
             resources = if (ids = method_missing("#{singular_resource_name}_ids")) && ids.any?
               ids.map do |id|
-                klass.find(@client, :id => id, :association => instance_association)
+                klass.find(@client, id: id, association: instance_association)
               end.compact
             elsif (resources = method_missing(association[:name].to_sym)) && resources.any?
               resources.map { |res| wrap_resource(res, association) }
@@ -177,7 +175,7 @@ module ZendeskAPI
               []
             end
 
-            collection = ZendeskAPI::Collection.new(@client, klass, instance_opts.merge(:association => instance_association))
+            collection = ZendeskAPI::Collection.new(@client, klass, instance_opts.merge(association: instance_association))
 
             if association[:extensions].any?
               collection.extend(*association[:extensions])
@@ -198,7 +196,7 @@ module ZendeskAPI
               wrapped = resources.map { |attr| wrap_resource(attr, association) }
               send(association[:name]).replace(wrapped)
             else
-              resources.association = Association.new(association.merge(:parent => self))
+              resources.association = Association.new(association.merge(parent: self))
               instance_variable_set("@#{association[:name]}", resources)
             end
 

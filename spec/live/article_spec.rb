@@ -21,7 +21,7 @@ RSpec.describe ZendeskAPI::Article, :delete_after do
 
   describe "creating articles within a section" do
     def valid_attributes
-      {:name => "My Article", user_segment_id: nil, permission_group_id: "9903096093850", title: "My super article"}
+      {name: "My Article", user_segment_id: nil, permission_group_id: "9903096093850", title: "My super article"}
     end
 
     let(:section_article) do

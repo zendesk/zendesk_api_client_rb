@@ -5,7 +5,7 @@ describe ZendeskAPI::PushNotificationDevice do
     describe "Existing push notification devices" do
       it "destroys the given push notification devices" do
         VCR.use_cassette("push_notification_devices_destroy_many") do
-          ZendeskAPI::PushNotificationDevice.destroy_many(client, %w(foo bar))
+          ZendeskAPI::PushNotificationDevice.destroy_many(client, %w[foo bar])
         end
       end
     end

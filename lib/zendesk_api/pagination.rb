@@ -6,7 +6,7 @@ module ZendeskAPI
       def more_results?(response)
         Helpers.present?(response["meta"]) && response["meta"]["has_more"]
       end
-      alias has_more_results? more_results? # For backward compatibility with 1.33.0 and 1.34.0
+      alias_method :has_more_results?, :more_results? # For backward compatibility with 1.33.0 and 1.34.0
 
       # Changes the per_page option. Returns self, so it can be chained. No execution.
       # @return [Collection] self

@@ -2,7 +2,7 @@ require "core/spec_helper"
 
 describe ZendeskAPI::Macro, :delete_after do
   def valid_attributes
-    {:title => "my test macro", :actions => [{:field => "status", :value => "solved"}]}
+    {title: "my test macro", actions: [{field: "status", value: "solved"}]}
   end
 
   it_should_be_readable :macros
@@ -16,13 +16,13 @@ describe ZendeskAPI::Macro, :delete_after do
     subject { @object }
 
     before :all do
-      VCR.use_cassette("#{described_class.to_s}_application_create") do
+      VCR.use_cassette("#{described_class}_application_create") do
         @object = described_class.create(client, valid_attributes.merge(default_options))
       end
     end
 
     after :all do
-      VCR.use_cassette("#{described_class.to_s}_application_delete") do
+      VCR.use_cassette("#{described_class}_application_delete") do
         @object.destroy
       end
     end

@@ -3,11 +3,11 @@ require "core/spec_helper"
 describe ZendeskAPI::Automation, :delete_after do
   def valid_attributes
     {
-      :title => "my test automation_ruby_sdk_test",
-      :conditions => {
-        :all => [{:field => "status", :operator => "is", :value => "open"}]
+      title: "my test automation_ruby_sdk_test",
+      conditions: {
+        all: [{field: "status", operator: "is", value: "open"}]
       },
-      :actions => [{:field => "status", :value => "solved"}]
+      actions: [{field: "status", value: "solved"}]
     }
   end
 

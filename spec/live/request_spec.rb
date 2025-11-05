@@ -3,13 +3,13 @@ require "core/spec_helper"
 describe ZendeskAPI::Request do
   def valid_attributes
     {
-      :subject => "This is a question!",
-      :comment => {:value => "Haha, no."}
+      subject: "This is a question!",
+      comment: {value: "Haha, no."}
     }
   end
 
   it_should_be_creatable
-  it_should_be_updatable :solved, true, {:comment => {:value => "This is solved!"}}
+  it_should_be_updatable :solved, true, {comment: {value: "This is solved!"}}
   it_should_be_readable :requests
   it_should_be_readable user, :requests
 
@@ -28,7 +28,7 @@ describe ZendeskAPI::Request do
   it "can comment while creating" do
     VCR.use_cassette("request_inline_comments") do
       request = ZendeskAPI::Request.new(client, valid_attributes)
-      request.comment = ZendeskAPI::Request::Comment.new(client, :value => "My comment")
+      request.comment = ZendeskAPI::Request::Comment.new(client, value: "My comment")
       request.save!
 
       expect(request.changes).to eq({}) # comment was set before save

@@ -3,10 +3,10 @@ require "core/spec_helper"
 describe ZendeskAPI::Trigger do
   def valid_attributes
     {
-      :title => "my test trigger",
-      :conditions => {
-        :any => [{:field => "assignee_id", :operator => "is", :value => 1}],
-        :all => [{:field => "status", :operator => "is", :value => "open"}]
+      title: "my test trigger",
+      conditions: {
+        any: [{field: "assignee_id", operator: "is", value: 1}],
+        all: [{field: "status", operator: "is", value: "open"}]
       }
     }
   end
@@ -41,7 +41,7 @@ describe ZendeskAPI::Trigger do
 
   describe "#add_all_condition" do
     it "should add a condition to all condition" do
-      new_condition = {:field => "type", :operator => "is", :value => "problem"}
+      new_condition = {field: "type", operator: "is", value: "problem"}
       existing_conditions = subject.conditions[:all]
 
       expect(existing_conditions).not_to include(new_condition)
@@ -54,7 +54,7 @@ describe ZendeskAPI::Trigger do
 
   describe "#add_any_condition" do
     it "should add a condition to any condition" do
-      new_condition = {:field => "type", :operator => "is", :value => "task"}
+      new_condition = {field: "type", operator: "is", value: "task"}
       existing_conditions = subject.conditions[:any]
 
       expect(existing_conditions).not_to include(new_condition)

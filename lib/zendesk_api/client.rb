@@ -44,7 +44,7 @@ module ZendeskAPI
         return ZendeskAPI::Collection.new(self, resource_class, options)
       end
 
-      @resource_cache[method] ||= {:class => nil, :cache => ZendeskAPI::LRUCache.new}
+      @resource_cache[method] ||= {class: nil, cache: ZendeskAPI::LRUCache.new}
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
@@ -63,7 +63,7 @@ module ZendeskAPI
     # @return [ZendeskAPI::User] Current user or nil
     def current_user(reload = false)
       return @current_user if @current_user && !reload
-      @current_user = users.find(:id => "me")
+      @current_user = users.find(id: "me")
     end
 
     # Returns the current account
@@ -77,7 +77,7 @@ module ZendeskAPI
     # @return [ZendeskAPI::Locale] Current locale or nil
     def current_locale(reload = false)
       return @locale if @locale && !reload
-      @locale = locales.find(:id => "current")
+      @locale = locales.find(id: "current")
     end
 
     # Creates a new {Client} instance and yields {#config}.
@@ -181,7 +181,7 @@ module ZendeskAPI
         set_authentication(builder, config)
 
         if config.cache
-          builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+          builder.use ZendeskAPI::Middleware::Request::EtagCache, cache: config.cache
         end
 
         builder.use ZendeskAPI::Middleware::Request::Upload
@@ -191,12 +191,12 @@ module ZendeskAPI
         # Should always be first in the stack
         if config.retry
           builder.use ZendeskAPI::Middleware::Request::Retry,
-            :logger => config.logger,
-            :retry_codes => config.retry_codes,
-            :retry_on_exception => config.retry_on_exception
+            logger: config.logger,
+            retry_codes: config.retry_codes,
+            retry_on_exception: config.retry_on_exception
         end
         if config.raise_error_when_rate_limited
-          builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger
+          builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, logger: config.logger
         end
 
         builder.adapter(*adapter, &config.adapter_proc)

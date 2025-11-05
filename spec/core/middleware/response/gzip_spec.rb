@@ -10,11 +10,11 @@ describe ZendeskAPI::Middleware::Response::Gzip do
       gz.close
 
       stub_request(:get, %r{blergh}).to_return(
-        :headers => {
-          :content_encoding => "gzip",
-          :content_type => "application/json"
+        headers: {
+          content_encoding: "gzip",
+          content_type: "application/json"
         },
-        :body => encoded_data.string
+        body: encoded_data.string
       )
     end
 

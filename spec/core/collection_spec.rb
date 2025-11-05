@@ -49,7 +49,7 @@ describe ZendeskAPI::Collection do
   end
 
   context "with array option passed in" do
-    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :ids => [1, 2, 3, 4]) }
+    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, ids: [1, 2, 3, 4]) }
 
     it "should join array with commas" do
       expect(subject.instance_variable_get(:@options)[:ids]).to eq("1,2,3,4")
@@ -59,25 +59,25 @@ describe ZendeskAPI::Collection do
   context "deferral" do
     it "should defer #create_many! to the resource class" do
       collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
-      stub_json_request(:post, %r{bulk_test_resources/create_many$}, json(:job_status => {}))
-      collection.create_many!([{:name => "Mick"}, {:name => "Steven"}])
+      stub_json_request(:post, %r{bulk_test_resources/create_many$}, json(job_status: {}))
+      collection.create_many!([{name: "Mick"}, {name: "Steven"}])
       assert_requested(:post, %r{bulk_test_resources/create_many$},
-        :body => {
-          :bulk_test_resources => [{:name => "Mick"}, {:name => "Steven"}]
+        body: {
+          bulk_test_resources: [{name: "Mick"}, {name: "Steven"}]
         })
     end
 
     it "should defer #destroy_many! to the resource class" do
       collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
-      stub_json_request(:delete, %r{bulk_test_resources/destroy_many\?}, json(:job_status => {}))
+      stub_json_request(:delete, %r{bulk_test_resources/destroy_many\?}, json(job_status: {}))
       collection.destroy_many!([1, 2, 3])
       assert_requested(:delete, %r{bulk_test_resources/destroy_many\?ids=1,2,3$})
     end
 
     it "should defer #update_many! to the resource class" do
       collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
-      stub_json_request(:put, %r{bulk_test_resources/update_many\?}, json(:job_status => {}))
-      collection.update_many!([1, 2, 3], {:name => "Mick"})
+      stub_json_request(:put, %r{bulk_test_resources/update_many\?}, json(job_status: {}))
+      collection.update_many!([1, 2, 3], {name: "Mick"})
       assert_requested(:put, %r{bulk_test_resources/update_many\?ids=1,2,3$})
     end
 
@@ -91,23 +91,23 @@ describe ZendeskAPI::Collection do
     end
 
     it "should defer #create to the resource class" do
-      stub_json_request(:post, %r{test_resources$}, json(:test_resource => {}))
+      stub_json_request(:post, %r{test_resources$}, json(test_resource: {}))
       subject.create
     end
 
     it "should defer #find to the resource class" do
-      stub_json_request(:get, %r{test_resources/1$}, json(:test_resource => {}))
-      subject.find(:id => 1)
+      stub_json_request(:get, %r{test_resources/1$}, json(test_resource: {}))
+      subject.find(id: 1)
     end
 
     it "should defer #destroy to the resource class" do
-      stub_json_request(:delete, %r{test_resources/1$}, json(:test_resource => {}))
-      subject.destroy(:id => 1)
+      stub_json_request(:delete, %r{test_resources/1$}, json(test_resource: {}))
+      subject.destroy(id: 1)
     end
 
     it "should defer #update to the resource class" do
-      stub_json_request(:put, %r{test_resources/1$}, json(:test_resource => {}))
-      subject.update(:id => 1)
+      stub_json_request(:put, %r{test_resources/1$}, json(test_resource: {}))
+      subject.update(id: 1)
     end
 
     context "when class doesn't have method" do
@@ -126,13 +126,13 @@ describe ZendeskAPI::Collection do
 
     context "with a class with a parent" do
       let(:association) do
-        ZendeskAPI::Association.new(:class => ZendeskAPI::TestResource::TestChild,
-          :parent => ZendeskAPI::TestResource.new(client, :id => 1), :name => :children)
+        ZendeskAPI::Association.new(class: ZendeskAPI::TestResource::TestChild,
+          parent: ZendeskAPI::TestResource.new(client, id: 1), name: :children)
       end
 
       subject do
         ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource::TestChild,
-          :association => association)
+          association: association)
       end
 
       before(:each) do
@@ -144,21 +144,21 @@ describe ZendeskAPI::Collection do
       end
 
       it "should defer #destroy the resource class with the parent id" do
-        subject.destroy(:id => 1)
+        subject.destroy(id: 1)
       end
 
       it "should defer #find to the resource class with the parent id" do
-        subject.find(:id => 1)
+        subject.find(id: 1)
       end
 
       it "should defer #update to the resource class with the parent id" do
-        subject.update(:id => 1)
+        subject.update(id: 1)
       end
 
       context "on object push" do
         before(:each) do
-          stub_json_request(:get, %r{test_resources/\d+/children}, json(:test_children => []))
-          subject << {:id => 1}
+          stub_json_request(:get, %r{test_resources/\d+/children}, json(test_children: []))
+          subject << {id: 1}
         end
 
         it "should pass association" do
@@ -183,7 +183,7 @@ describe ZendeskAPI::Collection do
   context "pagination with data" do
     before(:each) do
       stub_json_request(:get, %r{test_resources}, json(
-                                                    :test_resources => [{:id => 1}]
+                                                    test_resources: [{id: 1}]
                                                   ))
       subject.fetch(true)
     end
@@ -261,16 +261,16 @@ describe ZendeskAPI::Collection do
     context "Faraday errors" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
-          :test_resources => [{:id => 1}], :next_page => "/test_resources?page=2"
+          test_resources: [{id: 1}], next_page: "/test_resources?page=2"
         ))
         stub_request(:get, %r{test_resources\?page%5Bsize%5D=100}).to_raise(ZendeskAPI::Error::NetworkError)
 
-        stub_request(:get, %r{test_resources\?page=2}).to_return(:status => 500).then.to_return(
-          :headers => {:content_type => "application/json"}, :status => 200,
-          :body => json(:test_resources => [{:id => 2}], :next_page => "/test_resources?page=3")
+        stub_request(:get, %r{test_resources\?page=2}).to_return(status: 500).then.to_return(
+          headers: {content_type: "application/json"}, status: 200,
+          body: json(test_resources: [{id: 2}], next_page: "/test_resources?page=3")
         )
 
-        stub_request(:get, %r{test_resources\?page=3}).to_return(:status => 404)
+        stub_request(:get, %r{test_resources\?page=3}).to_return(status: 404)
       end
 
       it "should retry from the same page" do
@@ -289,8 +289,8 @@ describe ZendeskAPI::Collection do
             retry
           end
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
-          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+          [ZendeskAPI::TestResource.new(client, id: 1), 1],
+          [ZendeskAPI::TestResource.new(client, id: 2), 2]
         )
       end
 
@@ -301,8 +301,8 @@ describe ZendeskAPI::Collection do
           retry
         rescue ZendeskAPI::Error::ClientError
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
-          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+          [ZendeskAPI::TestResource.new(client, id: 1), 1],
+          [ZendeskAPI::TestResource.new(client, id: 2), 2]
         )
       end
 
@@ -322,12 +322,12 @@ describe ZendeskAPI::Collection do
     context "requests with no next_page" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
-          :test_resources => [{:id => 1}],
-          :next_page => "/test_resources?page=2"
+          test_resources: [{id: 1}],
+          next_page: "/test_resources?page=2"
         ))
 
         stub_json_request(:get, %r{test_resources\?page=2}, json(
-                                                              :test_resources => [{:id => 2}]
+                                                              test_resources: [{id: 2}]
                                                             ))
         stub_request(:get, %r{test_resources\?page%5Bsize%5D=100}).to_raise(ZendeskAPI::Error::NetworkError)
       end
@@ -336,26 +336,26 @@ describe ZendeskAPI::Collection do
         expect do |b|
           silence_logger { subject.all(&b) }
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
-          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+          [ZendeskAPI::TestResource.new(client, id: 1), 1],
+          [ZendeskAPI::TestResource.new(client, id: 2), 2]
         )
       end
     end
 
     context "incremental requests" do
       subject do
-        ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :path => "incremental/test_resources?start_time=0")
+        ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, path: "incremental/test_resources?start_time=0")
       end
 
       before(:each) do
         stub_json_request(:get, %r{incremental/test_resources\?start_time=0$}, json(
-          :test_resources => [{:id => 1}],
-          :next_page => "/incremental/test_resources?start_time=200"
+          test_resources: [{id: 1}],
+          next_page: "/incremental/test_resources?start_time=200"
         ))
 
         stub_json_request(:get, %r{incremental/test_resources\?start_time=200$}, json(
-          :test_resources => [{:id => 2}],
-          :next_page => "/incremental/test_resources?start_time=200"
+          test_resources: [{id: 2}],
+          next_page: "/incremental/test_resources?start_time=200"
         ))
 
         stub_request(:get, %r{incremental/test_resources\?page%5Bsize%5D=100&start_time=0}).to_raise(ZendeskAPI::Error::NetworkError)
@@ -368,8 +368,8 @@ describe ZendeskAPI::Collection do
             silence_logger { subject.all(&b) }
           end
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
-          [ZendeskAPI::TestResource.new(client, :id => 2), 1] # page defaults to 1
+          [ZendeskAPI::TestResource.new(client, id: 1), 1],
+          [ZendeskAPI::TestResource.new(client, id: 2), 1] # page defaults to 1
         )
       end
     end
@@ -377,13 +377,13 @@ describe ZendeskAPI::Collection do
     context "infinite loops" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
-          :test_resources => [{:id => 1}],
-          :next_page => "/test_resources?page=2"
+          test_resources: [{id: 1}],
+          next_page: "/test_resources?page=2"
         ))
 
         stub_json_request(:get, %r{/test_resources\?page=2$}, json(
-          :test_resources => [{:id => 2}],
-          :next_page => "/test_resources?page=2"
+          test_resources: [{id: 2}],
+          next_page: "/test_resources?page=2"
         ))
       end
     end
@@ -391,21 +391,21 @@ describe ZendeskAPI::Collection do
     context "successful requests" do
       before(:each) do
         stub_json_request(:get, %r{test_resources$}, json(
-          :test_resources => [{:id => 1}],
-          :next_page => "/test_resources?page=2"
+          test_resources: [{id: 1}],
+          next_page: "/test_resources?page=2"
         ))
 
         stub_json_request(:get, %r{test_resources\?page%5Bsize%5D=100}, json(
-          :test_resources => [{:id => 1}],
-          :next_page => "/test_resources?page=2"
+          test_resources: [{id: 1}],
+          next_page: "/test_resources?page=2"
         ))
 
         stub_json_request(:get, %r{test_resources\?page=2}, json(
-          :test_resources => [{:id => 2}],
-          :next_page => "/test_resources?page=3"
+          test_resources: [{id: 2}],
+          next_page: "/test_resources?page=3"
         ))
 
-        stub_request(:get, %r{test_resources\?page=3}).to_return(:status => 404)
+        stub_request(:get, %r{test_resources\?page=3}).to_return(status: 404)
       end
 
       it "should yield resource if arity == 1" do
@@ -417,7 +417,7 @@ describe ZendeskAPI::Collection do
 
               probe = self
               callback = @callback
-              Proc.new do |arg|
+              proc do |arg|
                 probe.num_yields += 1
                 probe.yielded_args << [arg]
                 callback.call([arg])
@@ -428,8 +428,8 @@ describe ZendeskAPI::Collection do
 
           silence_logger { subject.all(&block) }
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, :id => 1)],
-          [ZendeskAPI::TestResource.new(client, :id => 2)]
+          [ZendeskAPI::TestResource.new(client, id: 1)],
+          [ZendeskAPI::TestResource.new(client, id: 2)]
         )
       end
 
@@ -437,8 +437,8 @@ describe ZendeskAPI::Collection do
         expect do |b|
           silence_logger { subject.all(&b) }
         end.to yield_successive_args(
-          [ZendeskAPI::TestResource.new(client, :id => 1), 1],
-          [ZendeskAPI::TestResource.new(client, :id => 2), 2]
+          [ZendeskAPI::TestResource.new(client, id: 1), 1],
+          [ZendeskAPI::TestResource.new(client, id: 2), 2]
         )
       end
 
@@ -449,7 +449,7 @@ describe ZendeskAPI::Collection do
 
         it "should reset the collection" do
           expect(subject.first_page?).to be(true)
-          expect(subject.fetch).to eq([ZendeskAPI::TestResource.new(client, :id => 1)])
+          expect(subject.fetch).to eq([ZendeskAPI::TestResource.new(client, id: 1)])
         end
       end
     end
@@ -460,8 +460,8 @@ describe ZendeskAPI::Collection do
       context "from next_page" do
         before(:each) do
           stub_json_request(:get, %r{test_resources}, json(
-            :test_resources => [{:id => 2}],
-            :next_page => "/test_resources?page=2"
+            test_resources: [{id: 2}],
+            next_page: "/test_resources?page=2"
           ))
 
           subject.fetch(true)
@@ -476,8 +476,8 @@ describe ZendeskAPI::Collection do
       context "from prev_page" do
         before(:each) do
           stub_json_request(:get, %r{test_resources}, json(
-            :test_resources => [{:id => 2}],
-            :previous_page => "/test_resources?page=1"
+            test_resources: [{id: 2}],
+            previous_page: "/test_resources?page=1"
           ))
 
           subject.fetch(true)
@@ -491,7 +491,7 @@ describe ZendeskAPI::Collection do
 
       context "with nothing" do
         before(:each) do
-          stub_json_request(:get, %r{test_resources}, json(:test_resources => [{:id => 2}]))
+          stub_json_request(:get, %r{test_resources}, json(test_resources: [{id: 2}]))
           subject.fetch(true)
           @next_page = subject.instance_variable_get(:@options)["next_page"]
         end
@@ -504,7 +504,7 @@ describe ZendeskAPI::Collection do
 
     context "with client error" do
       before(:each) do
-        stub_request(:get, %r{test_resources}).to_return(:status => 500)
+        stub_request(:get, %r{test_resources}).to_return(status: 500)
       end
 
       it "should properly be handled" do
@@ -515,8 +515,8 @@ describe ZendeskAPI::Collection do
     context "with an invalid model key expectation" do
       before(:each) do
         stub_json_request(:get, %r{test_resources}, json(
-          :test_resource_stuff => [{:id => 2}],
-          :next_page => "/test_resources?page=2"
+          test_resource_stuff: [{id: 2}],
+          next_page: "/test_resources?page=2"
         ))
       end
 
@@ -527,7 +527,7 @@ describe ZendeskAPI::Collection do
 
     context "with nil body" do
       before(:each) do
-        stub_request(:get, %r{test_resources}).to_return(:status => 200)
+        stub_request(:get, %r{test_resources}).to_return(status: 200)
       end
 
       it "should properly be handled" do
@@ -574,18 +574,18 @@ describe ZendeskAPI::Collection do
   end
 
   context "save" do
-    let(:options) { {:abc => 1} }
+    let(:options) { {abc: 1} }
     before(:each) do
-      stub_json_request(:get, %r{test_resources}, json(:test_resources => []))
+      stub_json_request(:get, %r{test_resources}, json(test_resources: []))
       subject.clear_cache
     end
 
     context "with a hash" do
-      let(:object) { double("ZendeskAPI::TestResource", :changes => [:xxx], :changed? => true, :destroyed? => false) }
+      let(:object) { double("ZendeskAPI::TestResource", changes: [:xxx], changed?: true, destroyed?: false) }
 
       it "should call create with those options" do
         expect(ZendeskAPI::TestResource).to receive(:new)
-          .with(client, options.merge(:association => subject.association))
+          .with(client, options.merge(association: subject.association))
           .and_return(object)
 
         subject << options
@@ -615,9 +615,9 @@ describe ZendeskAPI::Collection do
 
     context "with everything else" do
       it "should pass to new, since this is how attachment handles it" do
-        attachment = double(:changes => [:xxx], :changed? => true, :destroyed? => false)
+        attachment = double(changes: [:xxx], changed?: true, destroyed?: false)
         expect(ZendeskAPI::TestResource).to receive(:new)
-          .with(client, :id => "img.jpg", :association => instance_of(ZendeskAPI::Association))
+          .with(client, id: "img.jpg", association: instance_of(ZendeskAPI::Association))
           .and_return attachment
 
         subject << "img.jpg"
@@ -654,9 +654,9 @@ describe ZendeskAPI::Collection do
 
     before(:each) do
       stub_json_request(:get, %r{users\?page=2}, json(
-        :users => [{:id => 2}],
-        :next_page => "/users?page=3&per_page=1",
-        :previous_page => "/users?page=1&per_page=1"
+        users: [{id: 2}],
+        next_page: "/users?page=3&per_page=1",
+        previous_page: "/users?page=1&per_page=1"
       ))
 
       subject.per_page(1).page(2)
@@ -665,7 +665,7 @@ describe ZendeskAPI::Collection do
 
     context "pagination with no options" do
       before(:each) do
-        stub_json_request(:get, %r{users\?page=(1|3)}, json(:users => [{:id => 3}]))
+        stub_json_request(:get, %r{users\?page=(1|3)}, json(users: [{id: 3}]))
         subject.per_page(nil).page(nil)
       end
 
@@ -721,8 +721,8 @@ describe ZendeskAPI::Collection do
         ZendeskAPI::TestResource.has ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{:id => 1, :nil_resource_id => 4}],
-          :nil_resources => [{:id => 1, :name => :bye}, {:id => 4, :name => :hi}]
+          test_resources: [{id: 1, nil_resource_id: 4}],
+          nil_resources: [{id: 1, name: :bye}, {id: 4, name: :hi}]
         ))
 
         subject.fetch(true)
@@ -747,8 +747,8 @@ describe ZendeskAPI::Collection do
           :get,
           %r{test_resources\?include=nil_resources},
           json(
-            :test_resources => [{:id => 1, :nil_resource_id => 4}, {:id => 2, :nil_resource_id => 1}],
-            :nil_resources => [{:id => 1, :name => :bye}, {:id => 4, :name => :hi}]
+            test_resources: [{id: 1, nil_resource_id: 4}, {id: 2, nil_resource_id: 1}],
+            nil_resources: [{id: 1, name: :bye}, {id: 4, name: :hi}]
           )
         )
 
@@ -787,11 +787,11 @@ describe ZendeskAPI::Collection do
         stub_json_request(
           :get,
           %r{test_resources\?include=nil_resources},
-          json(:test_resources => [{:id => 1, :nil_resource_ids => [1, 4]}],
-            :nil_resources => [
-              {:id => 1, :name => :hi},
-              {:id => 4, :name => :hello},
-              {:id => 5, :name => :goodbye}
+          json(test_resources: [{id: 1, nil_resource_ids: [1, 4]}],
+            nil_resources: [
+              {id: 1, name: :hi},
+              {id: 4, name: :hello},
+              {id: 5, name: :goodbye}
             ])
         )
 
@@ -805,7 +805,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should side load the correct nil_resources" do
-        expect(@resource.nil_resources.map(&:name)).to eq(%w{hi hello})
+        expect(@resource.nil_resources.map(&:name)).to eq(%w[hi hello])
       end
     end
 
@@ -816,11 +816,11 @@ describe ZendeskAPI::Collection do
         stub_json_request(
           :get,
           %r{test_resources\?include=nil_resources},
-          json(:test_resources => [{:id => 1}],
-            :nil_resources => [
-              {:id => 1, :test_resource_id => 2},
-              {:id => 2, :test_resource_id => 1},
-              {:id => 4, :test_resource_id => 1}
+          json(test_resources: [{id: 1}],
+            nil_resources: [
+              {id: 1, test_resource_id: 2},
+              {id: 2, test_resource_id: 1},
+              {id: 4, test_resource_id: 1}
             ])
         )
 
@@ -843,8 +843,8 @@ describe ZendeskAPI::Collection do
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources},
           json(
-            :test_resources => [{:id => 1}],
-            :nil_resources => [{:id => 1, :test_resource_id => 2}, {:id => 2, :test_resource_id => 1}]
+            test_resources: [{id: 1}],
+            nil_resources: [{id: 1, test_resource_id: 2}, {id: 2, test_resource_id: 1}]
           ))
 
         subject.fetch(true)
@@ -862,11 +862,11 @@ describe ZendeskAPI::Collection do
 
     context "with name as key" do
       before(:each) do
-        ZendeskAPI::TestResource.has ZendeskAPI::NilResource, :include_key => :name
+        ZendeskAPI::TestResource.has ZendeskAPI::NilResource, include_key: :name
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{:id => 1, :nil_resource_id => 4}],
-          :nil_resources => [{:name => 1}, {:name => 4}]
+          test_resources: [{id: 1, nil_resource_id: 4}],
+          nil_resources: [{name: 1}, {name: 4}]
         ))
 
         subject.fetch(true)
@@ -889,8 +889,8 @@ describe ZendeskAPI::Collection do
         ZendeskAPI::TestResource::TestChild.has ZendeskAPI::NilResource
 
         stub_json_request(:get, %r{test_resources\?include=nil_resources}, json(
-          :test_resources => [{:id => 1, :test_child => {:nil_resource_id => 4}}],
-          :nil_resources => [{:id => 1}, {:id => 4}]
+          test_resources: [{id: 1, test_child: {nil_resource_id: 4}}],
+          nil_resources: [{id: 1}, {id: 4}]
         ))
 
         subject.fetch(true)
@@ -935,10 +935,10 @@ describe ZendeskAPI::Collection do
   end
 
   context "with a module (Search)" do
-    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::Search, :query => "hello") }
+    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::Search, query: "hello") }
 
     before(:each) do
-      stub_json_request(:get, %r{search\?query=hello}, json(:results => []))
+      stub_json_request(:get, %r{search\?query=hello}, json(results: []))
       stub_request(:get, %r{search\?page%5Bsize%5D=100&query=hello}).to_raise(ZendeskAPI::Error::NetworkError)
     end
 
@@ -948,21 +948,21 @@ describe ZendeskAPI::Collection do
   end
 
   context "with a module (SearchExport)" do
-    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::SearchExport, :query => "hello") }
+    subject { ZendeskAPI::Collection.new(client, ZendeskAPI::SearchExport, query: "hello") }
 
     before(:each) do
       stub_request(:get, %r{search/export\?page%5Bsize%5D=100&query=hello}).to_raise(ZendeskAPI::Error::NetworkError)
     end
 
     it "should not blow up" do
-      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => []))
+      stub_json_request(:get, %r{search/export\?query=hello}, json(results: []))
 
       expect(subject.to_a).to eq([])
     end
 
     it "should not have more results" do
-      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [],
-        :meta => {has_more: false}))
+      stub_json_request(:get, %r{search/export\?query=hello}, json(results: [],
+        meta: {has_more: false}))
 
       subject.fetch
       response = subject.instance_variable_get(:@response).body
@@ -971,9 +971,9 @@ describe ZendeskAPI::Collection do
     end
 
     it "should not have more pages data" do
-      stub_json_request(:get, %r{search/export\?query=hello}, json(:results => [],
-        :meta => {has_more: false},
-        :links => {:next => nil}))
+      stub_json_request(:get, %r{search/export\?query=hello}, json(results: [],
+        meta: {has_more: false},
+        links: {next: nil}))
 
       subject.fetch
       response = subject.instance_variable_get(:@response).body
@@ -983,7 +983,7 @@ describe ZendeskAPI::Collection do
 
   context "with different path" do
     subject do
-      ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :collection_path => %w(test_resources active))
+      ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, collection_path: %w[test_resources active])
     end
 
     before(:each) do
@@ -999,7 +999,7 @@ describe ZendeskAPI::Collection do
     context "resources" do
       before(:each) do
         stub_json_request(:get, %r{test_resources/active},
-          json(:test_resources => [{:id => 1}]))
+          json(test_resources: [{id: 1}]))
 
         subject.fetch
 
@@ -1036,7 +1036,7 @@ describe ZendeskAPI::Collection do
 
     context "when we know for sure that the endpoint does not support CBP" do
       before do
-        stub_json_request(:get, %r{test_resources/show_many}, json(:test_resources => [{:id => 1}]))
+        stub_json_request(:get, %r{test_resources/show_many}, json(test_resources: [{id: 1}]))
       end
 
       it "does not try to default to CBP" do
@@ -1074,7 +1074,7 @@ describe ZendeskAPI::Collection do
           },
           "links" => {
             "next" => has_more ? "https://test_resources.json?page%5Bafter%5D=after#{index}&page%5Bsize%5D=1" : nil,
-            "prev" => index > 1 ? "https://test_resources.json?page%5Bafter%5D=after#{index - 1}&page%5Bsize%5D=1" : nil
+            "prev" => (index > 1) ? "https://test_resources.json?page%5Bafter%5D=after#{index - 1}&page%5Bsize%5D=1" : nil
           },
           "test_resources" => [{"id" => index}]
         }

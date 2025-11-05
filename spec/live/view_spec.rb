@@ -3,9 +3,9 @@ require "core/spec_helper"
 describe ZendeskAPI::View, :delete_after do
   def valid_attributes
     {
-      :title => "my test view",
-      :conditions => {
-        :all => [{:field => "status", :operator => "is", :value => "open"}]
+      title: "my test view",
+      conditions: {
+        all: [{field: "status", operator: "is", value: "open"}]
       }
     }
   end

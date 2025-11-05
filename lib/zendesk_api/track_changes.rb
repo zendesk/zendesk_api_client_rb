@@ -79,7 +79,7 @@ module ZendeskAPI
         end
       end
 
-      alias :dirty? :changed?
+      alias_method :dirty?, :changed?
     end
   end
 end

@@ -48,7 +48,7 @@ def client
             def options
               super.tap do |options|
                 options[:headers].merge!(
-                  :authorization => "Basic #{Base64.urlsafe_encode64(authorization)}"
+                  authorization: "Basic #{Base64.urlsafe_encode64(authorization)}"
                 )
               end
             end
@@ -120,7 +120,7 @@ module TestHelper
 
   def stub_json_request(verb, path_matcher, body = json, options = {})
     stub_request(verb, path_matcher).to_return(Hashie::Mash.new(
-      :body => body, :headers => {:content_type => "application/json", :content_length => body.size}
+      body: body, headers: {content_type: "application/json", content_length: body.size}
     ).deep_merge(options))
   end
 end
@@ -128,7 +128,7 @@ end
 RSpec.configure do |c|
   c.before(:each) do
     ZendeskAPI::TestResource.associations.clear
-    ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
+    ZendeskAPI::TestResource.has_many :children, class: ZendeskAPI::TestResource::TestChild
   end
 
   c.before(:each) do
@@ -157,7 +157,7 @@ end
 
 VCR.configure do |c|
   c.cassette_library_dir = File.join(File.dirname(__FILE__), "..", "fixtures", "cassettes")
-  c.default_cassette_options = {:record => :new_episodes, :decode_compressed_response => true, :serialize_with => :json, :preserve_exact_body_bytes => true}
+  c.default_cassette_options = {record: :new_episodes, decode_compressed_response: true, serialize_with: :json, preserve_exact_body_bytes: true}
   c.hook_into :webmock
   c.configure_rspec_metadata!
 

@@ -3,13 +3,13 @@ require "core/spec_helper"
 describe ZendeskAPI::View do
   def valid_attributes
     {
-      :title => "my test view",
-      :conditions => {
-        :any => [{:field => "assignee_id", :operator => "is", :value => 1}],
-        :all => [{:field => "status", :operator => "is", :value => "open"}]
+      title: "my test view",
+      conditions: {
+        any: [{field: "assignee_id", operator: "is", value: 1}],
+        all: [{field: "status", operator: "is", value: "open"}]
       },
-      :execution => {
-        :columns => [:id => "status", :title => "Status"]
+      execution: {
+        columns: [id: "status", title: "Status"]
       }
     }
   end
@@ -27,7 +27,7 @@ describe ZendeskAPI::View do
     end
 
     it "should set columns on output" do
-      new_columns = %w(type priority)
+      new_columns = %w[type priority]
       subject.columns = new_columns
 
       expect(subject.output["columns"]).to eq(new_columns)
@@ -71,7 +71,7 @@ describe ZendeskAPI::View do
 
   describe "#add_all_condition" do
     it "should add a condition to all condition" do
-      new_condition = {:field => "type", :operator => "is", :value => "problem"}
+      new_condition = {field: "type", operator: "is", value: "problem"}
       existing_conditions = subject.conditions[:all]
 
       expect(existing_conditions).not_to include(new_condition)
@@ -84,7 +84,7 @@ describe ZendeskAPI::View do
 
   describe "#add_any_condition" do
     it "should add a condition to any condition" do
-      new_condition = {:field => "type", :operator => "is", :value => "task"}
+      new_condition = {field: "type", operator: "is", value: "task"}
       existing_conditions = subject.conditions[:any]
 
       expect(existing_conditions).not_to include(new_condition)

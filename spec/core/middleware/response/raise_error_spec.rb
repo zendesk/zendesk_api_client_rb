@@ -27,8 +27,8 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
     let(:body) { "" }
 
     before(:each) do
-      stub_request(:any, /.*/).to_return(:status => status, :body => body,
-        :headers => {:content_type => "application/json"})
+      stub_request(:any, /.*/).to_return(status: status, body: body,
+        headers: {content_type: "application/json"})
     end
 
     context "with status = 404" do
@@ -82,7 +82,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
       end
 
       context "with a body" do
-        let(:body) { JSON.dump(:details => "hello") }
+        let(:body) { JSON.dump(details: "hello") }
 
         it "should return RecordInvalid with proper message" do
           client.connection.get "/non_existent"
@@ -119,7 +119,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
       end
 
       context "with a body" do
-        let(:body) { JSON.dump(:description => "big file is big", :message => "small file is small") }
+        let(:body) { JSON.dump(description: "big file is big", message: "small file is small") }
 
         it "should return RecordInvalid with proper message" do
           client.connection.get "/non_existent"

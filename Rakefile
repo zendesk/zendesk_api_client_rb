@@ -33,13 +33,13 @@ if defined?(RSpec)
   end
 
   desc "Default: run specs."
-  task :default => "spec"
+  task default: "spec"
 end
 
 # extracted from https://github.com/grosser/project_template
 rule(/^version:bump:.*/) do |t|
   sh "git status | grep 'nothing to commit'" # ensure we are not dirty
-  index = %w(major minor patch).index(t.name.split(":").last)
+  index = %w[major minor patch].index(t.name.split(":").last)
   file = "lib/zendesk_api/version.rb"
 
   version_file = File.read(file)

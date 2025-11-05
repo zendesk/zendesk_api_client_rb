@@ -3,10 +3,10 @@ require "core/spec_helper"
 describe ZendeskAPI::AppInstallation do
   it "should work" do
     upload = VCR.use_cassette("app_installations_upload_create") do
-      ZendeskAPI::App::Upload.new(client, :id => "spec/fixtures/sample_app.zip").tap(&:save!)
+      ZendeskAPI::App::Upload.new(client, id: "spec/fixtures/sample_app.zip").tap(&:save!)
     end
 
-    attributes = {:upload_id => upload.id, :name => "My App", :short_description => "Testing"}
+    attributes = {upload_id: upload.id, name: "My App", short_description: "Testing"}
 
     app = ZendeskAPI::App.new(client, attributes)
 
@@ -15,7 +15,7 @@ describe ZendeskAPI::AppInstallation do
     body = {}
 
     VCR.use_cassette("app_installations_create_job_status") do
-      until %w{failed completed}.include?(body["status"])
+      until %w[failed completed].include?(body["status"])
         response = client.connection.get(app.response.headers["Location"])
         body = response.body
 
@@ -30,9 +30,9 @@ describe ZendeskAPI::AppInstallation do
     app.id = body["app_id"]
 
     attributes = {
-      :app_id => app.id,
-      :settings => {
-        :name => "My App"
+      app_id: app.id,
+      settings: {
+        name: "My App"
       }
     }
 
@@ -42,7 +42,7 @@ describe ZendeskAPI::AppInstallation do
 
     installations = client.app.installations
     VCR.use_cassette("app_install_fetch") { installations.fetch! }
-    VCR.use_cassette("app_install_find") { client.app.installations.find!(:id => install.id) }
+    VCR.use_cassette("app_install_find") { client.app.installations.find!(id: install.id) }
 
     expect(installations).to include(install)
 

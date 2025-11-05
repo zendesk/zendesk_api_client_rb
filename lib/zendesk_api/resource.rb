@@ -34,7 +34,7 @@ module ZendeskAPI
         [@namespace, resource_name].compact.join("/")
       end
 
-      alias :model_key :resource_name
+      alias_method :model_key, :resource_name
 
       def namespace(namespace)
         @namespace = namespace
@@ -64,7 +64,7 @@ module ZendeskAPI
     def initialize(client, attributes = {})
       raise "Expected a Hash for attributes, got #{attributes.inspect}" unless attributes.is_a?(Hash)
 
-      @association = attributes.delete(:association) || Association.new(:class => self.class)
+      @association = attributes.delete(:association) || Association.new(class: self.class)
       @global_params = attributes.delete(:global) || {}
       @client = client
       @attributes = ZendeskAPI::Trackie.new(attributes)
@@ -127,7 +127,7 @@ module ZendeskAPI
     def to_s
       "#{self.class.singular_resource_name}: #{attributes.inspect}"
     end
-    alias :inspect :to_s
+    alias_method :inspect, :to_s
 
     # Compares resources by class and id. If id is nil, then by object_id
     def ==(other)
@@ -140,16 +140,16 @@ module ZendeskAPI
       return id == other if other.is_a?(Integer)
 
       warn "Trying to compare #{other.class} to a Resource
-        from #{caller.first}"
+        from #{caller(1..1).first}"
     end
-    alias :eql :==
+    alias_method :eql, :==
 
     # @private
     def inspect
       "#<#{self.class.name} #{@attributes.to_hash.inspect}>"
     end
 
-    alias :to_param :attributes
+    alias_method :to_param, :attributes
 
     def attributes_for_save
       {self.class.singular_resource_name.to_sym => attribute_changes}
