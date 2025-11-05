@@ -1,16 +1,14 @@
-require 'core/spec_helper'
-
 RSpec.describe ZendeskAPI::Topic do
   def valid_attributes
     {
-      :name => "My Topic",
-      :description => "The mayan calendar ends December 31st. Coincidence? I think not."
+      name: "My Topic",
+      description: "The mayan calendar ends December 31st. Coincidence? I think not."
     }
   end
 
   it_should_be_creatable
   it_should_be_updatable :title
-  it_should_be_deletable :create => true
+  it_should_be_deletable create: true
   it_should_be_readable :topics
 
   it "can upload while creating" do

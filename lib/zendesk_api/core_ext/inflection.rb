@@ -1,3 +1,3 @@
-require 'inflection'
+require "inflection"
 
-Inflection.plural_rule 'forum', 'forums'
+Inflection.plural_rule "forum", "forums"

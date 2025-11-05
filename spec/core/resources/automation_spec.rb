@@ -1,14 +1,12 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::Automation do
   def valid_attributes
     {
-      :title => "my test automation",
-      :conditions => {
-        :any => [{ :field => "assignee_id", :operator => "is", :value => 1 }],
-        :all => [{ :field => "status", :operator => "is", :value => "open" }]
+      title: "my test automation",
+      conditions: {
+        any: [{field: "assignee_id", operator: "is", value: 1}],
+        all: [{field: "status", operator: "is", value: "open"}]
       },
-      :actions => [{ :field => "priority", :value => "urgent" }]
+      actions: [{field: "priority", value: "urgent"}]
     }
   end
 
@@ -19,8 +17,8 @@ describe ZendeskAPI::Automation do
   describe "#all_conditions=" do
     it "should assign new values to all conditions" do
       new_conditions = [
-        { "field" => "type", "operator" => "is", "value" => "question" },
-        { "field" => "status", "operator" => "less_than", "value" => "solved" }
+        {"field" => "type", "operator" => "is", "value" => "question"},
+        {"field" => "status", "operator" => "less_than", "value" => "solved"}
       ]
       subject.all_conditions = new_conditions
 
@@ -31,8 +29,8 @@ describe ZendeskAPI::Automation do
   describe "#any_conditions=" do
     it "should assign new values to any conditions" do
       new_conditions = [
-        { "field" => "type", "operator" => "is", "value" => "question" },
-        { "field" => "status", "operator" => "less_than", "value" => "solved" }
+        {"field" => "type", "operator" => "is", "value" => "question"},
+        {"field" => "status", "operator" => "less_than", "value" => "solved"}
       ]
       subject.any_conditions = new_conditions
 
@@ -42,7 +40,7 @@ describe ZendeskAPI::Automation do
 
   describe "#add_all_condition" do
     it "should add a condition to all condition" do
-      new_condition = { :field => "type", :operator => "is", :value => "problem" }
+      new_condition = {field: "type", operator: "is", value: "problem"}
       existing_conditions = subject.conditions[:all]
 
       expect(existing_conditions).not_to include(new_condition)
@@ -55,7 +53,7 @@ describe ZendeskAPI::Automation do
 
   describe "#add_any_condition" do
     it "should add a condition to any condition" do
-      new_condition = { :field => "type", :operator => "is", :value => "task" }
+      new_condition = {field: "type", operator: "is", value: "task"}
       existing_conditions = subject.conditions[:any]
 
       expect(existing_conditions).not_to include(new_condition)
@@ -68,7 +66,7 @@ describe ZendeskAPI::Automation do
 
   describe "#add_action" do
     it "should add an action to the current actions" do
-      new_action = { :field => "status", :value => "solved" }
+      new_action = {field: "status", value: "solved"}
       existing_actions = subject.actions
 
       expect(existing_actions).not_to include(new_action)

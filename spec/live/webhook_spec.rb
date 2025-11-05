@@ -1,5 +1,3 @@
-require 'core/spec_helper'
-
 RSpec.describe ZendeskAPI::Webhook, :delete_after do
   def valid_attributes
     {

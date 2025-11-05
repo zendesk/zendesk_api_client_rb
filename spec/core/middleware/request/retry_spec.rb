@@ -1,5 +1,3 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::Middleware::Request::Retry do
   def runtime
     start = Time.now.to_f
@@ -9,9 +7,9 @@ describe ZendeskAPI::Middleware::Request::Retry do
 
   [429, 503].each do |error_code|
     it "should wait requisite seconds and then retry request on #{error_code}" do
-      stub_request(:get, %r{blergh}).
-        to_return(:status => 429, :headers => { :retry_after => 1 }).
-        to_return(:status => 200)
+      stub_request(:get, %r{blergh})
+        .to_return(status: 429, headers: {retry_after: 1})
+        .to_return(status: 200)
 
       seconds = runtime {
         expect(client.connection.get("blergh").status).to eq(200)
@@ -38,7 +36,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
     context "connection failed" do
       before(:each) do
         client.config.retry_on_exception = true
-        stub_request(:any, /.*/).to_raise(Faraday::ConnectionFailed).to_return(:status => 200)
+        stub_request(:any, /.*/).to_raise(Faraday::ConnectionFailed).to_return(status: 200)
       end
 
       it "should raise NetworkError, but then actually retry" do
@@ -52,7 +50,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
     context "connection failed" do
       before(:each) do
         client.config.retry_on_exception = false
-        stub_request(:any, /.*/).to_raise(Faraday::ConnectionFailed).to_return(:status => 200)
+        stub_request(:any, /.*/).to_raise(Faraday::ConnectionFailed).to_return(status: 200)
       end
 
       it "should raise NetworkError, but never retry" do
@@ -65,9 +63,9 @@ describe ZendeskAPI::Middleware::Request::Retry do
   [503].each do |error_code|
     context "with failing request because server is not ready with default error code #{error_code}", :prevent_logger_changes do
       before do
-        stub_request(:get, %r{blergh}).
-          to_return(:status => error_code).
-          to_return(:status => 200)
+        stub_request(:get, %r{blergh})
+          .to_return(status: error_code)
+          .to_return(status: 200)
 
         expect_any_instance_of(ZendeskAPI::Middleware::Request::Retry).to receive(:sleep).exactly(10).times.with(1)
       end
@@ -84,7 +82,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
       end
 
       it "should not fail without a logger" do
-        client.config.logger = false
+        client.config.logger = nil
         client.connection.get("blergh")
       end
     end
@@ -94,9 +92,9 @@ describe ZendeskAPI::Middleware::Request::Retry do
     context "with failing request because server is not ready with default error code #{error_code}", :prevent_logger_changes do
       before do
         client.config.retry_codes = [501, 503]
-        stub_request(:get, %r{blergh}).
-          to_return(:status => error_code).
-          to_return(:status => 200)
+        stub_request(:get, %r{blergh})
+          .to_return(status: error_code)
+          .to_return(status: 200)
 
         expect_any_instance_of(ZendeskAPI::Middleware::Request::Retry).to receive(:sleep).exactly(10).times.with(1)
       end
@@ -113,7 +111,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
       end
 
       it "should not fail without a logger" do
-        client.config.logger = false
+        client.config.logger = nil
         client.connection.get("blergh")
       end
     end

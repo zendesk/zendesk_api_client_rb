@@ -1,5 +1,3 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::OrganizationSubscription, :delete_after do
   before(:all) do
     VCR.use_cassette("enable_shared_tickets") do
@@ -22,7 +20,7 @@ describe ZendeskAPI::OrganizationSubscription, :delete_after do
   end
 
   def valid_attributes
-    { :organization_id => organization.id, :user_id => user.id }
+    {organization_id: organization.id, user_id: user.id}
   end
 
   it_should_be_creatable

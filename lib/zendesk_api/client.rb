@@ -1,25 +1,25 @@
-require 'zendesk_api/version'
-require 'zendesk_api/sideloading'
-require 'zendesk_api/configuration'
-require 'zendesk_api/collection'
-require 'zendesk_api/lru_cache'
-require 'zendesk_api/silent_mash'
-require 'zendesk_api/middleware/request/etag_cache'
-require 'zendesk_api/middleware/request/retry'
-require 'zendesk_api/middleware/request/raise_rate_limited'
-require 'zendesk_api/middleware/request/upload'
-require 'zendesk_api/middleware/request/encode_json'
-require 'zendesk_api/middleware/request/api_token_impersonate'
-require 'zendesk_api/middleware/request/url_based_access_token'
-require 'zendesk_api/middleware/response/callback'
-require 'zendesk_api/middleware/response/deflate'
-require 'zendesk_api/middleware/response/gzip'
-require 'zendesk_api/middleware/response/sanitize_response'
-require 'zendesk_api/middleware/response/parse_iso_dates'
-require 'zendesk_api/middleware/response/parse_json'
-require 'zendesk_api/middleware/response/raise_error'
-require 'zendesk_api/middleware/response/logger'
-require 'zendesk_api/delegator'
+require_relative "version"
+require_relative "sideloading"
+require_relative "configuration"
+require_relative "collection"
+require_relative "lru_cache"
+require_relative "silent_mash"
+require_relative "middleware/request/etag_cache"
+require_relative "middleware/request/retry"
+require_relative "middleware/request/raise_rate_limited"
+require_relative "middleware/request/upload"
+require_relative "middleware/request/encode_json"
+require_relative "middleware/request/api_token_impersonate"
+require_relative "middleware/request/url_based_access_token"
+require_relative "middleware/response/callback"
+require_relative "middleware/response/deflate"
+require_relative "middleware/response/gzip"
+require_relative "middleware/response/sanitize_response"
+require_relative "middleware/response/parse_iso_dates"
+require_relative "middleware/response/parse_json"
+require_relative "middleware/response/raise_error"
+require_relative "middleware/response/logger"
+require_relative "delegator"
 
 module ZendeskAPI
   # The top-level class that handles configuration and connection to the Zendesk API.
@@ -44,7 +44,7 @@ module ZendeskAPI
         return ZendeskAPI::Collection.new(self, resource_class, options)
       end
 
-      @resource_cache[method] ||= { :class => nil, :cache => ZendeskAPI::LRUCache.new }
+      @resource_cache[method] ||= {class: nil, cache: ZendeskAPI::LRUCache.new}
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
@@ -63,21 +63,21 @@ module ZendeskAPI
     # @return [ZendeskAPI::User] Current user or nil
     def current_user(reload = false)
       return @current_user if @current_user && !reload
-      @current_user = users.find(:id => 'me')
+      @current_user = users.find(id: "me")
     end
 
     # Returns the current account
     # @return [Hash] The attributes of the current account or nil
     def current_account(reload = false)
       return @current_account if @current_account && !reload
-      @current_account = SilentMash.new(connection.get('account/resolve').body)
+      @current_account = SilentMash.new(connection.get("account/resolve").body)
     end
 
     # Returns the current locale
     # @return [ZendeskAPI::Locale] Current locale or nil
     def current_locale(reload = false)
       return @locale if @locale && !reload
-      @locale = locales.find(:id => 'current')
+      @locale = locales.find(id: "current")
     end
 
     # Creates a new {Client} instance and yields {#config}.
@@ -181,7 +181,7 @@ module ZendeskAPI
         set_authentication(builder, config)
 
         if config.cache
-          builder.use ZendeskAPI::Middleware::Request::EtagCache, :cache => config.cache
+          builder.use ZendeskAPI::Middleware::Request::EtagCache, cache: config.cache
         end
 
         builder.use ZendeskAPI::Middleware::Request::Upload
@@ -191,12 +191,12 @@ module ZendeskAPI
         # Should always be first in the stack
         if config.retry
           builder.use ZendeskAPI::Middleware::Request::Retry,
-                      :logger => config.logger,
-                      :retry_codes => config.retry_codes,
-                      :retry_on_exception => config.retry_on_exception
+            logger: config.logger,
+            retry_codes: config.retry_codes,
+            retry_on_exception: config.retry_on_exception
         end
         if config.raise_error_when_rate_limited
-          builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger
+          builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, logger: config.logger
         end
 
         builder.adapter(*adapter, &config.adapter_proc)
@@ -207,12 +207,12 @@ module ZendeskAPI
     private
 
     def resource_class_for(method)
-      resource_name = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s.gsub(/\W/, '')))
+      resource_name = ZendeskAPI::Helpers.modulize_string(Inflection.singular(method.to_s.gsub(/\W/, "")))
       ZendeskAPI::Association.class_from_namespace(resource_name)
     end
 
     def check_url
-      if !config.allow_http && !config.url.start_with?('https://')
+      if !config.allow_http && !config.url.start_with?("https://")
         raise ArgumentError, "zendesk_api is ssl only; url must begin with https://"
       end
     end
@@ -238,17 +238,17 @@ module ZendeskAPI
 
     def set_default_logger
       if config.logger.nil? || config.logger == true
-        require 'logger'
+        require "logger"
         config.logger = Logger.new($stderr)
         config.logger.level = Logger::WARN
       end
     end
 
     def add_warning_callback
-      return unless logger = config.logger
+      return unless (logger = config.logger)
 
       insert_callback do |env|
-        if warning = env[:response_headers]["X-Zendesk-API-Warn"]
+        if (warning = env[:response_headers]["X-Zendesk-API-Warn"])
           logger.warn "WARNING: #{warning}"
         end
       end

@@ -1,47 +1,45 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::User, :delete_after do
   def valid_attributes
-    { name: "Test U.", email: "test+#{Time.now.to_i}@example.org" }
+    {name: "Test U.", email: "test+#{Time.now.to_i}@example.org"}
   end
 
   it_should_be_creatable
   it_should_be_updatable :name
-  it_should_be_deletable :find => [:active?, false]
+  it_should_be_deletable find: [:active?, false]
   it_should_be_readable :users
   it_should_be_readable organization, :users
 
   it "should be able to find by email" do
     VCR.use_cassette("user_find_by_email") do
-      expect(client.users.search(:query => current_user.email).to_a).to eq([current_user])
+      expect(client.users.search(query: current_user.email).to_a).to eq([current_user])
     end
   end
 
   describe "related" do
     it "shows realated users" do
       VCR.use_cassette("current_user_related_users") do
-        client.users.search(:query => current_user.email).first
+        client.users.search(query: current_user.email).first
         expect(current_user.related).to be_a ZendeskAPI::UserRelated
       end
     end
   end
 
   context "passwords", :vcr do
-    let(:password) { client.config.password || ENV.fetch('PASSWORD', nil) }
+    let(:password) { client.config.password || ENV.fetch("PASSWORD", nil) }
 
     it "sets the password" do
-      agent.set_password!(:password => password)
+      agent.set_password!(password: password)
     end
 
     it "changes the password" do
-      current_user.change_password!(:previous_password => password, :password => password)
+      current_user.change_password!(previous_password: password, password: password)
     end
   end
 
   context "side-loading" do
     context "no permission set" do
       subject do
-        VCR.use_cassette("user_admin_role") { client.users.find(:id => 20014182, :include => :roles) }
+        VCR.use_cassette("user_admin_role") { client.users.find(id: 20014182, include: :roles) }
       end
 
       it "should include role" do
@@ -91,8 +89,8 @@ describe ZendeskAPI::User, :delete_after do
           ZendeskAPI::User.create_many!(
             client,
             [
-              { name: "one", email: "1@example.org" },
-              { name: "two", email: "2@example.org" }
+              {name: "one", email: "1@example.org"},
+              {name: "two", email: "2@example.org"}
             ]
           ).tap do |job|
             job.reload! while job.status != "completed"
@@ -145,7 +143,7 @@ describe ZendeskAPI::User, :delete_after do
 
     context "permission set" do
       subject do
-        VCR.use_cassette("user_permission_set") { client.users.find(:id => 20014327, :include => :roles) }
+        VCR.use_cassette("user_permission_set") { client.users.find(id: 20014327, include: :roles) }
       end
 
       it "should include role" do

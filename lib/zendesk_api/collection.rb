@@ -1,7 +1,7 @@
-require 'zendesk_api/resource'
-require 'zendesk_api/resources'
-require 'zendesk_api/search'
-require 'zendesk_api/pagination'
+require_relative "resource"
+require_relative "resources"
+require_relative "search"
+require_relative "pagination"
 
 module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
@@ -50,7 +50,7 @@ module ZendeskAPI
     end
 
     # Methods that take a Hash argument
-    methods = %w{create find update update_many destroy create_or_update}
+    methods = %w[create find update update_many destroy create_or_update]
     methods += methods.map { |method| "#{method}!" }
     methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
@@ -61,14 +61,14 @@ module ZendeskAPI
         end
 
         args << {} unless args.last.is_a?(Hash)
-        args.last.merge!(:association => @association)
+        args.last[:association] = @association
 
         @resource_class.send(deferrable, @client, *args)
       end
     end
 
     # Methods that take an Array argument
-    methods = %w{create_many! destroy_many!}
+    methods = %w[create_many! destroy_many!]
     methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
       # @param [Array] array arguments
@@ -153,7 +153,7 @@ module ZendeskAPI
 
     # The API path to this collection
     def path
-      @association.generate_path(:with_parent => true)
+      @association.generate_path(with_parent: true)
     end
 
     # Executes actual GET from API and loads resources into proper class.
@@ -161,7 +161,7 @@ module ZendeskAPI
     def fetch!(reload = false)
       if @resources && (!@fetchable || !reload)
         return @resources
-      elsif association && association.options.parent && association.options.parent.new_record?
+      elsif association&.options&.parent&.new_record?
         return (@resources = [])
       end
 
@@ -289,11 +289,11 @@ module ZendeskAPI
         inspect = []
         inspect << "options=#{@options.inspect}" if @options.any?
         inspect << "path=#{path}"
-        "#{Inflection.singular(@resource)} collection [#{inspect.join(',')}]"
+        "#{Inflection.singular(@resource)} collection [#{inspect.join(",")}]"
       end
     end
 
-    alias to_str to_s
+    alias_method :to_str, :to_s
 
     def to_param
       map(&:to_param)
@@ -303,7 +303,7 @@ module ZendeskAPI
       link = original_response_body["links"]["next"]
       result_key = @resource_class.model_key || "results"
       while link
-        response = @client.connection.send("get", link).body
+        response = @client.connection.send(:get, link).body
 
         original_response_body[result_key] = original_response_body[result_key] + response[result_key]
 
@@ -338,7 +338,7 @@ module ZendeskAPI
       page(start_page)
       clear_cache
 
-      while (bang ? fetch! : fetch)
+      while bang ? fetch! : fetch
         each do |resource|
           block.call(resource, @options["page"] || 1)
         end
@@ -370,7 +370,7 @@ module ZendeskAPI
       # some params use comma-joined strings instead of query-based arrays for multiple values
       @options.each do |k, v|
         if SPECIALLY_JOINED_PARAMS.include?(k.to_sym) && v.is_a?(Array)
-          @options[k] = v.join(',')
+          @options[k] = v.join(",")
         end
       end
     end
@@ -378,9 +378,9 @@ module ZendeskAPI
     def set_association_from_options
       @collection_path = @options.delete(:collection_path)
 
-      association_options = { :path => @options.delete(:path) }
+      association_options = {path: @options.delete(:path)}
       association_options[:path] ||= @collection_path.join("/") if @collection_path
-      @association = @options.delete(:association) || Association.new(association_options.merge(:class => @resource_class))
+      @association = @options.delete(:association) || Association.new(association_options.merge(class: @resource_class))
       @collection_path ||= [@resource]
     end
 
@@ -389,9 +389,9 @@ module ZendeskAPI
       @client.connection.send(@verb || "get", path) do |req|
         opts = @options.delete_if { |_, v| v.nil? }
 
-        req.params.merge!(:include => @includes.join(",")) if @includes.any?
+        req.params[:include] = @includes.join(",") if @includes.any?
 
-        if %w{put post}.include?(@verb.to_s)
+        if %w[put post].include?(@verb.to_s)
           req.body = opts
         else
           req.params.merge!(opts)
@@ -440,11 +440,11 @@ module ZendeskAPI
       when Array
         wrap_resource(Hash[*res], with_association)
       when Hash
-        res = res.merge(:association => @association) if with_association
+        res = res.merge(association: @association) if with_association
         @resource_class.new(@client, res)
       else
-        res = { :id => res }
-        res.merge!(:association => @association) if with_association
+        res = {id: res}
+        res[:association] = @association if with_association
         @resource_class.new(@client, res)
       end
     end
@@ -464,7 +464,8 @@ module ZendeskAPI
     # If you call client.tickets.foo - and foo is not an attribute nor an association, it ends up here, as a new collection
     def next_collection(name, *args, &)
       opts = args.last.is_a?(Hash) ? args.last : {}
-      opts.merge!(collection_path: [*@collection_path, name], page: nil)
+      opts[:collection_path] = [*@collection_path, name]
+      opts[:page] = nil
       # Why `page: nil`?
       # when you do client.tickets.fetch followed by client.tickets.foos => the request to /tickets/foos will
       # have the options page set to whatever the last options were for the tickets collection

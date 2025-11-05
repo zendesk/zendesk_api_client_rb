@@ -1,13 +1,11 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::SuspendedTicket do
   def valid_attributes
     {
-      :subject => "Test Ticket",
-      :comment => { :value => "Help! I need somebody." },
-      :requester => {
-        :email => "zendesk-api-client-ruby-anonymous-#{client.config.username}",
-        :name => 'Anonymous User'
+      subject: "Test Ticket",
+      comment: {value: "Help! I need somebody."},
+      requester: {
+        email: "zendesk-api-client-ruby-anonymous-#{client.config.username}",
+        name: "Anonymous User"
       }
     }
   end

@@ -1,11 +1,9 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::UserView, :delete_after do
   def valid_attributes
     {
-      :title => "Overseas gold member",
-      :all   => [
-        { field: "name", operator: "is", value: "abcd" }
+      title: "Overseas gold member",
+      all: [
+        {field: "name", operator: "is", value: "abcd"}
       ]
     }
   end

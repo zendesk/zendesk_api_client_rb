@@ -35,7 +35,7 @@ module ZendeskAPI
       def resource_name
         "search"
       end
-      alias resource_path resource_name
+      alias_method :resource_path, :resource_name
 
       def model_key
         "results"
@@ -49,7 +49,7 @@ module ZendeskAPI
       def resource_name
         "search/export"
       end
-      alias resource_path resource_name
+      alias_method :resource_path, :resource_name
     end
   end
 end

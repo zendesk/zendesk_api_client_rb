@@ -20,7 +20,7 @@ module ZendeskAPI
 
   class Channel < Resource
     def work_items
-      @work_items ||= attributes.fetch('relationships', {}).fetch('work_items', {}).fetch('data', []).map do |work_item_attributes|
+      @work_items ||= attributes.fetch("relationships", {}).fetch("work_items", {}).fetch("data", []).map do |work_item_attributes|
         WorkItem.new(@client, work_item_attributes)
       end
     end
@@ -35,7 +35,7 @@ module ZendeskAPI
     end
 
     def initialize(client, attributes = {})
-      nested_attributes = attributes.delete('attributes')
+      nested_attributes = attributes.delete("attributes")
       super(client, attributes.merge(nested_attributes))
     end
 
@@ -59,9 +59,9 @@ module ZendeskAPI
 
     def channels
       @channels ||= begin
-        channel_attributes_array = @client.connection.get(attributes['links']['self']).body.fetch('included')
+        channel_attributes_array = @client.connection.get(attributes["links"]["self"]).body.fetch("included")
         channel_attributes_array.map do |channel_attributes|
-          nested_attributes = channel_attributes.delete('attributes')
+          nested_attributes = channel_attributes.delete("attributes")
           Channel.new(@client, channel_attributes.merge(nested_attributes))
         end
       end
@@ -100,12 +100,12 @@ module ZendeskAPI
     include Update
     include Destroy
 
-    alias :name :id
-    alias :to_param :id
+    alias_method :name, :id
+    alias_method :to_param, :id
 
     def path(opts = {})
       raise "tags must have parent resource" unless association.options.parent
-      super(opts.merge(:with_parent => true, :with_id => false))
+      super(opts.merge(with_parent: true, with_id: false))
     end
 
     def changed?
@@ -123,7 +123,7 @@ module ZendeskAPI
         return self unless @resources
 
         @client.connection.post(path) do |req|
-          req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }
+          req.body = {tags: @resources.reject(&:destroyed?).map(&:id)}
         end
 
         true
@@ -137,7 +137,7 @@ module ZendeskAPI
     end
 
     def attributes_for_save
-      { self.class.resource_name => [id] }
+      {self.class.resource_name => [id]}
     end
 
     def self.cbp_path_regexes
@@ -195,13 +195,13 @@ module ZendeskAPI
     extend CreateOrUpdate
     extend DestroyMany
 
-    has Ability, :inline => true
+    has Ability, inline: true
     has Group
-    has :related, :class => OrganizationRelated
+    has :related, class: OrganizationRelated
 
     has_many Ticket
     has_many User
-    has_many Tag, :extend => Tag::Update, :inline => :create
+    has_many Tag, extend: Tag::Update, inline: :create
     has_many OrganizationMembership
     has_many :subscriptions, class: OrganizationSubscription
 
@@ -210,7 +210,7 @@ module ZendeskAPI
     # @param [Integer] start_time The start_time parameter
     # @return [Collection] Collection of {Organization}
     def self.incremental_export(client, start_time)
-      ZendeskAPI::Collection.new(client, self, :path => "incremental/organizations?start_time=#{start_time.to_i}")
+      ZendeskAPI::Collection.new(client, self, path: "incremental/organizations?start_time=#{start_time.to_i}")
     end
 
     def self.cbp_path_regexes
@@ -327,7 +327,7 @@ module ZendeskAPI
     has User
 
     def path(options = {})
-      super(options.merge(:with_parent => true))
+      super(options.merge(with_parent: true))
     end
   end
 
@@ -340,7 +340,7 @@ module ZendeskAPI
 
   class Activity < Resource
     has User
-    has :actor, :class => User
+    has :actor, class: User
 
     def self.cbp_path_regexes
       [/^activities$/]
@@ -352,7 +352,7 @@ module ZendeskAPI
 
     def initialize(client, attributes = {})
       # Try and find the root key
-      @on = (attributes.keys.map(&:to_s) - %w{association options}).first
+      @on = (attributes.keys.map(&:to_s) - %w[association options]).first
 
       # Make what's inside that key the root attributes
       attributes.merge!(attributes.delete(@on))
@@ -365,17 +365,17 @@ module ZendeskAPI
     end
 
     def path(options = {})
-      super(options.merge(:with_parent => true))
+      super(options.merge(with_parent: true))
     end
 
     def attributes_for_save
-      { self.class.resource_name => { @on => attributes.changes } }
+      {self.class.resource_name => {@on => attributes.changes}}
     end
   end
 
   class SatisfactionRating < ReadResource
-    has :assignee, :class => User
-    has :requester, :class => User
+    has :assignee, class: User
+    has :requester, class: User
     has Ticket
     has Group
   end
@@ -397,7 +397,7 @@ module ZendeskAPI
       include Save
 
       has_many :uploads, class: Attachment, inline: true
-      has :author, :class => User
+      has :author, class: User
 
       def save
         if new_record?
@@ -408,23 +408,23 @@ module ZendeskAPI
         end
       end
 
-      alias :save! :save
+      alias_method :save!, :save
     end
 
-    has Comment, :inline => true
+    has Comment, inline: true
     has_many Comment
 
     has Organization
     has Group
-    has :requester, :class => User
+    has :requester, class: User
   end
 
   class AnonymousRequest < CreateResource
     def self.singular_resource_name
-      'request'
+      "request"
     end
 
-    namespace 'portal'
+    namespace "portal"
   end
 
   class TicketField < Resource
@@ -448,14 +448,14 @@ module ZendeskAPI
 
     has_many :child_events, class: Event
     has Ticket
-    has :updater, :class => User
+    has :updater, class: User
 
     # Gets a incremental export of ticket events from the start_time until now.
     # @param [Client] client The {Client} object to be used
     # @param [Integer] start_time The start_time parameter
     # @return [Collection] Collection of {TicketEvent}
     def self.incremental_export(client, start_time)
-      ZendeskAPI::Collection.new(client, self, :path => "incremental/ticket_events?start_time=#{start_time.to_i}")
+      ZendeskAPI::Collection.new(client, self, path: "incremental/ticket_events?start_time=#{start_time.to_i}")
     end
   end
 
@@ -477,13 +477,13 @@ module ZendeskAPI
 
     class Audit < DataResource
       class Event < Data
-        has :author, :class => User
+        has :author, class: User
       end
 
       put :trust
 
       # need this to support SideLoading
-      has :author, :class => User
+      has :author, class: User
 
       has_many Event
 
@@ -507,21 +507,21 @@ module ZendeskAPI
         end
       end
 
-      alias :save! :save
+      alias_method :save!, :save
     end
 
     class SatisfactionRating < CreateResource
       class << self
-        alias :resource_name :singular_resource_name
+        alias_method :resource_name, :singular_resource_name
       end
     end
 
     put :mark_as_spam
     post :merge
 
-    has :requester, :class => User, :inline => :create
-    has :submitter, :class => User
-    has :assignee, :class => User
+    has :requester, class: User, inline: :create
+    has :submitter, class: User
+    has :assignee, class: User
 
     has_many :collaborators, class: User, inline: true, extend: Module.new do
       def to_param
@@ -623,7 +623,7 @@ module ZendeskAPI
   end
 
   class RuleExecution < Data
-    has_many :custom_fields, :class => TicketField
+    has_many :custom_fields, class: TicketField
   end
 
   class ViewCount < DataResource; end
@@ -633,7 +633,7 @@ module ZendeskAPI
 
     def attributes_for_save
       to_save = [:conditions, :actions, :output].inject({}) { |h, k| h.merge(k => send(k)) }
-      { self.class.singular_resource_name.to_sym => attributes.changes.merge(to_save) }
+      {self.class.singular_resource_name.to_sym => attributes.changes.merge(to_save)}
     end
   end
 
@@ -653,32 +653,32 @@ module ZendeskAPI
     def add_all_condition(field, operator, value)
       self.conditions ||= {}
       self.conditions[:all] ||= []
-      self.conditions[:all] << { :field => field, :operator => operator, :value => value }
+      self.conditions[:all] << {field: field, operator: operator, value: value}
     end
 
     def add_any_condition(field, operator, value)
       self.conditions ||= {}
       self.conditions[:any] ||= []
-      self.conditions[:any] << { :field => field, :operator => operator, :value => value }
+      self.conditions[:any] << {field: field, operator: operator, value: value}
     end
   end
 
   module Actions
     def add_action(field, value)
       self.actions ||= []
-      self.actions << { :field => field, :value => value }
+      self.actions << {field: field, value: value}
     end
   end
 
   class View < Rule
     include Conditions
 
-    has_many :tickets, :class => Ticket
-    has_many :feed, :class => Ticket, :path => "feed"
+    has_many :tickets, class: Ticket
+    has_many :feed, class: Ticket, path: "feed"
 
-    has_many :rows, :class => ViewRow, :path => "execute"
-    has :execution, :class => RuleExecution
-    has ViewCount, :path => "count"
+    has_many :rows, class: ViewRow, path: "execute"
+    has :execution, class: RuleExecution
+    has ViewCount, path: "count"
 
     def add_column(column)
       columns = execution.columns.map(&:id)
@@ -692,7 +692,7 @@ module ZendeskAPI
     end
 
     def self.preview(client, options = {})
-      Collection.new(client, ViewRow, options.merge(:path => "views/preview", :verb => :post))
+      Collection.new(client, ViewRow, options.merge(path: "views/preview", verb: :post))
     end
 
     def self.cbp_path_regexes
@@ -704,7 +704,7 @@ module ZendeskAPI
     include Conditions
     include Actions
 
-    has :execution, :class => RuleExecution
+    has :execution, class: RuleExecution
 
     def self.cbp_path_regexes
       [/^triggers$/, %r{^triggers/active$}]
@@ -715,7 +715,7 @@ module ZendeskAPI
     include Conditions
     include Actions
 
-    has :execution, :class => RuleExecution
+    has :execution, class: RuleExecution
 
     def self.cbp_path_regexes
       [/^automations$/]
@@ -725,7 +725,7 @@ module ZendeskAPI
   class Macro < Rule
     include Actions
 
-    has :execution, :class => RuleExecution
+    has :execution, class: RuleExecution
 
     def self.cbp_path_regexes
       [/^macros$/]
@@ -756,7 +756,7 @@ module ZendeskAPI
 
   class UserView < Rule
     def self.preview(client, options = {})
-      Collection.new(client, UserViewRow, options.merge!(:path => "user_views/preview", :verb => :post))
+      Collection.new(client, UserViewRow, options.merge!(path: "user_views/preview", verb: :post))
     end
   end
 
@@ -810,22 +810,22 @@ module ZendeskAPI
 
     # Set a user's password
     def set_password(opts = {})
-      password(opts.merge(:verb => :post))
+      password(opts.merge(verb: :post))
     end
 
     # Change a user's password
     def change_password(opts = {})
-      password(opts.merge(:verb => :put))
+      password(opts.merge(verb: :put))
     end
 
     # Set a user's password
     def set_password!(opts = {})
-      password!(opts.merge(:verb => :post))
+      password!(opts.merge(verb: :post))
     end
 
     # Change a user's password
     def change_password!(opts = {})
-      password!(opts.merge(:verb => :put))
+      password!(opts.merge(verb: :put))
     end
 
     # Gets a incremental export of users from the start_time until now.
@@ -833,7 +833,7 @@ module ZendeskAPI
     # @param [Integer] start_time The start_time parameter
     # @return [Collection] Collection of {User}
     def self.incremental_export(client, start_time)
-      ZendeskAPI::Collection.new(client, self, :path => "incremental/users?start_time=#{start_time.to_i}")
+      ZendeskAPI::Collection.new(client, self, path: "incremental/users?start_time=#{start_time.to_i}")
     end
 
     has Organization
@@ -844,17 +844,17 @@ module ZendeskAPI
     class CurrentSession < SingularResource
       class << self
         def singular_resource_name
-          'session'
+          "session"
         end
 
-        alias :resource_name :singular_resource_name
+        alias_method :resource_name, :singular_resource_name
       end
     end
 
     has_many Session
 
     def current_session
-      ZendeskAPI::User::CurrentSession.find(@client, :user_id => 'me')
+      ZendeskAPI::User::CurrentSession.find(@client, user_id: "me")
     end
 
     delete :logout
@@ -871,17 +871,17 @@ module ZendeskAPI
 
     put :merge
 
-    has CustomRole, :inline => true, :include => :roles
-    has Role, :inline => true, :include_key => :name
-    has Ability, :inline => true
-    has :related, :class => UserRelated
+    has CustomRole, inline: true, include: :roles
+    has Role, inline: true, include_key: :name
+    has Ability, inline: true
+    has :related, class: UserRelated
 
     has_many Identity
 
     has_many Request
-    has_many :requested_tickets, :class => Ticket, :path => 'tickets/requested'
-    has_many :assigned_tickets, :class => Ticket, :path => 'tickets/assigned'
-    has_many :ccd_tickets, :class => Ticket, :path => 'tickets/ccd'
+    has_many :requested_tickets, class: Ticket, path: "tickets/requested"
+    has_many :assigned_tickets, class: Ticket, path: "tickets/assigned"
+    has_many :ccd_tickets, class: Ticket, path: "tickets/ccd"
 
     has_many Group
     has_many GroupMembership
@@ -889,7 +889,7 @@ module ZendeskAPI
     has_many OrganizationSubscription
 
     has_many Setting
-    has_many Tag, :extend => Tag::Update, :inline => :create
+    has_many Tag, extend: Tag::Update, inline: :create
 
     def attributes_for_save
       # Don't send role_id, it's necessary
@@ -899,7 +899,7 @@ module ZendeskAPI
         k == "role_id"
       end
 
-      { self.class.singular_resource_name => attrs }
+      {self.class.singular_resource_name => attrs}
     end
 
     def handle_response(*)
@@ -1036,8 +1036,8 @@ module ZendeskAPI
     end
 
     def self.create!(client, attributes = {}, &)
-      if file_path = attributes.delete(:upload)
-        attributes[:upload_id] = client.apps.uploads.create!(:file => file_path).id
+      if (file_path = attributes.delete(:upload))
+        attributes[:upload_id] = client.apps.uploads.create!(file: file_path).id
       end
 
       super
@@ -1087,7 +1087,7 @@ module ZendeskAPI
       ZendeskAPI::Collection.new(client, AppInstallation, ...)
     end
 
-    has Upload, :path => "uploads"
+    has Upload, path: "uploads"
     has_many Plan
 
     # Don't nest attributes
@@ -1104,7 +1104,7 @@ module ZendeskAPI
     include DataNamespace
 
     class Item < ZendeskAPI::Resource
-      namespace 'dynamic_content'
+      namespace "dynamic_content"
 
       class Variant < ZendeskAPI::Resource
       end

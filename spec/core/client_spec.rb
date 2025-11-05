@@ -1,5 +1,3 @@
-require 'core/spec_helper'
-
 class SimpleClient < ZendeskAPI::Client
   def build_connection
     "FOO"
@@ -17,7 +15,7 @@ RSpec.describe ZendeskAPI::Client do
         config.adapter = :test
         config.adapter_proc = proc do |stub|
           stub.get "/api/v2/tickets" do |_env|
-            [200, { 'Content-Type': "application/json" }, "null"]
+            [200, {"Content-Type": "application/json"}, "null"]
           end
         end
       end
@@ -124,7 +122,7 @@ RSpec.describe ZendeskAPI::Client do
           config.url = "https://example.zendesk.com/api/v2"
           config.username = username
           config.token = "token"
-          config.client_options = { :request => { :timeout => 30 } }
+          config.client_options = {request: {timeout: 30}}
         end
       end
 
@@ -176,7 +174,7 @@ RSpec.describe ZendeskAPI::Client do
           config.logger = subject
         end
 
-        stub_request(:get, %r{/bs$}).to_return(:status => 200)
+        stub_request(:get, %r{/bs$}).to_return(status: 200)
       end
 
       context "with true value" do
@@ -189,7 +187,7 @@ RSpec.describe ZendeskAPI::Client do
         context "with a request" do
           it "should log" do
             expect(client.config.logger).to receive(:info).at_least(:once)
-            @client.connection.get('/bs')
+            @client.connection.get("/bs")
           end
         end
       end
@@ -221,7 +219,7 @@ RSpec.describe ZendeskAPI::Client do
         context "with a request" do
           it "should log to the subject" do
             expect(out).to receive(:write).at_least(:once)
-            @client.connection.get('/bs')
+            @client.connection.get("/bs")
           end
         end
       end
@@ -263,20 +261,20 @@ RSpec.describe ZendeskAPI::Client do
     end
 
     it "should not cache calls with different options" do
-      expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => '123'))
+      expect(subject.search(query: "abc")).to_not eq(subject.search(query: "123"))
     end
 
     it "should not cache calls with :reload => true options" do
-      expect(subject.search(:query => 'abc')).to_not eq(subject.search(:query => 'abc', :reload => true))
+      expect(subject.search(query: "abc")).to_not eq(subject.search(query: "abc", reload: true))
     end
 
     it "should not pass reload to the underlying collection" do
-      collection = subject.search(:query => 'abc', :reload => true)
+      collection = subject.search(query: "abc", reload: true)
       expect(collection.options.key?(:reload)).to be(false)
     end
 
     it "should cache calls with the same options" do
-      expect(subject.search(:query => 'abc')).to eq(subject.search(:query => 'abc'))
+      expect(subject.search(query: "abc")).to eq(subject.search(query: "abc"))
     end
 
     it "should respond_to? for valid resources" do
@@ -304,10 +302,10 @@ RSpec.describe ZendeskAPI::Client do
     end
 
     it "looks in the appropriate namespaces" do
-      expect(subject.greetings.association.options['class']).to eq(ZendeskAPI::Voice::Greeting)
+      expect(subject.greetings.association.options["class"]).to eq(ZendeskAPI::Voice::Greeting)
     end
 
-    it 'raises if the resource does not exist' do
+    it "raises if the resource does not exist" do
       expect { subject.random_resource }.to raise_error(RuntimeError)
     end
 
@@ -320,7 +318,7 @@ RSpec.describe ZendeskAPI::Client do
       end
 
       before(:each) do
-        stub_request(:get, %r{/bs$}).to_return(:status => 200)
+        stub_request(:get, %r{/bs$}).to_return(status: 200)
       end
 
       it "returns an instance of ZendeskAPI::Collection" do
@@ -372,7 +370,7 @@ RSpec.describe ZendeskAPI::Client do
         config.adapter = :test
         config.adapter_proc = proc do |stub|
           stub.get "/api/v2/tickets" do |env|
-            [200, { 'content-type': "application/json", Authorization: env.request_headers["Authorization"] }, "null"]
+            [200, {"content-type": "application/json", Authorization: env.request_headers["Authorization"]}, "null"]
           end
         end
       end

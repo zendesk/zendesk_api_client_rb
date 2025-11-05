@@ -1,9 +1,9 @@
-require 'zendesk_api/helpers'
-require 'zendesk_api/trackie'
-require 'zendesk_api/actions'
-require 'zendesk_api/association'
-require 'zendesk_api/associations'
-require 'zendesk_api/verbs'
+require_relative "helpers"
+require_relative "trackie"
+require_relative "actions"
+require_relative "association"
+require_relative "associations"
+require_relative "verbs"
 
 # See docs: https://developer.zendesk.com/api-reference/
 module ZendeskAPI
@@ -34,7 +34,7 @@ module ZendeskAPI
         [@namespace, resource_name].compact.join("/")
       end
 
-      alias :model_key :resource_name
+      alias_method :model_key, :resource_name
 
       def namespace(namespace)
         @namespace = namespace
@@ -64,7 +64,7 @@ module ZendeskAPI
     def initialize(client, attributes = {})
       raise "Expected a Hash for attributes, got #{attributes.inspect}" unless attributes.is_a?(Hash)
 
-      @association = attributes.delete(:association) || Association.new(:class => self.class)
+      @association = attributes.delete(:association) || Association.new(class: self.class)
       @global_params = attributes.delete(:global) || {}
       @client = client
       @attributes = ZendeskAPI::Trackie.new(attributes)
@@ -74,14 +74,6 @@ module ZendeskAPI
       end
 
       @attributes.clear_changes unless new_record?
-    end
-
-    def self.new_from_response(client, response, includes = nil)
-      new(client).tap do |resource|
-        resource.handle_response(response)
-        resource.set_includes(resource, includes, response.body) if includes
-        resource.attributes.clear_changes
-      end
     end
 
     # Passes the method onto the attributes hash.
@@ -127,7 +119,6 @@ module ZendeskAPI
     def to_s
       "#{self.class.singular_resource_name}: #{attributes.inspect}"
     end
-    alias :inspect :to_s
 
     # Compares resources by class and id. If id is nil, then by object_id
     def ==(other)
@@ -140,19 +131,19 @@ module ZendeskAPI
       return id == other if other.is_a?(Integer)
 
       warn "Trying to compare #{other.class} to a Resource
-        from #{caller.first}"
+        from #{caller(1..1).first}"
     end
-    alias :eql :==
+    alias_method :eql, :==
 
     # @private
     def inspect
       "#<#{self.class.name} #{@attributes.to_hash.inspect}>"
     end
 
-    alias :to_param :attributes
+    alias_method :to_param, :attributes
 
     def attributes_for_save
-      { self.class.singular_resource_name.to_sym => attribute_changes }
+      {self.class.singular_resource_name.to_sym => attribute_changes}
     end
 
     private
@@ -206,7 +197,7 @@ module ZendeskAPI
 
   class SingularResource < Resource
     def attributes_for_save
-      { self.class.resource_name.to_sym => attribute_changes }
+      {self.class.resource_name.to_sym => attribute_changes}
     end
   end
 

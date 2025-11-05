@@ -1,4 +1,4 @@
-require 'zendesk_api'
+require "zendesk_api"
 
 class ResourceHandler < YARD::Handlers::Ruby::Base
   handles method_call(:has), method_call(:has_many)
@@ -39,21 +39,21 @@ class ResourceHandler < YARD::Handlers::Ruby::Base
 
     if many
       reader.signature = "def #{name}=(options = {})"
-      reader.parameters = [['options', {}]]
+      reader.parameters = [["options", {}]]
       reader.docstring.add_tag(YARD::Tags::Tag.new(:param, "Options to pass to the collection object", "Hash", "options"))
     end
 
     writer = YARD::CodeObjects::MethodObject.new(namespace, "#{name}=")
     register(writer)
     writer.signature = "def #{name}=(value)"
-    writer.parameters = [['value', nil]]
+    writer.parameters = [["value", nil]]
     writer.dynamic = true
     writer.docstring.add_tag(YARD::Tags::Tag.new(:return, "The associated object", klass.name))
     writer.docstring.add_tag(YARD::Tags::Tag.new(:param, "The associated object or its attributes", "Hash or #{klass.name}", "value"))
   end
 
   def walk_namespace(namespace)
-    namespace.to_s.split('::').inject(ZendeskAPI) do |klass, namespace|
+    namespace.to_s.split("::").inject(ZendeskAPI) do |klass, namespace|
       klass.const_get(namespace)
     end
   end

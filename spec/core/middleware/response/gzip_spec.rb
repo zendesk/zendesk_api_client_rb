@@ -1,5 +1,3 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::Middleware::Response::Gzip do
   context "with content-encoding = 'gzip'" do
     subject { '{ "TESTDATA": true }' }
@@ -10,16 +8,16 @@ describe ZendeskAPI::Middleware::Response::Gzip do
       gz.close
 
       stub_request(:get, %r{blergh}).to_return(
-        :headers => {
-          :content_encoding => "gzip",
-          :content_type => "application/json"
+        headers: {
+          content_encoding: "gzip",
+          content_type: "application/json"
         },
-        :body => encoded_data.string
+        body: encoded_data.string
       )
     end
 
     it "should inflate returned body" do
-      expect(client.connection.get("blergh").body['TESTDATA']).to be(true)
+      expect(client.connection.get("blergh").body["TESTDATA"]).to be(true)
     end
   end
 end

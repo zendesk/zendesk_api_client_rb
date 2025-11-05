@@ -1,14 +1,13 @@
-$:.unshift(File.join(File.dirname(__FILE__), "macros"))
+ENV["TZ"] = "CET" # something that is not local and not utc so we find all the bugs
 
-ENV['TZ'] = 'CET' # something that is not local and not utc so we find all the bugs
-
-require 'zendesk_api'
-require 'vcr'
-require 'logger'
-require 'stringio'
+require "zendesk_api"
+require "vcr"
+require "logger"
+require "stringio"
+require "webmock/rspec"
 
 begin
-  require 'byebug'
+  require "byebug"
 rescue LoadError
   puts "WARN: #{$ERROR_INFO.message} Continuing..."
 end
@@ -19,15 +18,15 @@ class String
   end
 end
 
-require File.join(File.dirname(__FILE__), '..', 'macros', 'resource_macros')
-require File.join(File.dirname(__FILE__), '..', 'fixtures', 'zendesk')
-require File.join(File.dirname(__FILE__), '..', 'fixtures', 'test_resources')
+require_relative "../macros/resource_macros"
+require_relative "../fixtures/zendesk"
+require_relative "../fixtures/test_resources"
 
 $credentials_warning = false
 
 # tests fail when this is included in a Module (someone else also defines client)
 def client
-  credentials = File.join(File.dirname(__FILE__), '..', 'fixtures', 'credentials.yml')
+  credentials = File.join(__dir__, "..", "fixtures", "credentials.yml")
   @client ||= begin
     client = ZendeskAPI::Client.new do |config|
       if File.exist?(credentials)
@@ -48,7 +47,7 @@ def client
             def options
               super.tap do |options|
                 options[:headers].merge!(
-                  :authorization => "Basic #{Base64.urlsafe_encode64(authorization)}"
+                  authorization: "Basic #{Base64.urlsafe_encode64(authorization)}"
                 )
               end
             end
@@ -95,7 +94,7 @@ def client
 end
 
 def random_string(length = 10)
-  ('a'..'z').to_a.shuffle.take(length).join
+  ("a".."z").to_a.shuffle.take(length).join
 end
 
 module TestHelper
@@ -108,7 +107,7 @@ module TestHelper
   end
 
   def silence_stderr
-    $stderr = File.new(File::NULL, 'w')
+    $stderr = File.new(File::NULL, "w")
     yield
   ensure
     $stderr = STDERR
@@ -120,7 +119,7 @@ module TestHelper
 
   def stub_json_request(verb, path_matcher, body = json, options = {})
     stub_request(verb, path_matcher).to_return(Hashie::Mash.new(
-      :body => body, :headers => { :content_type => "application/json", :content_length => body.size }
+      body: body, headers: {content_type: "application/json", content_length: body.size}
     ).deep_merge(options))
   end
 end
@@ -128,7 +127,7 @@ end
 RSpec.configure do |c|
   c.before(:each) do
     ZendeskAPI::TestResource.associations.clear
-    ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
+    ZendeskAPI::TestResource.has_many :children, class: ZendeskAPI::TestResource::TestChild
   end
 
   c.before(:each) do
@@ -156,8 +155,8 @@ RSpec.configure do |c|
 end
 
 VCR.configure do |c|
-  c.cassette_library_dir = File.join(File.dirname(__FILE__), '..', 'fixtures', 'cassettes')
-  c.default_cassette_options = { :record => :new_episodes, :decode_compressed_response => true, :serialize_with => :json, :preserve_exact_body_bytes => true }
+  c.cassette_library_dir = File.join(__dir__, "..", "fixtures", "cassettes")
+  c.default_cassette_options = {record: :new_episodes, decode_compressed_response: true, serialize_with: :json, preserve_exact_body_bytes: true}
   c.hook_into :webmock
   c.configure_rspec_metadata!
 
@@ -165,5 +164,3 @@ VCR.configure do |c|
   # In development, this helps debugging.
   c.allow_http_connections_when_no_cassette = true
 end
-
-include WebMock::API

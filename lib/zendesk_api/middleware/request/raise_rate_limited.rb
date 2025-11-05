@@ -1,5 +1,5 @@
-require 'faraday/middleware'
-require 'zendesk_api/error'
+require "faraday/middleware"
+require_relative "../../error"
 
 module ZendeskAPI
   module Middleware
@@ -19,7 +19,7 @@ module ZendeskAPI
           response = @app.call(env)
 
           if ERROR_CODES.include?(response.env[:status])
-            @logger&.warn 'You have been rate limited. Raising error...'
+            @logger&.warn "You have been rate limited. Raising error..."
             raise Error::RateLimited, env
           else
             response

@@ -1,4 +1,5 @@
-require 'base64'
+require "base64"
+
 module ZendeskAPI
   # @private
   module Middleware

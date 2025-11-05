@@ -1,14 +1,12 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::Organization, :delete_after do
   def valid_attributes
-    { :name => 'organization_name_ruby_sdk_test' }
+    {name: "organization_name_ruby_sdk_test"}
   end
 
   it_should_be_creatable
-  it_should_be_updatable :name, 'organization_name_ruby_sdk_test_updated'
+  it_should_be_updatable :name, "organization_name_ruby_sdk_test_updated"
   it_should_be_deletable
-  it_should_be_readable :organizations, :create => true
+  it_should_be_readable :organizations, create: true
 
   describe "create_or_update" do
     after do
@@ -44,8 +42,8 @@ describe ZendeskAPI::Organization, :delete_after do
         ZendeskAPI::Organization.create_many!(
           client,
           [
-            { name: "one", external_id: "101" },
-            { name: "two", external_id: "102" }
+            {name: "one", external_id: "101"},
+            {name: "two", external_id: "102"}
           ]
         ).tap do |job|
           job.reload! while job.status != "completed"

@@ -1,5 +1,3 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::Configuration do
   subject { ZendeskAPI::Configuration.new }
 
@@ -10,7 +8,7 @@ describe ZendeskAPI::Configuration do
   end
 
   it "should set accept header properly" do
-    expect(subject.options[:headers][:accept]).to eq('application/json')
+    expect(subject.options[:headers][:accept]).to eq("application/json")
   end
 
   it "should set user agent header properly" do
@@ -26,7 +24,7 @@ describe ZendeskAPI::Configuration do
   end
 
   it "should merge options with client_options" do
-    subject.client_options = { :ssl => { :verify => false } }
+    subject.client_options = {ssl: {verify: false}}
     expect(subject.options[:ssl][:verify]).to eq(false)
   end
 

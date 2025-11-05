@@ -10,7 +10,7 @@ class VerbHandler < YARD::Handlers::Ruby::Base
     verb.docstring.add_tag(YARD::Tags::Tag.new(:return, "Success of this call", "Boolean"))
 
     verb.signature = "def #{name}=(options = {})"
-    verb.parameters = [['options', {}]]
+    verb.parameters = [["options", {}]]
     verb.docstring.add_tag(YARD::Tags::Tag.new(:param, "Options to pass to the request", "Hash", "options"))
   end
 end

@@ -10,13 +10,13 @@ module ZendeskAPI
           super(app)
 
           @logger = logger || begin
-            require 'logger'
+            require "logger"
             ::Logger.new($stdout)
           end
         end
 
         def call(env)
-          @logger.info "#{env[:method]} #{env[:url].to_s}"
+          @logger.info "#{env[:method]} #{env[:url]}"
           @logger.debug dump_debug(env, :request_headers)
 
           @app.call(env).on_complete do |env|

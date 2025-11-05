@@ -66,16 +66,16 @@ module ZendeskAPI
     # @return [Hash] Faraday-formatted hash of options.
     def options
       {
-        :headers => {
-          :accept => 'application/json',
-          :accept_encoding => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          :user_agent => "ZendeskAPI Ruby #{ZendeskAPI::VERSION}"
+        headers: {
+          accept: "application/json",
+          accept_encoding: "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+          user_agent: "ZendeskAPI Ruby #{ZendeskAPI::VERSION}"
         },
-        :request => {
-          :open_timeout => 10,
-          :timeout => 60
+        request: {
+          open_timeout: 10,
+          timeout: 60
         },
-        :url => @url
+        url: @url
       }.merge(client_options)
     end
   end

@@ -1,5 +1,3 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::Trackie do
   subject { ZendeskAPI::Trackie.new }
   before(:each) { subject.clear_changes }
@@ -73,23 +71,22 @@ describe ZendeskAPI::Trackie do
     end
   end
 
-=begin TODO
-  context "nested arrays" do
-    before(:each) do
-      subject[:key] = []
-      subject.clear_changes
-      subject[:key] << :test
-    end
-
-    it "should include changes from nested array" do
-      expect(subject.changes[:key]).to eq([:test])
-    end
-
-    specify "subject should be changed" do
-      expect(subject.changed?).to be(true)
-    end
-  end
-=end
+  # TODO
+  #   context "nested arrays" do
+  #     before(:each) do
+  #       subject[:key] = []
+  #       subject.clear_changes
+  #       subject[:key] << :test
+  #     end
+  #
+  #     it "should include changes from nested array" do
+  #       expect(subject.changes[:key]).to eq([:test])
+  #     end
+  #
+  #     specify "subject should be changed" do
+  #       expect(subject.changed?).to be(true)
+  #     end
+  #   end
 
   context "nested hashes in arrays" do
     before(:each) do

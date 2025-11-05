@@ -1,4 +1,4 @@
-require 'zendesk_api/helpers'
+require_relative "helpers"
 
 module ZendeskAPI
   # Represents an association between two resources
@@ -43,7 +43,7 @@ module ZendeskAPI
     # * with_parent - Include the parent path (false by default)
     # * with_id - Include the instance id, if possible (true)
     def generate_path(*args)
-      options = SilentMash.new(:with_id => true)
+      options = SilentMash.new(with_id: true)
       if args.last.is_a?(Hash)
         original_options = args.pop
         options.merge!(original_options)
@@ -66,7 +66,7 @@ module ZendeskAPI
         namespace[0] = @options.path || @options[:class].resource_path
       end
 
-      if id = extract_id(instance, options, original_options)
+      if (id = extract_id(instance, options, original_options))
         namespace << id
       end
 
@@ -93,7 +93,7 @@ module ZendeskAPI
 
     # @return [Array<String>] ['ZendeskAPI', 'Voice', etc.. ]
     def ignorable_namespace_strings
-      ZendeskAPI::DataNamespace.descendants.map { |klass| klass.to_s.split('::') }.flatten.uniq
+      ZendeskAPI::DataNamespace.descendants.map { |klass| klass.to_s.split("::") }.flatten.uniq
     end
 
     def _side_load(resource, side_loads)
@@ -106,10 +106,10 @@ module ZendeskAPI
       end
     end
 
-    def side_load_from_parent_id(resource, side_loads, key)
+    def side_load_from_parent_id(resource, side_loads, _key)
       key = "#{resource.class.singular_resource_name}_id"
 
-      resource.send("#{options.name}=", _side_load(resource, side_loads.select {|side_load|
+      resource.send("#{options.name}=", _side_load(resource, side_loads.select { |side_load|
         side_load[key] == resource.id
       }))
     end
@@ -117,7 +117,7 @@ module ZendeskAPI
     def side_load_from_child_ids(resource, side_loads, plural_key)
       ids = resource.send(plural_key)
 
-      resource.send("#{options.name}=", _side_load(resource, side_loads.select {|side_load|
+      resource.send("#{options.name}=", _side_load(resource, side_loads.select { |side_load|
         ids.include?(side_load[options.include_key])
       }))
     end
@@ -178,7 +178,7 @@ module ZendeskAPI
 
     def extract_id(instance, options, original_options)
       if options[:with_id] && !@options[:class].ancestors.include?(SingularResource)
-        if instance && instance.id
+        if instance&.id
           instance.id
         elsif options[:id]
           original_options.delete(:id) || original_options.delete("id")

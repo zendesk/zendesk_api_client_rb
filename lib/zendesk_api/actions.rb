@@ -66,7 +66,7 @@ module ZendeskAPI
       self.class.associations.each do |association_data|
         association_name = association_data[:name]
 
-        next unless send("#{association_name}_used?") && association = send(association_name)
+        next unless send("#{association_name}_used?") && (association = send(association_name))
 
         inline_creation = association_data[:inline] == :create && new_record?
         changed = association.is_a?(Collection) || association.changed?
@@ -110,7 +110,7 @@ module ZendeskAPI
         @client = client # so we can use client.logger in rescue
 
         raise ArgumentError, "No :id given" unless options[:id] || options["id"] || ancestors.include?(SingularResource)
-        association = options.delete(:association) || Association.new(:class => self)
+        association = options.delete(:association) || Association.new(class: self)
 
         includes = Array(options[:include])
         options[:include] = includes.join(",") if includes.any?
@@ -170,9 +170,9 @@ module ZendeskAPI
     # @param [Client] client The {Client} object to be used
     # @param [Array] attributes_array An array of resources to be created.
     # @return [JobStatus] the {JobStatus} instance for this create job
-    def create_many!(client, attributes_array, association = Association.new(:class => self))
+    def create_many!(client, attributes_array, association = Association.new(class: self))
       response = client.connection.post("#{association.generate_path}/create_many") do |req|
-        req.body = { resource_name => attributes_array }
+        req.body = {resource_name => attributes_array}
 
         yield req if block_given?
       end
@@ -185,9 +185,9 @@ module ZendeskAPI
     # Creates or updates resource using the create_or_update endpoint.
     # @param [Client] client The {Client} object to be used
     # @param [Hash] attributes The attributes to create.
-    def create_or_update!(client, attributes, association = Association.new(:class => self))
+    def create_or_update!(client, attributes, association = Association.new(class: self))
       response = client.connection.post("#{association.generate_path}/create_or_update") do |req|
-        req.body = { singular_resource_name => attributes }
+        req.body = {singular_resource_name => attributes}
 
         yield req if block_given?
       end
@@ -204,10 +204,10 @@ module ZendeskAPI
     #
     # @return [JobStatus] the {JobStatus} instance for this destroy job
     def create_or_update_many!(client, attributes)
-      association = Association.new(:class => self)
+      association = Association.new(class: self)
 
       response = client.connection.post("#{association.generate_path}/create_or_update_many") do |req|
-        req.body = { resource_name => attributes }
+        req.body = {resource_name => attributes}
 
         yield req if block_given?
       end
@@ -269,9 +269,9 @@ module ZendeskAPI
     # @param [Client] client The {Client} object to be used
     # @param [Array] ids An array of ids to destroy
     # @return [JobStatus] the {JobStatus} instance for this destroy job
-    def destroy_many!(client, ids, association = Association.new(:class => self))
+    def destroy_many!(client, ids, association = Association.new(class: self))
       response = client.connection.delete("#{association.generate_path}/destroy_many") do |req|
-        req.params = { :ids => ids.join(',') }
+        req.params = {ids: ids.join(",")}
 
         yield req if block_given?
       end
@@ -300,9 +300,9 @@ module ZendeskAPI
       # @param [Hash] attributes The attributes to update. Default to {
       def update!(client, attributes = {}, &)
         ZendeskAPI::Client.check_deprecated_namespace_usage attributes, singular_resource_name
-        resource = new(client, :id => attributes.delete(:id), :global => attributes.delete(:global), :association => attributes.delete(:association))
+        resource = new(client, id: attributes.delete(:id), global: attributes.delete(:global), association: attributes.delete(:association))
         resource.attributes.merge!(attributes)
-        resource.save!(:force_update => resource.is_a?(SingularResource), &)
+        resource.save!(force_update: resource.is_a?(SingularResource), &)
         resource
       end
     end
@@ -315,14 +315,14 @@ module ZendeskAPI
     # @param [Hash] attributes The attributes to update resources with
     # @return [JobStatus] the {JobStatus} instance for this destroy job
     def update_many!(client, ids_or_attributes, attributes = {})
-      association = attributes.delete(:association) || Association.new(:class => self)
+      association = attributes.delete(:association) || Association.new(class: self)
 
       response = client.connection.put("#{association.generate_path}/update_many") do |req|
         if attributes == {}
-          req.body = { resource_name => ids_or_attributes }
+          req.body = {resource_name => ids_or_attributes}
         else
-          req.params = { :ids => ids_or_attributes.join(',') }
-          req.body = { singular_resource_name => attributes }
+          req.params = {ids: ids_or_attributes.join(",")}
+          req.body = {singular_resource_name => attributes}
         end
 
         yield req if block_given?

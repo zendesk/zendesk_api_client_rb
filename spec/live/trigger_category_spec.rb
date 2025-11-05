@@ -1,8 +1,6 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::TriggerCategory, :delete_after do
   def valid_attributes
-    { :name => "New category" }
+    {name: "New category"}
   end
 
   it_should_be_readable :trigger_categories

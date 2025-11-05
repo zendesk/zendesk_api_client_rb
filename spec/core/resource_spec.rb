@@ -1,11 +1,9 @@
-require 'core/spec_helper'
-
 describe ZendeskAPI::Resource do
   context "initialize" do
     context "with :global as part of attributes" do
       it "should set @global_params" do
-        resource = ZendeskAPI::TestResource.new(client, { :global => { :something => 'hey' } })
-        expect(resource.instance_variable_get(:@global_params)).to eq({ :something => 'hey' })
+        resource = ZendeskAPI::TestResource.new(client, {global: {something: "hey"}})
+        expect(resource.instance_variable_get(:@global_params)).to eq({something: "hey"})
       end
     end
   end
@@ -16,37 +14,37 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({ :test_resource => { :test => :hello } }))
+        stub_json_request(:put, %r{test_resources/#{id}}).with(body: json({test_resource: {test: :hello}}))
       end
 
       it "should return instance of resource" do
-        expect(subject.update(client, :id => id, :test => :hello)).to be_truthy
+        expect(subject.update(client, id: id, test: :hello)).to be_truthy
       end
 
       context "with global params" do
         before(:each) do
-          stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({ :test_resource => { :test => :hello }, :something => "something" }))
+          stub_json_request(:put, %r{test_resources/#{id}}).with(body: json({test_resource: {test: :hello}, something: "something"}))
         end
 
         it "should return instance of resource" do
-          expect(subject.update(client, :id => id, :test => :hello, :global => { :something => "something" })).to be_truthy
+          expect(subject.update(client, id: id, test: :hello, global: {something: "something"})).to be_truthy
         end
       end
 
       context "with client error" do
         before(:each) do
-          stub_request(:put, %r{test_resources/#{id}}).to_return(:status => 500)
+          stub_request(:put, %r{test_resources/#{id}}).to_return(status: 500)
         end
 
         it "should handle it properly" do
-          expect { silence_logger { expect(subject.update(client, :id => id)).to be(false) } }.to_not raise_error
+          expect { silence_logger { expect(subject.update(client, id: id)).to be(false) } }.to_not raise_error
         end
       end
     end
 
     context "instance method" do
       subject(:resource) do
-        ZendeskAPI::TestResource.new(client, :id => 1)
+        ZendeskAPI::TestResource.new(client, id: 1)
       end
 
       it "is delegated to the attributes" do
@@ -64,29 +62,29 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_json_request(:delete, %r{test_resources/#{id}}).to_return(:status => 204)
+        stub_json_request(:delete, %r{test_resources/#{id}}).to_return(status: 204)
       end
 
       it "should return instance of resource" do
-        expect(subject.destroy(client, :id => id)).to be(true)
+        expect(subject.destroy(client, id: id)).to be(true)
       end
 
       context "with client error" do
         before(:each) do
-          stub_request(:delete, %r{test_resources/#{id}}).to_return(:status => 500)
+          stub_request(:delete, %r{test_resources/#{id}}).to_return(status: 500)
         end
 
         it "should handle it properly" do
-          expect { silence_logger { expect(subject.destroy(client, :id => id)).to be(false) } }.to_not raise_error
+          expect { silence_logger { expect(subject.destroy(client, id: id)).to be(false) } }.to_not raise_error
         end
       end
     end
 
     context "instance method" do
-      subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+      subject { ZendeskAPI::TestResource.new(client, id: 1) }
 
       before(:each) do
-        stub_request(:delete, %r{test_resources}).to_return(:status => 204)
+        stub_request(:delete, %r{test_resources}).to_return(status: 204)
       end
 
       it "should return true and set destroyed" do
@@ -97,7 +95,7 @@ describe ZendeskAPI::Resource do
 
       context "with client error" do
         before(:each) do
-          stub_request(:delete, %r{test_resources}).to_return(:status => 500)
+          stub_request(:delete, %r{test_resources}).to_return(status: 500)
         end
 
         it "should return false and not set destroyed" do
@@ -109,10 +107,10 @@ describe ZendeskAPI::Resource do
   end
 
   context "#save!" do
-    subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+    subject { ZendeskAPI::TestResource.new(client, id: 1) }
 
     before(:each) do
-      stub_request(:put, %r{test_resources/1}).to_return(:status => 422)
+      stub_request(:put, %r{test_resources/1}).to_return(status: 422)
     end
 
     it "should raise if save fails" do
@@ -122,11 +120,11 @@ describe ZendeskAPI::Resource do
 
   context "#save" do
     let(:id) { 1 }
-    let(:attr) { { :param => "test" } }
-    subject { ZendeskAPI::TestResource.new(client, attr.merge(:id => id)) }
+    let(:attr) { {param: "test"} }
+    subject { ZendeskAPI::TestResource.new(client, attr.merge(id: id)) }
 
     before :each do
-      stub_json_request(:put, %r{test_resources/#{id}}, json(:test_resource => { :param => "abc" }))
+      stub_json_request(:put, %r{test_resources/#{id}}, json(test_resource: {param: "abc"}))
     end
 
     it "should not save if already destroyed" do
@@ -146,8 +144,8 @@ describe ZendeskAPI::Resource do
     context "with unused associations" do
       before do
         ZendeskAPI::TestResource.associations.clear
-        ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
-        ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
+        ZendeskAPI::TestResource.has :child, class: ZendeskAPI::TestResource::TestChild
+        ZendeskAPI::TestResource.has_many :children, class: ZendeskAPI::TestResource::TestChild
       end
 
       it "should not touch them" do
@@ -157,7 +155,7 @@ describe ZendeskAPI::Resource do
 
     context "with client error" do
       before :each do
-        stub_request(:put, %r{test_resources/1}).to_return(:status => 500)
+        stub_request(:put, %r{test_resources/1}).to_return(status: 500)
       end
 
       it "should be properly handled" do
@@ -169,7 +167,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource.new(client, attr) }
 
       before :each do
-        stub_json_request(:post, %r{test_resources}, json(:test_resource => attr.merge(:id => id)), :status => 201)
+        stub_json_request(:post, %r{test_resources}, json(test_resource: attr.merge(id: id)), status: 201)
       end
 
       it "should be true without an id" do
@@ -187,9 +185,9 @@ describe ZendeskAPI::Resource do
       context "has" do
         before(:each) do
           ZendeskAPI::TestResource.associations.clear
-          ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
+          ZendeskAPI::TestResource.has :child, class: ZendeskAPI::TestResource::TestChild
           stub_json_request(:put, %r{test_resources})
-          subject.child = { :id => 2 }
+          subject.child = {id: 2}
         end
 
         it "should call save on the association" do
@@ -213,10 +211,10 @@ describe ZendeskAPI::Resource do
       context "has_many" do
         before(:each) do
           ZendeskAPI::TestResource.associations.clear
-          ZendeskAPI::TestResource.has_many :children, :class => ZendeskAPI::TestResource::TestChild
+          ZendeskAPI::TestResource.has_many :children, class: ZendeskAPI::TestResource::TestChild
 
           stub_json_request(:put, %r{test_resources})
-          stub_json_request(:get, %r{children}, json(:test_children => []))
+          stub_json_request(:get, %r{children}, json(test_children: []))
         end
 
         it "should reset children_ids on save" do
@@ -235,21 +233,21 @@ describe ZendeskAPI::Resource do
         end
 
         it "should save the associated objects when it is new" do
-          subject.children = [{ :foo => "bar" }]
+          subject.children = [{foo: "bar"}]
           expect(subject.children.first).to receive(:save)
           subject.save
           expect(subject.instance_variable_get(:@children)).to be_nil
         end
 
         it "should not save the associated objects when it is set via full hash" do
-          subject.children = [{ :id => 1, :foo => "bar" }]
+          subject.children = [{id: 1, foo: "bar"}]
           expect(subject.children.first).to_not receive(:save)
           subject.save
           expect(subject.instance_variable_get(:@children)).to be_nil
         end
 
         it "should save the associated objects when it is changes" do
-          subject.children = [{ :id => 1 }]
+          subject.children = [{id: 1}]
           subject.children.first.foo = "bar"
           expect(subject.children.first).to receive(:save)
           subject.save
@@ -270,9 +268,9 @@ describe ZendeskAPI::Resource do
 
         context "true" do
           before(:each) do
-            ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => true
+            ZendeskAPI::TestResource.has :nil, class: ZendeskAPI::NilResource, inline: true
 
-            subject.nil = { :abc => :def }
+            subject.nil = {abc: :def}
           end
 
           it "should save param data" do
@@ -291,8 +289,8 @@ describe ZendeskAPI::Resource do
 
         context "create" do
           before(:each) do
-            ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => :create
-            subject.nil = { :abc => :def }
+            ZendeskAPI::TestResource.has :nil, class: ZendeskAPI::NilResource, inline: :create
+            subject.nil = {abc: :def}
           end
 
           context "with a new record" do
@@ -336,7 +334,7 @@ describe ZendeskAPI::Resource do
     end
 
     context "instance method" do
-      subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+      subject { ZendeskAPI::TestResource.new(client, id: 1) }
 
       it "throws an argumenterror without a :verb" do
         expect { subject.send(method) }.to raise_error(ArgumentError)
@@ -344,51 +342,51 @@ describe ZendeskAPI::Resource do
 
       context "with an array response" do
         before(:each) do
-          stub_json_request(:put, %r{test_resources/1/#{method}}, json(:test_resources => [{ :id => 1, :method => method }]))
+          stub_json_request(:put, %r{test_resources/1/#{method}}, json(test_resources: [{id: 1, method: method}]))
         end
 
         it "should return true" do
-          expect(subject.send(method, :verb => :put)).to be(true)
+          expect(subject.send(method, verb: :put)).to be(true)
         end
 
         it "should update the attributes if they exist" do
-          subject.send(method, :verb => :put)
+          subject.send(method, verb: :put)
           expect(subject[:method]).to eq(method)
         end
       end
 
       context "with a resource response" do
         before(:each) do
-          stub_json_request(:put, %r{test_resources/1/#{method}}, json(:test_resource => { :id => 1, :method => method }))
+          stub_json_request(:put, %r{test_resources/1/#{method}}, json(test_resource: {id: 1, method: method}))
         end
 
         it "should return true" do
-          expect(subject.send(method, :verb => :put)).to be(true)
+          expect(subject.send(method, verb: :put)).to be(true)
         end
 
         it "should update the attributes if they exist" do
-          subject.send(method, :verb => :put)
+          subject.send(method, verb: :put)
           expect(subject[:method]).to eq(method)
         end
       end
 
       context "with client error" do
         before(:each) do
-          stub_request(:put, %r{test_resources/1/#{method}}).to_return(:status => 500)
+          stub_request(:put, %r{test_resources/1/#{method}}).to_return(status: 500)
         end
 
         it "doesn't raise without bang" do
-          silence_logger { expect(subject.send(method.to_s, :verb => :put)).to be(false) }
+          silence_logger { expect(subject.send(method.to_s, verb: :put)).to be(false) }
         end
 
         it "raises with bang" do
-          expect { silence_logger { subject.send("#{method}!", :verb => :put) } }.to raise_error(ZendeskAPI::Error::ClientError)
+          expect { silence_logger { subject.send("#{method}!", verb: :put) } }.to raise_error(ZendeskAPI::Error::ClientError)
         end
       end
     end
   end
 
-  %w{put post delete}.each do |verb|
+  %w[put post delete].each do |verb|
     context "on #{verb}" do
       let(:method) { "test_#{verb}_method" }
       before(:each) do
@@ -404,11 +402,11 @@ describe ZendeskAPI::Resource do
       end
 
       context "instance method" do
-        subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+        subject { ZendeskAPI::TestResource.new(client, id: 1) }
 
         context "with an array response" do
           before(:each) do
-            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resources => [{ :id => 1, :method => method }]))
+            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(test_resources: [{id: 1, method: method}]))
           end
 
           it "should return true" do
@@ -423,7 +421,7 @@ describe ZendeskAPI::Resource do
 
         context "with a resource response" do
           before(:each) do
-            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resource => { :id => 1, :method => method }))
+            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(test_resource: {id: 1, method: method}))
           end
 
           it "should return true" do
@@ -438,7 +436,7 @@ describe ZendeskAPI::Resource do
 
         context "with client error" do
           before(:each) do
-            stub_request(verb.to_sym, %r{test_resources/1/#{method}}).to_return(:status => 500)
+            stub_request(verb.to_sym, %r{test_resources/1/#{method}}).to_return(status: 500)
           end
 
           it "doesn't raise without bang" do
@@ -460,12 +458,12 @@ describe ZendeskAPI::Resource do
       else
         "#<ZendeskAPI::User {\"foo\"=>:bar}>"
       end
-      expect(ZendeskAPI::User.new(client, :foo => :bar).inspect).to eq(expected_user_representation)
+      expect(ZendeskAPI::User.new(client, foo: :bar).inspect).to eq(expected_user_representation)
     end
   end
 
   context "#to_json" do
-    subject { ZendeskAPI::TestResource.new(client, :id => 1) }
+    subject { ZendeskAPI::TestResource.new(client, id: 1) }
 
     it "should call #to_json on @attributes" do
       expect(subject.attributes).to receive(:to_json)
@@ -488,27 +486,27 @@ describe ZendeskAPI::Resource do
     end
 
     it "is different when id is different" do
-      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to_not eq(ZendeskAPI::TestResource.new(client, :id => 1))
+      expect(ZendeskAPI::TestResource.new(client, id: 2)).to_not eq(ZendeskAPI::TestResource.new(client, id: 1))
     end
 
     it "is same when class is Data" do
-      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to eq(ZendeskAPI::TestResource::TestChild.new(client, :id => 2))
+      expect(ZendeskAPI::TestResource.new(client, id: 2)).to eq(ZendeskAPI::TestResource::TestChild.new(client, id: 2))
     end
 
     it "is same when class is Integer" do
-      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to eq(2)
+      expect(ZendeskAPI::TestResource.new(client, id: 2)).to eq(2)
     end
 
     it "is different when class is Integer" do
-      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to_not eq(3)
+      expect(ZendeskAPI::TestResource.new(client, id: 2)).to_not eq(3)
     end
 
     it "is different when other is no resource" do
-      expect(ZendeskAPI::TestResource.new(client, :id => 2)).to_not eq(nil)
+      expect(ZendeskAPI::TestResource.new(client, id: 2)).to_not eq(nil)
     end
 
     it "warns about weird comparissons" do
-      object = ZendeskAPI::TestResource.new(client, :id => 2)
+      object = ZendeskAPI::TestResource.new(client, id: 2)
       expect(object).to receive(:warn)
       expect(object).to_not eq("xxx")
     end
@@ -533,13 +531,13 @@ describe ZendeskAPI::Resource do
       end
 
       it "should always PUT" do
-        ZendeskAPI::SingularTestResource.update(client, :test => :test)
+        ZendeskAPI::SingularTestResource.update(client, test: :test)
       end
     end
   end
 
   context "Ticket#assignee" do
-    subject { ZendeskAPI::Ticket.new(client, :id => 1, :assignee_id => nil) }
+    subject { ZendeskAPI::Ticket.new(client, id: 1, assignee_id: nil) }
 
     it "should not try and make a request" do
       expect(subject.assignee).to be_nil
@@ -553,19 +551,19 @@ describe ZendeskAPI::Resource do
     end
 
     it "fails to build with nil (e.g. empty response from server)" do
-      expect{
+      expect {
         ZendeskAPI::TestResource.new(client, nil)
       }.to raise_error(/Expected a Hash/i)
     end
   end
 
   context "#create_or_update!" do
-    let(:params) { { :email => "hello@example.local", :test => :hello } }
+    let(:params) { {email: "hello@example.local", test: :hello} }
 
     subject { ZendeskAPI::CreateOrUpdateTestResource }
 
     before :each do
-      stub_json_request(:post, %r{create_or_update_test_resources/create_or_update}, json(:create_or_update_test_resource => { :param => "abc" }))
+      stub_json_request(:post, %r{create_or_update_test_resources/create_or_update}, json(create_or_update_test_resource: {param: "abc"}))
     end
 
     it "should return instance of resource" do
@@ -574,7 +572,7 @@ describe ZendeskAPI::Resource do
 
     context "with client error" do
       before(:each) do
-        stub_request(:post, %r{create_or_update_test_resources/create_or_update}).to_return(:status => 500)
+        stub_request(:post, %r{create_or_update_test_resources/create_or_update}).to_return(status: 500)
       end
 
       it "should raise" do

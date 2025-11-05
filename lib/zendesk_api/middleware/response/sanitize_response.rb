@@ -3,7 +3,7 @@ module ZendeskAPI
     module Response
       class SanitizeResponse < Faraday::Middleware
         def on_complete(env)
-          env[:body].scrub!('')
+          env[:body].scrub!("")
         end
       end
     end
