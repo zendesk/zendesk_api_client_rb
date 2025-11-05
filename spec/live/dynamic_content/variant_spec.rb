@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::DynamicContent::Item::Variant, :delete_after do
   def valid_attributes
@@ -6,7 +6,7 @@ describe ZendeskAPI::DynamicContent::Item::Variant, :delete_after do
       :locale_id => 2,
       :active => true,
       :default => false,
-      :content => 'Ruby SDK Test Variant Content'
+      :content => "Ruby SDK Test Variant Content"
     }
   end
 

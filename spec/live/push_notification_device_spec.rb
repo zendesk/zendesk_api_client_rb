@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::PushNotificationDevice do
   describe ".destroy_many" do

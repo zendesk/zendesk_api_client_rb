@@ -1,11 +1,11 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Resource do
   context "initialize" do
     context "with :global as part of attributes" do
       it "should set @global_params" do
-        resource = ZendeskAPI::TestResource.new(client, { :global => { :something => 'hey' } })
-        expect(resource.instance_variable_get(:@global_params)).to eq({ :something => 'hey' })
+        resource = ZendeskAPI::TestResource.new(client, { :global => { :something => "hey" } })
+        expect(resource.instance_variable_get(:@global_params)).to eq({ :something => "hey" })
       end
     end
   end

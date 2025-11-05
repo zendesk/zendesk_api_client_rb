@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::TicketMetric do
   it_should_be_readable :ticket_metrics

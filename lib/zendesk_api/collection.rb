@@ -1,7 +1,7 @@
-require 'zendesk_api/resource'
-require 'zendesk_api/resources'
-require 'zendesk_api/search'
-require 'zendesk_api/pagination'
+require "zendesk_api/resource"
+require "zendesk_api/resources"
+require "zendesk_api/search"
+require "zendesk_api/pagination"
 
 module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
@@ -289,7 +289,7 @@ module ZendeskAPI
         inspect = []
         inspect << "options=#{@options.inspect}" if @options.any?
         inspect << "path=#{path}"
-        "#{Inflection.singular(@resource)} collection [#{inspect.join(',')}]"
+        "#{Inflection.singular(@resource)} collection [#{inspect.join(",")}]"
       end
     end
 
@@ -370,7 +370,7 @@ module ZendeskAPI
       # some params use comma-joined strings instead of query-based arrays for multiple values
       @options.each do |k, v|
         if SPECIALLY_JOINED_PARAMS.include?(k.to_sym) && v.is_a?(Array)
-          @options[k] = v.join(',')
+          @options[k] = v.join(",")
         end
       end
     end

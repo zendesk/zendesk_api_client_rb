@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 RSpec.describe ZendeskAPI::Ticket do
   def valid_attributes
@@ -29,12 +29,12 @@ RSpec.describe ZendeskAPI::Ticket do
 
   describe "#create" do
     context "when passing large objects as parameters" do
-      let(:requester) { client.users.search(query: 'role:end-user').detect(&:photo) }
+      let(:requester) { client.users.search(query: "role:end-user").detect(&:photo) }
       let(:organization) { client.organizations.sample }
       let(:ticket_parameters) do
         {
-          subject: 'live spec subject',
-          description: 'live spec description',
+          subject: "live spec subject",
+          description: "live spec description",
           requester: requester,
           organization: organization
         } # We should always use requester/organiztion _id for existing records. This test should not be used as a guideline on how to use the sdk.
@@ -46,7 +46,7 @@ RSpec.describe ZendeskAPI::Ticket do
         end
       end
 
-      it 'is creatable' do
+      it "is creatable" do
         expect(requester).to_not be_nil
 
         expect(@ticket.id).to_not be_nil

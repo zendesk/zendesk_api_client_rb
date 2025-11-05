@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::User, :delete_after do
   def valid_attributes
@@ -27,7 +27,7 @@ describe ZendeskAPI::User, :delete_after do
   end
 
   context "passwords", :vcr do
-    let(:password) { client.config.password || ENV.fetch('PASSWORD', nil) }
+    let(:password) { client.config.password || ENV.fetch("PASSWORD", nil) }
 
     it "sets the password" do
       agent.set_password!(:password => password)

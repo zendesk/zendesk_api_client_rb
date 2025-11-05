@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::LRUCache do
   let(:cache) { ZendeskAPI::LRUCache.new(2) }

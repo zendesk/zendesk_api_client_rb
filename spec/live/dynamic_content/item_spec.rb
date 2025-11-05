@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::DynamicContent::Item, :delete_after do
   def valid_attributes
@@ -11,6 +11,6 @@ describe ZendeskAPI::DynamicContent::Item, :delete_after do
 
   it_should_be_readable :dynamic_content, :items, :create => true
   it_should_be_creatable
-  it_should_be_updatable :name, 'Updated Dynamic Content Item name Ruby SDK test'
+  it_should_be_updatable :name, "Updated Dynamic Content Item name Ruby SDK test"
   it_should_be_deletable
 end

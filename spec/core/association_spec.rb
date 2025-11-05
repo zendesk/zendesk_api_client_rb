@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Association do
   let(:instance) { ZendeskAPI::TestResource.new(client, :id => 1) }
@@ -102,10 +102,10 @@ describe ZendeskAPI::Association do
       end
 
       it "should not change objects" do
-        child = 'foo'
+        child = "foo"
         children = [child]
         instance.children = children
-        expect(children[0]).to eq('foo')
+        expect(children[0]).to eq("foo")
       end
 
       it "is not used when not used" do
@@ -182,7 +182,7 @@ describe ZendeskAPI::Association do
 
     context "when parent has a namespace" do
       before(:each) do
-        instance.class.namespace 'hello'
+        instance.class.namespace "hello"
       end
 
       after(:each) do

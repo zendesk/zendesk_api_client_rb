@@ -60,7 +60,7 @@ module ResourceMacros
       end
 
       it "should be savable" do
-        expect(@updatable_object.save).to be(true), "Expected object to save, but it failed with errors: #{@updatable_object.errors&.full_messages&.join(', ')}"
+        expect(@updatable_object.save).to be(true), "Expected object to save, but it failed with errors: #{@updatable_object.errors&.full_messages&.join(", ")}"
       end
 
       context "after save" do
@@ -121,7 +121,7 @@ module ResourceMacros
     options = args.last.is_a?(Hash) ? args.pop : {}
     create = !!options.delete(:create)
     klass = args.first.is_a?(ZendeskAPI::DataResource) ? args.shift : client
-    context_name = "read_#{klass.class}_#{args.join('_')}"
+    context_name = "read_#{klass.class}_#{args.join("_")}"
 
     context context_name, :vcr do
       before(:all) do

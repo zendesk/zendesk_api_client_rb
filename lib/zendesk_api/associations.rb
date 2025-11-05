@@ -1,4 +1,4 @@
-require 'zendesk_api/helpers'
+require "zendesk_api/helpers"
 
 module ZendeskAPI
   # This module holds association method for resources.

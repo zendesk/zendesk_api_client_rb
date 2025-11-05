@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Section, :delete_after do
   it "expects section to exist" do
@@ -17,13 +17,13 @@ describe ZendeskAPI::Section, :delete_after do
     end
 
     let(:category_section) do
-      VCR.use_cassette('create_section_within_category') do
+      VCR.use_cassette("create_section_within_category") do
         category.sections.create(valid_attributes)
       end
     end
 
     after do
-      VCR.use_cassette('delete_section_within_category') do
+      VCR.use_cassette("delete_section_within_category") do
         category_section.destroy
       end
     end

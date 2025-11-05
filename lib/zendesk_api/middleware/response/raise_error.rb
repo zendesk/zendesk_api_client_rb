@@ -1,4 +1,4 @@
-require 'zendesk_api/error'
+require "zendesk_api/error"
 
 module ZendeskAPI
   module Middleware

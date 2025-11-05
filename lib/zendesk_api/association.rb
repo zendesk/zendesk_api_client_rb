@@ -1,4 +1,4 @@
-require 'zendesk_api/helpers'
+require "zendesk_api/helpers"
 
 module ZendeskAPI
   # Represents an association between two resources
@@ -93,7 +93,7 @@ module ZendeskAPI
 
     # @return [Array<String>] ['ZendeskAPI', 'Voice', etc.. ]
     def ignorable_namespace_strings
-      ZendeskAPI::DataNamespace.descendants.map { |klass| klass.to_s.split('::') }.flatten.uniq
+      ZendeskAPI::DataNamespace.descendants.map { |klass| klass.to_s.split("::") }.flatten.uniq
     end
 
     def _side_load(resource, side_loads)

@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 RSpec.describe ZendeskAPI::Tag, :vcr, :not_findable do
   [organization, user, ticket].each do |object|

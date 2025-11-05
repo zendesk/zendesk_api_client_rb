@@ -10,7 +10,7 @@ module ZendeskAPI
           super(app)
 
           @logger = logger || begin
-            require 'logger'
+            require "logger"
             ::Logger.new($stdout)
           end
         end

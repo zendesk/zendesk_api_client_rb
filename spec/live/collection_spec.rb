@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Collection do
   subject do
@@ -11,7 +11,7 @@ describe ZendeskAPI::Collection do
     end
 
     before(:each) do
-      VCR.use_cassette('collection_fetch_users') do
+      VCR.use_cassette("collection_fetch_users") do
         subject.per_page(1).page(2)
         subject.fetch(true)
       end

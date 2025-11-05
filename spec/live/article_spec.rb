@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 RSpec.describe ZendeskAPI::Article, :delete_after do
   it "expects article to exist" do
@@ -25,13 +25,13 @@ RSpec.describe ZendeskAPI::Article, :delete_after do
     end
 
     let(:section_article) do
-      VCR.use_cassette('create_article_within_section') do
+      VCR.use_cassette("create_article_within_section") do
         section.articles.create(valid_attributes)
       end
     end
 
     after do
-      VCR.use_cassette('delete_article_within_section') do
+      VCR.use_cassette("delete_article_within_section") do
         section_article.destroy
       end
     end

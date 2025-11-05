@@ -5,8 +5,8 @@ module ZendeskAPI
     end
 
     def current_user
-      VCR.use_cassette('current_user') do
-        @current_user ||= client.users.find(:id => 'me')
+      VCR.use_cassette("current_user") do
+        @current_user ||= client.users.find(:id => "me")
       end
     end
 
@@ -29,7 +29,7 @@ module ZendeskAPI
     end
 
     def topic
-      VCR.use_cassette('valid_topic') do
+      VCR.use_cassette("valid_topic") do
         @topic ||= client.topics.fetch.find { |t| t.name == "Test Topic" }
         @topic ||= client.topics.create(
           :name => "Test Topic",
@@ -39,27 +39,27 @@ module ZendeskAPI
     end
 
     def category
-      VCR.use_cassette('valid_category') do
+      VCR.use_cassette("valid_category") do
         @category ||= client.categories.first
         @category ||= client.categories.create(:name => "Test Category")
       end
     end
 
     def section
-      VCR.use_cassette('valid_section') do
+      VCR.use_cassette("valid_section") do
         @section ||= client.sections.first
       end
     end
 
     def article
-      VCR.use_cassette('valid_article') do
+      VCR.use_cassette("valid_article") do
         @article ||= client.articles.first
       end
     end
 
     def ticket
-      VCR.use_cassette('valid_ticket') do
-        @ticket ||= client.tickets.detect { |t| t.status != 'closed' }
+      VCR.use_cassette("valid_ticket") do
+        @ticket ||= client.tickets.detect { |t| t.status != "closed" }
         @ticket ||= client.tickets.create(
           :subject => "Test Ticket",
           :description => "This is a test of the emergency alert system.",
@@ -69,13 +69,13 @@ module ZendeskAPI
     end
 
     def suspended_ticket
-      VCR.use_cassette('valid_suspended_ticket') do
+      VCR.use_cassette("valid_suspended_ticket") do
         @suspended_ticket ||= client.suspended_tickets.first
         @suspended_ticket ||= begin
           client.anonymous_requests.create(
             :subject => "Test Ticket",
             :comment => { :value => "Help! I need somebody." },
-            :requester => { :email => "zendesk-api-client-ruby-anonymous-#{client.config.username}", :name => 'Anonymous User' }
+            :requester => { :email => "zendesk-api-client-ruby-anonymous-#{client.config.username}", :name => "Anonymous User" }
           )
           client.suspended_tickets(:reload => true).first
         end
@@ -83,14 +83,14 @@ module ZendeskAPI
     end
 
     def group
-      VCR.use_cassette('valid_group') do
+      VCR.use_cassette("valid_group") do
         @ticket ||= client.groups.detect { |g| !g.default }
         @ticket ||= client.groups.create(:name => "Test Group")
       end
     end
 
     def organization
-      VCR.use_cassette('valid_organization') do
+      VCR.use_cassette("valid_organization") do
         current_user.organization
         # ... or, if you can't work it out locally:
         # @organization ||= current_user.organization || client.organizations.fetch!.last
@@ -98,7 +98,7 @@ module ZendeskAPI
     end
 
     def brand
-      VCR.use_cassette('valid_brand') do
+      VCR.use_cassette("valid_brand") do
         @brand ||= client.brands.detect do |brand|
           client.config.url.start_with?(brand.brand_url)
         end
@@ -106,9 +106,9 @@ module ZendeskAPI
     end
 
     def dynamic_content_item
-      VCR.use_cassette('valid_dynamic_content') do
+      VCR.use_cassette("valid_dynamic_content") do
         @item ||= client.dynamic_content.items.first
-        @item ||= client.dynamic_content.items.create!(:name => 'Test Item', :content => 'Testing', :default_locale_id => 1)
+        @item ||= client.dynamic_content.items.create!(:name => "Test Item", :content => "Testing", :default_locale_id => 1)
       end
     end
   end

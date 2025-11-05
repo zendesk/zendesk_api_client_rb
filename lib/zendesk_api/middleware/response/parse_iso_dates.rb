@@ -1,4 +1,4 @@
-require 'time'
+require "time"
 require "faraday/response"
 
 module ZendeskAPI

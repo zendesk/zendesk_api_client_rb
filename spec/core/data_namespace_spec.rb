@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 class ZendeskAPI::DataNamespaceTest; end
 

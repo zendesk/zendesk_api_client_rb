@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::SuspendedTicket do
   def valid_attributes
@@ -7,7 +7,7 @@ describe ZendeskAPI::SuspendedTicket do
       :comment => { :value => "Help! I need somebody." },
       :requester => {
         :email => "zendesk-api-client-ruby-anonymous-#{client.config.username}",
-        :name => 'Anonymous User'
+        :name => "Anonymous User"
       }
     }
   end

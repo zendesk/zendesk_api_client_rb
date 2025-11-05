@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Bookmark, :not_findable, :delete_after do
   def valid_attributes

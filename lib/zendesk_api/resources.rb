@@ -20,7 +20,7 @@ module ZendeskAPI
 
   class Channel < Resource
     def work_items
-      @work_items ||= attributes.fetch('relationships', {}).fetch('work_items', {}).fetch('data', []).map do |work_item_attributes|
+      @work_items ||= attributes.fetch("relationships", {}).fetch("work_items", {}).fetch("data", []).map do |work_item_attributes|
         WorkItem.new(@client, work_item_attributes)
       end
     end
@@ -35,7 +35,7 @@ module ZendeskAPI
     end
 
     def initialize(client, attributes = {})
-      nested_attributes = attributes.delete('attributes')
+      nested_attributes = attributes.delete("attributes")
       super(client, attributes.merge(nested_attributes))
     end
 
@@ -59,9 +59,9 @@ module ZendeskAPI
 
     def channels
       @channels ||= begin
-        channel_attributes_array = @client.connection.get(attributes['links']['self']).body.fetch('included')
+        channel_attributes_array = @client.connection.get(attributes["links"]["self"]).body.fetch("included")
         channel_attributes_array.map do |channel_attributes|
-          nested_attributes = channel_attributes.delete('attributes')
+          nested_attributes = channel_attributes.delete("attributes")
           Channel.new(@client, channel_attributes.merge(nested_attributes))
         end
       end
@@ -421,10 +421,10 @@ module ZendeskAPI
 
   class AnonymousRequest < CreateResource
     def self.singular_resource_name
-      'request'
+      "request"
     end
 
-    namespace 'portal'
+    namespace "portal"
   end
 
   class TicketField < Resource
@@ -844,7 +844,7 @@ module ZendeskAPI
     class CurrentSession < SingularResource
       class << self
         def singular_resource_name
-          'session'
+          "session"
         end
 
         alias :resource_name :singular_resource_name
@@ -854,7 +854,7 @@ module ZendeskAPI
     has_many Session
 
     def current_session
-      ZendeskAPI::User::CurrentSession.find(@client, :user_id => 'me')
+      ZendeskAPI::User::CurrentSession.find(@client, :user_id => "me")
     end
 
     delete :logout
@@ -879,9 +879,9 @@ module ZendeskAPI
     has_many Identity
 
     has_many Request
-    has_many :requested_tickets, :class => Ticket, :path => 'tickets/requested'
-    has_many :assigned_tickets, :class => Ticket, :path => 'tickets/assigned'
-    has_many :ccd_tickets, :class => Ticket, :path => 'tickets/ccd'
+    has_many :requested_tickets, :class => Ticket, :path => "tickets/requested"
+    has_many :assigned_tickets, :class => Ticket, :path => "tickets/assigned"
+    has_many :ccd_tickets, :class => Ticket, :path => "tickets/ccd"
 
     has_many Group
     has_many GroupMembership
@@ -1104,7 +1104,7 @@ module ZendeskAPI
     include DataNamespace
 
     class Item < ZendeskAPI::Resource
-      namespace 'dynamic_content'
+      namespace "dynamic_content"
 
       class Variant < ZendeskAPI::Resource
       end

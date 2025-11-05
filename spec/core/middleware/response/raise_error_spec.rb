@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Middleware::Response::RaiseError do
   context "with a failed connection" do
@@ -94,8 +94,8 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
         end
 
         {
-          error: 'There was an error',
-          errors: 'There were several errors'
+          error: "There was an error",
+          errors: "There were several errors"
         }.each do |key, message|
           context "with only an #{key} key" do
             let(:body) { JSON.dump(key => message) }
@@ -131,8 +131,8 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
         end
 
         {
-          error: 'There was an error',
-          errors: 'There were several errors'
+          error: "There was an error",
+          errors: "There were several errors"
         }.each do |key, message|
           context "with only an #{key} key" do
             let(:body) { JSON.dump(key => message) }

@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 RSpec.describe ZendeskAPI::Schedule, :delete_after do
   def valid_attributes

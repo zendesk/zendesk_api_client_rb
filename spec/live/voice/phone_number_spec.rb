@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Voice::PhoneNumber, :delete_after do
   # We have to find a valid token before we create a phone number

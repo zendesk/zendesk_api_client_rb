@@ -1,6 +1,6 @@
 require "faraday/middleware"
 require "mini_mime"
-require 'tempfile'
+require "tempfile"
 
 module ZendeskAPI
   module Middleware

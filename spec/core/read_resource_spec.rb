@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::ReadResource do
   context "find" do
@@ -25,7 +25,7 @@ describe ZendeskAPI::ReadResource do
       subject do
         Class.new(ZendeskAPI::TestResource) do
           def self.singular_resource_name
-            'hello'
+            "hello"
           end
 
           def handle_response(response)
@@ -77,20 +77,20 @@ describe ZendeskAPI::ReadResource do
   context "#reload!" do
     let(:id) { 2 }
 
-    subject { ZendeskAPI::TestResource.new(client, :id => id, :name => 'Old Name') }
+    subject { ZendeskAPI::TestResource.new(client, :id => id, :name => "Old Name") }
 
     before(:each) do
       stub_json_request(:get, %r{test_resources/#{id}}, json("test_resource" => { :id => id, :name => "New Name" }))
     end
 
     it "reloads the data" do
-      expect(subject.name).to eq('Old Name')
+      expect(subject.name).to eq("Old Name")
       assert_not_requested(:get, %r{test_resources/#{id}})
 
       subject.reload!
 
       assert_requested(:get, %r{test_resources/#{id}})
-      expect(subject.name).to eq('New Name')
+      expect(subject.name).to eq("New Name")
     end
   end
 end

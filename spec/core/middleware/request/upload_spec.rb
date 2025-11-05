@@ -1,6 +1,6 @@
-require 'core/spec_helper'
-require 'tempfile'
-require 'action_dispatch'
+require "core/spec_helper"
+require "tempfile"
+require "action_dispatch"
 
 describe ZendeskAPI::Middleware::Request::Upload do
   subject { ZendeskAPI::Middleware::Request::Upload.new(lambda { |env| env }) }
@@ -49,7 +49,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
   context "with an ActionDispatch::Http::UploadedFile" do
     before(:each) do
-      @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello.jpg", :tempfile => Tempfile.new(['hello', '.jpg']))
+      @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello.jpg", :tempfile => Tempfile.new(["hello", ".jpg"]))
       @env = subject.call(:body => { :file => @upload })
     end
 
@@ -76,10 +76,10 @@ describe ZendeskAPI::Middleware::Request::Upload do
       end
 
       it "should use the content_type of ActionDispatch::Http::UploadedFile " do
-        @upload.content_type = 'application/random'
+        @upload.content_type = "application/random"
 
         env = subject.call(:body => { :file => @upload })
-        expect(env[:body][:uploaded_data].content_type).to eq('application/random')
+        expect(env[:body][:uploaded_data].content_type).to eq("application/random")
       end
     end
   end

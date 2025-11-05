@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 gem "jruby-openssl", platforms: :jruby
 gem "mini_mime"

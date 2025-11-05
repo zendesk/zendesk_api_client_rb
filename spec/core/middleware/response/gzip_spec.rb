@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Middleware::Response::Gzip do
   context "with content-encoding = 'gzip'" do
@@ -19,7 +19,7 @@ describe ZendeskAPI::Middleware::Response::Gzip do
     end
 
     it "should inflate returned body" do
-      expect(client.connection.get("blergh").body['TESTDATA']).to be(true)
+      expect(client.connection.get("blergh").body["TESTDATA"]).to be(true)
     end
   end
 end

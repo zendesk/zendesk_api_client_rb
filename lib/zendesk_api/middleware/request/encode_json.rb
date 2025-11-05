@@ -4,12 +4,12 @@ module ZendeskAPI
     # @private
     module Request
       class EncodeJson < Faraday::Middleware
-        CONTENT_TYPE = 'Content-Type'.freeze
-        MIME_TYPE = 'application/json'.freeze
+        CONTENT_TYPE = "Content-Type".freeze
+        MIME_TYPE = "application/json".freeze
 
         def call(env)
           type = env[:request_headers][CONTENT_TYPE].to_s
-          type = type.split(';', 2).first if type.index(';')
+          type = type.split(";", 2).first if type.index(";")
           type
 
           if env[:body] && !(env[:body].respond_to?(:to_str) && env[:body].empty?) && (type.empty? || type == MIME_TYPE)

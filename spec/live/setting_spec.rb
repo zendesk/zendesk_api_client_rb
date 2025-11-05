@@ -1,13 +1,13 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Setting do
-  it_should_be_readable :settings, :path => 'account/settings'
+  it_should_be_readable :settings, :path => "account/settings"
 
-  under(user = ZendeskAPI::User.new(client, :id => 'me')) do
+  under(user = ZendeskAPI::User.new(client, :id => "me")) do
     it_should_be_readable user, :settings
 
-    describe 'updating', :vcr do
-      it 'should be updatable' do
+    describe "updating", :vcr do
+      it "should be updatable" do
         settings = user.settings
         lotus = settings.detect { |set| set.on == "lotus" }
 

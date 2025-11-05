@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::OrganizationSubscription, :delete_after do
   before(:all) do

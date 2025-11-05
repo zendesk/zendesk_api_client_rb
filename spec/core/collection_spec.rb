@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::Collection do
   subject do
@@ -60,10 +60,10 @@ describe ZendeskAPI::Collection do
     it "should defer #create_many! to the resource class" do
       collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
       stub_json_request(:post, %r{bulk_test_resources/create_many$}, json(:job_status => {}))
-      collection.create_many!([{ :name => 'Mick' }, { :name => 'Steven' }])
+      collection.create_many!([{ :name => "Mick" }, { :name => "Steven" }])
       assert_requested(:post, %r{bulk_test_resources/create_many$},
                        :body => {
-                         :bulk_test_resources => [{ :name => 'Mick' }, { :name => 'Steven' }]
+                         :bulk_test_resources => [{ :name => "Mick" }, { :name => "Steven" }]
                        }
       )
     end
@@ -78,7 +78,7 @@ describe ZendeskAPI::Collection do
     it "should defer #update_many! to the resource class" do
       collection = ZendeskAPI::Collection.new(client, ZendeskAPI::BulkTestResource)
       stub_json_request(:put, %r{bulk_test_resources/update_many\?}, json(:job_status => {}))
-      collection.update_many!([1, 2, 3], { :name => 'Mick' })
+      collection.update_many!([1, 2, 3], { :name => "Mick" })
       assert_requested(:put, %r{bulk_test_resources/update_many\?ids=1,2,3$})
     end
 
@@ -344,7 +344,7 @@ describe ZendeskAPI::Collection do
 
     context "incremental requests" do
       subject do
-        ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :path => 'incremental/test_resources?start_time=0')
+        ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource, :path => "incremental/test_resources?start_time=0")
       end
 
       before(:each) do
@@ -549,8 +549,8 @@ describe ZendeskAPI::Collection do
         {
           "meta" => {
             "has_more" => true,
-            "after_cursor" => 'after_cursor',
-            "before_cursor" => 'before_cursor'
+            "after_cursor" => "after_cursor",
+            "before_cursor" => "before_cursor"
           },
           "links" => {
             "next" => "next_page",
@@ -581,7 +581,7 @@ describe ZendeskAPI::Collection do
     end
 
     context "with a hash" do
-      let(:object) { double('ZendeskAPI::TestResource', :changes => [:xxx], :changed? => true, :destroyed? => false) }
+      let(:object) { double("ZendeskAPI::TestResource", :changes => [:xxx], :changed? => true, :destroyed? => false) }
 
       it "should call create with those options" do
         expect(ZendeskAPI::TestResource).to receive(:new).

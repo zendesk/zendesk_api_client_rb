@@ -1,4 +1,4 @@
-require 'core/spec_helper'
+require "core/spec_helper"
 
 describe ZendeskAPI::TopicSubscription, :delete_after, :not_findable do
   let!(:subscription) do
