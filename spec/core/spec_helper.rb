@@ -21,7 +21,6 @@ end
 require_relative "../macros/resource_macros"
 require_relative "../fixtures/zendesk"
 require_relative "../fixtures/test_resources"
-require_relative "../support/instrumentation_helper"
 
 $credentials_warning = false
 
@@ -153,7 +152,6 @@ RSpec.configure do |c|
   c.extend ZendeskAPI::Fixtures
   c.include ZendeskAPI::Fixtures
   c.include TestHelper
-  c.include InstrumentationHelper
 end
 
 VCR.configure do |c|

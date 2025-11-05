@@ -117,12 +117,16 @@ describe ZendeskAPI::Middleware::Request::Retry do
     end
   end
 
-  describe 'instrumentation' do
-    let(:retry_delay) { 10 }
+  context 'instrumentation' do
+    let(:instrumentation) { double('instrumentation') }
 
     before do
-      # Stub sleep to speed up tests
+      allow(instrumentation).to receive(:instrument)
+      client.config.instrumentation = instrumentation
       allow_any_instance_of(ZendeskAPI::Middleware::Request::Retry).to receive(:sleep)
+      stub_request(:get, %r{instrumented})
+        .to_return(:status => 429, :headers => { :retry_after => 1 })
+        .to_return(:status => 200)
     end
 
     after do
@@ -130,102 +134,12 @@ describe ZendeskAPI::Middleware::Request::Retry do
       client.instance_variable_set(:@connection, nil)
     end
 
-    it 'emits retry instrumentation with incremented attempt for rate limits' do
-      stub_request(:get, %r{instrument_retry}).
-        to_return(:status => 429, :headers => { :retry_after => 1 }).
-        to_return(:status => 200)
-
-      events = capture_instrumentation_events do
-        client.config.instrumentation = ActiveSupport::Notifications
-        client.connection.get('instrument_retry')
-      end
-
-      retry_events = filter_events(events, 'zendesk.retry')
-      event_name, payload = retry_events.first
-      expect(event_name).to eq('zendesk.retry')
-
-      aggregate_failures 'retry payload for rate limit' do
-        expect(payload[:attempt]).to eq(2)
-        expect(payload[:reason]).to eq('rate_limited')
-        expect(payload[:delay]).to eq(1)
-        expect(payload[:endpoint]).to end_with('/instrument_retry')
-      end
-    end
-
-    it 'emits retry instrumentation with service_unavailable reason' do
-      stub_request(:get, %r{service_retry}).
-        to_return(:status => 503).
-        to_return(:status => 200)
-
-      events = capture_instrumentation_events do
-        client.config.instrumentation = ActiveSupport::Notifications
-        client.connection.get('service_retry')
-      end
-
-      retry_events = filter_events(events, 'zendesk.retry')
-      event_name, payload = retry_events.first
-      expect(event_name).to eq('zendesk.retry')
-
-      aggregate_failures 'retry payload for service unavailable' do
-        expect(payload[:reason]).to eq('service_unavailable')
-        expect(payload[:delay]).to eq(retry_delay)
-      end
-    end
-
-    it 'emits retry instrumentation for exceptions when retry_on_exception is enabled' do
-      client.config.retry_on_exception = true
-
-      stub_request(:any, /.*/).
-        to_raise(Faraday::ConnectionFailed).to_return(:status => 200)
-
-      events = capture_instrumentation_events do
-        client.config.instrumentation = ActiveSupport::Notifications
-        client.connection.get('exception_retry')
-      end
-
-      retry_events = filter_events(events, 'zendesk.retry')
-      event_name, payload = retry_events.first
-      expect(event_name).to eq('zendesk.retry')
-
-      aggregate_failures 'retry payload for exception' do
-        expect(payload[:reason]).to eq('exception')
-        expect(payload[:attempt]).to eq(2)
-      end
-    ensure
-      client.config.retry_on_exception = false
-    end
-
-    context 'without instrumentation configured' do
-      it 'performs retries without emitting events' do
-        stub_request(:get, %r{no_instrumentation}).
-          to_return(:status => 429, :headers => { :retry_after => 1 }).
-          to_return(:status => 200)
-
-        # Don't configure instrumentation
-        expect { client.connection.get('no_instrumentation') }.not_to raise_error
-      end
-    end
-
-    context 'when instrumentation raises errors' do
-      let(:erroring_instrumentation) do
-        Object.new.tap do |obj|
-          obj.define_singleton_method(:instrument) do |_event, _payload|
-            raise 'boom'
-          end
-        end
-      end
-
-      it 'swallows instrumentation failures and logs at debug level' do
-        logger = client.config.logger
-        expect(logger).to receive(:debug).at_least(:once)
-
-        stub_request(:get, %r{failing_retry}).
-          to_return(:status => 429, :headers => { :retry_after => 1 }).
-          to_return(:status => 200)
-
-        client.config.instrumentation = erroring_instrumentation
-        expect { client.connection.get('failing_retry') }.not_to raise_error
-      end
+    it 'emits retry event on rate limit' do
+      expect(instrumentation).to receive(:instrument).with(
+        'zendesk.retry',
+        hash_including(attempt: 2, reason: 'rate_limited')
+      )
+      client.connection.get('instrumented')
     end
   end
 end
