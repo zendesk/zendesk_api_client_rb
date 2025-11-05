@@ -32,7 +32,7 @@ module ResourceMacros
 
       it "should be findable", unless: metadata[:not_findable] do
         options = default_options
-        options.merge!(id: @creatable_object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
+        options[:id] = @creatable_object.id unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
         expect(described_class.find(client, options)).to eq(@creatable_object)
       end
 
@@ -76,7 +76,7 @@ module ResourceMacros
 
         it "should be findable", unless: metadata[:not_findable] do
           options = default_options
-          options.merge!(id: @updatable_object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
+          options[:id] = @updatable_object.id unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
           expect(described_class.find(client, options)).to eq(@updatable_object)
         end
       end
@@ -108,7 +108,7 @@ module ResourceMacros
         expect(@deletable_object.destroyed?).to be(true)
         if (!options.key?(:find) || options[:find]) && !example.metadata[:not_findable]
           opts = default_options
-          opts.merge!(id: @deletable_object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
+          opts[:id] = @deletable_object.id unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
           obj = described_class.find(client, opts)
 
           if options[:find]
@@ -169,7 +169,7 @@ module ResourceMacros
 
         if described_class.respond_to?(:find) && !example.metadata[:not_findable]
           options = default_options
-          options.merge!(id: object.id) unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
+          options[:id] = object.id unless described_class.ancestors.include?(ZendeskAPI::SingularResource)
           expect(described_class.find(client, options)).to_not be_nil
         end
       end

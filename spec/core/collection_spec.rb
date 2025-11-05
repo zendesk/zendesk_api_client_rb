@@ -274,7 +274,7 @@ describe ZendeskAPI::Collection do
       end
 
       it "should retry from the same page" do
-        class SearchError < Exception; end
+        class SearchError < RuntimeError; end
 
         expect do |b|
           client.insert_callback do |env|

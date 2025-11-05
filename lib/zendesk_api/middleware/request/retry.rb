@@ -34,20 +34,20 @@ module ZendeskAPI
 
             if exception_happened
               seconds_left = DEFAULT_RETRY_AFTER.to_i
-              @logger.warn "An exception happened, waiting #{seconds_left} seconds... #{e}" if @logger
+              @logger&.warn "An exception happened, waiting #{seconds_left} seconds... #{e}"
             else
               seconds_left = (response.env[:response_headers][:retry_after] || DEFAULT_RETRY_AFTER).to_i
             end
 
-            @logger.warn "You have been rate limited. Retrying in #{seconds_left} seconds..." if @logger
+            @logger&.warn "You have been rate limited. Retrying in #{seconds_left} seconds..."
 
             seconds_left.times do |i|
               sleep 1
               time_left = seconds_left - i
-              @logger.warn "#{time_left}..." if time_left > 0 && time_left % 5 == 0 && @logger
+              @logger&.warn "#{time_left}..." if time_left > 0 && time_left % 5 == 0
             end
 
-            @logger.warn "" if @logger
+            @logger&.warn ""
 
             @app.call(original_env)
           else

@@ -61,7 +61,7 @@ module ZendeskAPI
         end
 
         args << {} unless args.last.is_a?(Hash)
-        args.last.merge!(association: @association)
+        args.last[:association] = @association
 
         @resource_class.send(deferrable, @client, *args)
       end
@@ -161,7 +161,7 @@ module ZendeskAPI
     def fetch!(reload = false)
       if @resources && (!@fetchable || !reload)
         return @resources
-      elsif association && association.options.parent && association.options.parent.new_record?
+      elsif association&.options&.parent&.new_record?
         return (@resources = [])
       end
 
@@ -389,7 +389,7 @@ module ZendeskAPI
       @client.connection.send(@verb || "get", path) do |req|
         opts = @options.delete_if { |_, v| v.nil? }
 
-        req.params.merge!(include: @includes.join(",")) if @includes.any?
+        req.params[:include] = @includes.join(",") if @includes.any?
 
         if %w[put post].include?(@verb.to_s)
           req.body = opts
@@ -444,7 +444,7 @@ module ZendeskAPI
         @resource_class.new(@client, res)
       else
         res = {id: res}
-        res.merge!(association: @association) if with_association
+        res[:association] = @association if with_association
         @resource_class.new(@client, res)
       end
     end
@@ -464,7 +464,8 @@ module ZendeskAPI
     # If you call client.tickets.foo - and foo is not an attribute nor an association, it ends up here, as a new collection
     def next_collection(name, *args, &)
       opts = args.last.is_a?(Hash) ? args.last : {}
-      opts.merge!(collection_path: [*@collection_path, name], page: nil)
+      opts[:collection_path] = [*@collection_path, name]
+      opts[:page] = nil
       # Why `page: nil`?
       # when you do client.tickets.fetch followed by client.tickets.foos => the request to /tickets/foos will
       # have the options page set to whatever the last options were for the tickets collection

@@ -81,7 +81,8 @@ module ZendeskAPI
           end
 
           class_level_association = build_association(klass, resource_name, class_level_options)
-          class_level_association.merge!(singular: true, id_column: "#{resource_name}_id")
+          class_level_association[:singular] = true
+          class_level_association[:id_column] = "#{resource_name}_id"
 
           associations << class_level_association
 
@@ -140,7 +141,8 @@ module ZendeskAPI
           end
 
           class_level_association = build_association(klass, resource_name, class_level_options)
-          class_level_association.merge!(singular: false, id_column: "#{resource_name}_ids")
+          class_level_association[:singular] = false
+          class_level_association[:id_column] = "#{resource_name}_ids"
 
           associations << class_level_association
 

@@ -178,7 +178,7 @@ module ZendeskAPI
 
     def extract_id(instance, options, original_options)
       if options[:with_id] && !@options[:class].ancestors.include?(SingularResource)
-        if instance && instance.id
+        if instance&.id
           instance.id
         elsif options[:id]
           original_options.delete(:id) || original_options.delete("id")
