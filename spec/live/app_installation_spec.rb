@@ -6,7 +6,7 @@ describe ZendeskAPI::AppInstallation do
       ZendeskAPI::App::Upload.new(client, :id => "spec/fixtures/sample_app.zip").tap(&:save!)
     end
 
-    attributes = { :upload_id => upload.id, :name => "My App", :short_description => "Testing" }
+    attributes = {:upload_id => upload.id, :name => "My App", :short_description => "Testing"}
 
     app = ZendeskAPI::App.new(client, attributes)
 

@@ -28,7 +28,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should build a object set via hash" do
-        instance.child = { :id => 2 }
+        instance.child = {:id => 2}
         expect(instance.child.id).to eq(2)
       end
 
@@ -42,7 +42,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should fetch an object known by id" do
-        stub_json_request(:get, %r{test_resources/1/child/5}, json(:test_child => { :id => 5 }))
+        stub_json_request(:get, %r{test_resources/1/child/5}, json(:test_child => {:id => 5}))
         instance.child_id = 5
         expect(instance.child.id).to eq(5)
       end
@@ -84,7 +84,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should build and cache objects set via hash" do
-        instance.children = [{ :id => 2 }]
+        instance.children = [{:id => 2}]
         expect(instance.children.map(&:id)).to eq([2])
         expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
@@ -96,7 +96,7 @@ describe ZendeskAPI::Association do
       end
 
       it "should fetch unknown objects" do
-        stub_json_request(:get, %r{test_resources/1/children}, json(:test_children => [{ :id => 2 }, { :id => 3 }]))
+        stub_json_request(:get, %r{test_resources/1/children}, json(:test_children => [{:id => 2}, {:id => 3}]))
         expect(instance.children.map(&:id)).to eq([2, 3])
         expect(instance.children).to be_instance_of(ZendeskAPI::Collection)
       end
@@ -154,7 +154,7 @@ describe ZendeskAPI::Association do
 
     context "with a passed in id" do
       it "should generate specific resource path" do
-        opts = { :id => 1 }
+        opts = {:id => 1}
         expect(subject.generate_path(opts)).to eq("test_resources/1")
         expect(opts).to be_empty
       end
@@ -237,7 +237,7 @@ describe ZendeskAPI::Association do
 
     context "with parent id passed in" do
       it "should generate nested resource path" do
-        opts = { :test_resource_id => 3 }
+        opts = {:test_resource_id => 3}
         expect(subject.generate_path(opts)).to eq("test_resources/3/children")
         expect(opts).to be_empty
       end

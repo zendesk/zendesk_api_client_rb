@@ -4,7 +4,7 @@ describe ZendeskAPI::Macro do
   def valid_attributes
     {
       :title => "my test macro",
-      :actions => [{ :field => "priority", :value => "urgent" }]
+      :actions => [{:field => "priority", :value => "urgent"}]
     }
   end
 
@@ -14,7 +14,7 @@ describe ZendeskAPI::Macro do
 
   describe "#add_action" do
     it "should add an action to the current actions" do
-      new_action = { :field => "status", :value => "solved" }
+      new_action = {:field => "status", :value => "solved"}
       existing_actions = subject.actions
 
       expect(existing_actions).not_to include(new_action)

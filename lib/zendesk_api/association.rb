@@ -109,7 +109,7 @@ module ZendeskAPI
     def side_load_from_parent_id(resource, side_loads, key)
       key = "#{resource.class.singular_resource_name}_id"
 
-      resource.send("#{options.name}=", _side_load(resource, side_loads.select {|side_load|
+      resource.send("#{options.name}=", _side_load(resource, side_loads.select { |side_load|
         side_load[key] == resource.id
       }))
     end
@@ -117,7 +117,7 @@ module ZendeskAPI
     def side_load_from_child_ids(resource, side_loads, plural_key)
       ids = resource.send(plural_key)
 
-      resource.send("#{options.name}=", _side_load(resource, side_loads.select {|side_load|
+      resource.send("#{options.name}=", _side_load(resource, side_loads.select { |side_load|
         ids.include?(side_load[options.include_key])
       }))
     end

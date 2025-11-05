@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "zendesk_api/version"
 
 Gem::Specification.new do |s|
-  s.name        = "zendesk_api"
-  s.version     = ZendeskAPI::VERSION
-  s.authors     = ["Steven Davidovitz", "Michael Grosser"]
-  s.email       = ["support@zendesk.com"]
-  s.homepage    = "https://developer.zendesk.com"
-  s.summary     = "Zendesk REST API Client"
+  s.name = "zendesk_api"
+  s.version = ZendeskAPI::VERSION
+  s.authors = ["Steven Davidovitz", "Michael Grosser"]
+  s.email = ["support@zendesk.com"]
+  s.homepage = "https://developer.zendesk.com"
+  s.summary = "Zendesk REST API Client"
   s.description = "Ruby wrapper for the REST API at https://www.zendesk.com. Documentation at https://developer.zendesk.com."
-  s.license     = "Apache-2.0"
+  s.license = "Apache-2.0"
 
   s.metadata = {
     "bug_tracker_uri" => "https://github.com/zendesk/zendesk_api_client_rb/issues",
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir.glob("{lib,util}/**/*") << "LICENSE"
 
-  s.required_ruby_version     = ">= 3.1"
+  s.required_ruby_version = ">= 3.1"
   s.required_rubygems_version = ">= 1.3.6"
 
   s.add_dependency "faraday", "> 2.0.0"

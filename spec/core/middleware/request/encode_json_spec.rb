@@ -5,10 +5,10 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
     ZendeskAPI::Middleware::Request::EncodeJson.new(lambda { |x| x })
   end
 
-  let(:response) { app.call({ :request_headers => {} }.merge(env)) }
+  let(:response) { app.call({:request_headers => {}}.merge(env)) }
 
   context "with a nil body" do
-    let(:env) { { :body => nil } }
+    let(:env) { {:body => nil} }
 
     it "should not return json" do
       expect(response[:body]).to be_nil
@@ -16,7 +16,7 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
   end
 
   context "with an empty body" do
-    let(:env) { { :body => "" } }
+    let(:env) { {:body => ""} }
 
     it "should not return json" do
       expect(response[:body]).to eq("")
@@ -25,7 +25,7 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
 
   context "with a proper mime type" do
     context "empty" do
-      let(:env) { { :body => { :a => :b } } }
+      let(:env) { {:body => {:a => :b}} }
 
       it "encodes json" do
         expect(response[:body]).to eq(JSON.dump(:a => :b))
@@ -39,7 +39,7 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
     context "application/json" do
       let(:env) {
         {
-          :body => { :a => :b },
+          :body => {:a => :b},
           :request_headers => {
             "Content-Type" => "application/json"
           }
@@ -58,7 +58,7 @@ describe ZendeskAPI::Middleware::Request::EncodeJson do
     context "application/json; encoding=utf-8" do
       let(:env) {
         {
-          :body => { :a => :b },
+          :body => {:a => :b},
           :request_headers => {
             "Content-Type" => "application/json; encoding=utf-8"
           }

@@ -2,7 +2,7 @@ require "core/spec_helper"
 
 describe ZendeskAPI::Category, :delete_after do
   def valid_attributes
-    { :name => "My Category" }
+    {:name => "My Category"}
   end
 
   it "can have translations", :vcr do

@@ -4,12 +4,12 @@ describe ZendeskAPI::Request do
   def valid_attributes
     {
       :subject => "This is a question!",
-      :comment => { :value => "Haha, no." }
+      :comment => {:value => "Haha, no."}
     }
   end
 
   it_should_be_creatable
-  it_should_be_updatable :solved, true, { :comment => { :value => "This is solved!" } }
+  it_should_be_updatable :solved, true, {:comment => {:value => "This is solved!"}}
   it_should_be_readable :requests
   it_should_be_readable user, :requests
 
@@ -32,7 +32,7 @@ describe ZendeskAPI::Request do
       request.save!
 
       expect(request.changes).to eq({}) # comment was set before save
-      expect(request.attributes[:comment]).to eq({ "value" => "My comment" })
+      expect(request.attributes[:comment]).to eq({"value" => "My comment"})
     end
   end
 end

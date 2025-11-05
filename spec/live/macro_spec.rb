@@ -2,14 +2,14 @@ require "core/spec_helper"
 
 describe ZendeskAPI::Macro, :delete_after do
   def valid_attributes
-    { :title => "my test macro", :actions => [{ :field => "status", :value => "solved" }] }
+    {:title => "my test macro", :actions => [{:field => "status", :value => "solved"}]}
   end
 
   it_should_be_readable :macros
   it_should_be_readable :macros, :active
 
   it_should_be_creatable
-  it_should_be_updatable :actions, [{ "field" => "priority", "value" => "low" }]
+  it_should_be_updatable :actions, [{"field" => "priority", "value" => "low"}]
   it_should_be_deletable
 
   describe "application", :vcr do

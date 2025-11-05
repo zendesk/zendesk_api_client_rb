@@ -17,7 +17,7 @@ RSpec.describe ZendeskAPI::Client do
         config.adapter = :test
         config.adapter_proc = proc do |stub|
           stub.get "/api/v2/tickets" do |_env|
-            [200, { "Content-Type": "application/json" }, "null"]
+            [200, {"Content-Type": "application/json"}, "null"]
           end
         end
       end
@@ -124,7 +124,7 @@ RSpec.describe ZendeskAPI::Client do
           config.url = "https://example.zendesk.com/api/v2"
           config.username = username
           config.token = "token"
-          config.client_options = { :request => { :timeout => 30 } }
+          config.client_options = {:request => {:timeout => 30}}
         end
       end
 
@@ -372,7 +372,7 @@ RSpec.describe ZendeskAPI::Client do
         config.adapter = :test
         config.adapter_proc = proc do |stub|
           stub.get "/api/v2/tickets" do |env|
-            [200, { "content-type": "application/json", Authorization: env.request_headers["Authorization"] }, "null"]
+            [200, {"content-type": "application/json", Authorization: env.request_headers["Authorization"]}, "null"]
           end
         end
       end

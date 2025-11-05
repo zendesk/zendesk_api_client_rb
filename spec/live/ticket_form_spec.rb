@@ -2,7 +2,7 @@ require "core/spec_helper"
 
 describe ZendeskAPI::TicketForm, :delete_after do
   def valid_attributes
-    { :name => "Ticket Form-o", :position => 9999, :active => false }
+    {:name => "Ticket Form-o", :position => 9999, :active => false}
   end
 
   it_should_be_creatable

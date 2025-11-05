@@ -5,7 +5,7 @@ describe ZendeskAPI::View, :delete_after do
     {
       :title => "my test view",
       :conditions => {
-        :all => [{ :field => "status", :operator => "is", :value => "open" }]
+        :all => [{:field => "status", :operator => "is", :value => "open"}]
       }
     }
   end
@@ -16,7 +16,7 @@ describe ZendeskAPI::View, :delete_after do
   it_should_be_creatable
   it_should_be_updatable :conditions, {
     "any" => [],
-    "all" => [{ "field" => "status", "operator" => "is", "value" => "solved" }]
+    "all" => [{"field" => "status", "operator" => "is", "value" => "solved"}]
   }
   it_should_be_deletable
 end

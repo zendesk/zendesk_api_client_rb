@@ -6,7 +6,7 @@ describe ZendeskAPI::App do
       ZendeskAPI::App::Upload.new(client, :id => "spec/fixtures/sample_app.zip").tap(&:save!)
     end
 
-    attributes = { :upload_id => upload.id, :name => "My App", :short_description => "Testing" }
+    attributes = {:upload_id => upload.id, :name => "My App", :short_description => "Testing"}
 
     app = ZendeskAPI::App.new(client, attributes)
 
@@ -28,7 +28,7 @@ describe ZendeskAPI::App do
 
   it "should be able to handle the simplest creation api call" do
     VCR.use_cassette("app_simple_create") do
-      app = ZendeskAPI::App.create!(client, { :name => "Testing App Creation", :upload => "spec/fixtures/sample_app.zip" })
+      app = ZendeskAPI::App.create!(client, {:name => "Testing App Creation", :upload => "spec/fixtures/sample_app.zip"})
 
       body = check_job(app)
 

@@ -8,7 +8,7 @@ describe ZendeskAPI::GroupMembership, :delete_after do
   end
 
   def valid_attributes
-    { :group_id => group.id, :user_id => agent.id }
+    {:group_id => group.id, :user_id => agent.id}
   end
 
   it_should_be_creatable

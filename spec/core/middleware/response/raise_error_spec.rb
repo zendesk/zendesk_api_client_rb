@@ -28,7 +28,7 @@ describe ZendeskAPI::Middleware::Response::RaiseError do
 
     before(:each) do
       stub_request(:any, /.*/).to_return(:status => status, :body => body,
-                                         :headers => { :content_type => "application/json" })
+        :headers => {:content_type => "application/json"})
     end
 
     context "with status = 404" do

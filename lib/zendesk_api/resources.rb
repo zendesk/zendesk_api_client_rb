@@ -123,7 +123,7 @@ module ZendeskAPI
         return self unless @resources
 
         @client.connection.post(path) do |req|
-          req.body = { :tags => @resources.reject(&:destroyed?).map(&:id) }
+          req.body = {:tags => @resources.reject(&:destroyed?).map(&:id)}
         end
 
         true
@@ -137,7 +137,7 @@ module ZendeskAPI
     end
 
     def attributes_for_save
-      { self.class.resource_name => [id] }
+      {self.class.resource_name => [id]}
     end
 
     def self.cbp_path_regexes
@@ -369,7 +369,7 @@ module ZendeskAPI
     end
 
     def attributes_for_save
-      { self.class.resource_name => { @on => attributes.changes } }
+      {self.class.resource_name => {@on => attributes.changes}}
     end
   end
 
@@ -633,7 +633,7 @@ module ZendeskAPI
 
     def attributes_for_save
       to_save = [:conditions, :actions, :output].inject({}) { |h, k| h.merge(k => send(k)) }
-      { self.class.singular_resource_name.to_sym => attributes.changes.merge(to_save) }
+      {self.class.singular_resource_name.to_sym => attributes.changes.merge(to_save)}
     end
   end
 
@@ -653,20 +653,20 @@ module ZendeskAPI
     def add_all_condition(field, operator, value)
       self.conditions ||= {}
       self.conditions[:all] ||= []
-      self.conditions[:all] << { :field => field, :operator => operator, :value => value }
+      self.conditions[:all] << {:field => field, :operator => operator, :value => value}
     end
 
     def add_any_condition(field, operator, value)
       self.conditions ||= {}
       self.conditions[:any] ||= []
-      self.conditions[:any] << { :field => field, :operator => operator, :value => value }
+      self.conditions[:any] << {:field => field, :operator => operator, :value => value}
     end
   end
 
   module Actions
     def add_action(field, value)
       self.actions ||= []
-      self.actions << { :field => field, :value => value }
+      self.actions << {:field => field, :value => value}
     end
   end
 
@@ -899,7 +899,7 @@ module ZendeskAPI
         k == "role_id"
       end
 
-      { self.class.singular_resource_name => attrs }
+      {self.class.singular_resource_name => attrs}
     end
 
     def handle_response(*)

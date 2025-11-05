@@ -27,7 +27,7 @@ describe ZendeskAPI::DataResource do
     end
 
     context "inline => true" do
-      let(:options) { { :inline => true } }
+      let(:options) { {:inline => true} }
 
       it "should not try and find non-existent object" do
         subject.nil
@@ -132,7 +132,7 @@ describe ZendeskAPI::DataResource do
       end
 
       context "with side-loading of resource" do
-        let(:test_resource) { { :message => "FOO_OBJ" } }
+        let(:test_resource) { {:message => "FOO_OBJ"} }
         subject { ZendeskAPI::TestResource.new(client, :test_resource => test_resource).test_resource }
 
         it "should load the correct instance" do
@@ -206,7 +206,7 @@ describe ZendeskAPI::DataResource do
       end
 
       context "with side-loading of resource" do
-        let(:test_resources) { [{ :message => "FOO_OBJ" }] }
+        let(:test_resources) { [{:message => "FOO_OBJ"}] }
         subject { ZendeskAPI::TestResource.new(client, :test_resources => test_resources).test_resources.first }
 
         it "should properly create instance" do

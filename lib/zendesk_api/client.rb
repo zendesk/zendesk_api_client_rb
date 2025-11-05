@@ -44,7 +44,7 @@ module ZendeskAPI
         return ZendeskAPI::Collection.new(self, resource_class, options)
       end
 
-      @resource_cache[method] ||= { :class => nil, :cache => ZendeskAPI::LRUCache.new }
+      @resource_cache[method] ||= {:class => nil, :cache => ZendeskAPI::LRUCache.new}
       if !options.delete(:reload) && (cached = @resource_cache[method][:cache].read(options.hash))
         cached
       else
@@ -191,9 +191,9 @@ module ZendeskAPI
         # Should always be first in the stack
         if config.retry
           builder.use ZendeskAPI::Middleware::Request::Retry,
-                      :logger => config.logger,
-                      :retry_codes => config.retry_codes,
-                      :retry_on_exception => config.retry_on_exception
+            :logger => config.logger,
+            :retry_codes => config.retry_codes,
+            :retry_on_exception => config.retry_on_exception
         end
         if config.raise_error_when_rate_limited
           builder.use ZendeskAPI::Middleware::Request::RaiseRateLimited, :logger => config.logger

@@ -13,7 +13,7 @@ describe ZendeskAPI::Section, :delete_after do
 
   describe "creating sections withing categories" do
     def valid_attributes
-      { :name => "My Section" }
+      {:name => "My Section"}
     end
 
     let(:category_section) do

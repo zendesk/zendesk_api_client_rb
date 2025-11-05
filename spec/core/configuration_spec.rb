@@ -26,7 +26,7 @@ describe ZendeskAPI::Configuration do
   end
 
   it "should merge options with client_options" do
-    subject.client_options = { :ssl => { :verify => false } }
+    subject.client_options = {:ssl => {:verify => false}}
     expect(subject.options[:ssl][:verify]).to eq(false)
   end
 

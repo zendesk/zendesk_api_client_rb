@@ -8,7 +8,7 @@ module ResourceMacros
       let(:parent) { object }
 
       define_method(:default_options) do
-        { "#{object.class.singular_resource_name}_id" => object.id }
+        {"#{object.class.singular_resource_name}_id" => object.id}
       end
 
       instance_eval(&blk)

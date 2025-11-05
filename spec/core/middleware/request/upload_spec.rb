@@ -16,12 +16,12 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
   it "should handle invalid types" do
     expect(subject).to receive(:warn)
-    expect(subject.call(:body => { :file => :invalid })[:body]).to eq({})
+    expect(subject.call(:body => {:file => :invalid})[:body]).to eq({})
   end
 
   context "with file string" do
     before(:each) do
-      @env = subject.call(:body => { :file => filename })
+      @env = subject.call(:body => {:file => filename})
     end
 
     it "should convert file string to UploadIO" do
@@ -38,7 +38,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
     context "with filename" do
       before(:each) do
-        @env = subject.call(:body => { :file => filename, :filename => "test" })
+        @env = subject.call(:body => {:file => filename, :filename => "test"})
       end
 
       it "should not change filename" do
@@ -50,7 +50,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
   context "with an ActionDispatch::Http::UploadedFile" do
     before(:each) do
       @upload = ActionDispatch::Http::UploadedFile.new(:filename => "hello.jpg", :tempfile => Tempfile.new(["hello", ".jpg"]))
-      @env = subject.call(:body => { :file => @upload })
+      @env = subject.call(:body => {:file => @upload})
     end
 
     it "should convert file string to UploadIO" do
@@ -78,7 +78,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
       it "should use the content_type of ActionDispatch::Http::UploadedFile " do
         @upload.content_type = "application/random"
 
-        env = subject.call(:body => { :file => @upload })
+        env = subject.call(:body => {:file => @upload})
         expect(env[:body][:uploaded_data].content_type).to eq("application/random")
       end
     end
@@ -87,7 +87,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
   context "with a Tempfile" do
     before(:each) do
       @tempfile = Tempfile.new(File.basename(filename))
-      @env = subject.call(:body => { :file => @tempfile })
+      @env = subject.call(:body => {:file => @tempfile})
     end
 
     it "should convert file string to UploadIO" do
@@ -106,7 +106,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
   context "with file instance" do
     context "top-level" do
       before(:each) do
-        @env = subject.call(:body => { :file => File.new(filename) })
+        @env = subject.call(:body => {:file => File.new(filename)})
       end
 
       it "should convert file string to UploadIO" do
@@ -123,7 +123,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
       context "with filename" do
         before(:each) do
-          @env = subject.call(:body => { :file => File.new(filename), :filename => "test" })
+          @env = subject.call(:body => {:file => File.new(filename), :filename => "test"})
         end
 
         it "should not change filename" do
@@ -135,7 +135,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
     context "underneath a key" do
       context "only a file" do
         before(:each) do
-          @env = subject.call(:body => { :user => { :photo => File.new(filename) } })
+          @env = subject.call(:body => {:user => {:photo => File.new(filename)}})
         end
 
         it "should convert file string to UploadIO" do
@@ -149,7 +149,7 @@ describe ZendeskAPI::Middleware::Request::Upload do
 
       context "with filename" do
         before(:each) do
-          @env = subject.call(:body => { :user => { :photo => { :file => File.new(filename), :filename => "test" } } })
+          @env = subject.call(:body => {:user => {:photo => {:file => File.new(filename), :filename => "test"}}})
         end
 
         it "should convert file string to UploadIO" do

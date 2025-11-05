@@ -2,7 +2,7 @@ require "core/spec_helper"
 
 describe ZendeskAPI::CreateResource do
   context "create" do
-    let(:attr) { { :test_field => "blah" } }
+    let(:attr) { {:test_field => "blah"} }
     subject { ZendeskAPI::TestResource }
 
     before(:each) do

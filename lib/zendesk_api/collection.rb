@@ -378,7 +378,7 @@ module ZendeskAPI
     def set_association_from_options
       @collection_path = @options.delete(:collection_path)
 
-      association_options = { :path => @options.delete(:path) }
+      association_options = {:path => @options.delete(:path)}
       association_options[:path] ||= @collection_path.join("/") if @collection_path
       @association = @options.delete(:association) || Association.new(association_options.merge(:class => @resource_class))
       @collection_path ||= [@resource]
@@ -443,7 +443,7 @@ module ZendeskAPI
         res = res.merge(:association => @association) if with_association
         @resource_class.new(@client, res)
       else
-        res = { :id => res }
+        res = {:id => res}
         res.merge!(:association => @association) if with_association
         @resource_class.new(@client, res)
       end

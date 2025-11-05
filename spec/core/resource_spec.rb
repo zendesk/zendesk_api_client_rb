@@ -4,8 +4,8 @@ describe ZendeskAPI::Resource do
   context "initialize" do
     context "with :global as part of attributes" do
       it "should set @global_params" do
-        resource = ZendeskAPI::TestResource.new(client, { :global => { :something => "hey" } })
-        expect(resource.instance_variable_get(:@global_params)).to eq({ :something => "hey" })
+        resource = ZendeskAPI::TestResource.new(client, {:global => {:something => "hey"}})
+        expect(resource.instance_variable_get(:@global_params)).to eq({:something => "hey"})
       end
     end
   end
@@ -16,7 +16,7 @@ describe ZendeskAPI::Resource do
       subject { ZendeskAPI::TestResource }
 
       before(:each) do
-        stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({ :test_resource => { :test => :hello } }))
+        stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({:test_resource => {:test => :hello}}))
       end
 
       it "should return instance of resource" do
@@ -25,11 +25,11 @@ describe ZendeskAPI::Resource do
 
       context "with global params" do
         before(:each) do
-          stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({ :test_resource => { :test => :hello }, :something => "something" }))
+          stub_json_request(:put, %r{test_resources/#{id}}).with(:body => json({:test_resource => {:test => :hello}, :something => "something"}))
         end
 
         it "should return instance of resource" do
-          expect(subject.update(client, :id => id, :test => :hello, :global => { :something => "something" })).to be_truthy
+          expect(subject.update(client, :id => id, :test => :hello, :global => {:something => "something"})).to be_truthy
         end
       end
 
@@ -122,11 +122,11 @@ describe ZendeskAPI::Resource do
 
   context "#save" do
     let(:id) { 1 }
-    let(:attr) { { :param => "test" } }
+    let(:attr) { {:param => "test"} }
     subject { ZendeskAPI::TestResource.new(client, attr.merge(:id => id)) }
 
     before :each do
-      stub_json_request(:put, %r{test_resources/#{id}}, json(:test_resource => { :param => "abc" }))
+      stub_json_request(:put, %r{test_resources/#{id}}, json(:test_resource => {:param => "abc"}))
     end
 
     it "should not save if already destroyed" do
@@ -189,7 +189,7 @@ describe ZendeskAPI::Resource do
           ZendeskAPI::TestResource.associations.clear
           ZendeskAPI::TestResource.has :child, :class => ZendeskAPI::TestResource::TestChild
           stub_json_request(:put, %r{test_resources})
-          subject.child = { :id => 2 }
+          subject.child = {:id => 2}
         end
 
         it "should call save on the association" do
@@ -235,21 +235,21 @@ describe ZendeskAPI::Resource do
         end
 
         it "should save the associated objects when it is new" do
-          subject.children = [{ :foo => "bar" }]
+          subject.children = [{:foo => "bar"}]
           expect(subject.children.first).to receive(:save)
           subject.save
           expect(subject.instance_variable_get(:@children)).to be_nil
         end
 
         it "should not save the associated objects when it is set via full hash" do
-          subject.children = [{ :id => 1, :foo => "bar" }]
+          subject.children = [{:id => 1, :foo => "bar"}]
           expect(subject.children.first).to_not receive(:save)
           subject.save
           expect(subject.instance_variable_get(:@children)).to be_nil
         end
 
         it "should save the associated objects when it is changes" do
-          subject.children = [{ :id => 1 }]
+          subject.children = [{:id => 1}]
           subject.children.first.foo = "bar"
           expect(subject.children.first).to receive(:save)
           subject.save
@@ -272,7 +272,7 @@ describe ZendeskAPI::Resource do
           before(:each) do
             ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => true
 
-            subject.nil = { :abc => :def }
+            subject.nil = {:abc => :def}
           end
 
           it "should save param data" do
@@ -292,7 +292,7 @@ describe ZendeskAPI::Resource do
         context "create" do
           before(:each) do
             ZendeskAPI::TestResource.has :nil, :class => ZendeskAPI::NilResource, :inline => :create
-            subject.nil = { :abc => :def }
+            subject.nil = {:abc => :def}
           end
 
           context "with a new record" do
@@ -344,7 +344,7 @@ describe ZendeskAPI::Resource do
 
       context "with an array response" do
         before(:each) do
-          stub_json_request(:put, %r{test_resources/1/#{method}}, json(:test_resources => [{ :id => 1, :method => method }]))
+          stub_json_request(:put, %r{test_resources/1/#{method}}, json(:test_resources => [{:id => 1, :method => method}]))
         end
 
         it "should return true" do
@@ -359,7 +359,7 @@ describe ZendeskAPI::Resource do
 
       context "with a resource response" do
         before(:each) do
-          stub_json_request(:put, %r{test_resources/1/#{method}}, json(:test_resource => { :id => 1, :method => method }))
+          stub_json_request(:put, %r{test_resources/1/#{method}}, json(:test_resource => {:id => 1, :method => method}))
         end
 
         it "should return true" do
@@ -408,7 +408,7 @@ describe ZendeskAPI::Resource do
 
         context "with an array response" do
           before(:each) do
-            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resources => [{ :id => 1, :method => method }]))
+            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resources => [{:id => 1, :method => method}]))
           end
 
           it "should return true" do
@@ -423,7 +423,7 @@ describe ZendeskAPI::Resource do
 
         context "with a resource response" do
           before(:each) do
-            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resource => { :id => 1, :method => method }))
+            stub_json_request(verb.to_sym, %r{test_resources/1/#{method}}, json(:test_resource => {:id => 1, :method => method}))
           end
 
           it "should return true" do
@@ -553,19 +553,19 @@ describe ZendeskAPI::Resource do
     end
 
     it "fails to build with nil (e.g. empty response from server)" do
-      expect{
+      expect {
         ZendeskAPI::TestResource.new(client, nil)
       }.to raise_error(/Expected a Hash/i)
     end
   end
 
   context "#create_or_update!" do
-    let(:params) { { :email => "hello@example.local", :test => :hello } }
+    let(:params) { {:email => "hello@example.local", :test => :hello} }
 
     subject { ZendeskAPI::CreateOrUpdateTestResource }
 
     before :each do
-      stub_json_request(:post, %r{create_or_update_test_resources/create_or_update}, json(:create_or_update_test_resource => { :param => "abc" }))
+      stub_json_request(:post, %r{create_or_update_test_resources/create_or_update}, json(:create_or_update_test_resource => {:param => "abc"}))
     end
 
     it "should return instance of resource" do

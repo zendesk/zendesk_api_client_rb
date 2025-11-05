@@ -74,8 +74,8 @@ module ZendeskAPI
         @suspended_ticket ||= begin
           client.anonymous_requests.create(
             :subject => "Test Ticket",
-            :comment => { :value => "Help! I need somebody." },
-            :requester => { :email => "zendesk-api-client-ruby-anonymous-#{client.config.username}", :name => "Anonymous User" }
+            :comment => {:value => "Help! I need somebody."},
+            :requester => {:email => "zendesk-api-client-ruby-anonymous-#{client.config.username}", :name => "Anonymous User"}
           )
           client.suspended_tickets(:reload => true).first
         end

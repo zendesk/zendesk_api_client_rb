@@ -2,7 +2,7 @@ require "core/spec_helper"
 
 describe ZendeskAPI::User, :delete_after do
   def valid_attributes
-    { name: "Test U.", email: "test+#{Time.now.to_i}@example.org" }
+    {name: "Test U.", email: "test+#{Time.now.to_i}@example.org"}
   end
 
   it_should_be_creatable
@@ -91,8 +91,8 @@ describe ZendeskAPI::User, :delete_after do
           ZendeskAPI::User.create_many!(
             client,
             [
-              { name: "one", email: "1@example.org" },
-              { name: "two", email: "2@example.org" }
+              {name: "one", email: "1@example.org"},
+              {name: "two", email: "2@example.org"}
             ]
           ).tap do |job|
             job.reload! while job.status != "completed"

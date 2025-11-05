@@ -2,7 +2,7 @@ require "core/spec_helper"
 
 describe ZendeskAPI::OrganizationField, :delete_after do
   def valid_attributes
-    { :type => "text", :title => "Age", :key => random_string(5) }
+    {:type => "text", :title => "Age", :key => random_string(5)}
   end
 
   it_should_be_creatable

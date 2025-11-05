@@ -152,7 +152,7 @@ module ZendeskAPI
     alias :to_param :attributes
 
     def attributes_for_save
-      { self.class.singular_resource_name.to_sym => attribute_changes }
+      {self.class.singular_resource_name.to_sym => attribute_changes}
     end
 
     private
@@ -206,7 +206,7 @@ module ZendeskAPI
 
   class SingularResource < Resource
     def attributes_for_save
-      { self.class.resource_name.to_sym => attribute_changes }
+      {self.class.resource_name.to_sym => attribute_changes}
     end
   end
 

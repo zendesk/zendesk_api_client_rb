@@ -5,8 +5,8 @@ describe ZendeskAPI::View do
     {
       :title => "my test view",
       :conditions => {
-        :any => [{ :field => "assignee_id", :operator => "is", :value => 1 }],
-        :all => [{ :field => "status", :operator => "is", :value => "open" }]
+        :any => [{:field => "assignee_id", :operator => "is", :value => 1}],
+        :all => [{:field => "status", :operator => "is", :value => "open"}]
       },
       :execution => {
         :columns => [:id => "status", :title => "Status"]
@@ -48,8 +48,8 @@ describe ZendeskAPI::View do
   describe "#all_conditions=" do
     it "should assign new values to all conditions" do
       new_conditions = [
-        { "field" => "type", "operator" => "is", "value" => "question" },
-        { "field" => "status", "operator" => "less_than", "value" => "solved" }
+        {"field" => "type", "operator" => "is", "value" => "question"},
+        {"field" => "status", "operator" => "less_than", "value" => "solved"}
       ]
       subject.all_conditions = new_conditions
 
@@ -60,8 +60,8 @@ describe ZendeskAPI::View do
   describe "#any_conditions=" do
     it "should assign new values to any conditions" do
       new_conditions = [
-        { "field" => "type", "operator" => "is", "value" => "question" },
-        { "field" => "status", "operator" => "less_than", "value" => "solved" }
+        {"field" => "type", "operator" => "is", "value" => "question"},
+        {"field" => "status", "operator" => "less_than", "value" => "solved"}
       ]
       subject.any_conditions = new_conditions
 
@@ -71,7 +71,7 @@ describe ZendeskAPI::View do
 
   describe "#add_all_condition" do
     it "should add a condition to all condition" do
-      new_condition = { :field => "type", :operator => "is", :value => "problem" }
+      new_condition = {:field => "type", :operator => "is", :value => "problem"}
       existing_conditions = subject.conditions[:all]
 
       expect(existing_conditions).not_to include(new_condition)
@@ -84,7 +84,7 @@ describe ZendeskAPI::View do
 
   describe "#add_any_condition" do
     it "should add a condition to any condition" do
-      new_condition = { :field => "type", :operator => "is", :value => "task" }
+      new_condition = {:field => "type", :operator => "is", :value => "task"}
       existing_conditions = subject.conditions[:any]
 
       expect(existing_conditions).not_to include(new_condition)

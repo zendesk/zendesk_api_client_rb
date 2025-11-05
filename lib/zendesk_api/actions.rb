@@ -172,7 +172,7 @@ module ZendeskAPI
     # @return [JobStatus] the {JobStatus} instance for this create job
     def create_many!(client, attributes_array, association = Association.new(:class => self))
       response = client.connection.post("#{association.generate_path}/create_many") do |req|
-        req.body = { resource_name => attributes_array }
+        req.body = {resource_name => attributes_array}
 
         yield req if block_given?
       end
@@ -187,7 +187,7 @@ module ZendeskAPI
     # @param [Hash] attributes The attributes to create.
     def create_or_update!(client, attributes, association = Association.new(:class => self))
       response = client.connection.post("#{association.generate_path}/create_or_update") do |req|
-        req.body = { singular_resource_name => attributes }
+        req.body = {singular_resource_name => attributes}
 
         yield req if block_given?
       end
@@ -207,7 +207,7 @@ module ZendeskAPI
       association = Association.new(:class => self)
 
       response = client.connection.post("#{association.generate_path}/create_or_update_many") do |req|
-        req.body = { resource_name => attributes }
+        req.body = {resource_name => attributes}
 
         yield req if block_given?
       end
@@ -271,7 +271,7 @@ module ZendeskAPI
     # @return [JobStatus] the {JobStatus} instance for this destroy job
     def destroy_many!(client, ids, association = Association.new(:class => self))
       response = client.connection.delete("#{association.generate_path}/destroy_many") do |req|
-        req.params = { :ids => ids.join(",") }
+        req.params = {:ids => ids.join(",")}
 
         yield req if block_given?
       end
@@ -319,10 +319,10 @@ module ZendeskAPI
 
       response = client.connection.put("#{association.generate_path}/update_many") do |req|
         if attributes == {}
-          req.body = { resource_name => ids_or_attributes }
+          req.body = {resource_name => ids_or_attributes}
         else
-          req.params = { :ids => ids_or_attributes.join(",") }
-          req.body = { singular_resource_name => attributes }
+          req.params = {:ids => ids_or_attributes.join(",")}
+          req.body = {singular_resource_name => attributes}
         end
 
         yield req if block_given?

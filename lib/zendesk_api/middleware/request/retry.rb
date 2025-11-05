@@ -1,4 +1,5 @@
 require "faraday/middleware"
+
 module ZendeskAPI
   module Middleware
     # @private

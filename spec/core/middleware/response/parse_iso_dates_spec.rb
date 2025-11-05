@@ -27,7 +27,7 @@ describe ZendeskAPI::Middleware::Response::ParseIsoDates do
   end
 
   it "should leave arrays with ids alone" do
-    expect(fake_response('{"x":[1,2,3]}').body).to eq({ "x" => [1, 2, 3] })
+    expect(fake_response('{"x":[1,2,3]}').body).to eq({"x" => [1, 2, 3]})
   end
 
   it "should not parse date-like things" do

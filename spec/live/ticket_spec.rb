@@ -5,7 +5,7 @@ RSpec.describe ZendeskAPI::Ticket do
     {
       :type => "question",
       :subject => "This is a question?",
-      :comment => { :value => "Indeed it is!" },
+      :comment => {:value => "Indeed it is!"},
       :priority => "normal",
       :requester_id => user.id,
       :assignee_id => current_user.id,
@@ -13,7 +13,7 @@ RSpec.describe ZendeskAPI::Ticket do
       :collaborator_ids => [agent.id],
       :tags => %w(awesome blossom),
       :email_ccs => [
-        { :user_id => agent.id, action: "put" }
+        {:user_id => agent.id, action: "put"}
       ]
     }
   end
@@ -86,17 +86,17 @@ RSpec.describe ZendeskAPI::Ticket do
     end
 
     it "keeps all the comments", :vcr do
-      ticket.update(comment: { private: true, body: "Private comment" })
+      ticket.update(comment: {private: true, body: "Private comment"})
       expect(ticket.attributes_for_save).to eq(ticket: {
-                                                 "status" => :new,
-                                                 "comment" => { "private" => true, "body" => "Private comment" }
-                                               })
+        "status" => :new,
+        "comment" => {"private" => true, "body" => "Private comment"}
+      })
 
-      ticket.update(comment: { private: true, body: "Private comment2" })
+      ticket.update(comment: {private: true, body: "Private comment2"})
       expect(ticket.attributes_for_save).to eq(ticket: {
-                                                 "status" => :new,
-                                                 "comment" => { "private" => true, "body" => "Private comment2" }
-                                               })
+        "status" => :new,
+        "comment" => {"private" => true, "body" => "Private comment2"}
+      })
     end
   end
 
@@ -174,7 +174,7 @@ RSpec.describe ZendeskAPI::Ticket do
       ticket.save!
 
       expect(ticket.changes).to eq({}) # comment was set before save
-      expect(ticket.attributes[:comment]).to eq({ "value" => "My comment", "public" => false })
+      expect(ticket.attributes[:comment]).to eq({"value" => "My comment", "public" => false})
     end
   end
 
@@ -191,7 +191,7 @@ RSpec.describe ZendeskAPI::Ticket do
               Thread.current[:response] = response
             end
 
-            ZendeskAPI::Ticket.import(client, :requester => { :email => email, :name => "Hello" }, :subject => "Test", :description => "Test")
+            ZendeskAPI::Ticket.import(client, :requester => {:email => email, :name => "Hello"}, :subject => "Test", :description => "Test")
           end
         end
 
