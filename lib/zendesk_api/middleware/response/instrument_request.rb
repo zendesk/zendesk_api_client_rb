@@ -38,7 +38,6 @@ module ZendeskAPI
             if status.to_i < 500
               headers = response_env[:response_headers]
               if headers
-                # Case-insensitive header lookup
                 remaining = headers['x-rate-limit-remaining'] || headers['X-Rate-Limit-Remaining']
                 limit = headers['x-rate-limit'] || headers['X-Rate-Limit']
 

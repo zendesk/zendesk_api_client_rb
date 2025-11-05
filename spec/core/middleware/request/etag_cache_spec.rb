@@ -18,102 +18,94 @@ describe ZendeskAPI::Middleware::Request::EtagCache do
   end
 
   describe 'instrumentation' do
-    let(:events) { [] }
-
-    let(:instrumentation) do
-      store = events
-      Object.new.tap do |obj|
-        obj.define_singleton_method(:instrument) do |event, payload|
-          store << [event, payload]
-        end
-      end
-    end
-
     before do
       @previous_cache = client.config.cache
       client.config.cache = ZendeskAPI::LRUCache.new(5)
-      client.config.instrumentation = instrumentation
-      client.instance_variable_set(:@connection, nil)
     end
 
     after do
       client.config.instrumentation = nil
       client.instance_variable_set(:@connection, nil)
       client.config.cache = @previous_cache
-      events.clear
-    end
-
-    def cache_events(name)
-      events.select { |event, _payload| event == name }
     end
 
     it 'emits cache miss event when caching a fresh response' do
       stub_json_request(:get, %r{cache_miss}, '{"x":1}', :headers => { 'Etag' => 'abc' })
 
-      client.connection.get('cache_miss')
+      events = capture_instrumentation_events do
+        client.config.instrumentation = ActiveSupport::Notifications
+        client.connection.get('cache_miss')
+      end
 
-      event = cache_events('zendesk.cache_miss').first
-      expect(event).not_to be_nil
-      payload = event.last
-      expect(payload[:endpoint]).to end_with('/cache_miss')
-      expect(payload[:status]).to eq(200)
+      event_name, payload = find_event(events, 'zendesk.cache_miss')
+      expect(event_name).to eq('zendesk.cache_miss')
+
+      aggregate_failures 'cache miss payload' do
+        expect(payload[:endpoint]).to end_with('/cache_miss')
+        expect(payload[:status]).to eq(200)
+      end
     end
 
     it 'emits cache hit event when serving from cache' do
       stub_json_request(:get, %r{cache_hit}, '{"x":1}', :headers => { 'Etag' => 'abc' })
+
+      # First request to populate cache (outside instrumentation capture)
+      client.config.instrumentation = ActiveSupport::Notifications
       client.connection.get('cache_hit')
 
       stub_request(:get, %r{cache_hit})
         .to_return(:status => 304, :headers => { 'Etag' => 'abc' })
 
-      client.connection.get('cache_hit')
+      # Second request should hit cache
+      events = capture_instrumentation_events do
+        client.connection.get('cache_hit')
+      end
 
-      event = cache_events('zendesk.cache_hit').first
-      expect(event).not_to be_nil
-      payload = event.last
-      expect(payload[:endpoint]).to end_with('/cache_hit')
-      expect(payload[:status]).to eq(304)
+      event_name, payload = find_event(events, 'zendesk.cache_hit')
+      expect(event_name).to eq('zendesk.cache_hit')
+
+      aggregate_failures 'cache hit payload' do
+        expect(payload[:endpoint]).to end_with('/cache_hit')
+        expect(payload[:status]).to eq(304)
+      end
     end
 
     it 'does not emit events for non-cacheable requests' do
       stub_request(:post, %r{no_cache}).to_return(:status => 200)
 
-      client.connection.post('no_cache')
+      events = capture_instrumentation_events do
+        client.config.instrumentation = ActiveSupport::Notifications
+        client.connection.post('no_cache')
+      end
 
-      expect(cache_events('zendesk.cache_hit')).to be_empty
-      expect(cache_events('zendesk.cache_miss')).to be_empty
+      aggregate_failures 'no cache events for POST' do
+        expect(filter_events(events, 'zendesk.cache_hit')).to be_empty
+        expect(filter_events(events, 'zendesk.cache_miss')).to be_empty
+      end
     end
 
     context 'without instrumentation configured' do
-      before do
-        client.config.instrumentation = nil
-        client.instance_variable_set(:@connection, nil)
-      end
-
       it 'performs caching without emitting events' do
         stub_json_request(:get, %r{no_instrument_cache}, '{"x":1}', :headers => { 'Etag' => 'abc' })
 
-        client.connection.get('no_instrument_cache')
-
-        expect(events).to be_empty
+        # Don't configure instrumentation
+        expect { client.connection.get('no_instrument_cache') }.not_to raise_error
       end
     end
 
     context 'when instrumentation raises errors' do
-      before do
-        failing = Object.new.tap do |obj|
+      let(:erroring_instrumentation) do
+        Object.new.tap do |obj|
           obj.define_singleton_method(:instrument) do |_event, _payload|
             raise 'boom'
           end
         end
-
-        client.config.instrumentation = failing
-        client.instance_variable_set(:@connection, nil)
       end
 
       it 'swallows instrumentation failures' do
         stub_json_request(:get, %r{failing_cache}, '{"x":1}', :headers => { 'Etag' => 'abc' })
 
+        client.config.instrumentation = erroring_instrumentation
         expect { client.connection.get('failing_cache') }.not_to raise_error
       end
     end

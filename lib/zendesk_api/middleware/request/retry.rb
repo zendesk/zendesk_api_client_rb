@@ -44,7 +44,6 @@ module ZendeskAPI
 
             @logger&.warn "You have been rate limited. Retrying in #{seconds_left} seconds..."
 
-            # Emit retry instrumentation event
             if @instrumentation
               attempt = (env[:zendesk_retry_attempt] || 1) + 1
               reason = if exception_happened

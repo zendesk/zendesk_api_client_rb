@@ -1,50 +1,37 @@
+# frozen_string_literal: true
+
 require 'core/spec_helper'
 
 describe ZendeskAPI::Middleware::Response::InstrumentRequest do
-  let(:events) { [] }
-
-  let(:instrumentation) do
-    store = events
-    Object.new.tap do |obj|
-      obj.define_singleton_method(:instrument) do |event, payload|
-        store << [event, payload]
-      end
-    end
-  end
-
-  let(:current_instrumentation) { instrumentation }
-
   before do
-    client.config.instrumentation = current_instrumentation
-    client.instance_variable_set(:@connection, nil)
+    # Force connection rebuild to pick up instrumentation config
+    allow(client).to receive(:connection).and_wrap_original do |method|
+      method.call.tap { client.instance_variable_set(:@connection, nil) }
+    end
   end
 
   after do
     client.config.instrumentation = nil
     client.instance_variable_set(:@connection, nil)
-    events.clear
-  end
-
-  def request_event
-    events.find { |event, _payload| event == 'zendesk.request' }
-  end
-
-  def rate_limit_event
-    events.find { |event, _payload| event == 'zendesk.rate_limit' }
   end
 
   it 'emits request instrumentation with duration' do
     stub_json_request(:get, /instrumented/, '{}')
 
-    client.connection.get('instrumented')
+    events = capture_instrumentation_events do
+      client.config.instrumentation = ActiveSupport::Notifications
+      client.connection.get('instrumented')
+    end
 
-    event = request_event
-    expect(event).not_to be_nil
-    payload = event.last
-    expect(payload[:duration]).to be > 0.0
-    expect(payload[:endpoint]).to end_with('/instrumented')
-    expect(payload[:method]).to eq(:get)
-    expect(payload[:status]).to eq(200)
+    event_name, payload = find_event(events, 'zendesk.request')
+    expect(event_name).to eq('zendesk.request')
+
+    aggregate_failures 'request payload' do
+      expect(payload[:duration]).to be > 0.0
+      expect(payload[:endpoint]).to end_with('/instrumented')
+      expect(payload[:method]).to eq(:get)
+      expect(payload[:status]).to eq(200)
+    end
   end
 
   it 'emits rate limit instrumentation when headers are present' do
@@ -57,14 +44,19 @@ describe ZendeskAPI::Middleware::Response::InstrumentRequest do
                    'X-Rate-Limit' => '100'
                  })
 
-    client.connection.get('rate_limit')
+    events = capture_instrumentation_events do
+      client.config.instrumentation = ActiveSupport::Notifications
+      client.connection.get('rate_limit')
+    end
 
-    event = rate_limit_event
-    expect(event).not_to be_nil
-    payload = event.last
-    expect(payload[:remaining]).to eq(23)
-    expect(payload[:threshold]).to eq(100)
-    expect(payload[:endpoint]).to end_with('/rate_limit')
+    event_name, payload = find_event(events, 'zendesk.rate_limit')
+    expect(event_name).to eq('zendesk.rate_limit')
+
+    aggregate_failures 'rate limit payload' do
+      expect(payload[:remaining]).to eq(23)
+      expect(payload[:threshold]).to eq(100)
+      expect(payload[:endpoint]).to end_with('/rate_limit')
+    end
   end
 
   it 'does not emit rate limit events for server errors' do
@@ -77,27 +69,29 @@ describe ZendeskAPI::Middleware::Response::InstrumentRequest do
                    'X-Rate-Limit' => '100'
                  })
 
-    expect { client.connection.get('rate_limit_error') }
-      .to raise_error(ZendeskAPI::Error::NetworkError)
+    events = capture_instrumentation_events do
+      client.config.instrumentation = ActiveSupport::Notifications
+      expect { client.connection.get('rate_limit_error') }
+        .to raise_error(ZendeskAPI::Error::NetworkError)
+    end
 
-    expect(rate_limit_event).to be_nil
-    expect(request_event).to be_nil
+    aggregate_failures 'no events emitted' do
+      expect(find_event(events, 'zendesk.rate_limit')).to be_nil
+      expect(find_event(events, 'zendesk.request')).to be_nil
+    end
   end
 
   context 'without instrumentation configured' do
-    let(:current_instrumentation) { nil }
-
     it 'performs the request without emitting events' do
       stub_json_request(:get, /no_instrument/, '{}')
 
+      # Don't configure instrumentation
       expect { client.connection.get('no_instrument') }.not_to raise_error
-
-      expect(events).to be_empty
     end
   end
 
   context 'when instrumentation raises errors' do
-    let(:current_instrumentation) do
+    let(:erroring_instrumentation) do
       Object.new.tap do |obj|
         obj.define_singleton_method(:instrument) do |_event, _payload|
           raise 'boom'
@@ -111,6 +105,7 @@ describe ZendeskAPI::Middleware::Response::InstrumentRequest do
 
       stub_json_request(:get, /erroring/, '{}')
 
+      client.config.instrumentation = erroring_instrumentation
       expect { client.connection.get('erroring') }.not_to raise_error
     end
   end
