@@ -360,4 +360,40 @@ RSpec.describe ZendeskAPI::Client do
       expect(client.greeting_categories.path).to match(/channels\/voice\/greeting_categories/)
     end
   end
+
+  context "#api_token_impersonate" do
+    let(:impersonated_username) { "otheruser@yourcompany.com" }
+    let(:api_token) { "abc123" }
+    let(:client) do
+      ZendeskAPI::Client.new do |config|
+        config.url = "https://example.zendesk.com/api/v2"
+        config.username = "original@company.com"
+        config.token = api_token
+        config.adapter = :test
+        config.adapter_proc = proc do |stub|
+          stub.get "/api/v2/tickets" do |env|
+            [200, { 'content-type': "application/json", Authorization: env.request_headers["Authorization"] }, "null"]
+          end
+        end
+      end
+    end
+
+    it "impersonates the user for the scope of the block" do
+      result = nil
+      client.api_token_impersonate(impersonated_username) do
+        response = client.connection.get("/api/v2/tickets")
+        auth_header = response.env.request_headers["Authorization"]
+        decoded = Base64.urlsafe_decode64(auth_header.split.last)
+        expect(decoded).to start_with("#{impersonated_username}/token:")
+        result = response
+      end
+      expect(result).not_to be_nil
+    end
+
+    it "restores the previous username after the block" do
+      original = Thread.current[:zendesk_thread_local_username]
+      client.api_token_impersonate(impersonated_username) { 1 }
+      expect(Thread.current[:zendesk_thread_local_username]).to eq(original)
+    end
+  end
 end

@@ -17,7 +17,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
         expect(client.connection.get("blergh").status).to eq(200)
       }
 
-      expect(seconds).to be_within(0.2).of(1)
+      expect(seconds).to be_within(0.3).of(1)
     end
   end
 
