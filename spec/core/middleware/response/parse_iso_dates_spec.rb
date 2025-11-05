@@ -8,13 +8,7 @@ describe ZendeskAPI::Middleware::Response::ParseIsoDates do
     response
   end
 
-  let(:parsed){
-    if RUBY_VERSION > "1.9"
-      "2012-02-01 13:14:15 UTC"
-    else
-      "Wed Feb 01 13:14:15 UTC 2012"
-    end
-  }
+  let(:parsed) { "2012-02-01 13:14:15 UTC" }
 
   it "should parse dates" do
     expect(fake_response('{"x":"2012-02-01T13:14:15Z"}').body["x"].to_s).to eq(parsed)

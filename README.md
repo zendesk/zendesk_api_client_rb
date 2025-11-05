@@ -2,7 +2,6 @@
 
 [![Test](https://github.com/zendesk/zendesk_api_client_rb/workflows/Test/badge.svg)](https://github.com/zendesk/zendesk_api_client_rb/actions/workflows/main.yml?query=branch%3Amaster)
 [![Gem Version](https://badge.fury.io/rb/zendesk_api.svg)](https://badge.fury.io/rb/zendesk_api)
-[![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_rb.svg)](https://codeclimate.com/github/zendesk/zendesk_api_client_rb)
 
 ## Documentation
 
@@ -42,7 +41,7 @@ Add it to your Gemfile
 gem "zendesk_api"
 ```
 
-Then `bundle` as usual.
+Then `bundle install` as usual.
 
 ## Configuration
 

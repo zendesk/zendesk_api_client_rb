@@ -38,9 +38,9 @@ jobs:
     name: Spec live
     if: github.repository == 'zendesk/zendesk_api_client_rb'
     env:
-      SPEC_LIVE_USERNAME: ${{ secrets.SPEC_LIVE_USERNAME }}
-      SPEC_LIVE_PASSWORD: ${{ secrets.SPEC_LIVE_PASSWORD }}
-      SPEC_LIVE_ZENDESK_HOST: ${{ secrets.SPEC_LIVE_ZENDESK_HOST }}
+      SPEC_LIVE_USERNAME: ${{ secrets.SPEC_LIVE_USERNAME_NEW }}
+      SPEC_LIVE_PASSWORD: ${{ secrets.SPEC_LIVE_PASSWORD_NEW }}
+      SPEC_LIVE_ZENDESK_HOST: ${{ secrets.SPEC_LIVE_ZENDESK_HOST_NEW }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
