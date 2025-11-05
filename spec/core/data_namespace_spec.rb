@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 class ZendeskAPI::DataNamespaceTest; end
 
 describe ZendeskAPI::DataNamespace do

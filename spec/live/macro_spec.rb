@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Macro, :delete_after do
   def valid_attributes
     {title: "my test macro", actions: [{field: "status", value: "solved"}]}

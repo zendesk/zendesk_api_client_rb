@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Response::Deflate do
   context "with content-encoding = 'deflate'" do
     subject { '{ "TESTDATA": true }' }

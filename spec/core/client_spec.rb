@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 class SimpleClient < ZendeskAPI::Client
   def build_connection
     "FOO"

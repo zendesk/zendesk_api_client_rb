@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 RSpec.describe ZendeskAPI::Topic do
   def valid_attributes
     {

@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Response::Callback do
   let(:response) { "TEST" }
 

@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::ReadResource do
   context "find" do
     let(:id) { 1 }

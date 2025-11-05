@@ -1,4 +1,3 @@
-require "core/spec_helper"
 require "tempfile"
 require "action_dispatch"
 

@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Automation, :delete_after do
   def valid_attributes
     {

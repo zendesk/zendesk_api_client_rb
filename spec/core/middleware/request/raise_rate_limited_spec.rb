@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Request::RaiseRateLimited do
   before do
     client.config.retry = false

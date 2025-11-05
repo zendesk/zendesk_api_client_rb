@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Request::EtagCache do
   it "caches" do
     client.config.cache.size = 1

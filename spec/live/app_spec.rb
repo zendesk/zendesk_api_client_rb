@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::App do
   it "should work" do
     upload = VCR.use_cassette("app_upload_create") do

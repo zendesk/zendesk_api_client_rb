@@ -1,4 +1,3 @@
-require "core/spec_helper"
 require "core/resources/cbp_spec_helper"
 
 describe "Endpoints that support CBP" do

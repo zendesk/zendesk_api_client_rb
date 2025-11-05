@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::GroupMembership, :delete_after do
   before :all do
     VCR.use_cassette("delete_existing_group_memberships_create") do

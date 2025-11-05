@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Response::RaiseError do
   context "with a failed connection" do
     context "connection failed" do

@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Request::EncodeJson do
   let(:app) do
     ZendeskAPI::Middleware::Request::EncodeJson.new(lambda { |x| x })

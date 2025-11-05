@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Section, :delete_after do
   it "expects section to exist" do
     expect(section).not_to be_nil

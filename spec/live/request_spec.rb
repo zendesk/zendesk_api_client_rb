@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Request do
   def valid_attributes
     {

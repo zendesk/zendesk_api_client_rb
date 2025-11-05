@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Brand, :delete_after do
   def valid_attributes
     {name: "awesomesauce_ruby_sdk_test_brand", subdomain: "zendeskapi#{SecureRandom.hex(3)}"}

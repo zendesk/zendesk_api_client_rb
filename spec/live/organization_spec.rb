@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Organization, :delete_after do
   def valid_attributes
     {name: "organization_name_ruby_sdk_test"}

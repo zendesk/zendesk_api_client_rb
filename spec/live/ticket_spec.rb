@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 RSpec.describe ZendeskAPI::Ticket do
   def valid_attributes
     {

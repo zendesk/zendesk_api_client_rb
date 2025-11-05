@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::DataResource do
   specify "singular resource name" do
     expect(ZendeskAPI::Ticket.singular_resource_name).to eq("ticket")

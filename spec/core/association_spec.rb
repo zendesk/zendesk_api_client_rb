@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Association do
   let(:instance) { ZendeskAPI::TestResource.new(client, id: 1) }
   let(:child) { ZendeskAPI::TestResource::TestChild.new(client, id: 1, test_resource_id: 2) }

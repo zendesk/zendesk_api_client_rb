@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::PushNotificationDevice do
   describe ".destroy_many" do
     describe "Existing push notification devices" do

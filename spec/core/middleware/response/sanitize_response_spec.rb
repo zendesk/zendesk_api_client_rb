@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Response::SanitizeResponse do
   def fake_response(data)
     stub_json_request(:get, /blergh/, data)

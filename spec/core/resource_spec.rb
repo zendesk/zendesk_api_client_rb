@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Resource do
   context "initialize" do
     context "with :global as part of attributes" do

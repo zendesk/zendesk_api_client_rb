@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::User::Identity, :delete_after do
   def valid_attributes
     {type: "email", value: "ruby_sdk_test@example.com"}

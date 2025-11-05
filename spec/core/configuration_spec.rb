@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Configuration do
   subject { ZendeskAPI::Configuration.new }
 

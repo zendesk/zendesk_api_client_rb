@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 RSpec.describe ZendeskAPI::Data do
   describe ".new_from_response" do
     let(:response) { double(:response) }

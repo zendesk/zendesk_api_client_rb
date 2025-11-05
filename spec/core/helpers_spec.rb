@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 RSpec.describe ZendeskAPI::Helpers do
   describe "#present?" do
     it "is false when nil, or empty" do

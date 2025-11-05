@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 RSpec.describe ZendeskAPI::Tag, :vcr, :not_findable do
   [organization, user, ticket].each do |object|
     raise "Your setup is invalid, see spec/live/Readme.md" unless object

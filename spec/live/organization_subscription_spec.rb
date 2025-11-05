@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::OrganizationSubscription, :delete_after do
   before(:all) do
     VCR.use_cassette("enable_shared_tickets") do

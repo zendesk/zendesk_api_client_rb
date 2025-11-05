@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::OrganizationMembership, :delete_after do
   def valid_attributes
     {organization_id: organization.id, user_id: user.id}

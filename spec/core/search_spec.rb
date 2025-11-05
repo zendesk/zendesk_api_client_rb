@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Search do
   context ".new" do
     context "when given an existing class" do

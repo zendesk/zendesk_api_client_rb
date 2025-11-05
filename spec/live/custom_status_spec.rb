@@ -1,4 +1,3 @@
-require "core/spec_helper"
 require "securerandom"
 
 describe ZendeskAPI::CustomStatus, :delete_after do

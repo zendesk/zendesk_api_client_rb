@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Response::ParseJson do
   context "with another content-type" do
     before(:each) do

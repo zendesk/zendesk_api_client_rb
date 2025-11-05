@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Response::Gzip do
   context "with content-encoding = 'gzip'" do
     subject { '{ "TESTDATA": true }' }

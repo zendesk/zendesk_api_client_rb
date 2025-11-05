@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Collection do
   subject do
     ZendeskAPI::Collection.new(client, ZendeskAPI::TestResource)

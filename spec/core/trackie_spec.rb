@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Trackie do
   subject { ZendeskAPI::Trackie.new }
   before(:each) { subject.clear_changes }

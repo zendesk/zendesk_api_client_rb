@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::DestroyMany do
   subject { ZendeskAPI::BulkTestResource }
 

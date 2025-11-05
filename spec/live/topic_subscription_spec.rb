@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::TopicSubscription, :delete_after, :not_findable do
   let!(:subscription) do
     VCR.use_cassette("create_inline_topic_subscription") do

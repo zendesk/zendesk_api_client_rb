@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 RSpec.describe ZendeskAPI::Article, :delete_after do
   it "expects article to exist" do
     expect(article).not_to be_nil

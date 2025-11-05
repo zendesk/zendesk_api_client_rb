@@ -1,5 +1,3 @@
-require "core/spec_helper"
-
 describe ZendeskAPI::Middleware::Response::ParseIsoDates do
   def fake_response(data)
     stub_json_request(:get, %r{blergh}, data)
