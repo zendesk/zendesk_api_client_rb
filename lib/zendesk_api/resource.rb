@@ -1,9 +1,9 @@
-require "zendesk_api/helpers"
-require "zendesk_api/trackie"
-require "zendesk_api/actions"
-require "zendesk_api/association"
-require "zendesk_api/associations"
-require "zendesk_api/verbs"
+require_relative "helpers"
+require_relative "trackie"
+require_relative "actions"
+require_relative "association"
+require_relative "associations"
+require_relative "verbs"
 
 # See docs: https://developer.zendesk.com/api-reference/
 module ZendeskAPI

@@ -1,4 +1,4 @@
-require "core/resources/cbp_spec_helper"
+require_relative "../core/resources/cbp_spec_helper"
 
 describe "Endpoints that support CBP" do
   describe ZendeskAPI::Group do

@@ -1,4 +1,4 @@
-require "zendesk_api/helpers"
+require_relative "helpers"
 
 module ZendeskAPI
   # Represents an association between two resources

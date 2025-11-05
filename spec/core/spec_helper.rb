@@ -20,9 +20,9 @@ class String
   end
 end
 
-require File.join(File.dirname(__FILE__), "..", "macros", "resource_macros")
-require File.join(File.dirname(__FILE__), "..", "fixtures", "zendesk")
-require File.join(File.dirname(__FILE__), "..", "fixtures", "test_resources")
+require_relative "../macros/resource_macros"
+require_relative "../fixtures/zendesk"
+require_relative "../fixtures/test_resources"
 
 $credentials_warning = false
 

@@ -1,5 +1,5 @@
-require "zendesk_api/track_changes"
-require "zendesk_api/silent_mash"
+require_relative "track_changes"
+require_relative "silent_mash"
 
 module ZendeskAPI
   # @private

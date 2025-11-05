@@ -1,7 +1,7 @@
-require "zendesk_api/resource"
-require "zendesk_api/resources"
-require "zendesk_api/search"
-require "zendesk_api/pagination"
+require_relative "resource"
+require_relative "resources"
+require_relative "search"
+require_relative "pagination"
 
 module ZendeskAPI
   # Represents a collection of resources. Lazily loaded, resources aren't
