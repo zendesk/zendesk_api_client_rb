@@ -9,8 +9,8 @@ on:
       - spec_live
 
 jobs:
-  test-and-lint:
-    name: Test and lint
+  test:
+    name: Test
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -30,10 +30,9 @@ jobs:
         with:
           bundler-cache: true
           ruby-version: ${{ matrix.ruby }}
-      - name: Test and Lint
-        run: |
-          bundle exec rake
-          bundle exec rubocop
+      - name: Test
+        run: bundle exec rake
+
   spec-live:
     name: Spec live
     if: github.repository == 'zendesk/zendesk_api_client_rb'
@@ -54,3 +53,16 @@ jobs:
           bundle exec rake clean_live set_ci_credentials spec:live ||
           bundle exec rake clean_live &&
           bundle exec rspec spec/live --only-failures
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Lint
+        run: bundle exec rake standard

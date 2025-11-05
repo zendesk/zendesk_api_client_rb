@@ -1,0 +1,446 @@
+# Auto generated files with errors to ignore.
+# Remove from this list as you refactor files.
+---
+ignore:
+- Gemfile:
+  - Style/StringLiterals
+- Rakefile:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Style/PercentLiteralDelimiters
+- lib/zendesk_api.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/actions.rb:
+  - Lint/AssignmentInCondition
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/StringLiterals
+- lib/zendesk_api/association.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Lint/AssignmentInCondition
+  - Lint/ShadowedArgument
+  - Layout/SpaceInsideBlockBraces
+  - Style/SafeNavigation
+- lib/zendesk_api/associations.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Style/EachWithObject
+  - Lint/AssignmentInCondition
+  - Performance/RedundantMerge
+- lib/zendesk_api/client.rb:
+  - Style/StringLiterals
+  - Style/MissingRespondToMissing
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+  - Layout/ArgumentAlignment
+  - Lint/AssignmentInCondition
+- lib/zendesk_api/collection.rb:
+  - Style/StringLiterals
+  - Style/PercentLiteralDelimiters
+  - Performance/RedundantMerge
+  - Style/HashSyntax
+  - Style/SafeNavigation
+  - Style/StringLiteralsInInterpolation
+  - Style/Alias
+  - Performance/StringIdentifierArgument
+  - Style/ParenthesesAroundCondition
+  - Layout/SpaceInsideHashLiteralBraces
+- lib/zendesk_api/configuration.rb:
+  - Style/HashSyntax
+  - Style/StringLiterals
+- lib/zendesk_api/core_ext/inflection.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/delegator.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/helpers.rb:
+  - Layout/DotPosition
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/request/api_token_impersonate.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/request/encode_json.rb:
+  - Style/StringLiterals
+  - Lint/Void
+- lib/zendesk_api/middleware/request/etag_cache.rb:
+  - Style/HashSyntax
+- lib/zendesk_api/middleware/request/raise_rate_limited.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/request/retry.rb:
+  - Style/TernaryParentheses
+  - Style/RescueStandardError
+  - Style/SafeNavigation
+- lib/zendesk_api/middleware/request/upload.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/request/url_based_access_token.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/response/deflate.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/response/gzip.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/response/logger.rb:
+  - Style/StringLiterals
+  - Lint/RedundantStringCoercion
+- lib/zendesk_api/middleware/response/parse_iso_dates.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/response/parse_json.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/response/raise_error.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/middleware/response/sanitize_response.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/pagination.rb:
+  - Style/Alias
+  - Layout/SpaceInsideHashLiteralBraces
+  - Layout/ClosingParenthesisIndentation
+- lib/zendesk_api/resource.rb:
+  - Style/StringLiterals
+  - Style/Alias
+  - Style/TrivialAccessors
+  - Style/HashSyntax
+  - Lint/DuplicateMethods
+  - Performance/Caller
+  - Layout/SpaceInsideHashLiteralBraces
+- lib/zendesk_api/resources.rb:
+  - Style/StringLiterals
+  - Style/Alias
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/PercentLiteralDelimiters
+  - Lint/AssignmentInCondition
+- lib/zendesk_api/search.rb:
+  - Style/Alias
+- lib/zendesk_api/silent_mash.rb:
+  - Style/StringLiterals
+- lib/zendesk_api/track_changes.rb:
+  - Style/Alias
+- lib/zendesk_api/trackie.rb:
+  - Style/StringLiterals
+- spec/core/association_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/bulk_actions_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Layout/ArgumentAlignment
+  - Layout/MultilineMethodCallBraceLayout
+- spec/core/client_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/QuotedSymbols
+  - Style/HashSyntax
+- spec/core/collection_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+  - Layout/ArgumentAlignment
+  - Layout/MultilineMethodCallBraceLayout
+  - Layout/ClosingParenthesisIndentation
+  - Lint/ConstantDefinitionInBlock
+  - Lint/InheritException
+  - Style/Proc
+  - Layout/DotPosition
+  - Style/PercentLiteralDelimiters
+  - Style/TernaryParentheses
+- spec/core/configuration_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/core/create_resource_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/core/data_namespace_spec.rb:
+  - Style/StringLiterals
+  - Layout/DotPosition
+- spec/core/data_resource_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/data_spec.rb:
+  - Style/StringLiterals
+- spec/core/error_spec.rb:
+  - Style/StringLiterals
+- spec/core/helpers_spec.rb:
+  - Style/StringLiterals
+- spec/core/inflection_spec.rb:
+  - Style/StringLiterals
+- spec/core/lru_cache_spec.rb:
+  - Style/StringLiterals
+- spec/core/middleware/request/api_token_impersonate_spec.rb:
+  - Style/StringLiterals
+  - Style/StringLiteralsInInterpolation
+- spec/core/middleware/request/encode_json_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/core/middleware/request/etag_cache_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/PercentLiteralDelimiters
+- spec/core/middleware/request/raise_rate_limited_spec.rb:
+  - Style/StringLiterals
+- spec/core/middleware/request/retry_spec.rb:
+  - Style/StringLiterals
+  - Layout/DotPosition
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/middleware/request/upload_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/middleware/response/callback_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/middleware/response/deflate_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+- spec/core/middleware/response/gzip_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+- spec/core/middleware/response/parse_iso_dates_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/middleware/response/parse_json_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+- spec/core/middleware/response/raise_error_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/ArgumentAlignment
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/middleware/response/sanitize_response_spec.rb:
+  - Style/StringLiterals
+- spec/core/read_resource_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceBeforeBlockBraces
+  - Layout/ArgumentAlignment
+  - Layout/SpaceInsideHashLiteralBraces
+  - Layout/ClosingParenthesisIndentation
+- spec/core/resource_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+  - Lint/ConstantDefinitionInBlock
+  - Style/PercentLiteralDelimiters
+  - Layout/SpaceBeforeBlockBraces
+- spec/core/resources/automation_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/resources/cbp_spec_helper.rb:
+  - Style/StringLiterals
+- spec/core/resources/macro_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/resources/trigger_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/resources/view_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/PercentLiteralDelimiters
+- spec/core/search_export_spec.rb:
+  - Style/StringLiterals
+- spec/core/search_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/core/spec_helper.rb:
+  - Style/StringLiterals
+  - Style/GlobalVars
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/MixinUsage
+- spec/core/trackie_spec.rb:
+  - Style/StringLiterals
+  - Style/BlockComments
+- spec/fixtures/zendesk.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/live/app_installation_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/PercentLiteralDelimiters
+- spec/live/app_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/PercentLiteralDelimiters
+- spec/live/article_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/audit_spec.rb:
+  - Style/StringLiterals
+- spec/live/automation_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/live/bookmark_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/brand_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/category_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/cbp_support_spec.rb:
+  - Style/StringLiterals
+- spec/live/collection_spec.rb:
+  - Style/StringLiterals
+- spec/live/custom_role_spec.rb:
+  - Style/StringLiterals
+- spec/live/custom_status_spec.rb:
+  - Style/StringLiterals
+- spec/live/dynamic_content/item_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+- spec/live/dynamic_content/variant_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+- spec/live/group_membership_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/group_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/identity_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/locale_spec.rb:
+  - Style/StringLiterals
+- spec/live/macro_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+  - Lint/RedundantStringCoercion
+- spec/live/organization_field_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/organization_membership_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/organization_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/organization_subscription_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/push_notification_device_spec.rb:
+  - Style/StringLiterals
+  - Style/PercentLiteralDelimiters
+- spec/live/request_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/live/satisfaction_rating_spec.rb:
+  - Style/StringLiterals
+- spec/live/schedule_spec.rb:
+  - Style/StringLiterals
+- spec/live/section_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/setting_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+- spec/live/suspended_ticket_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/live/tag_spec.rb:
+  - Style/StringLiterals
+  - Style/PercentLiteralDelimiters
+  - Style/HashSyntax
+- spec/live/target_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Lint/BooleanSymbol
+- spec/live/ticket_field_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/ticket_form_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/ticket_metrics_spec.rb:
+  - Style/StringLiterals
+- spec/live/ticket_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/PercentLiteralDelimiters
+  - Layout/FirstHashElementIndentation
+- spec/live/topic_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+- spec/live/topic_subscription_spec.rb:
+  - Style/StringLiterals
+- spec/live/trigger_category_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/trigger_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/live/upload_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/user_field_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/user_spec.rb:
+  - Style/StringLiterals
+  - Layout/SpaceInsideHashLiteralBraces
+  - Style/HashSyntax
+- spec/live/user_view_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/HashAlignment
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/live/view_spec.rb:
+  - Style/StringLiterals
+  - Style/HashSyntax
+  - Layout/SpaceInsideHashLiteralBraces
+- spec/live/voice/phone_number_spec.rb:
+  - Style/StringLiterals
+- spec/live/webhook_spec.rb:
+  - Style/StringLiterals
+- spec/macros/resource_macros.rb:
+  - Layout/SpaceInsideHashLiteralBraces
+  - Lint/RedundantStringCoercion
+  - Style/HashSyntax
+  - Performance/RedundantMerge
+  - Style/MultilineIfModifier
+  - Style/StringLiteralsInInterpolation
+- util/resource_handler.rb:
+  - Style/StringLiterals
+- util/verb_handler.rb:
+  - Style/StringLiterals
+- zendesk_api.gemspec:
+  - Style/StringLiterals
+  - Layout/ExtraSpacing
