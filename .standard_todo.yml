@@ -2,25 +2,13 @@
 # Remove from this list as you refactor files.
 ---
 ignore:
-- lib/zendesk_api/actions.rb:
-  - Lint/AssignmentInCondition
-- lib/zendesk_api/association.rb:
-  - Lint/AssignmentInCondition
-  - Lint/ShadowedArgument
-- lib/zendesk_api/associations.rb:
-  - Lint/AssignmentInCondition
 - lib/zendesk_api/client.rb:
   - Style/MissingRespondToMissing
-  - Lint/AssignmentInCondition
 - lib/zendesk_api/resource.rb:
   - Style/TrivialAccessors
-  - Lint/DuplicateMethods
-- lib/zendesk_api/resources.rb:
-  - Lint/AssignmentInCondition
 - spec/core/collection_spec.rb:
   - Lint/ConstantDefinitionInBlock
 - spec/core/resource_spec.rb:
   - Lint/ConstantDefinitionInBlock
 - spec/core/spec_helper.rb:
   - Style/GlobalVars
-  - Style/MixinUsage

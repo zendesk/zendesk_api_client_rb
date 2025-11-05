@@ -84,7 +84,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
       end
 
       it "should not fail without a logger" do
-        client.config.logger = false
+        client.config.logger = nil
         client.connection.get("blergh")
       end
     end
@@ -113,7 +113,7 @@ describe ZendeskAPI::Middleware::Request::Retry do
       end
 
       it "should not fail without a logger" do
-        client.config.logger = false
+        client.config.logger = nil
         client.connection.get("blergh")
       end
     end

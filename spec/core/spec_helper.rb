@@ -6,6 +6,7 @@ require "zendesk_api"
 require "vcr"
 require "logger"
 require "stringio"
+require "webmock/rspec"
 
 begin
   require "byebug"
@@ -165,5 +166,3 @@ VCR.configure do |c|
   # In development, this helps debugging.
   c.allow_http_connections_when_no_cassette = true
 end
-
-include WebMock::API

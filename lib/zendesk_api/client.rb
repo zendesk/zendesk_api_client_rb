@@ -245,10 +245,10 @@ module ZendeskAPI
     end
 
     def add_warning_callback
-      return unless logger = config.logger
+      return unless (logger = config.logger)
 
       insert_callback do |env|
-        if warning = env[:response_headers]["X-Zendesk-API-Warn"]
+        if (warning = env[:response_headers]["X-Zendesk-API-Warn"])
           logger.warn "WARNING: #{warning}"
         end
       end

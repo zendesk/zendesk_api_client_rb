@@ -1036,7 +1036,7 @@ module ZendeskAPI
     end
 
     def self.create!(client, attributes = {}, &)
-      if file_path = attributes.delete(:upload)
+      if (file_path = attributes.delete(:upload))
         attributes[:upload_id] = client.apps.uploads.create!(file: file_path).id
       end
 

@@ -66,7 +66,7 @@ module ZendeskAPI
         namespace[0] = @options.path || @options[:class].resource_path
       end
 
-      if id = extract_id(instance, options, original_options)
+      if (id = extract_id(instance, options, original_options))
         namespace << id
       end
 
@@ -106,7 +106,7 @@ module ZendeskAPI
       end
     end
 
-    def side_load_from_parent_id(resource, side_loads, key)
+    def side_load_from_parent_id(resource, side_loads, _key)
       key = "#{resource.class.singular_resource_name}_id"
 
       resource.send("#{options.name}=", _side_load(resource, side_loads.select { |side_load|

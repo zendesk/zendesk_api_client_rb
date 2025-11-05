@@ -73,7 +73,7 @@ module ZendeskAPI
         # @param [Symbol] resource_name_or_class The underlying resource name or a class to get it from
         # @param [Hash] class_level_options The options to pass to the method definition.
         def has(resource_name_or_class, class_level_options = {})
-          if klass = class_level_options.delete(:class)
+          if (klass = class_level_options.delete(:class))
             resource_name = resource_name_or_class
           else
             klass = resource_name_or_class
@@ -105,9 +105,9 @@ module ZendeskAPI
 
             # find and cache association
             instance_association = Association.new(association.merge(parent: self))
-            resource = if klass.respond_to?(:find) && resource_id = method_missing(association[:id_column])
+            resource = if klass.respond_to?(:find) && (resource_id = method_missing(association[:id_column]))
               klass.find(@client, id: resource_id, association: instance_association)
-            elsif found = method_missing(association[:name].to_sym)
+            elsif (found = method_missing(association[:name].to_sym))
               wrap_resource(found, association, include_key: association[:include_key])
             elsif klass.superclass == DataResource && !association[:inline]
               response = @client.connection.get(instance_association.generate_path(with_parent: true))
@@ -133,7 +133,7 @@ module ZendeskAPI
         # @param [Symbol] resource_name_or_class The underlying resource name or class to get it from
         # @param [Hash] class_level_options The options to pass to the method definition.
         def has_many(resource_name_or_class, class_level_options = {})
-          if klass = class_level_options.delete(:class)
+          if (klass = class_level_options.delete(:class))
             resource_name = resource_name_or_class
           else
             klass = resource_name_or_class

@@ -76,14 +76,6 @@ module ZendeskAPI
       @attributes.clear_changes unless new_record?
     end
 
-    def self.new_from_response(client, response, includes = nil)
-      new(client).tap do |resource|
-        resource.handle_response(response)
-        resource.set_includes(resource, includes, response.body) if includes
-        resource.attributes.clear_changes
-      end
-    end
-
     # Passes the method onto the attributes hash.
     # If the attributes are nested (e.g. { :tickets => { :id => 1 } }), passes the method onto the nested hash.
     def method_missing(*args, &)
@@ -127,7 +119,6 @@ module ZendeskAPI
     def to_s
       "#{self.class.singular_resource_name}: #{attributes.inspect}"
     end
-    alias_method :inspect, :to_s
 
     # Compares resources by class and id. If id is nil, then by object_id
     def ==(other)

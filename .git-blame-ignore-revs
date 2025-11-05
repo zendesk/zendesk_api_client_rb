@@ -1,0 +1,26 @@
+# .git-blame-ignore-revs
+
+# What is this file?
+
+# To limit the impact of 'unimportant' bulk commits, like big a PR full of rubocop fixes, git 2.23 adds a new option to git blame.
+# Using --ignore-rev, or this file, one can specify a commit to be ignored by git blame.
+# Lines changed by the ignored commit will be attributed to the previous commit touching that line instead.
+# This means that even after our bulk style change, we can get back a meaningful context for the 'real' changes to our code.
+
+# How do I use it?
+
+# The file should contain the full (40 character) commit hashes.
+# Lines starting with a # are considered comments and can be used to explain what makes the given commit(s) unimportant.
+# Commit order in the file is not important.
+
+# Lint: Fix Style/StringLiterals etc. offenses
+afbf222941a6afbc9ac0a4db49534fa15436ae69
+
+# Lint: Fix layout offenses
+3db45d38aa28dbbd7830658254ec9c59c02a29e0
+
+# Lint: Fix simple offenses
+0221a908fec6d2a55ce645c5a17a074c93957be3
+
+# Move require of spec_helper into .rspec
+8f09a851fb6feae50769ffb5430b3f0ebe3053b4
