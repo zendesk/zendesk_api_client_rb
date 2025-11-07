@@ -546,6 +546,20 @@ module ZendeskAPI
 
     has_many :incidents, class: Ticket
 
+    def custom_field_by_name(name)
+      raise "Custom fields metadata missing. Enable config.preload_custom_fields_metadata" unless account_data["custom_fields"]
+
+      custom_field_id = account_data["custom_fields"][name]
+      custom_fields.find { |cf| cf["id"] == custom_field_id }["value"]
+    end
+
+    def set_custom_field_by_name(name, value)
+      raise "Custom fields metadata missing. Enable config.preload_custom_fields_metadata" unless account_data["custom_fields"]
+
+      custom_field_id = account_data["custom_fields"][name]
+      custom_fields.find { |cf| cf["id"] == custom_field_id }["value"] = value
+    end
+
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used
     # @param [Integer] start_time The start_time parameter
