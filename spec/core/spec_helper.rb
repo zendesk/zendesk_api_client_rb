@@ -164,3 +164,24 @@ VCR.configure do |c|
   # In development, this helps debugging.
   c.allow_http_connections_when_no_cassette = true
 end
+
+class TestInstrumenter
+  attr_reader :events
+
+  def initialize
+    @events = []
+  end
+
+  def instrument(name, payload = {})
+    @events << {name: name, payload: payload}
+    yield if block_given?
+  end
+
+  def find_events(name)
+    @events.select { |e| e[:name] == name }
+  end
+
+  def clear
+    @events.clear
+  end
+end

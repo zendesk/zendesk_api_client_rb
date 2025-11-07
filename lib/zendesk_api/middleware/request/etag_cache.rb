@@ -9,6 +9,7 @@ module ZendeskAPI
       class EtagCache < Faraday::Middleware
         def initialize(app, options = {})
           @app = app
+          @instrumentation = options[:instrumentation] if options[:instrumentation].respond_to?(:instrument)
           @cache = options[:cache] ||
             raise("need :cache option e.g. ActiveSupport::Cache::MemoryStore.new")
           @cache_key_prefix = options.fetch(:cache_key_prefix, :faraday_etags)
@@ -41,8 +42,30 @@ module ZendeskAPI
                 content_length: cached[:response_headers][:content_length],
                 content_encoding: cached[:response_headers][:content_encoding]
               )
+              if @instrumentation
+                begin
+                  @instrumentation.instrument("zendesk.cache_hit",
+                    {
+                      endpoint: env[:url]&.path,
+                      status: env[:status]
+                    })
+                rescue
+                  # Swallow instrumentation errors to maintain cache behavior
+                end
+              end
             elsif env[:status] == 200 && env[:response_headers]["Etag"] # modified and cacheable
               @cache.write(cache_key(env), env.to_hash)
+              if @instrumentation
+                begin
+                  @instrumentation.instrument("zendesk.cache_miss",
+                    {
+                      endpoint: env[:url]&.path,
+                      status: env[:status]
+                    })
+                rescue
+                  # Swallow instrumentation errors to maintain cache behavior
+                end
+              end
             end
           end
         end
