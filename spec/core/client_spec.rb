@@ -394,4 +394,25 @@ RSpec.describe ZendeskAPI::Client do
       expect(Thread.current[:zendesk_thread_local_username]).to eq(original)
     end
   end
+
+  context "custom fields metadata preloading" do
+    it "doesn’t preload metadata by default" do
+      expect(subject.account_data["custom_fields"]).to be_nil
+    end
+
+    it "preloads metadata if configured" do
+      fields = {ticket_fields: [{title: "field one", id: 12}]}.to_json
+      client = ZendeskAPI::Client.new do |config|
+        config.preload_custom_fields_metadata = true
+        config.url = "https://example.zendesk.com/api/v2"
+        config.adapter = :test
+        config.adapter_proc = proc do |stub|
+          stub.get "/api/v2/ticket_fields" do |env|
+            [200, {"content-type": "application/json", Authorization: env.request_headers["Authorization"]}, fields]
+          end
+        end
+      end
+      expect(client.account_data["custom_fields"]).to eq({"field one" => 12})
+    end
+  end
 end

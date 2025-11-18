@@ -12,3 +12,4 @@ In case you want to create a test account from scratch:
  - Add photo to user profile of that end user.
  - Create a new ticket and cc "zendesk-api-client-ruby-end-user-#{client.config.username}" (run tests once to create this user)
  - Ensure you allow admins to set up user password (or `POST /api/v2/users/{user_id}/password.json` will fail). You can check this in the admin centre > security > advanced
+ - Add ticket custom field with the display name "Custom field name" and field type "Text".

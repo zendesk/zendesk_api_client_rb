@@ -40,5 +40,11 @@ module ZendeskAPI
     class NetworkError < ClientError; end
     class RecordNotFound < ClientError; end
     class RateLimited < ClientError; end
+
+    class CustomFieldsMetadataConfigurationError < StandardError
+      def to_s
+        "Custom fields metadata missing. Enable config.preload_custom_fields_metadata"
+      end
+    end
   end
 end

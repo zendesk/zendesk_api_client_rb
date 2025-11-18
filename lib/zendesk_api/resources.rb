@@ -546,18 +546,37 @@ module ZendeskAPI
 
     has_many :incidents, class: Ticket
 
-    def custom_field_by_name(name)
-      raise "Custom fields metadata missing. Enable config.preload_custom_fields_metadata" unless account_data["custom_fields"]
+    class CustomFieldAccessor
+      def initialize(ticket)
+        @ticket = ticket
+      end
 
-      custom_field_id = account_data["custom_fields"][name]
-      custom_fields.find { |cf| cf["id"] == custom_field_id }["value"]
+      def [](name)
+        find_by_name(name)["value"]
+      end
+
+      def []=(name, value)
+        find_by_name(name)["value"] = value
+      end
+
+      private
+
+      def find_by_name(name)
+        raise ZendeskAPI::Error::CustomFieldsMetadataConfigurationError unless @ticket.account_data["custom_fields"]
+
+        custom_field_id = @ticket.account_data["custom_fields"][name]
+        @ticket.custom_fields.find { |cf| cf["id"] == custom_field_id }
+      end
     end
 
-    def set_custom_field_by_name(name, value)
-      raise "Custom fields metadata missing. Enable config.preload_custom_fields_metadata" unless account_data["custom_fields"]
-
-      custom_field_id = account_data["custom_fields"][name]
-      custom_fields.find { |cf| cf["id"] == custom_field_id }["value"] = value
+    # Returns a custom field accessor that supports bracket notation.
+    # You need to enable `config.preload_custom_fields_metadata` before using it.
+    # Usage:
+    #   ticket.custom_field["field name"]            # get
+    #   ticket.custom_field["field name"] = "value"  # set
+    # You need to call `save!` on a ticket after changing a custom field value.
+    def custom_field
+      @custom_field_accessor ||= CustomFieldAccessor.new(self)
     end
 
     # Gets a incremental export of tickets from the start_time until now.

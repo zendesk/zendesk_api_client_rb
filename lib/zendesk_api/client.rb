@@ -108,7 +108,7 @@ module ZendeskAPI
       set_token_auth
       set_default_logger
       add_warning_callback
-      preload_custom_fields_metadata
+      load_custom_fields_metadata
     end
 
     # token impersonation for the scope of the block
@@ -155,6 +155,13 @@ module ZendeskAPI
       define_method delegator do |*| # takes arguments, but doesn't do anything with them
         Delegator.new(self)
       end
+    end
+
+    def load_custom_fields_metadata
+      return unless @config.preload_custom_fields_metadata
+
+      @account_data["custom_fields"] ||= {}
+      ticket_fields.each { |field| @account_data["custom_fields"][field.title] = field.id }
     end
 
     protected
@@ -268,13 +275,6 @@ module ZendeskAPI
           logger.warn "WARNING: #{warning}"
         end
       end
-    end
-
-    def preload_custom_fields_metadata
-      return unless @config.preload_custom_fields_metadata
-
-      @account_data["custom_fields"] ||= {}
-      ticket_fields.each { |field| @account_data["custom_fields"][field.title] = field.id }
     end
 
     # See https://lostisland.github.io/faraday/middleware/authentication

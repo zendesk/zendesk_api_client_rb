@@ -31,4 +31,8 @@ describe ZendeskAPI::Configuration do
   it "sets a default for use_resource_cache" do
     expect(subject.use_resource_cache).to be true
   end
+
+  it "has preload_custom_fields_metadata disabled by default" do
+    expect(subject.preload_custom_fields_metadata).to be_nil
+  end
 end

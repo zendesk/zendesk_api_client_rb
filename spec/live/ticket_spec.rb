@@ -110,6 +110,32 @@ RSpec.describe ZendeskAPI::Ticket do
     it_should_be_readable :tickets, :recent
   end
 
+  describe "custom fields" do
+    before do
+      client.config.preload_custom_fields_metadata = true
+      client.load_custom_fields_metadata
+      VCR.use_cassette("ticket_create_custom_fields") do
+        @ticket = ZendeskAPI::Ticket.create(client, {
+          subject: "live spec subject for custom fields test",
+          description: "live spec description for custom fields test"
+        })
+      end
+    end
+
+    after do
+      client.config.preload_custom_fields_metadata = false
+      @ticket&.destroy!
+    end
+
+    it "can write and read custom fields" do
+      @ticket.custom_field["Custom field name"] = "Custom field value"
+      @ticket.save!
+
+      @ticket.reload!
+      expect(@ticket.custom_field["Custom field name"]).to eq("Custom field value")
+    end
+  end
+
   describe ".incremental_export" do
     let(:results) { ZendeskAPI::Ticket.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
 
