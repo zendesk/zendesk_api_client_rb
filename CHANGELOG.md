@@ -2,7 +2,11 @@
 
 ## Unreleased
 
-Drops support for Ruby 2.7 and 3.0.
+## v4.0.0.pre.1
+
+- Added optional instrumentation via `config.instrumentation`, emitting `zendesk.request`, `zendesk.rate_limit`, `zendesk.cache_hit`, `zendesk.cache_miss`, and `zendesk.retry` events for integrations like `ActiveSupport::Notifications`.
+- Introduced `ZendeskAPI::Client#api_token_impersonate` to support just-in-time user impersonation when authenticating with API tokens.
+- Dropped support for Ruby 2.7 and 3.0
 
 ## v3.1.1
 
