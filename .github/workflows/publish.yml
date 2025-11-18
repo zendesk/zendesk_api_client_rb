@@ -2,8 +2,10 @@ name: Publish to RubyGems.org
 
 on:
   push:
-    branches: main
-    paths: lib/zendesk_api/version.rb
+    branches:
+      - main
+    paths:
+      - lib/zendesk_api/version.rb
   workflow_dispatch:
 
 jobs:
@@ -20,7 +22,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: false
-          
+          ruby-version: "3.2"
       - name: Install dependencies
         run: bundle install
       - uses: rubygems/release-gem@v1
