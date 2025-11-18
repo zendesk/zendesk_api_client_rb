@@ -20,7 +20,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: false
-          
+          ruby-version: '3.2'
       - name: Install dependencies
         run: bundle install
       - uses: rubygems/release-gem@v1
