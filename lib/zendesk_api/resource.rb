@@ -80,6 +80,10 @@ module ZendeskAPI
       @client.account_data
     end
 
+    def refresh_custom_fields_metadata
+      @client.refresh_custom_fields_metadata
+    end
+
     # Passes the method onto the attributes hash.
     # If the attributes are nested (e.g. { :tickets => { :id => 1 } }), passes the method onto the nested hash.
     def method_missing(*args, &)

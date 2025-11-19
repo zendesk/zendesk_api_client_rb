@@ -108,7 +108,6 @@ module ZendeskAPI
       set_token_auth
       set_default_logger
       add_warning_callback
-      load_custom_fields_metadata
     end
 
     # token impersonation for the scope of the block
@@ -157,11 +156,9 @@ module ZendeskAPI
       end
     end
 
-    def load_custom_fields_metadata
-      return unless @config.preload_custom_fields_metadata
-
-      @account_data["custom_fields"] ||= {}
-      ticket_fields.each { |field| @account_data["custom_fields"][field.title] = field.id }
+    def refresh_custom_fields_metadata
+      account_data[:custom_fields] ||= {}
+      ticket_fields.each { |field| account_data[:custom_fields][field.title] = field.id }
     end
 
     protected

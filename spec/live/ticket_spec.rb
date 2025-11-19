@@ -112,18 +112,13 @@ RSpec.describe ZendeskAPI::Ticket do
 
   describe "custom fields" do
     before do
-      client.config.preload_custom_fields_metadata = true
-      client.load_custom_fields_metadata
-      VCR.use_cassette("ticket_create_custom_fields") do
-        @ticket = ZendeskAPI::Ticket.create(client, {
-          subject: "live spec subject for custom fields test",
-          description: "live spec description for custom fields test"
-        })
-      end
+      @ticket = ZendeskAPI::Ticket.create(client, {
+        subject: "live spec subject for custom fields test",
+        description: "live spec description for custom fields test"
+      })
     end
 
     after do
-      client.config.preload_custom_fields_metadata = false
       @ticket&.destroy!
     end
 
@@ -133,6 +128,15 @@ RSpec.describe ZendeskAPI::Ticket do
 
       @ticket.reload!
       expect(@ticket.custom_field["Custom field name"]).to eq("Custom field value")
+    end
+
+    it "raises ArgumentError for non-existent fields" do
+      expect { @ticket.custom_field["This field does not exist"] }.to raise_error(ArgumentError)
+    end
+
+    it "stores custom fields metadata on a client" do
+      _custom_field_value = @ticket.custom_field["Custom field name"]
+      expect(@ticket.account_data[:custom_fields]["Custom field name"]).to eq(9961714922394)
     end
   end
 

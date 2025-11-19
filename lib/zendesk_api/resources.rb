@@ -551,26 +551,30 @@ module ZendeskAPI
         @ticket = ticket
       end
 
-      def [](name)
-        find_by_name(name)["value"]
+      def [](field_name)
+        find_by_name(field_name)["value"]
       end
 
-      def []=(name, value)
-        find_by_name(name)["value"] = value
+      def []=(field_name, value)
+        find_by_name(field_name)["value"] = value
       end
 
       private
 
-      def find_by_name(name)
-        raise ZendeskAPI::Error::CustomFieldsMetadataConfigurationError unless @ticket.account_data["custom_fields"]
+      def find_by_name(field_name)
+        @ticket.refresh_custom_fields_metadata unless @ticket.account_data.has_key?(:custom_fields)
 
-        custom_field_id = @ticket.account_data["custom_fields"][name]
-        @ticket.custom_fields.find { |cf| cf["id"] == custom_field_id }
+        custom_field_id = @ticket.account_data[:custom_fields][field_name]
+        raise ArgumentError, "No custom field named '#{field_name}' found in field definitions" if custom_field_id.nil?
+
+        custom_field = @ticket.custom_fields.find { |cf| cf["id"] == custom_field_id }
+        raise ArgumentError, "No custom field with id #{custom_field_id} found. Field name: '#{field_name}'" if custom_field.nil?
+
+        custom_field
       end
     end
 
     # Returns a custom field accessor that supports bracket notation.
-    # You need to enable `config.preload_custom_fields_metadata` before using it.
     # Usage:
     #   ticket.custom_field["field name"]            # get
     #   ticket.custom_field["field name"] = "value"  # set

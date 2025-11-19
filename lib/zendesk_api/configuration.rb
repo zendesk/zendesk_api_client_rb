@@ -57,9 +57,6 @@ module ZendeskAPI
     # specify if you want instrumentation to be used
     attr_accessor :instrumentation
 
-    # set to true if you want to preload custom fields metadata
-    attr_accessor :preload_custom_fields_metadata
-
     def initialize
       @client_options = {}
       @use_resource_cache = true
