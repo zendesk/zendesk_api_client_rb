@@ -203,8 +203,7 @@ module ZendeskAPI
     # @param [Array<Hash>] attributes The attributes to update resources with
     #
     # @return [JobStatus] the {JobStatus} instance for this destroy job
-    def create_or_update_many!(client, attributes)
-      association = Association.new(class: self)
+    def create_or_update_many!(client, attributes, association = Association.new(class: self))
 
       response = client.connection.post("#{association.generate_path}/create_or_update_many") do |req|
         req.body = {resource_name => attributes}
