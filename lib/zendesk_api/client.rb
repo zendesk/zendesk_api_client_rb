@@ -32,6 +32,8 @@ module ZendeskAPI
     attr_reader :config
     # @return [Array] Custom response callbacks
     attr_reader :callbacks
+    # @return [Hash] Memoized account data
+    attr_reader :account_data
 
     # Handles resources such as 'tickets'. Any options are passed to the underlying collection, except reload which disregards
     # memoization and creates a new Collection instance.
@@ -95,6 +97,7 @@ module ZendeskAPI
 
       @callbacks = []
       @resource_cache = {}
+      @account_data = {}
 
       check_url
       check_instrumentation
@@ -151,6 +154,11 @@ module ZendeskAPI
       define_method delegator do |*| # takes arguments, but doesn't do anything with them
         Delegator.new(self)
       end
+    end
+
+    def refresh_custom_fields_metadata
+      account_data[:custom_fields] ||= {}
+      ticket_fields.each { |field| account_data[:custom_fields][field.title] = field.id }
     end
 
     protected

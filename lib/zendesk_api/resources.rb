@@ -546,6 +546,43 @@ module ZendeskAPI
 
     has_many :incidents, class: Ticket
 
+    class CustomFieldAccessor
+      def initialize(ticket)
+        @ticket = ticket
+      end
+
+      def [](field_name)
+        find_by_name(field_name)["value"]
+      end
+
+      def []=(field_name, value)
+        find_by_name(field_name)["value"] = value
+      end
+
+      private
+
+      def find_by_name(field_name)
+        @ticket.refresh_custom_fields_metadata unless @ticket.account_data.has_key?(:custom_fields)
+
+        custom_field_id = @ticket.account_data[:custom_fields][field_name]
+        raise ArgumentError, "No custom field named '#{field_name}' found in field definitions" if custom_field_id.nil?
+
+        custom_field = @ticket.custom_fields.find { |cf| cf["id"] == custom_field_id }
+        raise ArgumentError, "No custom field with id #{custom_field_id} found. Field name: '#{field_name}'" if custom_field.nil?
+
+        custom_field
+      end
+    end
+
+    # Returns a custom field accessor that supports bracket notation.
+    # Usage:
+    #   ticket.custom_field["field name"]            # get
+    #   ticket.custom_field["field name"] = "value"  # set
+    # You need to call `save!` on a ticket after changing a custom field value.
+    def custom_field
+      @custom_field_accessor ||= CustomFieldAccessor.new(self)
+    end
+
     # Gets a incremental export of tickets from the start_time until now.
     # @param [Client] client The {Client} object to be used
     # @param [Integer] start_time The start_time parameter

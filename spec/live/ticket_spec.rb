@@ -110,6 +110,36 @@ RSpec.describe ZendeskAPI::Ticket do
     it_should_be_readable :tickets, :recent
   end
 
+  describe "custom fields" do
+    before do
+      @ticket = ZendeskAPI::Ticket.create(client, {
+        subject: "live spec subject for custom fields test",
+        description: "live spec description for custom fields test"
+      })
+    end
+
+    after do
+      @ticket&.destroy!
+    end
+
+    it "can write and read custom fields" do
+      @ticket.custom_field["Custom field name"] = "Custom field value"
+      @ticket.save!
+
+      @ticket.reload!
+      expect(@ticket.custom_field["Custom field name"]).to eq("Custom field value")
+    end
+
+    it "raises ArgumentError for non-existent fields" do
+      expect { @ticket.custom_field["This field does not exist"] }.to raise_error(ArgumentError)
+    end
+
+    it "stores custom fields metadata on a client" do
+      _custom_field_value = @ticket.custom_field["Custom field name"]
+      expect(@ticket.account_data[:custom_fields]["Custom field name"]).to eq(9961714922394)
+    end
+  end
+
   describe ".incremental_export" do
     let(:results) { ZendeskAPI::Ticket.incremental_export(client, Time.at(1023059503)) } # ~ 10 years ago
 
