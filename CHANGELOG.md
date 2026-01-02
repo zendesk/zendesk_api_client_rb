@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-Drops support for Ruby 2.7 and 3.0.
+Drops support for Ruby 2.7, 3.0, and 3.1.
 
 ## v3.1.1
 
