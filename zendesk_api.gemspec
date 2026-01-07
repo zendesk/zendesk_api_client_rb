@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir.glob("{lib,util}/**/*") << "LICENSE"
 
-  s.required_ruby_version = ">= 3.1"
+  s.required_ruby_version = ">= 3.2"
   s.required_rubygems_version = ">= 1.3.6"
 
   s.add_dependency "faraday", "> 2.0.0"
