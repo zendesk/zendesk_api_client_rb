@@ -1,6 +1,6 @@
 # Zendesk API Client
 
-[![Test](https://github.com/zendesk/zendesk_api_client_rb/workflows/Test/badge.svg)](https://github.com/zendesk/zendesk_api_client_rb/actions/workflows/main.yml?query=branch%3Amaster)
+[![Test](https://github.com/zendesk/zendesk_api_client_rb/actions/workflows/main.yml/badge.svg)](https://github.com/zendesk/zendesk_api_client_rb/actions/workflows/main.yml)
 [![Gem Version](https://badge.fury.io/rb/zendesk_api.svg)](https://badge.fury.io/rb/zendesk_api)
 
 ## Documentation
