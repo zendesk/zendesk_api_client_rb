@@ -623,6 +623,14 @@ module ZendeskAPI
     end
   end
 
+  class TargetFailure < ReadResource
+    def target
+      @client.targets.to_a.find do |target|
+        target.title == self.target_name
+      end
+    end
+  end
+
   class DeletedTicket < ReadResource
     include Destroy
     extend DestroyMany
