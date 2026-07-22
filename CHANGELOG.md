@@ -4,6 +4,10 @@
 
 Drops support for Ruby 2.7, 3.0, and 3.1.
 
+## v3.1.2
+
+Fixes a `TypeError: no implicit conversion of Array into Hash` in `ZendeskAPI::Setting#initialize` when a settings response contains a top-level non-Hash value (e.g. the `agent_home_pinned_views` and `shared_views_order` user settings, which are arrays). Namespaced Hash settings such as `lotus` and `admin_center` are unchanged.
+
 ## v3.1.1
 
 Adding CBP support to requested tickets (api/v2/users/:id/tickets/requested)
