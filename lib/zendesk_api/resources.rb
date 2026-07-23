@@ -354,8 +354,12 @@ module ZendeskAPI
       # Try and find the root key
       @on = (attributes.keys.map(&:to_s) - %w[association options]).first
 
-      # Make what's inside that key the root attributes
-      attributes.merge!(attributes.delete(@on))
+      # Namespaced settings (e.g. "lotus", "admin_center") nest their values in a
+      # Hash, which we hoist up to be the root attributes. Some settings are
+      # top-level scalars or arrays (e.g. "shared_views_order",
+      # "agent_home_pinned_views") - leave those under @on rather than merging,
+      # which would raise "no implicit conversion of Array into Hash".
+      attributes.merge!(attributes.delete(@on)) if attributes[@on].is_a?(Hash)
 
       super
     end
