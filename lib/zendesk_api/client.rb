@@ -18,6 +18,7 @@ require_relative "middleware/response/sanitize_response"
 require_relative "middleware/response/parse_iso_dates"
 require_relative "middleware/response/parse_json"
 require_relative "middleware/response/raise_error"
+require_relative "middleware/response/token_refresher"
 require_relative "middleware/response/logger"
 require_relative "middleware/response/zendesk_request_event"
 require_relative "delegator"
@@ -277,7 +278,10 @@ module ZendeskAPI
     # See https://lostisland.github.io/faraday/middleware/authentication
     def set_authentication(builder, config)
       if config.access_token && !config.url_based_access_token
-        builder.request :authorization, "Bearer", config.access_token
+        # Upon refreshing the access token, the configuration is updated accordingly.
+        # Utilizing the proc here ensures that the token used is always valid.
+        builder.request :authorization, "Bearer", -> { config.access_token }
+        builder.use(ZendeskAPI::Middleware::Response::TokenRefresher, config) if config.auto_refresh_tokens
       elsif config.access_token
         builder.use ZendeskAPI::Middleware::Request::UrlBasedAccessToken, config.access_token
       else

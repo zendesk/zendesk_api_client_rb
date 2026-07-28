@@ -67,6 +67,10 @@ client = ZendeskAPI::Client.new do |config|
   # More information on obtaining OAuth access tokens can be found here:
   # https://developer.zendesk.com/api-reference/introduction/security-and-auth/#oauth-access-token
   config.access_token = "your OAuth access token"
+  # You can configure token refreshing by adding the OAuth client ID, secret and refresh token:
+  config.client_id = "your OAuth client id"
+  config.client_secret = "your OAuth client secret"
+  config.refresh_token = "your OAuth refresh token"
 
   # Optional:
 
@@ -101,6 +105,18 @@ client = ZendeskAPI::Client.new do |config|
 
   # Error codes when the request will be automatically retried. Defaults to 429, 503
   config.retry_codes = [ 429 ]
+
+  # When OAuth token refreshing is configured:
+  # - sets access and refresh token expiration times
+  config.access_token_expiration = 300 # time in seconds (between 5 minutes and 2 days: 300 to 172800)
+  config.refresh_token_expiration = 605800 # time in seconds (between 7 and 90 days: 605800 to 7776000)
+  # - set to true to automatically refresh tokens when an `ZendeskAPI::Errors::Unauthorized` error is raised;
+  #   defaults to false, meaning tokens must be refreshed explicitly using `ZendeskAPI::TokenRefresher`
+  config.auto_refresh_tokens = true
+  # - when automatic token refreshing is enabled, a callback that is called whenever tokens are refreshed
+  config.refresh_tokens_callback = lambda do |access_token, refresh_token|
+    # saves tokens for further use
+  end
 end
 ```
 
@@ -161,6 +177,48 @@ zendesk_api_client_rb $ bundle console
  => ["hello", "hi"]
 > a.changed?(:test)
  => true
+```
+
+### OAuth Token Refreshing
+To take advantage of token refreshing you need to configure the client first providing by minimum OAuth client ID and secret and access and refresh tokens.
+
+```ruby
+users = client.users.per_page(3)
+begin
+  # A request with an expired access token is made.
+  users.fetch!
+  # The request is rejected with 401 (Unauthorized) status code.
+rescue ZendeskAPI::Error::Unauthorized
+  # Refresh tokens and store them securely
+  ZendeskAPI::TokenRefresher.new(client.config).refresh_token do |access_token, refresh_token|
+    # The access and refresh tokens are passed here so you could persist them for later use.
+    # The client's configuration is updated automatically.
+  end
+  # Issue the request again.
+  users.fetch!
+end
+```
+
+When automatic tokens refreshing is enabled:
+```ruby
+  config.auto_refresh_tokens = true
+  config.refresh_tokens_callback = lambda do |access_token, refresh_token|
+    # The access and refresh tokens are passed here so you could persist them for later use.
+    # The client's configuration is updated automatically.
+  end
+```
+The above example could be changed to:
+```ruby
+users = client.users.per_page(3)
+begin
+  # A request with an expired access token is made.
+  users.fetch!
+  # The request is rejected with 401 (Unauthorized) status code.
+rescue ZendeskAPI::Error::Unauthorized
+  # Tokens are refreshed automatically.
+  # Issue the request again.
+  users.fetch!
+end
 ```
 
 ### Pagination

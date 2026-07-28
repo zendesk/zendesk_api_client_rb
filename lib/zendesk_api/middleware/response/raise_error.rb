@@ -12,6 +12,8 @@ module ZendeskAPI
 
         def on_complete(env)
           case env[:status]
+          when 401
+            raise Error::Unauthorized.new(env)
           when 404
             raise Error::RecordNotFound.new(env)
           when 422, 413
