@@ -38,7 +38,7 @@ module ResourceMacros
 
       if metadata[:delete_after]
         after(:all) do
-          return unless @creatable_object&.id
+          next unless @creatable_object&.id
 
           VCR.use_cassette("#{described_class}_create_delete") do
             @creatable_object.destroy

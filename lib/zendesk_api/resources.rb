@@ -683,31 +683,31 @@ module ZendeskAPI
   module Conditions
     def all_conditions=(all_conditions)
       self.conditions ||= {}
-      self.conditions[:all] = all_conditions
+      conditions[:all] = all_conditions
     end
 
     def any_conditions=(any_conditions)
       self.conditions ||= {}
-      self.conditions[:any] = any_conditions
+      conditions[:any] = any_conditions
     end
 
     def add_all_condition(field, operator, value)
       self.conditions ||= {}
-      self.conditions[:all] ||= []
-      self.conditions[:all] << {field: field, operator: operator, value: value}
+      conditions[:all] ||= []
+      conditions[:all] << {field: field, operator: operator, value: value}
     end
 
     def add_any_condition(field, operator, value)
       self.conditions ||= {}
-      self.conditions[:any] ||= []
-      self.conditions[:any] << {field: field, operator: operator, value: value}
+      conditions[:any] ||= []
+      conditions[:any] << {field: field, operator: operator, value: value}
     end
   end
 
   module Actions
     def add_action(field, value)
       self.actions ||= []
-      self.actions << {field: field, value: value}
+      actions << {field: field, value: value}
     end
   end
 
@@ -729,7 +729,7 @@ module ZendeskAPI
 
     def columns=(columns)
       self.output ||= {}
-      self.output[:columns] = columns
+      output[:columns] = columns
     end
 
     def self.preview(client, options = {})

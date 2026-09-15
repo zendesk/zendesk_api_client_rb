@@ -615,7 +615,7 @@ describe ZendeskAPI::Collection do
       it "should pass to new, since this is how attachment handles it" do
         attachment = double(changes: [:xxx], changed?: true, destroyed?: false)
         expect(ZendeskAPI::TestResource).to receive(:new)
-          .with(client, id: "img.jpg", association: instance_of(ZendeskAPI::Association))
+          .with(client, {id: "img.jpg", association: instance_of(ZendeskAPI::Association)})
           .and_return attachment
 
         subject << "img.jpg"
