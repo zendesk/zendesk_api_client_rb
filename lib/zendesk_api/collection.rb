@@ -68,7 +68,7 @@ module ZendeskAPI
     end
 
     # Methods that take an Array argument
-    methods = %w[create_many! destroy_many!]
+    methods = %w[create_many! destroy_many! create_or_update_many!]
     methods.each do |deferrable|
       # Passes arguments and the proper path to the resource class method.
       # @param [Array] array arguments
