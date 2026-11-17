@@ -34,8 +34,27 @@ module ZendeskAPI
     # @return [Boolean] Whether to allow non-HTTPS connections for development purposes.
     attr_accessor :allow_http
 
+    # Client ID and secret, together with the refresh token, are used to obtain a new access token, after the old expires
+    attr_accessor :client_id, :client_secret
+
     # @return [String] OAuth2 access_token
     attr_accessor :access_token
+    # @return [String] OAuth2 refresh token used to obtain a new access token after the old expires
+    attr_accessor :refresh_token
+
+    # @return [Integer] Time in seconds after the refreshed access token expires.
+    # Value between 5 minutes and 2 days (300 and 172800)
+    attr_accessor :access_token_expiration
+    # @return [Integer] Time in seconds after the refresh token, generated after access token refreshing, expires.
+    # Value between 7 and 90 days (604800 and 7776000)
+    attr_accessor :refresh_token_expiration
+
+    # @return [Proc] A lambda that handles the response when the refresh_token is used to obtain a new access_token.
+    # This allows the access_token to be saved for re-use later.
+    attr_accessor :refresh_tokens_callback
+    # @return [Boolean] Whether to automatically refresh tokens when an unauthorized error happens for an OAuth request.
+    # The unauthorized error is still raised so the request could be retried with tokens refreshed.
+    attr_accessor :auto_refresh_tokens
 
     attr_accessor :url_based_access_token
 
